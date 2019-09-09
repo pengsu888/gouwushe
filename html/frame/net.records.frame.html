@@ -1,0 +1,396 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0" />
+    <!-- 解决IOS数字出现蓝色数字问题  -->
+    <meta name="format-detection" content="telephone=no" />
+    <title>通话记录</title>
+    <link rel="stylesheet" type="text/css" href="../../css/api.css" />
+    <link rel="stylesheet" type="text/css" href="../../css/aui.css" />
+    <link rel="stylesheet" type="text/css" href="../../css/net_records.css" />
+    <!-- <link rel="stylesheet" type="text/css" href="../../css/fans.css" /> -->
+    <style media="screen">
+        .fans_tab {
+            position: fixed;
+            left: 0;
+            top: 0;
+            height: 50px;
+            width: 100%;
+            background: #fff;
+            border-bottom: solid 1px #f4f4f4;
+        }
+
+        .fans_tab ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .fans_tab ul li {
+            float: left;
+            width: 25%;
+            text-align: center;
+            line-height: 50px;
+            position: relative;
+            font-size: 14px;
+            color: #666;
+        }
+
+        .fans_tab ul li a {
+            color: #333;
+        }
+
+        .fans_tab ul li .current {
+            color: #fd5f3e;
+        }
+
+        .upAttr {
+            position: absolute;
+            width: 0.4em;
+            height: 0.3rem;
+            top: 37%;
+            right: 20%;
+        }
+
+        .upAttr1 {
+            background: url(../../image/huaqian_iicon_uparrow_default.png) no-repeat;
+            background-size: 100% 100%;
+        }
+
+        .upAttr2 {
+            background: url(../../image/huaqian_icon_uparrow_selected.png) no-repeat;
+            background-size: 100% 100%;
+        }
+
+        .DownAttr {
+            position: absolute;
+            width: 0.4em;
+            height: 0.3rem;
+            top: 51%;
+            right: 20%;
+        }
+
+        .DownAttr1 {
+            background: url(../../image/huaqian_icon_downarrow_default.png) no-repeat;
+            background-size: 100% 100%;
+        }
+
+        .DownAttr2 {
+            background: url(../../image/huaqian_icon_downarrow_selected.png) no-repeat;
+            background-size: 100% 100%;
+        }
+
+        .shaixuan {
+            width: 12px;
+            height: 13px;
+            position: absolute;
+            top: 50%;
+            right: 27%;
+            background: url('../../image/home/shaixuan.png') no-repeat;
+            background-size: 100% 100%;
+            margin-top: -7px;
+        }
+
+        html,
+        body {
+            background: #f4f4f4;
+            height: 100%;
+            width: 100%;
+        }
+
+        .no_collect {
+            height: 15rem;
+            width: 100%;
+            /* background: #fff; */
+            position: relative;
+            display: none;
+        }
+
+        .no_collect img {
+            width: 200px;
+            height: 104px;
+            background-size: 100% 100%;
+            position: absolute;
+            top: 25%;
+            left: 50%;
+            margin-left: -100px;
+        }
+
+        .no_collect p {
+            width: 100%;
+            height: 2rem;
+            text-align: center;
+            position: absolute;
+            top: 70%;
+            left: 0;
+            color: #ccc;
+        }
+
+        .wrap_fans {
+            height: auto;
+            width: 100%;
+            top: 50px;
+            overflow-x: hidden;
+            overflow-y: auto;
+            position: relative;
+        }
+
+        .fans_item {
+            width: 100%;
+            /*margin: 10px auto auto auto;*/
+            height: auto;
+            background: #fff;
+            border-radius: 0px;
+            border-bottom: solid 1px #f4f4f4;
+        }
+
+        .fans_item ul li {
+            width: 25%;
+            float: left;
+            height: 100%;
+            text-align: center;
+        }
+        /*.fans_item ul li:before {
+            content: '';
+            position: absolute;
+            z-index: 0;
+            top: 0;
+            right: 0;
+            height: 100%;
+            border-right: 1px solid #D9D9D9;
+            -webkit-transform: scaleX(0.5);
+            transform: scaleX(0.5);
+            -webkit-transform-origin: 100% 0;
+            transform-origin: 100% 0;
+        }*/
+
+        .fans_item ul {
+            list-style: none;
+            margin: 0;
+            padding: 10px 0px 10px 10px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="fans_tab" id="header_tab">
+        <ul>
+            <li><a class="old differ reg_time">被叫</a></li>
+            <li><a class="old differ count">日期</a></li>
+            <li><a class="old differ sx">时长(秒)</a></li>
+            <li><a class="old differ sx">消费(元)</a></li>
+        </ul>
+    </div>
+    <div class="wrap_fans">
+        <!-- <div class="no_collect">
+            <img src="../../image/ic_page_ali_fav_login_tip.png" alt="">
+            <p>你还没有记录的哦</p>
+        </div> -->
+        <div id="list">
+            <!-- <div class="fans_item">
+                <ul>
+                    <li class="beijiao">13389088878</li>
+                    <li class="riqi">2019-05-17 23:27:37</li>
+                    <li class="shichang">01-05-24</li>
+                    <li class="xiaofei">1.05</li>
+                </ul>
+            </div> -->
+        </div>
+        </div>
+        <div id="statu" style="font-size:0.8rem;color:#fd5f3e;background-color:#f5f5f5;height:30px;line-height:30px;text-align:center;clear:both;"><img src="../../image/loading.d997b79c.svg" alt="" style="width:1rem;height:1rem;vertical-align:middle;">加载中...</div>
+        <div class="noWlan">
+            <div class="nowlanItem">
+                <div class="no_net"><img src="../../image/no_net.png" /></div>
+                <p class="no_p">网络竟然崩溃了</p>
+                <p class="load_p">别紧张，试试看刷新页面</p>
+                <div class="loadBtn" onclick="javascript:location.reload();">点击刷新</div>
+            </div>
+        </div>
+</body>
+<script type="text/javascript" src="../../script/api.js"></script>
+<script type="text/javascript" src="../../script/jquery.js"></script>
+<script type="text/javascript" src="../../script/fans_del.js"></script>
+<script type="text/javascript" src="../../script/api_common.js"></script>
+<script type="text/javascript" src="../../script/md5.js"></script>
+<script type="text/javascript">
+    var headerH;
+    var user_id;
+    var pageNum = 1;
+    var isOver = false; //默认没有取完数据
+    var statu; //滑到底部状态
+    apiready = function() {
+        if (!empty($api.getStorage("userInfo"))) {
+            user_id = $api.getStorage("userInfo").user_id;
+        }
+        statu = $api.byId('statu');
+        getEvent();
+        closePopframe();
+        //加载首页板块
+        loadFresh();
+        loadMyFa(true);
+        // 商品列表数据
+        // 监听事件apiReady滚动到底部，加载更多功能
+        api.addEventListener({
+            name: 'scrolltobottom',
+            extra: {
+                threshold: 120 //设置距离底部多少距离时触发，默认值为0，数字类型
+            }
+        }, function(ret, err) {
+
+            loadMyFa(false);
+        });
+    };
+
+    function loadFresh() {
+        RefreshLoad();
+    }
+
+    // 查询用户通话记录
+    function loadMyFa(isPull, dis_level_id) {
+        if (!isPull && isOver) {
+            return;
+        }
+        //判断如果是下拉刷新，
+        if (isPull) {
+            pageNum = 1;
+            isOver = false;
+        }
+        if (!empty($api.getStorage("userInfo"))) {
+            user_id = $api.getStorage("userInfo").user_id;
+        } else {
+            user_id = '';
+            checkUserLogin();
+        }
+        var obj = {
+            'user_id': user_id,
+            'pageNo':pageNum,
+            'size':10
+        }
+        var objArr = sort_ASCII(obj);
+        var timestamp = fntimestamp();
+        var version = '2.0';
+        var arr = apiSecret + timestamp + version + '';
+        for (i in objArr) {
+            arr += objArr[i];
+        }
+        var sign = hex_md5(arr);
+        api.ajax({
+            url: commonUrl + 'soukeAppTttService/service/telbill/getTelFeeRecord',
+            method: 'post',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            data: {
+                body: {
+                    'apiKey': apiKey,
+                    'timestamp': timestamp,
+                    'sign': sign,
+                    'user_id': user_id,
+                    'pageNo':pageNum,
+                    'size':10
+                }
+            }
+        }, function(ret, err) {
+            console.log("查询用户通话记录" + JSON.stringify(ret));
+            // alert("查询用户通话记录" + JSON.stringify(ret));
+            if (ret) {
+                if (ret.result_code == 200) {
+                    var data = ret.result_data.items;
+                    var size = ret.result_data.size;
+                    if (data != "") {
+                        $(".no_collect").hide();
+                        $api.css(statu, 'display:block;');
+                        pageNum++;
+                    } else {
+                        $(".no_collect").show();
+                        $api.css(statu, 'display:none;');
+                        statu.innerHTML = "暂无数据";
+                    }
+                    if (data.length < size && data != "") {
+                        $(".no_collect").hide();
+                        statu.innerHTML = "已经到底啦 ~ 别扯了";
+                        isOver = true;
+                    }
+
+                    fnShowData(data, isPull);
+                } else {
+                    api.toast({
+                        msg: ret.result_message,
+                        duration: 2000,
+                        location: 'middle'
+                    });
+
+                }
+            } else {
+                // alert( JSON.stringify( err ) );
+            }
+        });
+    }
+
+    function fnShowData(data, isPull) {
+        var html = '';
+        for (var i = 0; i < data.length; i++) {
+            html += '<div class="fans_item">';
+            html += '<ul>';
+            if (data[i].call_nick !=''){
+            html += '<li class="beijiao">' + data[i].call_nick + '</li>';
+          }else {
+            html += '<li class="beijiao">' + data[i].callees + '</li>';
+          }
+            html += '<li class="riqi">' + data[i].start_time + '</li>';
+            html += '<li class="shichang">' + data[i].hold_time + '</li>';
+            html += '<li class="xiaofei">' + data[i].tel_bill + '</li>';
+            html += '</div>';
+            html += '</ul>';
+            html += '</div>';
+        }
+        if (isPull) {
+            $api.byId('list').innerHTML = html;
+        } else {
+            $api.byId('list').innerHTML += html;
+        }
+    }
+    //弹出蒙版  设置开关
+    //打开筛选页-------begin
+    // window.showFlag = false;
+
+    // function openShaixuanLayout(frame_name, win_name) {
+    //     $('.sx').addClass('current').parent().siblings().children().removeClass('current').siblings().removeClass('DownAttr2').removeClass('upAttr2 sx_icon2');
+    //     if (window.showFlag == false) {
+    //         api.openFrame({
+    //             name: 'shaixuan_slidLayout',
+    //             url: '../frame/shaixuan_slidLayout.html',
+    //             rect: {
+    //                 x: 0,
+    //                 y: 0,
+    //                 w: 'auto',
+    //                 h: api.pageParam.body_h
+    //             },
+    //             pageParam: {
+    //                 headerH: headerH + 6,
+    //                 frame_name: frame_name,
+    //                 win_name: win_name,
+    //             },
+    //             bounces: false,
+    //             bgColor: 'rgba(0,0,0,0)',
+    //             vScrollBarEnabled: true,
+    //             hScrollBarEnabled: true
+    //         });
+    //         window.showFlag = true;
+    //     } else {
+    //         closeShaixuanLayout();
+    //     }
+    // }
+
+    // function closeShaixuanLayout() {
+    //     api.closeFrame({
+    //         name: 'shaixuan_slidLayout'
+    //     });
+    //     window.showFlag = false;
+    // }
+    //打开筛选页-------end
+</script>
+
+</html>

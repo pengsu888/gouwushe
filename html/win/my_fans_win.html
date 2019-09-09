@@ -1,0 +1,452 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0" />
+  <!-- 解决IOS数字出现蓝色数字问题  -->
+  <meta name="format-detection" content="telephone=no" />
+  <title>title</title>
+  <link rel="stylesheet" type="text/css" href="../../css/api.css" />
+  <link rel="stylesheet" type="text/css" href="../../css/style.css" />
+  <style media="screen">
+    html,body{
+      width: 100%;
+      height: 100%;
+      display: flex;
+      display: -webkit-flex;
+      display: -webkit-box;
+      flex-flow: column;
+      -webkit-flex-flow: column;
+      -webkit-box-orient: vertical;
+      background: #f4f4f4;
+    }
+  .headerItem .header_title{
+    width:calc(100% - 54px);
+    line-height: 34px;
+    text-align: left;
+    margin-left: 13px;
+  }
+  .headerItem .header_title .header_input{
+    width: 100%;
+    height: 33px;
+    background: rgba(255, 255, 255, 0.2);
+    border-radius: 25px;
+    color:#fff;
+    margin-top: 5px;
+    font-size: 12px;
+
+  }
+  .headerItem .header_title .header_input img{
+    width: 19px;
+    height: 20px;
+    background-size: 100% 100%;
+    vertical-align: middle;
+    display: inline-block;
+    margin: 5px 20px;
+  }
+  .header-bottom{
+    height: 37px;
+    width: 100%;
+  }
+  .header-bottom.four{
+    display: none;
+  }
+  .header-bottom ul{list-style: none;padding: 0;margin: 0;}
+  .header-bottom.three ul li{
+    float: left;
+    width: 33.3%;
+    line-height: 37px;
+    text-align: center;
+    font-size: 16px;
+  }
+  .header-bottom.four ul li{
+    float: left;
+    width: 25%;
+    line-height: 37px;
+    text-align: center;
+    font-size: 14px;
+  }
+  .header-bottom ul li.li_active{
+    border-bottom: 3px solid #fd5f3e;
+    color:#fd5f3e;
+  }
+  .header-middle{
+    height: 90px;
+    width: 100%;
+    color: #fff;
+  }
+  .header-middle p.p_title{
+    width: 100%;
+    height: 40px;
+    line-height: 40px;
+    font-size: 14px;
+    text-align: center;
+  }
+  .header-middle p.p_count{
+    width: 100%;
+    height: 40px;
+    line-height: 40px;
+    font-size: 20px;
+    text-align: center;
+  }
+  .content {
+      -webkit-flex: 1px;
+      flex: 1px;
+      -webkit-box-flex: 1;
+      background-color: #f4f5f6;
+  }
+
+  .footer{
+    width: 100%;
+    height: 44px;
+    display: flex;
+    display: -webkit-flex;
+    display: -webkit-box;
+    flex-flow: row;
+    -webkit-flex-flow: row;
+    -webkit-box-orient: horizontal;
+    position: absolute;
+    bottom: 0;
+    z-index: 99999;
+  }
+  .footer .fansBtn{
+    height: 40px;
+    line-height: 40px;
+    color: #fff;
+    text-align: center;
+    border-radius: 25px;
+    width: calc(100% - 24px);
+    margin-left: 12px;
+    z-index: 99999;
+  }
+  </style>
+</head>
+
+<body>
+    <header id="header" class="submitColor">
+      <div class="header-top">
+          <div class="headerItem">
+            <div class="header_back" onclick="closeWin();">
+              <img src="../../image/nav_back_white.png" alt="">
+            </div>
+            <div class="header_title" onclick="openFansSousuo();">
+              <div class="header_input"><img src="../../image/home/home_search.png" alt="">输入要搜索的粉丝昵称 手机号 ID </div>
+            </div>
+            <div class="header_right" onclick="openGuizeLayout();"><img src="../../image/home/mine_help_white.png" alt=""></div>
+          </div>
+      </div>
+    </header>
+    <div class="header-middle submitColor" id="header-middle">
+      <p class="p_title">我的团队(人)</p>
+      <p class="p_count" id="teamCount">0</p>
+    </div>
+    <div class="header-bottom three">
+      <ul class="class_list_three">
+        <li class="li_active">潜在粉丝</li>
+        <li>直属粉丝</li>
+        <li>推荐粉丝</li>
+      </ul>
+    </div>
+    <div class="header-bottom four">
+      <ul class="class_list_four">
+        <li class="li_active">潜在粉丝</li>
+        <li>直属粉丝</li>
+        <li>推荐粉丝</li>
+        <li>团队粉丝</li>
+      </ul>
+    </div>
+    <!-- <div class="fans_tab" id="header_tab">
+      <ul>
+
+        <li><a href="javascript:void(0)" class="old differ reg_time" tapmode onclick="dianji('register_time')">加入时间</a><span class="upAttr upAttr1"></span><span class="DownAttr DownAttr1"></span></li>
+        <li><a href="javascript:void(0)" class="old differ count" tapmode onclick="dianji('count')">团队规模</a><span class="upAttr upAttr1"></span><span class="DownAttr DownAttr1"></span></li>
+        <li onclick="openShaixuanLayout();"><span class="shaixuan"></span>筛选</li>
+      </ul>
+    </div> -->
+    <!-- <div class="content"></div> -->
+    <footer class="footer" id='footer'>
+      <div class="fansBtn submitColor">潜在粉丝：<span id="qianzai_fans"></span></div>
+      <div class="fansBtn submitColor">直属粉丝：<span id="zhishu_fans"></span></div>
+      <div class="fansBtn submitColor">推荐粉丝：<span id="tuijian_fans"></span></div>
+      <div class="fansBtn submitColor">团队粉丝：<span id="tuandui_fans"></span></div>
+    </footer>
+
+</body>
+  <script type="text/javascript" src="../../script/api.js"></script>
+  <script type="text/javascript" src="../../script/jquery.js"></script>
+  <script type="text/javascript">
+  var headerH,$body,body_h,footerH;
+    apiready = function() {
+        var header = $api.byId('header');
+        var headerM=$api.byId('header-middle');
+        var headerB=$api.dom('.header-bottom');
+        // var headerTab=$api.byId('header_tab');
+        footerH=$(".fansBtn").height();
+        $body = $api.dom('body');
+    		body_h = $api.offset($body).h;
+        $api.fixStatusBar(header);
+        headerH= $api.offset(header).h+$api.offset(headerM).h+$api.offset(headerB).h;
+        if (api.systemType == "ios") {
+            $('#footer').css("height", api.safeArea.bottom + 44); //解决IOS底部被遮挡问题
+        }
+        //打开分类页
+        if(api.pageParam.is_operator==1){
+          $(".header-bottom.four").show();
+          $(".header-bottom.three").hide();
+          openFrameGroups_four();
+        }else{
+          $(".header-bottom.three").show();
+          $(".header-bottom.four").hide();
+          openFrameGroups_three();
+        }
+
+
+        //我的团队
+        api.addEventListener({
+            name: 'teamCount'
+        }, function(ret, err){
+            if( ret ){
+                //  alert( JSON.stringify( ret ) );
+                 $api.byId('teamCount').innerHTML=ret.value.teamCount;
+
+            }else{
+                //  alert( JSON.stringify( err ) );
+            }
+        });
+        api.addEventListener({
+            name: 'qianzai_fans'
+        }, function(ret, err){
+            if( ret ){
+                //  alert( JSON.stringify( ret ) );
+                 $api.byId("qianzai_fans").innerHTML=ret.value.totalCount;
+            }else{
+                //  alert( JSON.stringify( err ) );
+            }
+        });
+        api.addEventListener({
+            name: 'zhishu_fans'
+        }, function(ret, err){
+            if( ret ){
+                //  alert( JSON.stringify( ret ) );
+                 $api.byId("zhishu_fans").innerHTML=ret.value.totalCount;
+            }else{
+                //  alert( JSON.stringify( err ) );
+            }
+        });
+        api.addEventListener({
+            name: 'tuijian_fans'
+        }, function(ret, err){
+            if( ret ){
+                //  alert( JSON.stringify( ret ) );
+                 $api.byId("tuijian_fans").innerHTML=ret.value.totalCount;
+            }else{
+                //  alert( JSON.stringify( err ) );
+            }
+        });
+        api.addEventListener({
+            name: 'tuandui_fans'
+        }, function(ret, err){
+            if( ret ){
+                //  alert( JSON.stringify( ret ) );
+                 $api.byId("tuandui_fans").innerHTML=ret.value.totalCount;
+            }else{
+                //  alert( JSON.stringify( err ) );
+            }
+        });
+    };
+    function closeWin(){
+      api.closeWin({
+          name: 'my_fans_win'
+      });
+    }
+    function openFrameGroups_three(){
+      api.openFrameGroup({
+        name : 'classify1',
+        scrollEnabled : true,
+        rect : {
+          x : 0,
+          y : headerH+3,
+          w : 'auto',
+          h : api.winHeight-headerH-footerH-10-api.safeArea.bottom
+        },
+        index : 0,
+        preload : 0,
+        frames : [{
+          name : 'qianzai_fans_frame',
+          url : '../frame/qianzai_fans_frame.html',
+          bounces : false,
+          vScrollBarEnabled : false,
+          hScrollBarEnabled : false,
+          pageParam: {
+            body_h:body_h,
+            fans_status:1,
+            is_operator:api.pageParam.is_operator
+          }
+        }, {
+          name : 'zhishu_fans_frame',
+          url : '../frame/zhishu_fans_frame.html',
+          bounces : true,
+          vScrollBarEnabled : false,
+          hScrollBarEnabled : false,
+          pageParam: {
+            body_h:body_h,
+            fans_status:2,
+            is_operator:api.pageParam.is_operator
+          }
+        }, {
+          name : 'tuijian_fans_frame',
+          url : '../frame/tuijian_fans_frame.html',
+          bounces : false,
+          vScrollBarEnabled : false,
+          hScrollBarEnabled : false,
+          pageParam: {
+            body_h:body_h,
+            fans_status:3,
+            is_operator:api.pageParam.is_operator
+          }
+        }],
+      }, function(ret, err) {
+        var _index = ret.index;
+        $(".fansBtn").eq(_index).show();
+        $(".fansBtn").eq(_index).siblings().hide();
+        $(".class_list_three > li").eq(_index).addClass("li_active");
+        $(".class_list_three > li").eq(_index).siblings().removeClass("li_active");
+      });
+      //点击菜单
+      $(".class_list_three > li").click(function() {
+        var li_index = $(this).index();
+        $(".fansBtn").eq(li_index).show();
+        $(".fansBtn").eq(li_index).siblings().hide();
+        $(this).addClass("active").siblings().removeClass("li_active");
+        api.setFrameGroupIndex({
+          name : 'classify1',
+          index : li_index,
+          scroll : true,
+        });
+      });
+    }
+    function openFrameGroups_four(){
+      api.openFrameGroup({
+        name : 'classify1',
+        background:'#fff',
+        scrollEnabled : true,
+        rect : {
+          x : 0,
+          y : headerH+3,
+          w : 'auto',
+          h : api.winHeight-headerH-footerH-10-api.safeArea.bottom
+        },
+        index : 0,
+        preload : 0,
+        frames : [{
+          name : 'qianzai_fans_frame',
+          url : '../frame/qianzai_fans_frame.html',
+          bounces : false,
+          vScrollBarEnabled : false,
+          hScrollBarEnabled : false,
+          pageParam: {
+            body_h:body_h,
+            fans_status:1,
+            is_operator:api.pageParam.is_operator
+          }
+        }, {
+          name : 'zhishu_fans_frame',
+          url : '../frame/zhishu_fans_frame.html',
+          bounces : true,
+          vScrollBarEnabled : false,
+          hScrollBarEnabled : false,
+          pageParam: {
+            body_h:body_h,
+            fans_status:2,
+            is_operator:api.pageParam.is_operator
+          }
+        }, {
+          name : 'tuijian_fans_frame',
+          url : '../frame/tuijian_fans_frame.html',
+          bounces : false,
+          vScrollBarEnabled : false,
+          hScrollBarEnabled : false,
+          pageParam: {
+            body_h:body_h,
+            fans_status:3,
+            is_operator:api.pageParam.is_operator
+          }
+        }, {
+          name : 'tuandui_fans_frame',
+          url : '../frame/tuandui_fans_frame.html',
+          bounces : false,
+          vScrollBarEnabled : false,
+          hScrollBarEnabled : false,
+          pageParam: {
+            body_h:body_h,
+            fans_status:4,
+            is_operator:api.pageParam.is_operator
+          }
+        }],
+      }, function(ret, err) {
+        var _index = ret.index;
+        $(".fansBtn").eq(_index).show();
+        $(".fansBtn").eq(_index).siblings().hide();
+        $(".class_list_four > li").eq(_index).addClass("li_active");
+        $(".class_list_four > li").eq(_index).siblings().removeClass("li_active");
+      });
+      //点击菜单
+      $(".class_list_four > li").click(function() {
+        var li_index = $(this).index();
+        $(".fansBtn").eq(li_index).show();
+        $(".fansBtn").eq(li_index).siblings().hide();
+        $(this).addClass("active").siblings().removeClass("li_active");
+        api.setFrameGroupIndex({
+          name : 'classify1',
+          index : li_index,
+          scroll : true,
+        });
+      });
+    }
+    //打开粉丝规则说明页-------begin
+    window.guizeFlag=false;
+    function openGuizeLayout(){
+  		if (window.guizeFlag == false) {
+  			api.openFrame({
+  				name : 'fansGuize_slidLayout',
+  				url : '../frame/fansGuize_slidLayout.html',
+  				rect : {
+  					x : 0,
+  					y : 0,
+  					w : 'auto',
+  					h : body_h
+  				},
+  				// pageParam : {
+  				// 	headerH:headerH+6
+  				// },
+  				bounces : false,
+  				bgColor : '#fff',
+  				vScrollBarEnabled : true,
+  				hScrollBarEnabled : true
+  			});
+  			window.guizeFlag = true;
+  		} else {
+  			closeGuizeLayout();
+  		}
+    }
+    //打开粉丝规则说明页-------end
+
+    function closeGuizeLayout() {
+  		api.closeFrame({
+  			name : 'fansGuize_slidLayout'
+  		});
+  		window.guizeFlag = false;
+  	}
+    function openFansSousuo(){
+      api.openWin({
+          name: 'fans_sousuo_win',
+          url: './fans_sousuo_win.html',
+          pageParam: {
+              is_operator:api.pageParam.is_operator
+          }
+      });
+    }
+  </script>
+
+</html>

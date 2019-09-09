@@ -1,0 +1,303 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0" />
+  <title>title</title>
+  <link rel="stylesheet" type="text/css" href="../../css/api.css" />
+  <link rel="stylesheet" type="text/css" href="../../css/style.css" />
+</head>
+<style media="screen">
+    html,body{
+      background: #f4f4f4;
+    }
+    .tz_time{
+      width: 100%;
+      height: 3rem;
+      line-height: 4.0rem;
+      text-align: center;
+      color: #666;
+      font-size: 0.8rem;
+    }
+    .tz_time img{
+      height: 0.4rem;
+      width: 3.7rem;
+      background-size: 100% 100%;
+      margin:auto 1rem;
+    }
+    .has_collect{
+      width: 100%;
+      height: auto;
+      background: #fff;
+    }
+    .has_collect .collect_list{
+      height: 8rem;
+      width: 100%;
+      border-bottom:solid 1px #f6f6f6;
+
+    }
+    .has_collect .collect_list ul{
+      padding: 1rem;
+      margin: 0;
+      list-style: none;
+      overflow: hidden;
+    }
+    .has_collect .collect_list ul li{
+      float: left;
+      position: relative;
+    }
+    .has_collect .collect_list ul li:nth-child(1){
+      width:6rem;
+      height: 6rem;
+    }
+    .has_collect .collect_list ul li:nth-child(2){
+      width: calc(100% - 7rem);
+      height: 6rem;
+      margin-left: 1rem;
+      position: relative;
+    }
+    img{
+      height: 100%;
+      width: 100%;
+      background-size: 100% 100%;
+
+    }
+    .has_collect .collect_list ul li:nth-child(2) .col_title{
+      width: 100%;
+      height: 1.5rem;
+      overflow : hidden;
+      text-overflow: ellipsis;
+      display: -webkit-box;
+      -webkit-line-clamp: 1;
+      -webkit-box-orient: vertical;
+      word-break: break-all;
+      position: absolute;
+      top:0;
+      left: 0;
+      line-height: 1.5rem;
+      font-size:0.8rem;
+    }
+    .has_collect .collect_list ul li:nth-child(2) .col_outdate{
+      width: 100%;
+      height: 1.5rem;
+      line-height: 1.5rem;
+      color:#fd5e3f;
+      position: absolute;
+      top:1.5rem;
+      left: 0;
+      font-size: 0.8rem;
+    }
+    .has_collect .collect_list ul li .zj_ygq{
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      top: 0;
+      left: 0;
+      z-index: 999;
+      background: rgba(0, 0, 0, 0.3);
+      color:#fff;
+      line-height: 6rem;
+      text-align: center;
+    }
+    .has_collect .collect_list ul li:nth-child(2) .col_price_quan{
+      width: 100%;
+      height: 2rem;
+      position: absolute;
+      bottom:0;
+      left: 0;
+    }
+    .has_collect .collect_list ul li:nth-child(2) .col_price_quan .col_price{
+      width:auto;
+      position: absolute;
+      left: 0;
+      bottom: 0;
+      color: #FF442A;
+    }
+    .has_collect .collect_list ul li:nth-child(2) .col_price_quan .col_price span{
+      color:#ccc;
+      font-size:0.8rem;
+      text-decoration: line-through;
+      margin-left: 5px;
+      margin-top:2px;
+    }
+    .has_collect .collect_list ul li:nth-child(2) .col_price_quan .col_quan{
+      position: absolute;
+      right:0;
+      bottom:0;
+      color:#fff;
+      font-size: 0.6rem;
+      width:54px;
+      height: 19px;
+      line-height: 19px;
+      text-align: center;
+      background: url('../../image/page_coupon_dc_vh.png') center center no-repeat;
+      background-size: 100% 100%;
+    }
+    .has_collect .collect_list ul li .edit_list{
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      top: 0;
+      left: 0;
+      z-index: 999;
+      background: rgba(0, 0, 0, 0.3);
+      color:#fff;
+      line-height: 6rem;
+      text-align: center;
+      display: none;
+    }
+    .has_collect .collect_list ul li .edit_list img{
+      width: 32px;
+      height: 32px;
+      background-size: 100% 100%;
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      margin-left: -16px;
+      margin-top: -16px;
+      z-index: 99999;
+    }
+    .edit_item{
+      width: 100%;
+      height: 55px;
+      position: fixed;
+      z-index: 999;
+      bottom: 0;
+      left: 0;
+      display: none;
+    }
+    .edit_item div{
+      float: left;
+      width: 50%;
+      line-height: 55px;
+      text-align: center;
+      color:#fff;
+
+    }
+    .edit_item .edit_all{
+      background: #d9d9d9;
+    }
+    .edit_item .edit_all img{
+      width: 25px;
+      height: 25px;
+      background-size: 100% 100%;
+      vertical-align: middle;
+      margin-right: 5px;
+    }
+    .edit_item .edit_delete{
+      background: #ccc;
+    }
+    .deleteBtn{
+      display: none;
+    }
+</style>
+<body>
+  <div class="wrap_zj">
+    <div class="tz_time"><img src="../../image/page_search_keyword_tag_vh_left.png" alt="">2017-11-12 12:39<img src="../../image/page_search_keyword_tag_vh_right.png" alt=""></div>
+    <div class="has_collect">
+      <div class="collect_list">
+        <ul>
+          <li class="collectItem" id="1"><img src="../../image/zhanwei.jpg" alt=""><div class="edit_list"><img src="../../image/home/login_btn_selete_c.png" alt=""></div></li>
+          <li>
+            <div class="col_title">小心机一字肩上衣高腰连体裤外套</div>
+            <div class="col_outdate">预估佣金：3.2</div>
+            <div class="col_price_quan">
+              <div class="col_price">￥148 <span>￥168</span></div>
+              <div class="col_quan">20元券</div>
+            </div>
+          </li>
+        </ul>
+      </div>
+      <div class="collect_list">
+        <ul>
+          <li  class="collectItem" id="2"><img src="../../image/zhanwei.jpg" alt=""><div class="zj_ygq">已过期</div><div class="edit_list"><img src="../../image/home/login_btn_selete_c.png" alt=""></div></li>
+          <li>
+            <div class="col_title">小心机一字肩上衣高腰连体裤外套</div>
+            <div class="col_outdate">预估佣金：3.2</div>
+            <div class="col_price_quan">
+              <div class="col_price">￥148 <span>￥168</span></div>
+              <div class="col_quan">20元券</div>
+            </div>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
+  <div class="edit_item">
+    <div class="edit_all" tapmode><img src="../../image/home/login_btn_selete_n.png" alt="">全选</div>
+    <div class="edit_delete ">删除</div>
+    <div class="deleteBtn submitColor" tapmode>删除</div>
+  </div>
+</body>
+  <script type="text/javascript" src="../../script/api.js"></script>
+  <script type="text/javascript" src="../../script/jquery.js"></script>
+  <script type="text/javascript">
+    apiready = function() {
+        api.setStatusBarStyle({
+            style: 'dark' //黑色
+                // style: 'light' //白色
+        });
+      api.addEventListener({
+          name: 'sc_editBtn'
+      }, function(ret, err){
+          if( ret ){
+              //  alert( JSON.stringify( ret ) );
+               if(ret.value.editBtn=="edit"){
+                 $(".edit_item").show();
+                 $(".edit_delete").show();
+               }else{
+                  $(".edit_list").hide();
+                  $(".edit_all").find("img").attr("src","../../image/home/login_btn_selete_n.png");
+                  $(".collectItem").removeClass("deleteItem");
+                  $(".edit_item").hide();
+                  $(".deleteBtn").hide();
+               }
+
+          }else{
+              //  alert( JSON.stringify( err ) );
+          }
+      });
+
+    };
+    //点击全选按钮事件
+    var edit_all=$(".edit_all");
+    edit_all.click(function (){
+      if($(this).find("img").attr("src")=="../../image/home/login_btn_selete_c.png"){
+           $(this).find("img").attr("src","../../image/home/login_btn_selete_n.png");
+           $(".edit_list").hide();
+           $(".collectItem").removeClass("deleteItem");
+         }else{
+           $(this).find("img").attr("src","../../image/home/login_btn_selete_c.png");
+           $(".edit_list").show();
+           $(".collectItem").addClass("deleteItem");
+         }
+         if($(".deleteItem").length>0){
+           $(".edit_delete").hide();
+           $(".deleteBtn").show();
+         }else{
+           $(".deleteBtn").hide();
+           $(".edit_delete").show();
+         }
+    })
+    //点击单个编辑按钮事件
+    var collectItem=$(".collectItem");
+    collectItem.click(function (){
+      if($(this).hasClass("deleteItem")){
+        $(this).find(".edit_list").hide();
+        $(this).removeClass("deleteItem");
+      }else{
+        $(this).find(".edit_list").show();
+        $(this).addClass("deleteItem");
+      }
+      if($(".deleteItem").length>0){
+        $(".edit_delete").hide();
+        $(".deleteBtn").show();
+      }else{
+        $(".deleteBtn").hide();
+        $(".edit_delete").show();
+      }
+    });
+  </script>
+
+</html>

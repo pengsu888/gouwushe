@@ -1,0 +1,351 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0" />
+    <title>title</title>
+    <link rel="stylesheet" type="text/css" href="../../css/api.css" />
+    <link rel="stylesheet" href="../../css/aui.css">
+    <style>
+        html,
+        body {
+            height: 100%;
+            background: #F4F4F4;
+            width: 100%;
+            color: #333;
+            position: relative;
+        }
+
+        .address_item {
+            width: 100%;
+            height: auto;
+            overflow: hidden;
+            background: #f4f4f4;
+        }
+
+        .address_list {
+            width: 100%;
+            margin: 10px auto 0 auto;
+            height: auto;
+            background: #fff;
+            overflow: hidden;
+        }
+
+        .address_top {
+            width: calc(100% - 24px);
+            height: auto;
+            overflow: hidden;
+            margin: 5px auto 0 auto;
+            border-bottom: solid 1px #ddd;
+        }
+
+        .address_uname {
+            width: 100%;
+            height: 30px;
+            line-height: 30px;
+            text-align: left;
+        }
+
+        .address_info {
+            height: auto;
+            width: 100%;
+            padding: 20px auto;
+            line-height: 20px;
+            color: #888;
+            font-size: 12px;
+            margin-bottom: 8px;
+        }
+
+        .address_bot {
+            height: 55px;
+            width: calc(100% - 24px);
+            margin: 0 auto;
+            position: relative;
+        }
+
+        .address_bot div {
+            float: left;
+            line-height: 55px;
+            color: #666;
+            height: 55px;
+        }
+
+        .address_bot .a_icon {
+            width: 16px;
+            height: 16px;
+            margin-right: 5px;
+        }
+
+        img {
+            width: 100%;
+            height: 100%;
+            background-size: 100% 100%;
+            display: inline-block;
+        }
+
+        .a_moren {
+            position: absolute;
+            left: 0;
+            top: 0;
+        }
+
+        .a_edit {
+            position: absolute;
+            right: 80px;
+            top: 0;
+        }
+
+        .a_delete {
+            position: absolute;
+            right: 0;
+            top: 0;
+        }
+
+        .delete_doc {
+            line-height: 24px;
+            color: #FF584A;
+            height: 24px;
+            border: 1px solid #FF584A;
+            border-radius: 50px;
+            width: 60px;
+            text-align: center;
+            font-size: 14px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="address_item" id="address_list">
+
+        <!-- <div class="address_list">
+            <div class="address_top">
+                <div class="address_uname">真美丽 138****9876</div>
+                <div class="address_info">浙江省温州市乐青市柳市镇中心大道东段德邦物流侧门一门三楼301室</div>
+            </div>
+            <div class="address_bot">
+                <div class="a_moren a_bot moren" id="moren1">
+                    <div class="a_icon"><img src="../../image/home/login_btn_selete_c.png" alt=""></div>
+                    <div class="a_doc">默认地址</div>
+                </div>
+                <div class="a_edit a_bot">
+                    <div class="a_icon"><img src="../../image/home/edit.png" alt=""></div>
+                    <div class="a_doc">编辑</div>
+                </div>
+                <div class="a_delete a_bot" tapmode onclick="openDialog()">
+                    <div class="a_icon"><img src="../../image/home/delete.png" alt=""></div>
+                    <div class="a_doc">删除</div>
+                </div>
+            </div>
+        </div>
+        <div class="address_list">
+            <div class="address_top">
+                <div class="address_uname">真美丽 138****9876</div>
+                <div class="address_info">浙江省温州市乐青市柳市镇中心大道东段德邦物流侧门一门三楼301室</div>
+            </div>
+            <div class="address_bot">
+                <div class="a_moren a_bot moren">
+                    <div class="a_icon"><img src="../../image/home/login_btn_selete_n.png" alt=""></div>
+                    <div class="a_doc">默认地址</div>
+                </div>
+                <div class="a_edit a_bot">
+                    <div class="a_icon"><img src="../../image/home/edit.png" alt=""></div>
+                    <div class="a_doc">编辑</div>
+                </div>
+                <div class="a_delete a_bot">
+                    <div class="a_icon"><img src="../../image/home/delete.png" alt=""></div>
+                    <span class="delete_doc">删除</span>
+                </div>
+            </div>
+        </div> -->
+
+    </div>
+    <div class="submitBtn submitColor" onclick="fnAddNewAddress(1,0);">添加新地址</div>
+</body>
+<script type="text/javascript" src="../../script/api.js"></script>
+<script type="text/javascript" src="../../script/aui-dialog.js"></script>
+<script type="text/javascript" src="../../script/jquery.js"></script>
+<script type="text/javascript" src="../../script/api_common.js"></script>
+<script type="text/javascript" src="../../script/md5.js"></script>
+<script type="text/javascript">
+    var user_id;
+    var list_count = "";
+    apiready = function() {
+        if (!empty($api.getStorage("userInfo"))) {
+            user_id = $api.getStorage("userInfo").user_id;
+            getData();
+        } else {
+            api.openWin({
+                name: 'user_login',
+                url: './../login/user_login.html',
+            });
+        }
+    }
+
+    function fnAddNewAddress(address_flag, address_id) {
+        api.openWin({
+            name: 'add_address_win',
+            url: '../win/add_address_win.html',
+            pageParam: {
+                address_flag: address_flag,
+                address_id: address_id,
+                list_count: list_count
+            }
+        });
+
+    }
+
+    function openDialog(id) {
+        var dialog = new auiDialog({});
+        dialog.alert({
+            title: "提示",
+            msg: '确定要删除吗？',
+            buttons: ['取消', '确定']
+        }, function(ret) {
+            if (ret) {
+                if (ret.buttonIndex == 1) {
+                    return;
+                } else if (ret.buttonIndex == 2) {
+                    var obj = {
+                        'address_id': id,
+                    };
+                    var objArr = sort_ASCII(obj);
+                    var timestamp = fntimestamp();
+                    var version = '2.0';
+                    var arr = apiSecret + timestamp + version + '';
+                    for (i in objArr) {
+                        arr += objArr[i];
+                    }
+                    var sign = hex_md5(arr);
+                    // alert(sign);
+                    api.ajax({
+                        url: commonUrl + 'soukeAppTttService/service/singleitem/delDisAddress_ac',
+                        method: 'post',
+                        headers: {
+                            'Content-Type': 'application/json;charset=utf-8'
+                        },
+                        data: {
+                            body: {
+                                'apiKey': apiKey,
+                                'timestamp': timestamp,
+                                'sign': sign,
+                                'address_id': id,
+                            }
+                        }
+                    }, function(ret, err) {
+                        if (ret) {
+                            if (ret.result_code == 200) {
+                              
+                                console.log("删除地址-----：" + JSON.stringify(ret));
+                                api.toast({
+                                    msg: ret.result_message,
+                                    duration: 2000,
+                                    location: 'middle'
+                                });
+                                getData();
+                            } else {
+                                api.toast({
+                                    msg: ret.result_message,
+                                    duration: 2000,
+                                    location: 'middle'
+                                });
+
+                            }
+                        } else {
+                            // api.alert({ msg: JSON.stringify(err) });
+                        }
+                    });
+                }
+            }
+        })
+    }
+    // var add_more=$(".moren");
+    // add_more.click(function(){
+    //     if($(this).find("img").attr("src")=="../../image/home/login_btn_selete_c.png"){
+    //       $(this).find("img").attr("src","../../image/home/login_btn_selete_n.png");
+    //     }else{
+    //       $(".moren").find("img").attr("src","../../image/home/login_btn_selete_n.png");
+    //       $(this).find("img").attr("src","../../image/home/login_btn_selete_c.png");
+    //     }
+    // })
+    function getData() {
+        var obj = {
+            'user_id': user_id,
+        };
+        var objArr = sort_ASCII(obj);
+        var timestamp = fntimestamp();
+        var version = '2.0';
+        var arr = apiSecret + timestamp + version + '';
+        for (i in objArr) {
+            arr += objArr[i];
+        }
+        var sign = hex_md5(arr);
+        // alert(sign);
+        api.ajax({
+            url: commonUrl + 'soukeAppTttService/service/singleitem/queryUserAddress_ac',
+            method: 'post',
+            headers: {
+                'Content-Type': 'application/json;charset=utf-8'
+            },
+            data: {
+                body: {
+                    'apiKey': apiKey,
+                    'timestamp': timestamp,
+                    'sign': sign,
+                    'user_id': user_id,
+                }
+            }
+        }, function(ret, err) {
+            if (ret) {
+                if (ret.result_code == 200) {
+                    console.log("地址列表-----：" + JSON.stringify(ret));
+                    var html = "";
+                    var data = ret.result_data;
+                    list_count = data.length;
+                    for (var i = 0; i < data.length; i++) {
+                        html += '<div class="address_list">';
+                        html += '<div class="address_top" onclick="check_address(' + data[i].id + ');">';
+                        html += '<div class="address_uname">' + data[i].name + ' ' + data[i].phone.substr(0, 3) + '****' + data[i].phone.substr(7) + '</div>';
+                        html += '<div class="address_info">' + data[i].address + '</div>';
+                        html += '</div>';
+                        html += '<div class="address_bot">';
+                        if (data[i].default_flag == 1) {
+                            html += '<div class="a_moren a_bot moren" id="moren1"><div class="a_icon"><img src="../../image/home/login_btn_selete_c.png" alt=""></div><div class="a_doc">默认地址</div></div>';
+                        }
+                        html += '<div class="a_delete a_bot" tapmode onclick="fnAddNewAddress(' + 2 + ',' + data[i].id + ');"><span class="delete_doc">编辑</span></div>';
+                        // html+='<div class="a_delete a_bot" tapmode onclick="openDialog('+data[i].id+')"><div class="a_icon"><img src="../../image/home/delete.png" alt=""></div><div class="a_doc">删除</div></div>';
+                        html += '</div>';
+                        html += '</div>';
+                    }
+                    $api.byId('address_list').innerHTML = html;
+
+                } else {
+                    api.toast({
+                        msg: ret.result_message,
+                        duration: 2000,
+                        location: 'middle'
+                    });
+                }
+            } else {
+                // api.alert({ msg: JSON.stringify(err) });
+            }
+        });
+    }
+
+    function check_address(address_id) {
+        if (api.pageParam.check_address == 2) {
+            api.sendEvent({
+                name: 'check_address',
+                extra: {
+                    address_id: address_id
+                }
+            });
+            api.execScript({
+                name: 'address_win',
+                script: 'closeWin();'
+            });
+        }
+    }
+</script>
+
+</html>

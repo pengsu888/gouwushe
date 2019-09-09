@@ -1,0 +1,620 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0" />
+    <title>京东足迹</title>
+    <link rel="stylesheet" type="text/css" href="../../css/api.css" />
+    <link rel="stylesheet" type="text/css" href="../../css/style.css" />
+</head>
+<style media="screen">
+    html,
+    body {
+        background: #f4f4f4;
+    }
+
+    .tz_time {
+        width: 100%;
+        height: 3rem;
+        line-height: 4.0rem;
+        text-align: center;
+        color: #666;
+        font-size: 0.8rem;
+    }
+
+    .tz_time img {
+        height: 0.4rem;
+        width: 3.7rem;
+        background-size: 100% 100%;
+        margin: auto 1rem;
+    }
+
+    .has_collect {
+        width: 100%;
+        height: auto;
+        background: #fff;
+    }
+
+    .has_collect .collect_list {
+        height: 8rem;
+        width: 100%;
+        border-bottom: solid 1px #f6f6f6;
+    }
+
+    .has_collect .collect_list ul {
+        padding: 1rem;
+        margin: 0;
+        list-style: none;
+        overflow: hidden;
+    }
+
+    .has_collect .collect_list ul li {
+        float: left;
+        position: relative;
+    }
+
+    .has_collect .collect_list ul li:nth-child(1) {
+        width: 6rem;
+        height: 6rem;
+    }
+
+    .has_collect .collect_list ul li:nth-child(2) {
+        width: calc(100% - 7rem);
+        height: 6rem;
+        margin-left: 1rem;
+        position: relative;
+    }
+
+    img {
+        height: 100%;
+        width: 100%;
+        background-size: 100% 100%;
+    }
+
+    .has_collect .collect_list ul li:nth-child(2) .col_title {
+        width: 100%;
+        height: 1.5rem;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        display: -webkit-box;
+        -webkit-line-clamp: 1;
+        -webkit-box-orient: vertical;
+        word-break: break-all;
+        position: absolute;
+        top: 0;
+        left: 0;
+        line-height: 1.5rem;
+        font-size: 0.8rem;
+    }
+
+    .has_collect .collect_list ul li:nth-child(2) .col_outdate {
+        width: 100%;
+        height: 1.5rem;
+        line-height: 1.5rem;
+        color: #fd5e3f;
+        position: absolute;
+        top: 1.5rem;
+        left: 0;
+        font-size: 0.8rem;
+    }
+
+    .has_collect .collect_list ul li .zj_ygq {
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        top: 0;
+        left: 0;
+        z-index: 999;
+        background: rgba(0, 0, 0, 0.3);
+        color: #fff;
+        line-height: 6rem;
+        text-align: center;
+    }
+
+    .has_collect .collect_list ul li:nth-child(2) .col_price_quan {
+        width: 100%;
+        height: 2rem;
+        position: absolute;
+        bottom: 0;
+        left: 0;
+    }
+
+    .has_collect .collect_list ul li:nth-child(2) .col_price_quan .col_price {
+        width: auto;
+        position: absolute;
+        left: 0;
+        bottom: 0;
+        color: #FF442A;
+    }
+
+    .has_collect .collect_list ul li:nth-child(2) .col_price_quan .col_price span {
+        color: #ccc;
+        font-size: 0.8rem;
+        text-decoration: line-through;
+        margin-left: 5px;
+        margin-top: 2px;
+    }
+
+    .has_collect .collect_list ul li:nth-child(2) .col_price_quan .col_quan {
+        position: absolute;
+        right: 0;
+        bottom: 0;
+        color: #fff;
+        font-size: 0.6rem;
+        width: 54px;
+        height: 19px;
+        line-height: 19px;
+        text-align: center;
+        background: url('../../image/page_coupon_dc_vh.png') center center no-repeat;
+        background-size: 100% 100%;
+    }
+
+    .has_collect .collect_list ul li .edit_list {
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        top: 0;
+        left: 0;
+        z-index: 999;
+        background: rgba(0, 0, 0, 0.3);
+        color: #fff;
+        line-height: 6rem;
+        text-align: center;
+        display: none;
+    }
+
+    .has_collect .collect_list ul li .edit_list img {
+        width: 32px;
+        height: 32px;
+        background-size: 100% 100%;
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        margin-left: -16px;
+        margin-top: -16px;
+        z-index: 99999;
+    }
+
+    .edit_item {
+        width: 100%;
+        height: 48px;
+        position: fixed;
+        z-index: 999;
+        bottom: 0;
+        left: 0;
+        display: none;
+    }
+
+    .edit_item div {
+        float: left;
+        width: 50%;
+        line-height: 48px;
+        text-align: center;
+        color: #fff;
+        font-size: 14px
+    }
+
+    .edit_item .edit_all {
+        background: #d9d9d9;
+    }
+
+    .edit_item .edit_all img {
+        width: 18px;
+        height: 18px;
+        background-size: 100% 100%;
+        vertical-align: middle;
+        margin-right: 5px;
+    }
+
+    .edit_item .edit_delete {
+        background: #ccc;
+    }
+
+    .deleteBtn {
+        display: none;
+    }
+
+    .no_collect {
+        height: 20rem;
+        width: 100%;
+        background: #fff;
+        position: relative;
+        display: none;
+    }
+
+    .no_collect img {
+        width: 220px;
+        height: 115px;
+        background-size: 100% 100%;
+        position: absolute;
+        top: 30%;
+        left: 50%;
+        margin-left: -110px;
+    }
+
+    .no_collect p {
+        width: 100%;
+        height: 2rem;
+        text-align: center;
+        position: absolute;
+        top: 70%;
+        left: 0;
+        color: #ccc;
+    }
+</style>
+
+<body>
+    <div class="wrap_zj">
+        <div class="has_collect" id="list">
+            <!-- <div class="tz_time"><img src="../../image/page_search_keyword_tag_vh_left.png" alt="">2017-11-12 12:39<img src="../../image/page_search_keyword_tag_vh_right.png" alt=""></div>
+      <div class="collect_list">
+        <ul>
+          <li class="collectItem" id="1"><img src="../../image/zhanwei.jpg" alt=""><div class="edit_list"><img src="../../image/home/login_btn_selete_c.png" alt=""></div></li>
+          <li>
+            <div class="col_title">小心机一字肩上衣高腰连体裤外套</div>
+            <div class="col_outdate">预估佣金：3.2</div>
+            <div class="col_price_quan">
+              <div class="col_price">￥148 <span>￥168</span></div>
+              <div class="col_quan">20元券</div>
+            </div>
+          </li>
+        </ul>
+      </div>
+      <div class="collect_list">
+        <ul>
+          <li  class="collectItem" id="2"><img src="../../image/zhanwei.jpg" alt=""><div class="zj_ygq">已过期</div><div class="edit_list"><img src="../../image/home/login_btn_selete_c.png" alt=""></div></li>
+          <li>
+            <div class="col_title">小心机一字肩上衣高腰连体裤外套</div>
+            <div class="col_outdate">预估佣金：3.2</div>
+            <div class="col_price_quan">
+              <div class="col_price">￥148 <span>￥168</span></div>
+              <div class="col_quan">20元券</div>
+            </div>
+          </li>
+        </ul>
+      </div> -->
+        </div>
+    </div>
+    <div id="statu" style="font-size:0.8rem;color:#fd5f3e;background-color:#f5f5f5;height:30px;line-height:30px;text-align:center;clear:both;"><img src="../../image/loading.d997b79c.svg" alt="" style="width:1rem;height:1rem;vertical-align:middle;">加载中...</div>
+    <div class="edit_item">
+        <div class="edit_all" tapmode><img src="../../image/home/login_btn_selete_n.png" alt="">全选</div>
+        <div class="edit_delete ">删除所选足迹</div>
+        <div class="deleteBtn submitColor" tapmode onclick="deleteBtn();">删除所选足迹</div>
+    </div>
+    <div class="noWlan">
+        <div class="nowlanItem">
+            <div class="no_net"><img src="../../image/no_net.png" /></div>
+            <p class="no_p">网络竟然崩溃了</p>
+            <p class="load_p">别紧张，试试看刷新页面</p>
+            <div class="loadBtn" onclick="javascript:location.reload();">点击刷新</div>
+        </div>
+    </div>
+    <div class="no_collect">
+        <img src="../../image/ic_page_ali_fav_login_tip.png" alt="">
+        <p>你还没有收藏任何内容</p>
+    </div>
+</body>
+<script type="text/javascript" src="../../script/api.js"></script>
+<script type="text/javascript" src="../../script/jquery.js"></script>
+<script type="text/javascript" src="../../script/api_common.js"></script>
+<script type="text/javascript" src="../../script/md5.js"></script>
+<script type="text/javascript">
+    var pageNum = 1;
+    var isOver = false; //默认没有取完数据
+    var statu; //滑到底部状态
+    var user_id;
+    var click_status = 0;
+    var jd_share_rebate1, jd_share_rebate2, jd_share_rebate3, level_name, max_level_name; //计算佣金比率
+    var date = "";
+    apiready = function() {
+        if (!empty($api.getStorage("userInfo"))) {
+            user_id = $api.getStorage("userInfo").user_id;
+            LoadingOne();
+            jdjisuan(user_id);
+            statu = $api.byId('statu');
+            loadFresh();
+            setTimeout(function() { //延时1000毫秒
+                loadMyFa();
+            }, 1000)
+        } else {
+            $(".no_collect").show();
+            api.openWin({
+                name: 'user_login',
+                url: '../login/user_login.html',
+            });
+        }
+        getEvent();
+        closePopframe();
+        api.addEventListener({
+            name: 'zj_editBtn'
+        }, function(ret, err) {
+            if (ret) {
+                //  alert( JSON.stringify( ret ) );
+                if (ret.value.editBtn == "edit") {
+                    $(".edit_item").show();
+                    $(".edit_delete").show();
+                    click_status = 1;
+                } else {
+                    $(".edit_list").hide();
+                    $(".edit_all").find("img").attr("src", "../../image/home/login_btn_selete_n.png");
+                    $(".collectItem").removeClass("deleteItem");
+                    $(".edit_item").hide();
+                    $(".deleteBtn").hide();
+                    click_status = 0;
+                }
+
+            } else {
+                //  alert( JSON.stringify( err ) );
+            }
+        });
+        // 监听事件apiReady滚动到底部，加载更多功能
+        api.addEventListener({
+            name: 'scrolltobottom',
+            extra: {
+                threshold: 0 //设置距离底部多少距离时触发，默认值为0，数字类型
+            }
+        }, function(ret, err) {
+            loadMyFa(false);
+        });
+
+        function loadFresh() {
+            RefreshLoad();
+        }
+    };
+    //获取足迹列表
+    function loadMyFa(isEdit) {
+        if (!isEdit && isOver) {
+            return;
+        }
+        //判断如果是下拉刷新，
+        if (isEdit) {
+            pageNum = 1;
+            isOver = false;
+        }
+        var obj = {
+            'user_id': user_id,
+            'type': 0,
+            'pageNo': pageNum,
+            'size': 100
+        };
+        var objArr = sort_ASCII(obj);
+        var timestamp = fntimestamp();
+        var version = '2.0';
+        var arr = apiSecret + timestamp + version + '';
+        for (i in objArr) {
+            arr += objArr[i];
+        }
+        var sign = hex_md5(arr);
+        // alert(sign);
+        api.ajax({
+            url: commonUrl + 'soukeAppTttService/service/jd/getJdBrowsehistory',
+            method: 'post',
+            headers: {
+                'Content-Type': 'application/json;charset=utf-8'
+            },
+            data: {
+                body: {
+                    'apiKey': apiKey,
+                    'timestamp': timestamp,
+                    'sign': sign,
+                    'user_id': user_id,
+                    'type': 0,
+                    'pageNo': pageNum,
+                    'size': 100
+                }
+            }
+        }, function(ret, err) {
+          console.log(ret);
+            api.hideProgress();
+            if (ret) {
+                if (ret.result_code == 200) {
+
+                    $(".noWlan").hide();
+                    console.log("足迹列表：" + JSON.stringify(ret));
+                    $(".no_collect").hide();
+                    var data = ret.result_data;
+                    console.log(data);
+                    if (data != "") {
+                        $api.css(statu, 'display:block;');
+                        pageNum++;
+                    } else {
+                        statu.innerHTML = "暂无数据";
+                    }
+                    if (data.length < 10 && data != "") {
+                        statu.innerHTML = "已经到底啦 ~ 别扯了";
+                        isOver = true;
+                    }
+                    fnShowData(data, isEdit);
+                } else {
+                    api.toast({
+                        msg: ret.result_message,
+                        duration: 2000,
+                        location: 'middle'
+                    });
+
+                }
+            } else {
+                $(".noWlan").show();
+                    // api.alert({ msg: JSON.stringify(err) });
+                api.alert({
+                    title: '公告',
+                    msg: '京东足迹即将上线，敬请期待…',
+                }, function(ret, err) {
+
+                });
+            }
+        });
+    }
+
+    function fnShowData(data, isEdit) {
+        var html = '';
+        for (var i = 0; i < data.length; i++) {
+            datenow = data[i].last_browse_time.substring(0, 10);
+            if (date != datenow) {
+                date = datenow;
+                html += '<div class="tz_time"><img src="../../image/page_search_keyword_tag_vh_left.png" alt="">' + date + '<img src="../../image/page_search_keyword_tag_vh_right.png" alt=""></div>';
+            }
+            html += '<div class="collect_list collectItem" id="' + data[i].id + '" num_iid="' + data[i].num_iid + '" yongjin="' + data[i].rate + '">';
+            html += '<ul>';
+            html += '<li class="collectItem" id="' + data[i].id + '" num_iid="' + data[i].num_iid + '" yongjin="' + data[i].rate + '"><img src="' + data[i].pic_url + '" alt="">';
+            if (data[i].item_status == 0) {
+                html += '<div class="zj_ygq">已过期</div><div class="edit_list">';
+            }
+            html += '<div class="edit_list"><img src="../../image/home/login_btn_selete_c.png" alt=""></div>';
+            html += '</li>';
+            html += '<li>';
+            html += '<div class="col_title">' + data[i].item_name + '</div>';
+            var tkfee = (data[i].rate * data[i].price * jd_share_rebate1 * jd_share_rebate2) / 1000000;
+            if (tkfee != 0 && !isNaN(tkfee)) {
+                html += '<div class="col_outdate">预估佣金：' + tkfee.toFixed(2) + '</div>';
+            }
+
+            html += '<div class="col_price_quan">';
+            html += '<div class="col_price">￥' + data[i].price + ' <span>￥' + data[i].zk_final_price + '</span></div>';
+              html += '<div class="col_quan">' + data[i].couponmoney + '元券</div>';
+            html += '</div>';
+            html += '</li>';
+            html += '</ul>';
+            html += '</div>';
+
+        }
+        if (isEdit) {
+            $api.byId('list').innerHTML = html;
+        } else {
+            $api.byId('list').innerHTML += html;
+        }
+        //点击全选按钮事件
+        var edit_all = $(".edit_all");
+        edit_all.click(function() {
+                if ($(this).find("img").attr("src") == "../../image/home/login_btn_selete_c.png") {
+                    if (isEdit != 1) {
+                        // alert("取消")
+                        $(this).find("img").attr("src", "../../image/home/login_btn_selete_n.png");
+                        $(".edit_list").hide();
+                        $(".collectItem").removeClass("deleteItem");
+                    }
+                } else {
+                    if (isEdit != 1) {
+                        // alert("全选")
+                        $(this).find("img").attr("src", "../../image/home/login_btn_selete_c.png");
+                        $(".edit_list").show();
+                        $(".collectItem").addClass("deleteItem");
+                    }
+                }
+                if ($(".deleteItem").length > 0) {
+                    if (isEdit != 1) {
+                        // alert("选中的商品》0")
+                        $(".edit_delete").hide();
+                        $(".deleteBtn").show();
+                    }
+                } else {
+                    if (isEdit != 1) {
+                        // alert("选中的商品《0")
+                        $(".deleteBtn").hide();
+                        $(".edit_delete").show();
+                    }
+                }
+            })
+            //点击单个编辑按钮事件
+        var collectItem = $(".collectItem");
+        collectItem.click(function() {
+            if (click_status == 1) {
+                if ($(this).hasClass("deleteItem")) {
+                    $(this).find(".edit_list").hide();
+                    $(this).removeClass("deleteItem");
+                } else {
+                    $(this).find(".edit_list").show();
+                    $(this).addClass("deleteItem");
+                }
+                if ($(".deleteItem").length > 0) {
+                    $(".edit_delete").hide();
+                    $(".deleteBtn").show();
+                } else {
+                    $(".deleteBtn").hide();
+                    $(".edit_delete").show();
+                }
+            } else {
+                api.openWin({
+                    name: 'jd_good_detail',
+                    url: '../goods/jd_good_detail.html',
+                    pageParam: {
+                        goods_id: $($(this)).attr("num_iid"),
+                    }
+                });
+            }
+
+        })
+    }
+    //删除浏览足迹中的宝贝
+    var reg = /,$/gi;
+    var deleteList = '';
+    var deleteCollect;
+
+    function deleteBtn() {
+        var deleteItem = $(".deleteItem");
+        for (var i = 0; i < deleteItem.length; i++) {
+            deleteList += $(deleteItem[i]).attr("id") + ',';
+        }
+        deleteCollect = deleteList.replace(reg, '');
+        if (!empty(deleteCollect)) {
+            var obj = {
+                'user_id': user_id,
+                'ids': deleteCollect
+            };
+            var objArr = sort_ASCII(obj);
+            var timestamp = fntimestamp();
+            var version = '2.0';
+            var arr = apiSecret + timestamp + version + '';
+            for (i in objArr) {
+                arr += objArr[i];
+            }
+            console.log("删除：" + arr);
+            var sign = hex_md5(arr);
+            // alert(sign);
+            api.ajax({
+                url: commonUrl + 'soukeAppTttService/service/jd/clearhistory',
+                method: 'post',
+                headers: {
+                    'Content-Type': 'application/json;charset=utf-8'
+                },
+                data: {
+                    body: {
+                        'apiKey': apiKey,
+                        'timestamp': timestamp,
+                        'sign': sign,
+                        'user_id': user_id,
+                        'ids': deleteCollect
+                    }
+                }
+            }, function(ret, err) {
+                if (ret) {
+                    if (ret.result_code == 200) {
+                        api.toast({
+                            msg: '删除成功',
+                            duration: 2000,
+                            location: 'middle'
+                        });
+                        //删除后切换删除按钮
+                        $(".edit_delete").show();
+                        $(".deleteBtn").hide();
+                        $api.byId('list').innerHTML = "";
+                        loadMyFa(true);
+                    } else {
+                        // alert(JSON.stringify(ret));
+                        api.toast({
+                            msg: ret.result_message,
+                            duration: 2000,
+                            location: 'middle'
+                        });
+
+                    }
+                } else {
+                    // api.alert({ msg: JSON.stringify(err) });
+                }
+            });
+        }
+    }
+</script>
+
+</html>

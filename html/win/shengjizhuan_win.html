@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0" />
+  <title>升级赚</title>
+  <link rel="stylesheet" type="text/css" href="../../css/api.css" />
+  <link rel="stylesheet" type="text/css" href="../../css/style.css" />
+</head>
+<style media="screen">
+  .headerItem .header_title{
+    width:calc(100% - 64px);
+    line-height: 44px;
+    text-align: center;
+    margin-left: 13px;
+  }
+  .headerItem .header_right{
+    width: 42px;
+    height: 44px;
+    float: right;
+    margin-top: 0px;
+    line-height: 44px;
+    text-align: center;
+  }
+  .cancel{
+    display: none;
+  }
+</style>
+<body>
+    <header id="header">
+      <div class="header-top">
+          <div class="headerItem">
+            <div class="header_back" tapmode onclick="closeWin();">
+              <img src="../../image/nav_back_black.png" alt="">
+            </div>
+            <div class="header_title" id="header_title">升级赚</div>
+          </div>
+      </div>
+    </header>
+</body>
+  <script type="text/javascript" src="../../script/api.js"></script>
+  <script type="text/javascript" src="../../script/jquery.js"></script>
+  <script type="text/javascript" src="../../script/api_common.js"></script>
+  <script type="text/javascript">
+    apiready = function() {
+        api.setStatusBarStyle({
+            style: 'dark' //黑色
+                // style: 'light' //白色
+        });
+        var header = $api.byId('header');
+        $api.fixStatusBar(header);
+        var headerH = $api.offset(header).h;
+        if (!empty($api.getStorage("userInfo"))) {
+            user_id = $api.getStorage("userInfo").user_id;
+          } else {
+            user_id="";
+            checkUserLogin();
+          }
+        api.openFrame({
+            name: 'shengjizhuan_frame',
+            url: '../frame/shengjizhuan_frame.html',
+            reload:true,
+            rect: {
+                x: 0,
+                y: headerH,
+                w: 'auto',
+                h: 'auto'
+            },
+            pageParam: {
+                user_id: user_id
+            },
+            bounces: false
+        });
+    };
+    function closeWin(){
+      api.closeWin({
+          name: 'shengjizhuan_win'
+      });
+    }
+  </script>
+
+</html>

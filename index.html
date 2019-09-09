@@ -5,10 +5,10 @@
     <meta charset="utf-8">
     <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,initial-scale=1.0,width=device-width" />
     <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
-    <title>Hello APP</title>
+    <title>购物舍</title>
     <link rel="stylesheet" type="text/css" href="./css/api.css" />
     <style type="text/css">
-        html,
+        /*html,
         body {
             height: 100%;
         }
@@ -32,58 +32,482 @@
         .flex-1 {
             -webkit-box-flex: 1;
             -webkit-flex: 1;
-        }
-
-        footer {
-            height: 30px;
-            width: 100%;
-            background-color: #81a9c3;
-            color: white;
-            line-height: 30px;
-            text-align: center;
-        }
+        }*/
     </style>
 </head>
 
-<body class="wrap">
-    <header>APICloud</header>
-    <section class="flex-1">
-
-    </section>
-    <footer>Copyright &copy;<span id="year"></span></footer>
+<body>
+    <!-- <section class="flex-1">
+    </section> -->
 </body>
+<script type="text/javascript" src="./script/jquery.js"></script>
 <script type="text/javascript" src="./script/api.js"></script>
+<script type="text/javascript" src="./script/api_common.js"></script>
+<script type="text/javascript" src="./script/md5.js"></script>
 <script type="text/javascript">
+    var UIScrollPicture; //轮播图模块对象
+    var UIButton; //按钮模块对象
+    var vButtonId; //按钮模块对象索引对象
+    var tData = [];
+    var Flash_status;
     apiready = function() {
-        //输出Log，Log将显示在APICloud Studio控制台
-        console.log("Hello World! Hello APICloud!");
-
-        var header = $api.dom('header'); // 获取 header 标签元素
-        var footer = $api.dom('footer'); // 获取 footer 标签元素
-
-        // 1.修复开启沉浸式效果带来的顶部Header与手机状态栏重合的问题，最新api.js方法已支持适配iPhoneX；
-        // 2.默认已开启了沉浸式效果 config.xml中 <preference name="statusBarAppearance" value="true"/>
-        // 3.沉浸式效果适配支持iOS7+，Android4.4+以上版本
-        var headerH = $api.fixStatusBar(header);
-        // 最新api.js为了适配iPhoneX增加的方法，修复底部Footer部分与iPhoneX的底部虚拟横条键重叠的问题；
-        var footerH = $api.fixTabBar(footer);
-
-        api.openFrame({
-            name: 'main',
-            url: 'html/main.html',
-            bounces: true,
-            rect: { // 推荐使用Margin布局，用于适配屏幕的动态变化
-                marginTop: headerH, // main页面距离win顶部的高度
-                marginBottom: footerH, // main页面距离win底部的高度
-                w: 'auto' // main页面的宽度 自适应屏幕宽度
+        fnfindFlash(); //查询闪屏图是否开启
+        setTimeout(function() {
+                fnfindChart(); //查询启动页开启状态
+            }, 50)
+            // 监听广播执行引导页判断
+        api.addEventListener({
+            name: 'StartPage'
+        }, function(ret, err) {
+            StartPage();
+            // alert(JSON.stringify(ret.value));
+        });
+        var resultList = api.hasPermission({
+            list: ['storage', 'photos', 'camera', 'contacts','phone-r','phone']
+        });
+        if (!resultList[0].granted) {
+            //存储未授权
+            api.requestPermission({
+                list: ['storage', 'photos', 'camera', 'contacts','phone-r','phone'],
+                code: 1000
+            }, function(ret, err) {
+                // api.alert({
+                //     msg: JSON.stringify(ret)
+                // });
+            });
+        }
+        //获取TalkingData维护的设备ID
+        var td = api.require('talkingData');
+        td.getDeviceID(function(ret, err) {
+            if (ret) {
+                // api.alert({
+                //     msg: ret
+                // });
             }
         });
-
-        // 获取当前年份时间，并加载显示到页面
-        var year = $api.byId('year');
-        year.innerHTML = new Date().getFullYear();
     };
+    //引导页显示判断
+    function StartPage() {
+        var isFirst = api.getPrefs({
+            key: 'isFirst',
+            sync: true,
+        });
+        // isFirst=false;
+        if (!isFirst) {
+            //启动引导页面
+            // setTimeout(function() {
+            fnStartGuidePage();
+            // }, 2000);
+        } else {
+            fnStartMainPage();
+        }
+    }
+    //启动页
+    function Start_Page() {
+        api.openFrame({
+            name: 'Start_Page',
+            url: 'Start_Page.html',
+            vScrollBarEnabled: false,
+            hScrollBarEnabled: false,
+            slidBackEnabled: false,
+            reload: true,
+            bounces: false,
+            bgColor: "transparent",
+            rect: {
+                x: 0,
+                y: 0,
+                w: 'auto',
+                h: 'auto'
+            }
+        });
+    }
+    //查询app启动图是否开启;
+    function fnfindChart() {
+        var obj = {};
+        var objArr = sort_ASCII(obj);
+        var timestamp = fntimestamp();
+        var version = '2.0';
+        var arr = apiSecret + timestamp + version + '';
+        for (i in objArr) {
+            arr += objArr[i];
+        }
+        var sign = hex_md5(arr);
+        api.ajax({
+            url: commonUrl + 'soukeAppTttService/service/newapp/findChart',
+            method: 'post',
+            headers: {
+                'Content-Type': 'application/json;charset=utf-8'
+            },
+            data: {
+                body: {
+                    'apiKey': apiKey,
+                    'timestamp': timestamp,
+                    'sign': sign
+                }
+            }
+        }, function(ret, err) {
+            if (ret) {
+                console.log("查询app启动图是否开启：" + JSON.stringify(ret));
+                if (ret.result_code == 200) {
+                    var data = ret.result_data;
+                    var status = ret.result_data.status;
+                    // console.log(api.deviceModel);
+                    if (status == 0 && Flash_status == 0) {
+                        // 延时2秒后移除云端启动图
+                        setTimeout(function() {
+                            api.removeLaunchView({
+                                animation: {
+                                    type: 'fade',
+                                    duration: 500
+                                }
+                            });
+                        }, 2000)
+                        StartPage();
+                        return;
+                    } else if (status == 0 && Flash_status == 1) {
+                        api.openFrame({
+                            name: 'advertisement',
+                            url: 'advertisement.html',
+                            vScrollBarEnabled: false,
+                            hScrollBarEnabled: false,
+                            slidBackEnabled: false,
+                            reload: false,
+                            bounces: false,
+                            bgColor: 'rgba(0,0,0,0)',
+                            animation: {
+                                type: "fade", //动画类型（详见动画类型常量）
+                                subType: "from_top", //动画子类型（详见动画子类型常量）
+                                duration: 300 //动画过渡时间，默认300毫秒
+                            },
+                            rect: {
+                                x: 0,
+                                y: 0,
+                                w: 'auto',
+                                h: 'auto'
+                            }
+                        });
+                        // 延时2秒后移除云端启动图
+                        setTimeout(function() {
+                            api.removeLaunchView({
+                                animation: {
+                                    type: 'fade',
+                                    duration: 500
+                                }
+                            });
+                        }, 2000)
+                    } else {
+                        api.removeLaunchView({
+                            animation: {
+                                type: 'fade',
+                                duration: 2000
+                            }
+                        });
+                        Start_Page();
+                        return;
+                    }
+                }
+            } else {
+                // alert( JSON.stringify( err ) );
+            }
+        });
+    }
+    //查询闪屏图是否开启
+    function fnfindFlash() {
+        var obj = {};
+        var objArr = sort_ASCII(obj);
+        var timestamp = fntimestamp();
+        var version = '2.0';
+        var arr = apiSecret + timestamp + version + '';
+        for (i in objArr) {
+            arr += objArr[i];
+        }
+        var sign = hex_md5(arr);
+        api.ajax({
+            url: commonUrl + 'soukeAppTttService/service/newapp/findFlash',
+            method: 'post',
+            headers: {
+                'Content-Type': 'application/json;charset=utf-8'
+            },
+            data: {
+                body: {
+                    'apiKey': apiKey,
+                    'timestamp': timestamp,
+                    'sign': sign
+                }
+            }
+        }, function(ret, err) {
+            if (ret) {
+                console.log("查询闪屏图是否开启：" + JSON.stringify(ret));
+                if (ret.result_code == 200) {
+                    var data = ret.result_data;
+                    Flash_status = ret.result_data.status;
+                }
+            } else {
+                // alert( JSON.stringify( err ) );
+            }
+        });
+    }
+    //设置页面默认图片;
+    function fnStartGuidePage() {
+        var obj = {};
+        var objArr = sort_ASCII(obj);
+        var timestamp = fntimestamp();
+        var version = '2.0';
+        var arr = apiSecret + timestamp + version + '';
+        for (i in objArr) {
+            arr += objArr[i];
+        }
+        var sign = hex_md5(arr);
+        api.ajax({
+            url: commonUrl + 'soukeAppTttService/service/newapp/findGuidance',
+            method: 'post',
+            headers: {
+                'Content-Type': 'application/json;charset=utf-8'
+            },
+            data: {
+                body: {
+                    'apiKey': apiKey,
+                    'timestamp': timestamp,
+                    'sign': sign
+                }
+            }
+        }, function(ret, err) {
+            if (ret) {
+                console.log("APP引导图：" + JSON.stringify(ret));
+                if (ret.result_code == 200) {
+                    var guidance1 = [];
+                    var guidance2 = [];
+                    var data = ret.result_data;
+                    var status = ret.result_data.status;
+                    if (status == 0) {
+                        fnStartMainPage();
+                        return;
+                    }
+                    // console.log(api.deviceModel);
+                    var flag = 0;
+                    if (api.deviceModel == 'iPhone11,8') {
+                        flag = 1;
+                    } else if (api.deviceModel == 'iPhone10,3') {
+                        flag = 1;
+                    } else if (api.deviceModel == 'iPhone10,6') {
+                        flag = 1;
+                    } else if (api.deviceModel == 'iPhone11,2') {
+                        flag = 1;
+                    } else if (api.deviceModel == 'iPhone11,6') {
+                        flag = 1;
+                    }
+                    if (data.pic1 != '') {
+                        guidance1.push(data.pic1);
+                    }
+                    if (data.pic2 != '') {
+                        guidance1.push(data.pic2);
+                    }
+                    if (data.pic3 != '') {
+                        guidance1.push(data.pic3);
+                    }
+                    if (data.pic4 != '') {
+                        guidance1.push(data.pic4);
+                    }
+                    if (data.pic5 != '') {
+                        guidance1.push(data.pic5);
+                    }
+                    if (data.pic6 != '') {
+                        guidance2.push(data.pic6);
+                    }
+                    if (data.pic7 != '') {
+                        guidance2.push(data.pic7);
+                    }
+                    if (data.pic8 != '') {
+                        guidance2.push(data.pic8);
+                    }
+                    if (data.pic9 != '') {
+                        guidance2.push(data.pic9);
+                    }
+                    if (data.pic10 != '') {
+                        guidance2.push(data.pic10);
+                    }
+                    if (flag == 0) {
+                        tData = guidance1;
+                    } else {
+                        tData = guidance2;
+                    }
+                    UIScrollPicture = api.require('UIScrollPicture');
+                    UIScrollPicture.open({
+                        rect: {
+                            x: 0,
+                            y: 0,
+                            w: 'auto',
+                            h: 'auto' //此处用'auto'是为了适应某些机型页面底部虚拟键的显示／隐藏 切换
+                        },
+                        data: {
+                            paths: tData,
+                        },
+                        // styles: {
+                        //     indicator: {
+                        //         align: 'center',
+                        //         color: 'rgba(255,255,255,0.4)',
+                        //         activeColor: '#FFFFFF'
+                        //     }
+                        // },
+                        contentMode: 'scaleToFill',
+                        auto: false, //禁止自动滚动
+                        loop: false, //禁止循环播放
+                    }, function(ret, err) {
+                        if (ret) {
+                            /*
+                              //方法1  点击末页任意位置进入主页面
+                              if('click' == ret.eventType){
+                                 if(ret.index==3){
+                                   //关闭页面，进入主页面
+                                   fnStartMainPage();
+                                 }
+                              }
+                            */
+                            //方法2  点击末页按钮进入主页面（使用前，需在控制台添加UIButton模块）
+                            //设计思路：添加一个UIButton模块，在UIScrollPicture页面滑动到末页时显示UIButton模块，其余页面隐藏按钮模块，在按钮模块添加点事件点击模块进入主页面
 
+                            //添加末页点击进入主页面方法
+                            if ('show' == ret.eventType) {
+                                UIScrollPicture.addEventListener({
+                                    name: 'scroll'
+                                }, function(ret, err) {
+                                    if (ret.status) {
+                                        if (ret.index == (tData.length - 1)) {
+                                            //显示进入按钮
+                                            fnShowStartBtn();
+                                        } else {
+                                            //隐藏进入按钮
+                                            fnHideStartBtn();
+                                        }
+                                    }
+                                });
+                            }
+
+                        }
+                    });
+                }
+            } else {
+                // alert( JSON.stringify( err ) );
+            }
+        });
+    }
+    //启动程序主页面
+    function fnStartMainPage() {
+        if (UIScrollPicture) {
+            //缓存App启动信息
+            api.setPrefs({
+                key: 'isFirst',
+                value: '1'
+            });
+            //关闭引导页模块
+            UIScrollPicture.close();
+            //关闭方法2使用按钮模块
+            if (UIButton) {
+                UIButton.close({
+                    id: vButtonId
+                });
+            }
+        }
+        //启动主页面
+        api.openFrame({
+            name: 'main',
+            url: 'html/win/main.html',
+            vScrollBarEnabled: false,
+            hScrollBarEnabled: false,
+            slidBackEnabled: false,
+            reload: true,
+            bounces: false,
+            bgColor: "transparent",
+            animation: {
+                type: "fade", //动画类型（详见动画类型常量）
+                subType: "from_top", //动画子类型（详见动画子类型常量）
+                duration: 300 //动画过渡时间，默认300毫秒
+            },
+            rect: {
+                x: 0,
+                y: 0,
+                w: 'auto',
+                h: 'auto'
+            }
+        });
+    }
+    //显示进入APP按钮
+    function fnShowStartBtn() {
+        if (!vButtonId && vButtonId != 0) {
+            //初始化按钮模块
+            UIButton = api.require('UIButton');
+            UIButton.open({
+                rect: {
+                    x: api.winWidth / 2 - 50,
+                    y: api.winHeight - 100 - api.safeArea.bottom,
+                    w: 100,
+                    h: 30
+                },
+                corner: 5,
+                bg: {
+                    normal: 'rgba(255,255,255,1)',
+                    highlight: 'rgba(255,255,255,1)',
+                    active: 'rgba(255,255,255,1)'
+                },
+                title: {
+                    size: 20,
+                    normal: '立即开启',
+                    highlightColor: '#000000',
+                    activeColor: '#000000',
+                    normalColor: '#000000',
+                    alignment: 'center'
+                },
+                fixed: true,
+                move: false
+            }, function(ret, err) {
+                if ('show' == ret.eventType) {
+                    vButtonId = ret.id;
+                }
+                if ('click' == ret.eventType) {
+                    //关闭引导页，进入主页面
+                    fnStartMainPage();
+                }
+            });
+        } else {
+            //模块已初始化过，直接显示
+            UIButton.show({
+                id: vButtonId
+            });
+        }
+    }
+    //隐藏进入按钮
+    function fnHideStartBtn() {
+        if (UIButton) {
+            UIButton.hide({
+                id: vButtonId
+            });
+        }
+    }
+    // function exitApp() {
+    //     api.addEventListener({
+    //         name: 'keyback'
+    //     }, function(ret, err) {
+    //         api.toast({
+    //             msg: '再按一次返回键退出应用',
+    //             duration: 2000,
+    //             location: 'middle'
+    //         });
+    //         api.addEventListener({
+    //             name: 'keyback'
+    //         }, function(ret, err) {
+    //             api.closeWidget({
+    //                 id: 'A6071569277580', //这里改成自己的应用ID
+    //                 retData: {
+    //                     name: 'closeWidget'
+    //                 },
+    //                 silent: true
+    //             });
+    //         });
+    //         setTimeout(function() {
+    //             exitApp();
+    //         }, 3000)
+    //     });
+    // }
 </script>
 
 </html>

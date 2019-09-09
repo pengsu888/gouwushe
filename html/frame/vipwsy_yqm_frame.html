@@ -1,0 +1,302 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0" />
+    <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+    <title>未使用</title>
+    <link rel="stylesheet" type="text/css" href="../../css/api.css" />
+    <link rel="stylesheet" type="text/css" href="../../css/style.css" />
+</head>
+<style type="text/css">
+    html,
+    body {
+        height: 100%;
+        width: 100%;
+        background: #f4f4f4;
+    }
+
+    .vip_yqm {
+        width: calc(100% - 24px);
+        height: 160px;
+        background: #fff;
+        margin: 10px auto auto auto;
+    }
+
+    .create_time {
+        color: #999;
+        height: 30px;
+        line-height: 30px;
+        font-size: 12px;
+        margin-left: 12px;
+        border-bottom: 1px dashed #e5e5e5;
+    }
+
+    .vip_cam {
+        width: calc(100% - 20px);
+        height: 20px;
+        line-height: 20px;
+        color: #999;
+        margin-top: 10px;
+        font-size: 14px;
+        float: left;
+        padding: 10px;
+    }
+
+    .vip_cam span {
+        font-size: 18px;
+        color: red;
+        font-weight: 600;
+    }
+
+    .vip_cam span.yjfz {
+        width: 80px;
+        height: 24px;
+        border: solid 1px #f94529;
+        line-height: 24px;
+        text-align: center;
+        color: #f94529;
+        border-radius: 15px;
+        font-size: 14px;
+        float: right;
+        font-weight: initial;
+    }
+
+    .vip_jhid {
+        width: calc(100% - 20px);
+        height: 20px;
+        line-height: 20px;
+        color: #999;
+        font-size: 14px;
+        float: left;
+        padding: 10px;
+        border-bottom: 1px dashed #e5e5e5;
+    }
+
+    .vip_jhid span {
+        font-size: 14px;
+        color: red;
+        font-weight: 600;
+    }
+
+    .vip_sxrq {
+        width: calc(100% - 20px);
+        height: 20px;
+        line-height: 20px;
+        color: #999;
+        font-size: 12px;
+        float: left;
+        padding: 10px;
+    }
+
+    .vip_sxrq span {
+        font-size: 12px;
+        color: #999;
+    }
+
+    .vip_yqm_status0 {
+        height: 2px;
+        width: auto;
+        line-height: 2px;
+        text-align: center;
+        padding: 10px;
+        float: right;
+        background: #FF6666;
+        color: #FFF;
+        border-radius: 2px;
+        margin-top: -2px;
+        font-size: 12px;
+    }
+    .vip_yqm_status1 {
+        height: 2px;
+        width: auto;
+        line-height: 2px;
+        text-align: center;
+        padding: 10px;
+        float: right;
+        background: #99CC00;
+        color: #FFF;
+        border-radius: 2px;
+        margin-top: -2px;
+        font-size: 12px;
+    }
+    .vip_yqm_status2 {
+        height: 2px;
+        width: auto;
+        line-height: 2px;
+        text-align: center;
+        padding: 10px;
+        float: right;
+        background: #f4f4f4;
+        color: #999;
+        border-radius: 2px;
+        margin-top: -2px;
+        font-size: 12px;
+    }
+</style>
+
+<body>
+    <div id="list">
+        <!-- <div class="vip_yqm">
+            <div class="create_time">赠送时间：<span> 2018-03-30 19:25:36 </span></div>
+            <div class="vip_cam">邀请码：<span>1234567890</span><span class="yjfz">一键复制</span></div>
+            <div class="vip_jhid">激活用户ID：<span>123456</span></div>
+            <div class="vip_sxrq">失效日期：<span>2019-01-31</span>
+                <div class="vip_yqm_status0">已使用</div>
+            </div>
+        </div> -->
+    </div>
+    <div id="statu" style="font-size:0.8rem;color:#fd5f3e;background-color:#f5f5f5;height:30px;line-height:30px;text-align:center;clear:both;"><img src="../../image/loading.d997b79c.svg" alt="" style="width:1rem;height:1rem;vertical-align:middle;">加载中...</div>
+    <!-- 商品列表部分 end-->
+    <div class="noWlan">
+        <div class="nowlanItem">
+            <div class="no_net"><img src="../../image/no_net.png" /></div>
+            <p class="no_p">网络竟然崩溃了</p>
+            <p class="load_p">别紧张，试试看刷新页面</p>
+            <div class="loadBtn" onclick="javascript:location.reload();">点击刷新</div>
+        </div>
+    </div>
+</body>
+<script type="text/javascript" src="../../script/api.js"></script>
+<script type="text/javascript" src="../../script/jquery.js"></script>
+<script type="text/javascript" src="../../script/api_common.js"></script>
+<script type="text/javascript" src="../../script/md5.js"></script>
+<script type="text/javascript">
+    var pageNum = 1;
+    var isOver = false; //默认没有取完数据
+    var statu; //滑到底部状态
+    var user_id;
+    var rebate_name;
+    apiready = function() {
+        if (!empty($api.getStorage("userInfo"))) {
+            user_id = $api.getStorage("userInfo").user_id;
+        } else {
+            api.openWin({
+                name: 'user_login',
+                url: './../login/user_login.html',
+            });
+        }
+        statu = $api.byId('statu');
+        loadFresh();
+        loadMyFa(true);
+        // 商品列表数据
+        // 监听事件apiReady滚动到底部，加载更多功能
+        api.addEventListener({
+            name: 'scrolltobottom',
+            extra: {
+                threshold: 120 //设置距离底部多少距离时触发，默认值为0，数字类型
+            }
+        }, function(ret, err) {
+
+            loadMyFa(false);
+        });
+    };
+
+    function loadFresh() {
+      RefreshLoad();
+    }
+
+    function loadMyFa(isPull) {
+        if (!isPull && isOver) {
+            return;
+        }
+        //判断如果是下拉刷新，
+        if (isPull) {
+            pageNum = 1;
+            isOver = false;
+        }
+        var obj = {
+            'size': 10,
+            'page': pageNum,
+            'user_id': user_id,
+            'use_flag': 0
+        };
+        var objArr = sort_ASCII(obj);
+        var timestamp = fntimestamp();
+        var version = '2.0';
+        var arr = apiSecret + timestamp + version + '';
+        for (i in objArr) {
+            arr += objArr[i];
+        }
+        var sign = hex_md5(arr);
+        // alert(sign);
+        api.ajax({
+            url: commonUrl + 'soukeAppTttService/service/user/getMyCam_ac',
+            method: 'post',
+            headers: {
+                'Content-Type': 'application/json;charset=utf-8'
+            },
+            data: {
+                body: {
+                    'apiKey': apiKey,
+                    'timestamp': timestamp,
+                    'sign': sign,
+                    'size': 10,
+                    'page': pageNum,
+                    'user_id': user_id,
+                    'use_flag': 0
+                }
+            }
+        }, function(ret, err) {
+            if (ret) {
+                if (ret.result_code == 200) {
+                    $(".noWlan").hide();
+                    console.log("邀请码列表-----：" + JSON.stringify(ret));
+                    var data = ret.result_data;
+                    // rebate_name=ret.result_integer.unit+ret.result_integer.name;
+                    if (data != "") {
+                        $api.css(statu, 'display:block;');
+                        pageNum++;
+                    } else {
+                        statu.innerHTML = "暂无数据";
+                    }
+                    if (data.length < 10 && data != "") {
+                        statu.innerHTML = "已经到底啦 ~ 别扯了";
+                        isOver = true;
+                    }
+
+                    fnShowData(data, isPull);
+                } else {
+                    api.toast({
+                        msg: ret.result_message,
+                        duration: 2000,
+                        location: 'middle'
+                    });
+
+                }
+            } else {
+                $(".noWlan").show();
+                // api.alert({ msg: JSON.stringify(err) });
+            }
+        });
+    }
+
+    function fnShowData(data, isPull) {
+        var html = "";
+        for (var i = 0; i < data.length; i++) {
+            html += '<div class="vip_yqm">';
+            html += '<div class="create_time">赠送时间：' + data[i].create_time + '</div>';
+            html += '<div class="vip_cam">邀请码：<span>' + data[i].cam + '</span>';
+            html += '<span class="yjfz" tapmode onclick="fnCopy(' + data[i].cam + ')">一键复制</span></div>';
+            html += '<div class="vip_jhid">激活用户ID：' + data[i].use_id + '</div>';
+            html += '<div class="vip_sxrq">失效日期：<span>' + data[i].validity_period + '</span>';
+            if (data[i].use_flag == 0) {
+                html += '<div class="vip_yqm_status0">未使用</div>';
+            } else if (data[i].use_flag == 1) {
+                html += '<div class="vip_yqm_status1">已使用</div>';
+            } else if (data[i].use_flag == 2) {
+                html += '<div class="vip_yqm_status2">已失效</div>';
+            }
+            html += '</div>';
+            html += '</div>';
+        }
+        if (isPull) {
+            $api.byId('list').innerHTML = html;
+        } else {
+            $api.byId('list').innerHTML += html;
+        }
+    }
+</script>
+
+</html>

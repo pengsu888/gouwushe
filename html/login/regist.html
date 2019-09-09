@@ -1,0 +1,700 @@
+<!DOCTYPE HTML>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0" />
+    <meta name="format-detection" content="telephone=no, email=no, date=no, address=no">
+    <title>请输入邀请码</title>
+    <link rel="stylesheet" type="text/css" href="../../css/api.css" />
+    <link rel="stylesheet" href="../../css/aui.css">
+
+    <style>
+        html,
+        body {
+            background-color: #fff;
+            height: 100%;
+            width: 100%;
+            position: relative;
+        }
+
+        .closeIcon {
+            height: 0.9rem;
+            width: 0.9rem;
+            position: absolute;
+            top: 2.0rem;
+            left: 1.0rem;
+        }
+
+        img {
+            width: 100%;
+            height: 100%;
+            background-size: 100% 100%;
+        }
+
+        .registItem {
+            width: 80%;
+            height: 10rem;
+            margin: 5rem auto;
+            position: absolute;
+            left: 10%;
+            top: 3%;
+        }
+
+        .regist_title {
+            font-size: 1.5rem;
+            color: #757575;
+            /*margin-left: -1rem;*/
+        }
+
+        .regist_input {
+            width: 100%;
+            height: 2.0rem;
+            border-bottom: solid 1px #ccc;
+            margin-top: 1rem;
+            position: relative;
+        }
+
+        .scannerImg {
+            height: 0.85rem;
+            width: 0.85rem;
+            background-size: 100% 100%;
+            position: absolute;
+            right: 0;
+            bottom: 0.7rem;
+        }
+
+        .clear_phone {
+            height: 0.85rem;
+            width: 0.85rem;
+            background-size: 100% 100%;
+            display: none;
+            position: absolute;
+            right: 0;
+            bottom: 0.7rem;
+        }
+
+        .regist_input input {
+            width: calc(100% - 2rem);
+            height: 2rem;
+            outline: none;
+            border: none;
+            caret-color: #FF2220;
+        }
+
+        .registBtn,
+        .phone_registBtn,
+        .login_registBtn {
+            width: 100%;
+            height: 2rem;
+            text-align: center;
+            color: #fff;
+            background: #CCCCCC;
+            border-radius: 5rem;
+            line-height: 2rem;
+            margin-top: 2rem;
+        }
+
+        .registBtn_active,
+        .phone_registBtn_active,
+        .login_registBtn_active {
+            width: 100%;
+            height: 2rem;
+            text-align: center;
+            color: #fff;
+            background: #FF2220;
+            border-radius: 5rem;
+            line-height: 2rem;
+            margin-top: 1rem;
+            display: none;
+        }
+
+        .china {
+            color: #757575;
+            line-height: 2.0rem;
+        }
+
+        .black_color {
+            color: #333;
+        }
+
+        .regist_tip {
+            height: 3.0rem;
+            line-height: 3.0rem;
+            color: #ccc;
+        }
+        /*#loginByPhone{
+      display: none;
+    }
+    #dx_yzm{
+      display: none;
+    }*/
+
+        .yzm_input {
+            width: 100%;
+            height: 2.0rem;
+            margin-top: 1.5rem;
+        }
+
+        .trade-password {
+            display: flex;
+            justify-content: center;
+            position: relative;
+            margin-top: 0.6rem;
+            width: 100%;
+        }
+
+        .trade-password-input {
+            position: absolute;
+            width: 5.7rem;
+            height: 1.5rem;
+            top: -0.3rem;
+            opacity: 0;
+            font-size: 0.01rem;
+            outline: none;
+            -webkit-appearance: none;
+            -moz-appearance: none;
+            -ms-appearance: none;
+            resize: none;
+            outline: none;
+            z-index: 1;
+        }
+
+        .trade-password .input-juli {
+            float: left;
+            width: 20%;
+            height: 1.88rem;
+            line-height: 1.88rem;
+            flex: none;
+            margin-right: 5%;
+            border-bottom: 1px solid #d6d6d6;
+            text-align: center;
+            -webkit-appearance: none;
+            -moz-appearance: none;
+            -ms-appearance: none;
+            resize: none;
+            outline: none;
+        }
+
+        .fasong {
+            height: 1.5rem;
+            font-size: 0.7rem;
+            width: 100%;
+            color: #ccc;
+            line-height: 1.5rem;
+        }
+
+        .xieyi {
+            height: 5.0rem;
+            width: 100%;
+            line-height: 5.0rem;
+            text-align: center;
+            color: #ccc;
+            font-size: 0.7rem;
+        }
+
+        .xieyi span {
+            color: #FF2220;
+        }
+        /*修改aui中dialog样式*/
+
+        .aui-dialog-btn {
+            position: relative;
+            display: block;
+            width: 100%;
+            padding: 0 0.25rem;
+            height: 2.2rem;
+            font-size: 0.8rem;
+            line-height: 2.2rem;
+            text-align: center;
+            color: #888888;
+            border-right: 1px solid #dddddd;
+            white-space: nowrap;
+            text-overflow: ellipsis;
+            overflow: hidden;
+            -webkit-box-sizing: border-box;
+            box-sizing: border-box;
+            -webkit-box-flex: 1;
+            box-flex: 1;
+        }
+
+        .aui-dialog-btn:last-child {
+            border-right: none;
+            color: #FF2220;
+        }
+
+        .aui-dialog-body {
+            padding: 1.5rem;
+            overflow: hidden;
+            font-size: 0.875em;
+            color: #333;
+        }
+        /*改变input光标颜色*/
+
+        input {
+            caret-color: #FF2220;
+        }
+
+        .tjr {
+            width: 100%;
+            height: 4.4rem;
+            margin: 1rem auto;
+            display: none;
+        }
+
+        .tjr ul {
+            list-style: none;
+            padding: 0.5rem;
+            margin: 0;
+            height: 100%;
+            border: solid 1px #ccc;
+            border-radius: 0.5rem;
+        }
+
+        .tjr ul li {
+            float: left;
+            height: 100%;
+        }
+
+        .tjr ul li:nth-child(1) {
+            width: 25%;
+        }
+
+        .tjr ul li img {
+            width: 100%;
+            height: 100%;
+            background-size: 100% 100%;
+            /*border-radius: 50px*/
+        }
+
+        .tjr ul li:nth-child(2) {
+            width: 75%;
+            position: relative;
+        }
+
+        .tjr ul li div.tjr_name {
+            position: absolute;
+            left: 0.5rem;
+            top: 0;
+        }
+
+        .tjr ul li div.tjr_app {
+            position: absolute;
+            left: 0.5rem;
+            bottom: 0;
+            color: #ccc;
+            font-size: 0.6rem;
+        }
+
+        .history_search {
+            width: 100%;
+            height: auto;
+            margin: 0.5rem auto;
+            padding-bottom: 0.7rem;
+            overflow: hidden;
+        }
+
+        .his_top {
+            padding-top: 0.5rem;
+            /*border-bottom: solid 1px #f6f6f6;*/
+        }
+
+        .history_search .his_title {
+            width: auto;
+            padding: 0 0.5rem;
+            height: 30px;
+        }
+
+        .history_search .his_title .his_left {
+            float: left;
+            text-align: left;
+            color: #CFCFCF;
+        }
+
+        .history_search .his_title .his_left span {
+            text-align: left;
+            color: #fff;
+            /*color: #f00;*/
+            font-size: 0.9rem;
+        }
+
+        .history_search .his_title .his_right {
+            width: 24px;
+            height: 24px;
+            float: right;
+        }
+
+        .history_search .his_title .his_right img {
+            width: 100%;
+            height: 100%;
+            background-size: 100% 100%;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="closeIcon" tapmode onclick="closeWin();"><img src="../../image/nav_back.png" alt=""></div>
+    <!-- 注册输入邀请码 begin-->
+    <div class="registItem" id="registItem">
+        <div class="regist_title">请输入邀请码</div>
+        <div class="regist_input">
+            <input type="text" placeholder="请输入邀请码" id="yqm" maxlength="10">
+            <img src="../../image/login_scanning.png" alt="" class="scannerImg" tapmode onclick="fnopenScanner();">
+        </div>
+        <div class="tjr">
+            <!-- <ul>
+          <li><img src="../../image/appicon_108.png" alt=""></li>
+          <li>
+            <div class="tjr_name">淡定从容</div>
+            <div class="tjr_app">邀请您加入券券推</div>
+          </li>
+        </ul> -->
+        </div>
+        <div class="registBtn">请输入正确邀请码</div>
+        <div class="history_search his_top">
+            <div class="his_title">
+                <div class="his_left">没有邀请码<span class="invite_code"></span></div>
+                <div id="check" tapmode class="his_right" onclick="fnUnGfyqm()"><img src="../../image/dui_1.png" /></div>
+                <div id="uncheck" tapmode class="his_right" onclick="fnGfyqm()"><img src="../../image/dui_2.png" /></div>
+            </div>
+        </div>
+        <div class="registBtn_active" tapmode onclick="nextstep()">下一步</div>
+    </div>
+    <!-- 注册输入邀请码 end-->
+</body>
+<script type="text/javascript" src="../../script/api.js"></script>
+<script type="text/javascript" src="../../script/jquery.js"></script>
+<script type="text/javascript" src="../../script/aui-dialog.js"></script>
+<script type="text/javascript" src="../../script/api_common.js"></script>
+<script type="text/javascript" src="../../script/md5.js"></script>
+<script type="text/javascript">
+    var signLog;
+    var user_nick, user_head, user_sex, return_value;
+    var Yaoqingma;
+    apiready = function() {
+        Yaoqingma = api.pageParam.Yaoqingma;
+        $("#yqm").val(Yaoqingma);
+        $("#check").hide();
+        fngetYqm();
+        ByYqmCheckUser();
+        api.execScript({
+            name: 'user_login',
+            // frameName: 'frmName',
+            script: 'api.closeWin();'
+        });
+
+    }
+    $(function() {
+        //监听邀请码输入框
+        $("#yqm").bind('input porpertychange', function() {
+            //当输入框中的值等于邀请码的时候，按钮可点
+            if ($("#yqm").val().length == 6 || $("#yqm").val().length == 7 || $("#yqm").val().length == 10 || $("#yqm").val().length == 8) {
+                ByYqmCheckUser();
+            } else {
+                $(".registBtn_active").hide();
+                $(".registBtn").show();
+                $(".tjr").slideUp(500);
+            }
+        });
+    });
+
+    // 取官方邀请码
+    function fngetYqm() {
+        var obj = {}
+        var objArr = sort_ASCII(obj);
+        var timestamp = fntimestamp();
+        var version = '2.0';
+        var arr = apiSecret + timestamp + version + '';
+        for (i in objArr) {
+            arr += objArr[i];
+        }
+        // console.log(arr);
+        var sign = hex_md5(arr);
+        api.ajax({
+            url: commonUrl + 'soukeAppTttService/service/user/getGfyqm',
+            method: 'post',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            data: {
+                body: {
+                    'apiKey': apiKey,
+                    'timestamp': timestamp,
+                    'sign': sign
+                }
+            }
+        }, function(ret, err) {
+            console.log("取官方邀请码" + JSON.stringify(ret));
+            if (ret.result_code == 200) {
+                var result_data = '';
+                if (ret.result_data.is_open == 1) {
+                    invite_code = ret.result_data.invite_code;
+                    $(".history_search").show();
+                    $(".invite_code").html(ret.result_data.invite_code);
+                } else {
+                    $(".history_search").hide();
+                }
+            } else {
+                api.toast({
+                    msg: ret.result_message,
+                    duration: 2000,
+                    location: 'middle'
+                });
+            }
+        });
+    }
+    //打开用户协议
+    function fnOpenYonghuxieyi() {
+        api.openWin({
+            name: 'yonghuxieyi_win',
+            url: '../my/yonghuxieyi_win.html',
+            pageParam: {
+                name: 'test'
+            }
+        });
+    }
+
+    function closeWin() {
+        api.closeWin({
+            name: 'regist'
+        });
+    }
+
+    function fnopenScanner() {
+        var resultList = api.hasPermission({
+            list: ['camera']
+        });
+        if (!resultList[0].granted) {
+            //存储未授权
+            api.requestPermission({
+                list: ['camera'],
+                code: 1000
+            }, function(ret, err) {
+                // api.alert({
+                //     msg: JSON.stringify(ret)
+                // });
+                if (!ret.never) {
+                    //禁止权限
+                    return;
+                } else {
+                    fnopenScannerTo();
+                }
+            });
+        } else {
+            fnopenScannerTo();
+        }
+        // api.alert({
+        //     msg: JSON.stringify(resultList)
+        // });
+    }
+
+    function fnopenScannerTo() {
+        var FNScanner = api.require('FNScanner');
+        FNScanner.open({
+            autorotation: true,
+            verticalLineColor: '#ff0c05'
+        }, function(ret, err) {
+            if (ret) {
+                // alert(JSON.stringify(ret));
+                if (!empty(ret.content)) {
+                    var yqm1 = ret.content;
+                    if (yqm1.search("yqm=") == -1) {
+                        yqm1 = yqm1;
+                    } else {
+                        yqm1 = yqm1.substring(yqm1.indexOf('yqm=') + 4, yqm1.lastIndexOf('&from'));
+                    }
+
+                    $api.byId('yqm').value = yqm1;
+                    ByYqmCheckUser();
+                }
+
+            } else {
+                // alert(JSON.stringify(err));
+            }
+        });
+    }
+    //监听输入框输入的是否是数字或者字母，不包含特殊符号和中文；
+    $("#yqm").on("keyup", function() {
+        $(this).val($(this).val().replace(/[^0-9A-z]/g, ''));
+    });
+    //邀请码查询用户
+    function ByYqmCheckUser() {
+        var obj = {
+            'yqm': $("#yqm").val(),
+        };
+        var objArr = sort_ASCII(obj);
+        var timestamp = fntimestamp();
+        var version = '2.0';
+        var arr = apiSecret + timestamp + version + '';
+        for (i in objArr) {
+            arr += objArr[i];
+        }
+        var sign = hex_md5(arr);
+        api.ajax({
+            url: commonUrl + 'soukeAppTttService/service/user/finduserbycm',
+            method: 'post',
+            headers: {
+                'Content-Type': 'application/json;charset=utf-8'
+            },
+            data: {
+                body: {
+                    'apiKey': apiKey,
+                    'timestamp': timestamp,
+                    'sign': sign,
+                    'yqm': $("#yqm").val()
+                }
+            }
+        }, function(ret, err) {
+            if (ret) {
+                console.log(JSON.stringify(ret));
+                if (ret.result_code == 200) {
+                    if (ret.result_data.nickname != "") {
+                        var htmlStr = '';
+                        htmlStr += '<ul>';
+                        htmlStr += '<li><img src="' + ret.result_data.head + '" alt=""></li>';
+                        htmlStr += '<li>';
+                        htmlStr += '<div class="tjr_name" id="' + ret.result_data.id + '">' + ret.result_data.nickname + '</div>';
+                        htmlStr += '<div class="tjr_app">邀请您加入券券推</div>';
+                        htmlStr += '</li>';
+                        htmlStr += '</ul>';
+                        $(".tjr").append(htmlStr);
+                        $(".registBtn_active").show();
+                        $(".registBtn").hide();
+                        $(".tjr").slideDown(500);
+
+                    } else {
+                        $(".registBtn_active").hide();
+                        $(".registBtn").show();
+                        $(".tjr").slideUp(500);
+                    }
+                } else {
+                    api.toast({
+                        msg: ret.result_message,
+                        duration: 2000,
+                        location: 'middle'
+                    });
+
+                    $(".registBtn_active").hide();
+                    $(".registBtn").show();
+                    $(".tjr").slideUp(500);
+                }
+            } else {
+                // api.alert({ msg: JSON.stringify(err) });
+            }
+        });
+    }
+
+    function nextstep() {
+        $('.registBtn_active').attr("disabled", "disabled");
+        var is_phone = api.pageParam.is_phone;
+        if (is_phone == 0) {
+            //不要手机号
+            bandYqm();
+        } else {
+            api.openWin({
+                name: 'regist_phone',
+                url: './regist_phone.html',
+                pageParam: {
+                    invitation_code: $api.byId('yqm').value,
+                    ret_status: api.pageParam.ret_status
+                }
+            });
+        }
+    }
+
+    function bandYqm() {
+        var yqm = $api.byId('yqm').value;
+        var wx_login = $api.getStorage("wx_login");
+        user_nick = wx_login.user_nick;
+        user_head = wx_login.user_head;
+        user_sex = wx_login.user_sex;
+        return_value = wx_login.return_value;
+        var obj = {
+            'invitation_code': yqm,
+            'open_id': return_value,
+            'user_nick': encodeURIComponent(user_nick),
+            'user_head': user_head,
+            'user_sex': user_sex
+        }
+        var objArr = sort_ASCII(obj);
+        var timestamp = fntimestamp();
+        var version = '2.0';
+        var arr = apiSecret + timestamp + version + '';
+        for (i in objArr) {
+            arr += objArr[i];
+        }
+        // console.log(arr);
+        var sign = hex_md5(arr);
+        api.ajax({
+            url: commonUrl + 'soukeAppTttService/service/user/wxBangYqm_ac',
+            method: 'post',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            data: {
+                body: {
+                    'apiKey': apiKey,
+                    'timestamp': timestamp,
+                    'sign': sign,
+                    'invitation_code': yqm,
+                    'open_id': return_value,
+                    'user_nick': user_nick,
+                    'user_head': user_head,
+                    'user_sex': user_sex
+                }
+            }
+        }, function(ret, err) {
+            console.log("绑定邀请码" + JSON.stringify(ret));
+            if (ret.result_code == 200) {
+                // openinstall上报注册数据
+                if (openinstaus == 1) {
+                var openinstall = api.require('openinstall');
+                openinstall.reportRegister();
+              }
+                api.toast({
+                    msg: '注册成功',
+                    duration: 2000,
+                    location: 'middle'
+                });
+                var userInfo = {
+                    'user_id': ret.result_user_id,
+                    'user_token': ret.result_token
+                };
+                $api.setStorage('userInfo', userInfo);
+                api.sendEvent({
+                    name: 'login',
+                    extra: {
+                        login: true,
+                    }
+                });
+                api.closeToWin({
+                    name: 'root'
+                });
+            } else {
+                api.toast({
+                    msg: ret.result_message,
+                    duration: 2000,
+                    location: 'middle'
+                });
+            }
+        });
+    }
+    //勾选官方邀请码
+    function fnGfyqm() {
+        $("#yqm").val($(".invite_code").html());
+        $("#check").show();
+        $("#uncheck").hide();
+        ByYqmCheckUser();
+    }
+    //取消官方邀请码
+    function fnUnGfyqm() {
+        $("#yqm").val("");
+        $("#uncheck").show();
+        $("#check").hide();
+        $(".registBtn_active").hide();
+        $(".registBtn").show();
+        $(".tjr").slideUp(500);
+    }
+</script>
+
+</html>

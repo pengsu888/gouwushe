@@ -1,0 +1,370 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0" />
+    <title>商学院</title>
+    <link rel="stylesheet" type="text/css" href="../../css/api.css" />
+    <link rel="stylesheet" type="text/css" href="../../css/swiper.min.css" />
+    <style>
+        body,
+        html {
+            width: 100%;
+            height: 100%;
+        }
+        /*常见问题页面样式*/
+
+        .wenti {
+            width: 100%;
+            height: 100%;
+            background: #f4f4f4;
+        }
+
+        .wenti section {
+            display: -webkit-box;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+            -webkit-box-flex: 1;
+            background: #f4f4f4;
+            padding-top: 1px;
+        }
+
+        .wenti section .lunbo {
+            /*轮播开始*/
+            position: relative;
+            width: 100%;
+        }
+
+        .wenti section .lunbo .swiper-container1 {
+            width: 100%;
+        }
+
+        .wenti section .lunbo .swiper-container1 .swiper-wrapper {
+            width: 100%;
+        }
+
+        .wenti section .lunbo .swiper-container1 .swiper-wrapper img {
+            width: 100%;
+            height: auto;
+            display: block;
+        }
+
+        .wenti section .wt-type {
+            /*各种问题*/
+            width: 100%;
+            height: auto;
+            background: #ffffff;
+            margin-top: 10px;
+        }
+
+        .wenti section .wt-type h2 {
+            width: 49.8%;
+            height: 48px;
+            background: none;
+            line-height: 48px;
+            float: left;
+            color: #888888;
+            font-weight: normal;
+            border-bottom: 1px solid #e1e1e1;
+            font-size: 14px;
+        }
+
+        .wenti section .wt-type h2 span {
+            padding-left: 15%;
+            padding-right: 10%;
+            box-sizing: border-box;
+        }
+
+        .wenti section .wt-type h2 span img {
+            width: 20px;
+            height: 20px;
+            background: none;
+            vertical-align: middle;
+        }
+
+        .wenti section .wt-type h2 a {
+            font-size: 14px;
+        }
+
+        .wenti section .wt-type h2:nth-child(odd) {
+            border-right: 1px solid #e1e1e1;
+        }
+
+        .wenti section .wt-type .active {
+            color: red;
+        }
+
+        .wenti section .hp-main {
+            width: 100%;
+            height: auto;
+            background: none;
+        }
+
+        .wenti section .hp-main .wt-content {
+            width: 100%;
+            height: auto;
+            background: #ffffff;
+            margin-top: 10px;
+            padding-bottom: 10px;
+        }
+
+        .wenti section .hp-main .wt-content .hp-title {
+            width: 100%;
+            height: 30px;
+            background: none;
+            line-height: 30px;
+            padding-left: 15px;
+            box-sizing: border-box;
+            margin-top: 10px;
+            color: #666666;
+            font-size: 14px;
+            border-bottom: 1px solid #e1e1e1;
+        }
+
+        .wenti section .hp-main .wt-content ul li {
+            width: 100%;
+            height: 36px;
+            background: none;
+            line-height: 36px;
+            padding-left: 20px;
+            box-sizing: border-box;
+            border-bottom: 1px solid #e1e1e1;
+            font-size: 14px;
+            color: #444444;
+            display: -webkit-box;
+            -webkit-box-orient: vertical;
+            -webkit-line-clamp: 1;
+            overflow: hidden;
+        }
+
+        .wenti section .hp-main .wt-content ul li:last-child {
+            border-bottom: none;
+        }
+
+        .swiper-container-horizontal>.swiper-pagination-bullets,
+        .swiper-pagination-custom,
+        .swiper-pagination-fraction {
+            position: relative;
+            bottom: 0.2rem;
+            left: 0;
+            width: 100%;
+            height: 0.3rem;
+        }
+
+        .swiper-pagination-bullet-active {
+            position: relative;
+            top: -0.8rem;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="wenti">
+        <!--主体样式开始-->
+        <section id="wrapper">
+            <!--轮播开始-->
+            <!-- <div class="lunbo">
+                <div class="swiper-container1">
+                    <div class="swiper-wrapper" id="lunbo">
+                        <div class="swiper-slide"></div>
+
+                    </div>
+                    <div class="swiper-pagination"></div>
+                </div>
+            </div> -->
+            <!--轮播结束-->
+            <div class="wt-type">
+                <!-- <h2><span><img src="../../image/home/super_icon_zhi.png"/></span><a>账号登录问题</a></h2> -->
+
+            </div>
+            <div class="hp-main">
+                <div class="wt-content">
+                    <!-- <h3 class="hp-title" id="title">全部</h3> -->
+                    <ul id="quanbu">
+                        <!-- <li>让给他人提货人符合他如何后一天还让我</li> -->
+                    </ul>
+                </div>
+            </div>
+        </section>
+    </div>
+</body>
+<script type="text/javascript" src="../../script/api.js"></script>
+<script type="text/javascript" src="../../script/jquery.js"></script>
+<script src="../../script/swiper.min.js"></script>
+<script type="text/javascript" src="../../script/api_common.js"></script>
+<script type="text/javascript" src="../../script/md5.js"></script>
+<script type="text/javascript">
+    var headerH;
+    apiready = function() {
+        headerH = api.pageParam.headerH;
+        piclb();
+        wttype();
+        list(0);
+    };
+    /*
+     * 图片轮播渲染
+     *
+     */
+    function piclb() {
+        var obj = {
+            // 'user_id':user_id
+        };
+        var objArr = sort_ASCII(obj);
+        var timestamp = fntimestamp();
+        var version = '2.0';
+        var arr = apiSecret + timestamp + version + '';
+        for (i in objArr) {
+            arr += objArr[i];
+        }
+        var sign = hex_md5(arr);
+        api.ajax({
+            url: commonUrl + 'soukeAppTttService/service/help/h5/findSlides',
+            method: 'post',
+            dataTpye: 'json',
+            data: {
+                body: {
+                    // 'apiKey':apiKey,
+                    // 'timestamp':timestamp,
+                    // 'sign':sign,
+                }
+            }
+        }, function(ret, err) {
+            if (ret) {
+                $(".noWlan").hide();
+                var lbhtml = '';
+
+                for (var i = 0; i < ret.result_data.slides.length; i++) {
+                    var v = ret.result_data.slides[i];
+                    lbhtml += "<div class=\"swiper-slide\" onclick=\"lunbo(\'" + v.link_type + "',\'" + v.link + "',\'" + v.link_qq + "')\"><img src=\"" + v.pict + '" /></div>';
+                    // $api.byId('lunbo').innerHTML = lbhtml;
+                    //	轮播图
+                    var swiper = new Swiper('.swiper-container1', {
+                        pagination: '.swiper-pagination',
+                        autoplay: 3000,
+                        loop: true,
+                        autoplayDisableOnInteraction: false
+                    })
+                }
+            } else {
+                alert(JSON.stringify(ret));
+                $(".noWlan").show();
+            }
+        });
+
+    }
+    /*
+     *分类问题
+     */
+    function wttype() {
+        var obj = {
+            // 'user_id':user_id
+        };
+        var objArr = sort_ASCII(obj);
+        var timestamp = fntimestamp();
+        var version = '2.0';
+        var arr = apiSecret + timestamp + version + '';
+        for (i in objArr) {
+            arr += objArr[i];
+        }
+        var sign = hex_md5(arr);
+        api.ajax({
+            url: commonUrl + 'soukeAppTttService/service/help/h5/proCategorys',
+            method: 'post',
+            dataTpye: 'json',
+            data: {
+                body: {
+                    // 'apiKey':apiKey,
+                    // 'timestamp':timestamp,
+                    // 'sign':sign,
+                }
+            }
+        }, function(ret, err) {
+            if (ret) {
+                var typeHTML = '';
+                for (var i = 0; i < ret.result_data.proCategorys.length; i++) {
+                    var v = ret.result_data.proCategorys[i];
+                    typeHTML += '<h2 onclick="list(' + v.id + ')"><span><img src="' + v.cate_pict + '"/></span><a id="a_' + v.id + '">' + v.cate_name + '</a></h2>';
+                    $(".wt-type").html(typeHTML);
+                    $('.wt-type>h2>a').on('click', function() {
+                        $(this).addClass('active').parent('h2').siblings().find('a').removeClass('active');
+                    })
+                }
+            } else {}
+        });
+
+    }
+    /*
+     *
+     * 列表内容
+     */
+    function list(id) {
+        var obj = {
+            'cate_id': id,
+        };
+        var objArr = sort_ASCII(obj);
+        var timestamp = fntimestamp();
+        var version = '2.0';
+        var arr = apiSecret + timestamp + version + '';
+        for (i in objArr) {
+            arr += objArr[i];
+        }
+        var sign = hex_md5(arr);
+        if (id != 0) {
+            var aa = $("#a_" + id).html();
+            $("#title").html(aa);
+        } else {
+            $("#title").html("全部");
+        }
+        api.ajax({
+            url: commonUrl + 'soukeAppTttService/service/help/h5/findProblems',
+            method: 'post',
+            dataTpye: 'json',
+            data: {
+                values: {
+                    'cate_id': id,
+                    // 'apiKey':apiKey,
+                    // 'timestamp':timestamp,
+                    // 'sign':sign,
+                }
+            }
+        }, function(ret, err) {
+            if (ret) {
+                var liebiao = "";
+                if (ret.result_data.proCategorys != "") {
+                    for (var i = 0; i < ret.result_data.proCategorys.length; i++) {
+                        var v = ret.result_data.proCategorys[i];
+                        liebiao += '<li onclick="xiangqing(' + v.id + ')">' + v.title + '</li>';
+                        $api.byId('quanbu').innerHTML = liebiao;
+                    }
+                }
+            } else {}
+        });
+
+    }
+
+    function lunbo(type, lj, qq) {
+        if (type == 0) {
+            window.location.href = "http://wpa.qq.com/msgrd?v=3&uin=" + qq + "&site=qq&menu=yes";
+        } else {
+            window.location.href = lj;
+        }
+
+    }
+    /*
+     * 点击每个列表跳转到列表详情页
+     *
+     */
+    function xiangqing(id) {
+        api.openWin({
+            name: 'helpxq_win',
+            url: './helpxq_win.html',
+            pageParam: {
+                listid: id
+            }
+        });
+
+    }
+</script>
+
+</html>

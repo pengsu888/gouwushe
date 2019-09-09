@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0" />
+	<!-- 解决IOS数字出现蓝色数字问题  -->
+	<meta name="format-detection" content="telephone=no" />
+	<title>打电话弹窗</title>
+	<link rel="stylesheet" type="text/css" href="../../css/api.css" />
+	<style>
+		html,
+		body {
+			height: 100%;
+			background: transparent;
+			-webkit-touch-callout: none;
+			font-family: Tahoma, Geneva, sans-serif;
+			font-style: normal;
+		}
+
+		.aui-scrollView {
+			width: 100%;
+			height: 100%;
+			margin: 0 auto;
+			display: -webkit-box;
+			display: -webkit-flex;
+			display: -ms-flexbox;
+			display: flex;
+			-webkit-box-orient: vertical;
+			-webkit-box-direction: normal;
+			-webkit-flex-direction: column;
+			-ms-flex-direction: column;
+			flex-direction: column;
+			background-image: url(../../image/net_phone/call_waitting_bg.png);
+			background-size: 100% auto;
+		}
+
+		.aui-bank-head {
+			width: 100%;
+			padding-bottom: 1.5rem;
+			padding-top: 3rem;
+		}
+
+		.aui-bank-logo {
+			width: 75px;
+			height: 75px;
+			margin: 0 auto;
+			position: relative;
+			background: #fff;
+			border-radius: 100%;
+			padding: 3px;
+		}
+
+		.aui-bank-logo img {
+			width: 100%;
+			height: auto;
+			display: block;
+			border: none;
+			border-radius: 100%;
+		}
+
+		.aui-bank-title {
+			text-align: center;
+			padding-top: 1rem;
+		}
+
+		.aui-bank-title h2 {
+			color: #fff;
+			font-size: 1.2rem;
+			font-size: 1.6rem;
+			font-weight: 400;
+		}
+
+		.aui-bank-title p {
+			color: #b1b1b1;
+			margin: 0.5rem 0;
+			font-size: 1.2rem;
+		}
+
+		.aui-bank-title button {
+			background: #434343;
+			border-radius: 2px;
+			border: 1px solid #fefefe;
+			color: #fff;
+			padding: 0.3rem 1rem;
+			font-size: 0.9rem;
+		}
+
+		.aui-bank-title button i {
+			font-size: 1.3rem;
+			margin-top: -3px;
+			margin-right: 0.3rem;
+			display: block;
+			float: left;
+		}
+
+		.aui-palace {
+			position: absolute;
+			overflow: hidden;
+			width: 100%;
+			bottom: 60px;
+		}
+
+		.aui-palace-two .aui-palace-grid {
+			width: 25%;
+			left: 50px;
+		}
+
+		.aui-palace-grid {
+			position: relative;
+			float: left;
+			padding: 1px;
+			width: 20%;
+			box-sizing: border-box;
+			margin: 5px 0;
+		}
+
+		.aui-palace-two .aui-palace-grid-icon {
+			width: 50px;
+			height: 50px;
+		}
+
+		.aui-palace-grid-icon {
+			width: 30px;
+			height: 30px;
+			margin: 0 auto;
+		}
+
+		.aui-palace-grid-icon img {
+			display: block;
+			width: 100%;
+			height: 100%;
+			border: none;
+		}
+	</style>
+</head>
+
+<body>
+	<div class="aui-scrollView">
+		<div class="aui-bank-head">
+			<div class="aui-bank-logo">
+				<img src="../../image/appicon_108.png" alt="">
+			</div>
+			<div class="aui-bank-title">
+				<h2 id='phone'></h2>
+				<p>呼叫成功，请注意接听来电</p>
+				<!-- <button>
+					<i>+</i>
+					中国 电信 </button> -->
+			</div>
+
+		</div>
+		<div class="aui-palace aui-palace-two">
+			<a href="javascript:;" class="aui-palace-grid">
+				<div class="aui-palace-grid-icon">
+					<img src="../../image/net_phone/icon_call_one.png" alt="">
+				</div>
+				<div class="aui-palace-grid-text">
+				</div>
+			</a>
+			<a href="javascript:;" class="aui-palace-grid">
+				<div class="aui-palace-grid-icon" tapmode onclick="api.closeFrame()">
+					<img src="../../image/net_phone/icon_call_two.png" alt="">
+				</div>
+				<div class="aui-palace-grid-text">
+				</div>
+			</a>
+			<a href="javascript:;" class="aui-palace-grid">
+				<div class="aui-palace-grid-icon">
+					<img src="../../image/net_phone/icon_call_three.png" alt="">
+				</div>
+				<div class="aui-palace-grid-text">
+				</div>
+			</a>
+		</div>
+	</div>
+</body>
+<script type="text/javascript" src="../../script/api.js"></script>
+<script type="text/javascript" src="../../script/zepto.min.js"></script>
+<script type="text/javascript">
+	apiready = function() {
+		$api.byId('phone').innerHTML = api.pageParam.phone;
+		//判断手机类型
+		if (api.systemType == "ios") {
+			$(".aui-bank-head").css("margin-top", api.safeArea.top + 3);
+		}
+		// else if (api.systemType == "android") {
+		// 		self.isIos = 0;
+		// }
+		api.setStatusBarStyle({
+			style: 'dark',
+			color: "transparent" //背景颜色为透明
+		});
+		setTimeout(function() {
+			api.closeFrame();
+		}, 10000);
+	};
+	//跳转页
+	// function TbSq() {
+	// 	api.openWin({
+	// 		name: 'tb_sq_win',
+	// 		url: '../win/tb_sq_win.html',
+	// 	});
+	// 	setTimeout(function() {
+	// 		api.closeFrame();
+	// 	}, 200);
+	// }
+</script>
+
+</html>

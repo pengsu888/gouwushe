@@ -1,0 +1,393 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0" />
+    <meta name="format-detection" content="telephone=no, email=no, date=no, address=no">
+    <title>Hello APP</title>
+    <link rel="stylesheet" type="text/css" href="../../css/api.css" />
+    <link rel="stylesheet" href="../../css/swiper.min.css">
+    <style>
+    body{
+      background-color: #f4f4f4;
+      height: 100%;
+      width: 100%;
+      overflow: hidden;
+    }
+    .registItem{
+      width: 100%;
+      height: auto;
+      background:#fff;
+      overflow: hidden;
+    }
+    .regist_input{
+      width: calc(100% - 12px);
+      margin-left: 12px;
+      height: 55px;
+    }
+    .reg_bottom{
+      margin-top: 10px;
+    }
+    .reg_border{
+      border-bottom: solid 1px #ddd;
+    }
+    .regist_input label.label_input{
+      width: 80px;
+      height: 55px;
+      line-height: 55px;
+    }
+    .regist_input button.label_btn{
+      width: 120px;
+      height: 55px;
+      line-height: 55px;
+      text-align: center;
+      color:#fd5f3e;
+    }
+    .regist_input input.input_phone{
+      width: calc(100% - 119px);
+      height: 55px;
+      line-height: 55px;
+      outline: none;
+    }
+    .regist_input input.input_yzm{
+      width: calc(100% - 210px);
+      height: 35px;
+      line-height: 35px;
+      outline: none;
+      border-right: solid 1px #ddd;
+    }
+    .regist_input .clear_phone{
+      width: 17px;
+      height: 17px;
+      background-size: 100% 100%;
+      margin-top: 5px;
+      display: none;
+    }
+    .editBtn{
+      margin-top: 60px;
+    }
+    .tip{
+      width: calc(100% - 24px);
+      height: 40px;
+      line-height: 40px;
+      margin-left: 12px;
+      color:#999;
+    }
+    </style>
+</head>
+<body>
+    <div class="registItem reg_bottom">
+      <div class="regist_input reg_border">
+        <label class="label_input">手机号</label>
+        <input type="tel" value="138****9876" maxlength="11" class="input_phone"  readonly="" id="my_phone"/>
+      </div>
+      <div class="regist_input">
+        <label class="label_input">验证码</label>
+        <input type="tel" id="yzm_phone" placeholder="请输入验证码" maxlength="6" class="input_yzm"/>
+        <button class="label_btn getCode">获取验证码</button>
+      </div>
+    </div>
+    <div class="registItem reg_bottom">
+      <div class="regist_input reg_bottom reg_border">
+        <label class="label_input">新密码</label>
+        <input type="tel" id="login_newpwd" placeholder="请输入新密码"  class="input_phone pwd_input"/>
+        <img src="../../image/ic_title_bar_edit_clear.png" alt="" class="clear_phone" id="clear_newpwd">
+      </div>
+      <div class="regist_input">
+        <label class="label_input">确认新密码</label>
+        <input type="tel" id="login_surepwd" placeholder="请输入确认新密码"  class="input_phone pwd_input"/>
+        <img src="../../image/ic_title_bar_edit_clear.png" alt="" class="clear_phone" id="clear_surepwd">
+      </div>
+    </div>
+    <div class="tip">请输入6-12字符的密码</div>
+    <div class="editBtn submitBtn submitColor" onclick="suerBtn();">确认</div>
+</body>
+<script type="text/javascript" src="../../script/api.js"></script>
+<script type="text/javascript" src="../../script/jquery.js"></script>
+<script type="text/javascript" src="../../script/api_common.js"></script>
+<script type="text/javascript" src="../../script/md5.js"></script>
+<script type="text/javascript">
+var user_id,user_token;
+apiready=function(){
+  user_id=$api.getStorage("userInfo").user_id;
+  user_token=$api.getStorage("userInfo").user_token;
+  getUserInfo();
+}
+$(function(){
+  //监听输入新密码的事件
+  $("#login_newpwd").bind('input porpertychange',function(){
+    if($("#login_newpwd").val().length>0){
+      $("#clear_newpwd").show();
+    }else{
+      $("#clear_newpwd").hide();
+    }
+  });
+  //清除输入新密码的事件
+  $("#clear_newpwd").click(function(){
+    $("#clear_newpwd").hide();
+    $api.byId('login_newpwd').value = '';
+  });
+  //监听输入确认新密码的事件
+  $("#login_surepwd").bind('input porpertychange',function(){
+    if($("#login_surepwd").val().length>0){
+      $("#clear_surepwd").show();
+    }else{
+      $("#clear_surepwd").hide();
+    }
+  });
+  //清除输入确认呢新密码的事件
+  $("#clear_surepwd").click(function(){
+    $("#clear_surepwd").hide();
+    $api.byId('login_surepwd').value = '';
+  });
+});
+//获取用户信息
+function getUserInfo(){
+  var obj={
+    'user_id':user_id
+  };
+  var objArr=sort_ASCII(obj);
+  var timestamp=fntimestamp();
+  var version='2.0';
+  var arr=apiSecret+timestamp+version+'';
+  for(i in objArr){
+    arr+=objArr[i];
+  }
+  var sign=hex_md5(arr);
+  api.ajax({
+      url: commonUrl+'soukeAppTttService/service/user/message_ac',
+      method: 'post',
+      headers: {
+          'Content-Type': 'application/json;charset=utf-8'
+      },
+      data: {
+          body: {
+              'apiKey':apiKey,
+              'timestamp':timestamp,
+              'sign':sign,
+              'user_id':user_id,
+          }
+      }
+    }, function(ret, err) {
+      if (ret) {
+          if(ret.result_code==200){
+            console.log("用户信息"+JSON.stringify(ret));
+            if(empty(ret.result_user.phone)){
+
+            }else{
+              // var tel=ret.result_user.phone;
+              // var mtel = tel.substr(0, 3) + '****' + tel.substr(7);
+              $api.byId('my_phone').value=ret.result_user.phone;
+            }
+
+          }else{
+              api.toast({
+                  msg: ret.result_message,
+                  duration: 2000,
+                  location: 'middle'
+              });
+
+          }
+      } else {
+          // api.alert({ msg: JSON.stringify(err) });
+      }
+    });
+}
+/*
+ * 获取验证码
+ *
+ */
+var wait = 60;
+function time(o) {
+    if (wait == 0) {
+        o.removeAttribute("disabled");
+        o.innerHTML = "获取验证码";
+        wait = 60;
+    } else {
+        o.setAttribute("disabled", true);
+        o.innerHTML = "还剩" + wait + "秒";
+        o.style.color = '#ccc';
+        wait--;
+        setTimeout(function() {
+            time(o)
+        }, 1000)
+    }
+};
+
+ $(".getCode").click(function() {
+    var t = this;
+    var obj={
+      'user_phone':$api.byId('my_phone').value,
+    };
+    var objArr=sort_ASCII(obj);
+    var timestamp=fntimestamp();
+    var version='2.0';
+    var arr=apiSecret+timestamp+version+'';
+    for(i in objArr){
+      arr+=objArr[i];
+    }
+    var sign=hex_md5(arr);
+    api.ajax({
+        url: commonUrl+'soukeAppTttService/service/user/checkcellphonepsw_ac',
+        method: 'post',
+        headers: {
+            'Content-Type': 'application/json;charset=utf-8'
+        },
+        data: {
+            body: {
+                'apiKey':apiKey,
+                'timestamp':timestamp,
+                'sign':sign,
+                'user_phone':$api.byId('my_phone').value
+            }
+        }
+      }, function(ret, err) {
+        if (ret) {
+            if(ret.result_code==200){
+              console.log(JSON.stringify(ret));
+              time(t);
+              api.toast({
+                  msg: '发送成功',
+                  duration: 2000,
+                  location: 'middle'
+              });
+
+            }else{
+              // console.log("发送失败："+JSON.stringify(ret));
+              api.toast({
+                  msg: '发送失败',
+                  duration: 2000,
+                  location: 'middle'
+              });
+
+            }
+        } else {
+            // api.alert({ msg: JSON.stringify(err) });
+        }
+      });
+ });
+ function suerBtn(){
+   if(!empty($("#yzm_phone").val())){
+     if(!empty($("#login_newpwd").val())){
+       if(!empty($("#login_surepwd").val())){
+         if($("#login_newpwd").val().length>12 || $("#login_newpwd").val().length<6){
+           api.toast({
+               msg: '密码长度在6-12位',
+               duration: 2000,
+               location: 'middle'
+           });
+
+         }else{
+           if($("#login_surepwd").val().length>12 || $("#login_surepwd").val().length<6){
+             api.toast({
+                 msg: '密码长度在6-12位',
+                 duration: 2000,
+                 location: 'middle'
+             });
+           }else{
+             if($("#login_newpwd").val()==$("#login_surepwd").val()){
+               var obj={
+                 'user_phone':$api.byId('my_phone').value,
+                 'user_id':user_id,
+                 'token_text':user_token,
+                 'user_code':$api.byId("yzm_phone").value,
+                 'user_password':$api.byId("login_newpwd").value,
+                  'device_id':''
+               };
+               var objArr=sort_ASCII(obj);
+               var timestamp=fntimestamp();
+               var version='2.0';
+               var arr=apiSecret+timestamp+version+'';
+               for(i in objArr){
+                 arr+=objArr[i];
+               }
+               var sign=hex_md5(arr);
+               api.ajax({
+                   url: commonUrl+'soukeAppTttService/service/user/updatepwd_ac',
+                   method: 'post',
+                   headers: {
+                       'Content-Type': 'application/json;charset=utf-8'
+                   },
+                   data: {
+                       body: {
+                           'apiKey':apiKey,
+                           'timestamp':timestamp,
+                           'sign':sign,
+                           'user_phone':$api.byId('my_phone').value,
+                           'user_id':user_id,
+                           'token_text':user_token,
+                           'user_code':$api.byId("yzm_phone").value,
+                           'user_password':$api.byId("login_newpwd").value,
+                           'device_id':''
+                       }
+                   }
+                 }, function(ret, err) {
+                   if (ret) {
+                       if(ret.result_code==200){
+                        //  console.log("修改密码："+JSON.stringify(ret));
+                         api.toast({
+                             msg: '保存成功',
+                             duration: 2000,
+                             location: 'middle'
+                         });
+                         api.execScript({
+                             name: 'zhanghuanquan_win',
+                             frameName: 'zhanghuanquan_frame',
+                             script: 'location.reload();'
+                         });
+
+                          api.execScript({
+                              name: 'set_loginpwd_win',
+                              script: 'closeWin();'
+                          });
+
+                       }else{
+                         console.log("验证码错误"+JSON.stringify(ret));
+                         api.toast({
+                             msg: '验证码错误',
+                             duration: 2000,
+                             location: 'middle'
+                         });
+
+                       }
+                   } else {
+                      //  api.alert({ msg: JSON.stringify(err) });
+                   }
+                 });
+             }else{
+               api.toast({
+                   msg: '两次输入密码不一致',
+                   duration: 2000,
+                   location: 'middle'
+               });
+             }
+           }
+         }
+       }else{
+         api.toast({
+             msg: '新确认密码不能为空',
+             duration: 2000,
+             location: 'middle'
+         });
+
+       }
+     }else {
+       api.toast({
+           msg: '新密码不能为空',
+           duration: 2000,
+           location: 'middle'
+       });
+     }
+   }else{
+     api.toast({
+         msg: '验证码不能为空',
+         duration: 2000,
+         location: 'middle'
+     });
+
+   }
+
+ }
+</script>
+
+</html>

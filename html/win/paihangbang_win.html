@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0" />
+  <title>排行榜</title>
+  <link rel="stylesheet" type="text/css" href="../../css/api.css" />
+  <link rel="stylesheet" type="text/css" href="../../css/style.css" />
+  <link rel="stylesheet" type="text/css" href="../../css/swiper.min.css" />
+</head>
+<style media="screen">
+  body{
+    width:100%;
+    height:100%;
+    background-color: #fff;
+    overflow-x: hidden;
+    overflow-y: auto;
+  }
+
+  header{
+    height: 4.8rem;
+    width: 100%;
+    position: fixed;
+    top:0;
+    left: 0;
+    z-index: 9999;
+  }
+  header .header-top{
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: flex;
+    width: 100%;
+    height: 2.4rem;
+    position: relative;
+    border-bottom:solid 1px #f6f6f6;
+  }
+
+  .headerItem{
+    height: 2.4rem;
+    width: calc(100% - 24px);
+    vertical-align: middle;
+    display: inline-block;
+    position: absolute;
+    top:0;
+    left: 12px;
+  }
+  #topNav {
+      width: 100%;
+      overflow: hidden;
+      font: 16px/32px hiragino sans gb, microsoft yahei, simsun;
+      /*border-bottom: 1px solid #f8f8f8;*/
+  }
+
+  #topNav .swiper-slide {
+      padding: 0 0.8rem;
+      letter-spacing: 0.2rem;
+      height: 2.4rem;
+      width: auto;
+      line-height: 2.4rem;
+      text-align: center;
+  }
+
+  #topNav .swiper-slide span {
+      display: block;
+      font-size: 0.8rem;
+  }
+
+  #topNav .swiper-slide.active span {
+      height: 80%;
+      width: 100%;
+      transform: scale(1.1);
+      color: #FF2D2D;
+      border-bottom: 2px solid #FF2D2D;
+  }
+</style>
+<body>
+    <header id="header">
+      <div class="header-top">
+          <div class="headerItem">
+            <div class="header_back" onclick="closeWin();">
+              <img src="../../image/nav_back_black.png" alt="">
+            </div>
+            <div class="header_title" id="header_title">排行榜</div>
+          </div>
+      </div>
+      <div id="topNav" class="swiper-container">
+          <div class="swiper-wrapper" id="type">
+              <div class="swiper-slide active" id="0"><span>总榜</span></div>
+              <div class="swiper-slide" id="1"><span>美妆</span></div>
+              <div class="swiper-slide" id="5"><span>食品</span></div>
+              <div class="swiper-slide" id="6"><span>百货</span></div>
+              <div class="swiper-slide" id="2"><span>女装</span></div>
+              <div class="swiper-slide" id="210"><span>内衣</span></div>
+              <div class="swiper-slide" id="47"><span>个护</span></div>
+              <div class="swiper-slide" id="3"><span>女鞋</span></div>
+              <div class="swiper-slide" id="49"><span>配饰</span></div>
+              <div class="swiper-slide" id="225"><span>箱包</span></div>
+              <div class="swiper-slide" id="7"><span>数码</span></div>
+              <div class="swiper-slide" id="99"><span>家电</span></div>
+              <div class="swiper-slide" id="4"><span>母婴</span></div>
+              <div class="swiper-slide" id="48"><span>运动</span></div>
+              <div class="swiper-slide" id="230"><span>男装</span></div>
+          </div>
+      </div>
+    </header>
+</body>
+  <script type="text/javascript" src="../../script/api.js"></script>
+  <script type="text/javascript" src="../../script/jquery.js"></script>
+  <script type="text/javascript" src="../../script/swiper.min.js"></script>
+  <script type="text/javascript">
+  var mySwiper = new Swiper('#topNav', {
+      freeMode: true,
+      freeModeMomentumRatio: 0.5,
+      slidesPerView: 'auto',
+  });
+    var paibang_group=[];
+    apiready = function() {
+        api.setStatusBarStyle({
+            style: 'dark' //黑色
+                // style: 'light' //白色
+        });
+        var header = $api.byId('header');
+        $api.fixStatusBar(header);
+        var headerH = $api.offset(header).h;
+        var paibangList=$(".swiper-slide");
+        for(var i=0;i<paibangList.length;i++){
+          paibang_group.push({
+              name: 'paihangbang_frame' + i,
+              url: '../frame/paihangbang_frame.html',
+              vScrollBarEnabled : false,
+              hScrollBarEnabled : false,
+              bounces:true,
+              pageParam: {
+                  cateId:$(paibangList[i]).attr("id")
+              }
+          });
+        }
+        api.openFrameGroup({
+            name: 'phb_frame',
+            scrollEnabled: true,
+            rect: {
+                x: 0,
+                y: headerH,
+                w: 'auto',
+                h: api.winHeight - headerH
+            },
+            index: 0,
+      			preload : 0,
+            frames: window['paibang_group']
+        }, function(ret, err) {
+            var _index = ret.index;
+            // alert(JSON.stringify(ret));
+            paibangList.eq(_index).addClass("active");
+      			paibangList.eq(_index).siblings().removeClass("active");
+            mySwiper.slideTo( _index );  //控制水平导航条滑动的位置，根据页面滑动而滑动
+        });
+        paibangList.click(function() {
+          var li_index = $(this).index();
+          $(this).addClass("active").siblings().removeClass("active");
+          api.setFrameGroupIndex({
+            name : 'phb_frame',
+            index : li_index,
+            scroll : true,
+          });
+        });
+    };
+    function closeWin(){
+      api.closeWin({
+          name: 'paihangbang_win'
+      });
+    }
+  </script>
+
+</html>

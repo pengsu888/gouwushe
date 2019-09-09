@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0" />
+    <title>更多分类弹窗</title>
+    <link rel="stylesheet" type="text/css" href="../../css/api.css" />
+    <style>
+        html,
+        body {
+            width: 100%;
+            height: 100%;
+        }
+
+        .typeItem {
+            width: 100%;
+            height: auto;
+            padding-bottom: 80px;
+            margin-top: 40px;
+        }
+
+        img {
+            background-size: 100% 100%;
+        }
+
+        .typeItem ul {
+            list-style: none;
+            height: 100%;
+            overflow-y: scroll;
+            overflow: hidden;
+        }
+
+        .typeItem ul li {
+            float: left;
+            width: 25%;
+            height: 6.0rem;
+            position: relative;
+        }
+
+        .typeItem ul li img {
+            width: 42px;
+            height: 42px;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+        }
+
+        .typeItem ul li p {
+            position: absolute;
+            text-align: center;
+            width: 100%;
+            left: 0;
+            bottom: 5%;
+            font-size: 12px;
+            color: #333;
+        }
+
+        .typeItem ul li p.active {
+            color: #FF2C23;
+        }
+
+        .allType {
+            width: 100%;
+            height: 40px;
+            background: #fff;
+            display: inline-block;
+            vertical-align: middle;
+            text-align: center;
+            line-height: 40px;
+            position: fixed;
+            left: 0;
+            top: 0;
+            z-index: 99999;
+            border-bottom: solid 1px #f4f4f4;
+        }
+
+        .allType img {
+            float: right;
+            width: 16px;
+            height: 16px;
+            margin-top: 14px;
+            margin-right: 10px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="allType">全部分类<img src="../../image/ic_dialog_close_x.png" tapmode onclick="closeFrame();"></div>
+    <div class="typeItem">
+        <ul id="typeItem">
+
+        </ul>
+
+    </div>
+</body>
+<script type="text/javascript" src="../../script/api.js"></script>
+<script type="text/javascript" src="../../script/api_common.js"></script>
+<script type="text/javascript" src="../../script/md5.js"></script>
+<script type="text/javascript">
+    var cid;
+    var status;
+    apiready = function() {
+        cid = api.pageParam.cid;
+        if (!empty($api.getStorage("userInfo"))) {
+            user_id = $api.getStorage("userInfo").user_id;
+        } else {
+            user_id = '';
+        }
+        var obj = {};
+        var objArr = sort_ASCII(obj);
+        var timestamp = fntimestamp();
+        var version = '2.0';
+        var arr = apiSecret + timestamp + version + '';
+        for (i in objArr) {
+            arr += objArr[i];
+        }
+        var sign = hex_md5(arr);
+        api.ajax({
+            url: commonUrl + 'soukeAppTttService/service/user/getClassification',
+            method: 'post',
+            headers: {
+                'Content-Type': 'application/json;charset=utf-8'
+            },
+            data: {
+                body: {
+                    'apiKey': apiKey,
+                    'timestamp': timestamp,
+                    'sign': sign,
+                }
+            }
+        }, function(ret, err) {
+            if (ret) {
+                // console.log("商品分类：" + JSON.stringify(ret));
+                status = ret.status;
+                var menuList = [];
+                if (status == 1) {
+                    //官方
+                    menuList = ret.resultStr.general_classify;
+                } else {
+                    menuList = ret.general_classify;
+                }
+                getData(menuList);
+            }
+        });
+    };
+
+    function getData(menuList) {
+        var nextCont = '';
+        for (var i = 0; i < menuList.length; i++) {
+            if (i == cid) {
+                for (var j = 0; j < menuList[cid].data.length; j++) {
+                    for (var n = 0; n < menuList[cid].data[j].info.length; n++) {
+                        if (status == 1) {
+                            nextCont += '<li class="son_name" tapmode onclick="fnOpenFenlei(\'' + menuList[cid].data[j].info[n].son_name + '\',\'' + menuList[cid].data[j].info[n].son_name + '\');"><img src="' + menuList[cid].data[j].info[n].imgurl +
+                                '"/><p>' + menuList[cid].data[j].info[n].son_name +
+                                '</p></li>';
+                        } else {
+                            nextCont += '<li class="son_name" tapmode onclick="fnOpenFenlei(\'' + menuList[cid].data[j].info[n].son_name + '\',\'' + menuList[cid].data[j].info[n].key_word + '\');"><img src="' + menuList[cid].data[j].info[n].imgurl +
+                                '"/><p>' + menuList[cid].data[j].info[n].son_name +
+                                '</p></li>';
+                        }
+                    }
+                }
+            }
+        }
+        $api.byId('typeItem').innerHTML = nextCont;
+    }
+
+    function closeFrame() {
+        api.closeFrame({
+            name: 'home_type_frame'
+        });
+
+    }
+    // function openSelectIndex(index){
+    //   api.sendEvent({
+    //       name: 'select_index',
+    //       extra: {
+    //           select_index:index,
+    //       }
+    //   });
+    //   var navigationBar = api.require('navigationBar');
+    //   navigationBar.config({
+    //       id: 0,
+    //       key: 'selectedIndex',
+    //       value: index
+    //   });
+    //   api.execScript({
+    //       name: 'main',
+    //       // frameName: 'frmName',
+    //       script: 'fnNavigationBar(0,true);'
+    //   });
+    //
+    //   closeFrame();
+    // }
+    function fnOpenFenlei(header_title, keyword) {
+        api.openWin({
+            name: 'fenlei_win',
+            url: '../fenlei/fenlei_win.html',
+            pageParam: {
+                headerTitle: header_title,
+                keyword: keyword
+            }
+        });
+
+    }
+</script>
+
+</html>

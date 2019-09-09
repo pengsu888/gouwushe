@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0" />
+  <title>官方九块九商品板块</title>
+  <link rel="stylesheet" type="text/css" href="../../css/api.css" />
+  <link rel="stylesheet" type="text/css" href="../../css/style.css" />
+  <style>
+  /* 返回顶部样式开始 */
+  .actGotop {
+      position: fixed;
+      _position: absolute;
+      bottom: 3rem;
+      right: 0.5rem;
+      width: 3.5rem;
+      height: 3.5rem;
+      display: none;
+      z-index:999
+  }
+
+  .actGotop a,
+  .actGotop a:link {
+      width: 3.5rem;
+      height: 3.5rem;
+      display: inline-block;
+      background: url(../../image/ic_back_top.png) no-repeat;
+      background-size: 3.5rem 3.5rem;
+      outline: none;
+  }
+
+  .actGotop a:hover {
+      background: url(../../image/ic_back_top.png) no-repeat;
+      outline: none;
+      background-size: 3.5rem 3.5rem;
+  }
+  /* 返回顶部样式开始 */
+    html,body{
+      height: 100%;
+      width: 100%;
+      background-color: #fff;
+      /*overflow-x: hidden;
+      overflow-y: auto;*/
+    }
+  </style>
+</head>
+
+<body>
+  <!-- 返回顶部按钮 -->
+  <div class="actGotop">
+      <a href="javascript:;" title="返回顶部"></a>
+  </div>
+  <!-- 商品列表部分 begin-->
+  <div id="box">
+      <!-- <div class="yh_card" style="cursor:pointer;" tapmode onclick="openGoodDel();">
+        <div class="yh_img_div">
+          <img src="http://img.alicdn.com/imgextra/i4/666412682/TB2WeWtdFmWBuNjSspdXXbugXXa_!!666412682.jpg_400x400" class="yh_card_img 1" />
+          <div class="yh_bottom">预估佣金：18.59</div>
+        </div>
+        <div style="background:#fff;padding:0.5rem;">
+            <div class="good_title"><img src="../../image/sharepage_tianmao.png" alt="" class="tt">双飞人爽水喷雾学生提神醒脑驱赶蚊虫便携装喷雾清凉外出旅行60ml</div>
+            <div class="tm_price">
+              <div class="tm_left">天猫价 ￥12</div>
+              <div class="tm_right">月销 9</div>
+            </div>
+            <div class="qh_price">
+                <div class="qh_left"><span class="qh_left_quan">券后￥</span>&nbsp;5.8</div>
+                <div class="qh_right">3元券</div>
+            </div>
+        </div>
+    </div>
+    <div class="yh_card" style="cursor:pointer;" tapmode>
+      <div class="yh_img_div">
+        <img src="http://img.alicdn.com/imgextra/i4/666412682/TB2WeWtdFmWBuNjSspdXXbugXXa_!!666412682.jpg_400x400" class="yh_card_img 1" />
+        <div class="yh_bottom">预估佣金：18.59</div>
+      </div>
+      <div style="background:#fff;padding:0.5rem;">
+          <div class="good_title"><img src="../../image/sharepage_tianmao.png" alt="" class="tt">双飞人爽水喷雾学生提神醒脑驱赶蚊虫便携装喷雾清凉外出旅行60ml</div>
+          <div class="tm_price">
+            <div class="tm_left">天猫价 ￥12</div>
+            <div class="tm_right">月销 9</div>
+          </div>
+          <div class="qh_price">
+              <div class="qh_left"><span class="qh_left_quan">券后￥</span>&nbsp;5.8</div>
+              <div class="qh_right">3元券</div>
+          </div>
+      </div>
+  </div> -->
+  </div>
+  <div id="statu" style="font-size:0.8rem;color:#fd5f3e;background-color:#f5f5f5;height:30px;line-height:30px;text-align:center;clear:both;"><img src="../../image/loading.d997b79c.svg" alt="" style="width:1rem;height:1rem;vertical-align:middle;">加载中...</div>
+  <!-- 商品列表部分 end-->
+</body>
+  <script type="text/javascript" src="../../script/api.js"></script>
+  <script type="text/javascript" src="../../script/jquery.js"></script>
+  <script type="text/javascript" src="../../script/api_common.js"></script>
+  <script type="text/javascript">
+  $(document).ready(function() {
+      // 返回顶部
+      $(window).scroll(function() {
+          if ($(window).scrollTop() >= 500) {
+              $('.actGotop').fadeIn("fast");
+          } else {
+              $('.actGotop').fadeOut(300);
+          }
+      });
+      $('.actGotop').click(function() {
+          $('html,body').animate({
+              scrollTop: '0px'
+          }, 300);
+      });
+  });
+    var pageNum = 1;
+    var isOver = false; //默认没有取完数据
+    var statu; //滑到底部状态
+    apiready = function() {
+      statu=$api.byId('statu');
+      loadFresh();
+      loadMyFa(true);
+      api.addEventListener({
+          name: 'scrolltobottom',
+          extra: {
+              threshold: 120 //设置距离底部多少距离时触发，默认值为0，数字类型
+          }
+      }, function(ret, err) {
+
+          loadMyFa(false);
+      });
+    };
+    function loadFresh(){
+      RefreshLoad();
+    }
+    function loadMyFa(isPull){
+      if (!isPull && isOver) {
+          return;
+      }
+      //判断如果是下拉刷新，
+      if (isPull) {
+          pageNum = 1;
+          isOver = false;
+      }
+      api.ajax({
+          url: 'http://m.sqkb.com/coupon/k9/couponList?cate_collection_id='+api.pageParam.cate_collection_id+'&page='+pageNum+'&pagesize=20',
+          method: 'get',
+          data: {
+            body: {}
+          }
+      },function(ret, err){
+          if (ret) {
+              // alert( JSON.stringify( ret ) );
+              var data=ret.data.coupon_list;
+              // var size = ret.status_code;
+              if (data != "") {
+                  $api.css(statu, 'display:block;');
+                  pageNum++;
+              } else {
+                  statu.innerHTML = "暂无数据";
+              }
+              if (data.length < 10 && data != "") {
+                  statu.innerHTML = "已经到底啦 ~ 别扯了";
+                  isOver = true;
+              }
+              getTwoData(data,isPull);
+          } else {
+              // alert( JSON.stringify( err ) );
+          }
+      });
+    }
+    function getTwoData(data,isPull){
+      // var html='';
+      // for(var i=0;i<data.length;i++){
+      //   html+='<div class="yh_card" style="cursor:pointer;"  tapmode onclick="openGoodDel('+data[i].item_id+',0);">';
+      //   html+='<div class="yh_img_div">';
+      //   html+='<img src="'+data[i].pic+'" class="yh_card_img 1" />';
+      //   html+='</div>';
+      //   html+='<div style="background:#fff;padding:0.5rem;">';
+      //   if(data[i].shop_type=="1"){
+      //     html+='<div class="good_title"><img src="../../image/sharepage_tianmao.png" alt="" class="tt">'+data[i].title+'</div>';
+      //     html+='<div class="tm_price">';
+      //     html+='<div class="tm_left">天猫价 ￥'+data[i].zk_price+'</div>';
+      //     html+='<div class="tm_right">月销 '+data[i].month_sales+'</div>';
+      //     html+='</div>';
+      //   }else if(data[i].shop_type=="0"){
+      //     html+='<div class="good_title"><img src="../../image/sharepage_taobao.png" alt="" class="tt">'+data[i].title+'</div>';
+      //     html+='<div class="tm_price">';
+      //     html+='<div class="tm_left">淘宝价 ￥'+data[i].zk_price+'</div>';
+      //     html+='<div class="tm_right">月销 '+data[i].month_sales+'</div>';
+      //     html+='</div>';
+      //   }
+      //
+      //   html+='<div class="qh_price">';
+      //   html+='<div class="qh_left"><span class="qh_left_quan">券后￥</span>&nbsp;'+data[i].raw_price+'</div>';
+      //   if(!empty(data[i].ticket)){
+      //     if(empty(data[i].ticket.coupon_price)){
+      //     }else{
+      //       html+='<div class="qh_right">'+data[i].ticket.coupon_price+'元券</div>';
+      //     }
+      //   }else{
+      //   }
+      //   html+='</div>';
+      //   html+='</div>';
+      //   html+='</div>';
+      // }
+      // if (isPull) {
+      //     $api.byId('box').innerHTML = html;
+      // } else {
+      //     $api.byId('box').innerHTML += html;
+      // }
+      var cont_1='';
+      for(var i=0;i<data.length;i++){
+        // var tkfee=(data[i].tk_fee*share_rebate1*share_rebate2)/10000;
+        cont_1+='<div class="box_1"  tapmode onclick="openGoodDel('+data[i].item_id+',-1);">';
+        cont_1+='<div class="d_card">';
+        cont_1+='<div class="d_card_img">';
+        cont_1+='<img src="'+data[i].pic+'" alt="">';
+        // if(tkfee!=0 && !isNaN(tkfee)){
+        //   cont_1+='<div class="yh_bottom">预估佣金'+tkfee.toFixed(2)+'</div>';
+        // }
+        cont_1+='</div>';
+        cont_1+='<div class="d_right">';
+        cont_1+='<div class="right_card">';
+        cont_1+='<div class="rightA">';
+        cont_1+='<div class="right_top">';
+        cont_1+='<div class="top_title">'+data[i].title+'</div>';
+        // cont_1+='<div class="top_title_del">30天无理由退换货！</div>';
+        cont_1+='</div>';
+        cont_1+='<div class="right_bottom">';
+        cont_1+='<div class="right_bottom_1">';
+        if(data[i].shop_type=="1"){
+          cont_1+='<div class="right_tm">天猫价  ￥'+data[i].raw_price+'</div>';
+        }else if(data[i].shop_type=="0"){
+          cont_1+='<div class="right_tm">淘宝价  ￥'+data[i].raw_price+'</div>';
+        }
+        cont_1+='<div class="right_yx">月销 '+data[i].month_sales+'</div>';
+        cont_1+='</div>';
+        cont_1+='<div class="right_bottom_2">';
+        cont_1+='<div class="right_qhj"><img src="../../image/ic_page_sc_gapprice.png" alt="">￥ '+data[i].zk_price+'</div>';
+
+        if(!empty(data[i].ticket)){
+            if(empty(data[i].ticket.coupon_price)){
+            }else{
+              cont_1+='<div class="right_quan">'+data[i].ticket.coupon_price+'元券</div>';
+            }
+        }else{
+        }
+        cont_1+='</div>';
+        cont_1+='</div>';
+        cont_1+='</div>';
+        cont_1+='</div>';
+        cont_1+='</div>';
+        cont_1+='</div>';
+        cont_1+='</div>';
+      }
+      if (isPull) {
+          $api.byId('box').innerHTML = cont_1;
+      } else {
+          $api.byId('box').innerHTML += cont_1;
+      }
+    }
+  </script>
+
+</html>

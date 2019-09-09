@@ -1,0 +1,491 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0" />
+    <!-- 解决IOS数字出现蓝色数字问题  -->
+    <meta name="format-detection" content="telephone=no" />
+    <title>title</title>
+    <link rel="stylesheet" type="text/css" href="../../css/api.css" />
+    <link rel="stylesheet" type="text/css" href="../../css/fans.css" />
+    <style media="screen">
+        .fans_tab {
+            position: fixed;
+            left: 0;
+            top: 0;
+            height: 50px;
+            width: 100%;
+            background: #fff;
+            border-top: solid 1px #f4f4f4;
+        }
+
+        .fans_tab ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .fans_tab ul li {
+            float: left;
+            width: 50%;
+            text-align: center;
+            line-height: 50px;
+            position: relative;
+            font-size: 14px;
+            color: #666;
+        }
+
+        .fans_tab ul li a {
+            color: #333;
+        }
+
+        .fans_tab ul li .current {
+            color: #fd5f3e;
+        }
+
+        .upAttr {
+            position: absolute;
+            width: 0.4em;
+            height: 0.3rem;
+            top: 37%;
+            right: 20%;
+        }
+
+        .upAttr1 {
+            background: url(../../image/huaqian_iicon_uparrow_default.png) no-repeat;
+            background-size: 100% 100%;
+        }
+
+        .upAttr2 {
+            background: url(../../image/huaqian_icon_uparrow_selected.png) no-repeat;
+            background-size: 100% 100%;
+        }
+
+        .DownAttr {
+            position: absolute;
+            width: 0.4em;
+            height: 0.3rem;
+            top: 51%;
+            right: 20%;
+        }
+
+        .DownAttr1 {
+            background: url(../../image/huaqian_icon_downarrow_default.png) no-repeat;
+            background-size: 100% 100%;
+        }
+
+        .DownAttr2 {
+            background: url(../../image/huaqian_icon_downarrow_selected.png) no-repeat;
+            background-size: 100% 100%;
+        }
+
+        .shaixuan {
+            width: 12px;
+            height: 13px;
+            position: absolute;
+            top: 50%;
+            right: 27%;
+            background: url('../../image/home/shaixuan.png') no-repeat;
+            background-size: 100% 100%;
+            margin-top: -7px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="fans_tab" id="header_tab">
+        <ul>
+            <li><a class="old differ reg_time" tapmode onclick="dianji('register_time')">加入时间</a><span class="upAttr upAttr1"></span><span class="DownAttr DownAttr1"></span></li>
+            <li><a class="old differ count" tapmode onclick="dianji('count')">团队规模</a><span class="upAttr upAttr1"></span><span class="DownAttr DownAttr1"></span></li>
+            <!-- <li><a class="old differ sx" tapmode onclick="openShaixuanLayout('qianzai_fans_frame','my_fans_win');">筛选</a><span class="shaixuan"></span></li> -->
+        </ul>
+    </div>
+    <div class="wrap_fans">
+        <div class="no_collect">
+            <img src="../../image/ic_page_ali_fav_login_tip.png" alt="">
+            <p>你还没有直属粉丝</p>
+        </div>
+        <div id="list">
+            <!-- <div class="fans_item" onclick="openFansDel('qianzai_fans_frame','my_fans_win');">
+        <ul>
+          <li class="fans_icon"><img src="../../image/home/v2_ic_avatar.png" alt=""></li>
+          <li class="fans_info">
+            <div class="fs_ttop">
+              淡定从容198808
+            </div>
+            <div class="fs_top">
+              <div class="fs_top_l"><span class="put_fans fs_color">普通会员</span><span class="fans_name">18322019287</span></div>
+              <div class="fs_top_r">团队12876人</div>
+            </div>
+            <div class="fs_bot">
+              <div class="fs_bot_l fs_color">预备加入：2017-08-22</div>
+              <div class="fs_bot_r fs_color">邀请人：小小的爱情</div>
+            </div>
+          </li>
+        </ul>
+      </div> -->
+        </div>
+        <div id="statu" style="font-size:0.8rem;color:#fd5f3e;background-color:#f5f5f5;height:30px;line-height:30px;text-align:center;clear:both;"><img src="../../image/loading.d997b79c.svg" alt="" style="width:1rem;height:1rem;vertical-align:middle;">加载中...</div>
+    </div>
+    <!-- <div class="fansBtn submitColor">直属粉丝：<span id="totalCount">369</span></div> -->
+</body>
+<script type="text/javascript" src="../../script/api.js"></script>
+<script type="text/javascript" src="../../script/jquery.js"></script>
+<script type="text/javascript" src="../../script/fans_del.js"></script>
+<script type="text/javascript" src="../../script/api_common.js"></script>
+<script type="text/javascript" src="../../script/md5.js"></script>
+<script type="text/javascript">
+    var headerH;
+    var user_id;
+    var pageNum = 1;
+    var isOver = false; //默认没有取完数据
+    var statu; //滑到底部状态
+    var sort_order;
+    var dis_level_id = '';
+    apiready = function() {
+        if (!empty($api.getStorage("userInfo"))) {
+            user_id = $api.getStorage("userInfo").user_id;
+        }
+        statu = $api.byId('statu');
+        api.addEventListener({
+            name: 'shaixuan_fans'
+        }, function(ret, err) {
+            if (ret) {
+                //  alert( JSON.stringify( ret ) );
+                dis_level_id = ret.value.dis_level_id;
+                loadMyFa(true, dis_level_id);
+            } else {
+                //  alert( JSON.stringify( err ) );
+            }
+        });
+        getEvent();
+        closePopframe();
+        //加载首页板块
+        loadFresh();
+        loadMyFa(true, dis_level_id);
+        // 商品列表数据
+        // 监听事件apiReady滚动到底部，加载更多功能
+        api.addEventListener({
+            name: 'scrolltobottom',
+            extra: {
+                threshold: 120 //设置距离底部多少距离时触发，默认值为0，数字类型
+            }
+        }, function(ret, err) {
+
+            loadMyFa(false, dis_level_id);
+        });
+    };
+
+    function loadFresh() {
+        RefreshLoad();
+    }
+
+    function loadMyFa(isPull, dis_level_id) {
+        if (!isPull && isOver) {
+            return;
+        }
+        //判断如果是下拉刷新，
+        if (isPull) {
+            pageNum = 1;
+            isOver = false;
+        }
+        var obj = {
+            'user_id': user_id,
+            'status': api.pageParam.fans_status,
+            'page': pageNum,
+            'size': 10,
+            'dis_level_id': dis_level_id
+        };
+        var objArr = sort_ASCII(obj);
+        var timestamp = fntimestamp();
+        var version = '2.0';
+        var arr = apiSecret + timestamp + version + '';
+        for (i in objArr) {
+            arr += objArr[i];
+        }
+        var sign = hex_md5(arr);
+        api.ajax({
+            url: commonUrl + 'soukeAppTttService/service/disRelated/findTeam_ac',
+            method: 'post',
+            headers: {
+                'Content-Type': 'application/json;charset=utf-8'
+            },
+            data: {
+                body: {
+                    'apiKey': apiKey,
+                    'timestamp': timestamp,
+                    'sign': sign,
+                    'user_id': user_id,
+                    'status': api.pageParam.fans_status,
+                    'page': pageNum,
+                    'size': 10,
+                    'dis_level_id': dis_level_id
+                }
+            }
+        }, function(ret, err) {
+            if (ret) {
+                console.log("我的潜在粉丝" + JSON.stringify(ret));
+                if (ret.result_code == 200) {
+                    // $api.byId('totalCount').innerHTML=ret.result_data.totalElements;
+                    api.sendEvent({
+                        name: 'zhishu_fans',
+                        extra: {
+                            totalCount: ret.result_data.totalElements,
+                        }
+                    });
+                    api.sendEvent({
+                        name: 'teamCount',
+                        extra: {
+                            teamCount: ret.teamCount,
+                        }
+                    });
+
+                    var data = ret.result_data.items;
+                    var size = ret.result_data.size;
+                    if (data != "") {
+                        $(".no_collect").hide();
+                        $api.css(statu, 'display:block;');
+                        pageNum++;
+                    } else {
+                        $(".no_collect").show();
+                        $api.css(statu, 'display:none;');
+                        statu.innerHTML = "暂无数据";
+                    }
+                    if (data.length < size && data != "") {
+                        $(".no_collect").hide();
+                        statu.innerHTML = "已经到底啦 ~ 别扯了";
+                        isOver = true;
+                    }
+
+                    fnShowData(data, isPull);
+                } else {
+                    api.toast({
+                        msg: ret.result_message,
+                        duration: 2000,
+                        location: 'middle'
+                    });
+
+                }
+            } else {
+                // alert( JSON.stringify( err ) );
+            }
+        });
+    }
+
+    function fnShowData(data, isPull) {
+        var html = '';
+        for (var i = 0; i < data.length; i++) {
+            html += '<div class="fans_item" onclick="openFansDel(\'zhishu_fans_frame\',\'my_fans_win\',' + data[i].id + ');">';
+            html += '<ul>';
+            html += '<li class="fans_icon"><img src="' + data[i].head + '" alt=""></li>';
+            html += '<li class="fans_info">';
+            if (api.pageParam.is_operator == 0) {
+                if (fncheckPhone(data[i].nickname)) {
+                    html += '<div class="fs_ttop">' + data[i].nickname.substr(0, 3) + "****" + data[i].nickname.substr(7) + '</div>';
+                } else {
+                    html += '<div class="fs_ttop">' + data[i].nickname + '</div>';
+                }
+                html += '<div class="fs_top">';
+                html += '<div class="fs_top_l"><span class="put_fans fs_color">' + data[i].level_name + '</span>';
+                if (!empty(data[i].phone)) {
+                    html += '<span class="fans_name">' + data[i].phone.substr(0, 3) + "****" + data[i].phone.substr(7) + '</span>';
+                }
+                html += '</div>';
+                if (empty(data[i].count)) {
+                    html += '<div class="fs_top_r">团队' + 0 + '人</div>';
+                } else {
+                    html += '<div class="fs_top_r">团队' + data[i].count + '人</div>';
+                }
+                html += '</div>';
+            } else {
+                html += '<div class="fs_ttop">' + data[i].nickname + '</div>';
+                html += '<div class="fs_top">';
+                html += '<div class="fs_top_l"><span class="put_fans fs_color">' + data[i].level_name + '</span>';
+                if (!empty(data[i].phone)) {
+                    html += '<span class="fans_name">' + data[i].phone + '</span>';
+                }
+                html += '</div>';
+                if (empty(data[i].count)) {
+                    html += '<div class="fs_top_r">团队' + 0 + '人</div>';
+                } else {
+                    html += '<div class="fs_top_r">团队' + data[i].count + '人</div>';
+                }
+                html += '</div>';
+            }
+            html += '<div class="fs_bot">';
+            html += '<div class="fs_bot_l fs_color">加入时间：' + data[i].register_time.split(" ")[0] + '</div>';
+            html += '<div class="fs_bot_r fs_color">邀请人：' + data[i].yqr + '</div>';
+            html += '</div>';
+            html += '</li>';
+            html += '</ul>';
+            html += '</div>';
+        }
+        if (isPull) {
+            $api.byId('list').innerHTML = html;
+        } else {
+            $api.byId('list').innerHTML += html;
+        }
+    }
+    var n = 0,
+        m = 0;
+
+    function dianji(tname) {
+        if (tname == "register_time") {
+            n++;
+            if (n % 2 == 0) {
+                $('.reg_time').addClass('current').parent().siblings().children().removeClass('current').siblings().removeClass('DownAttr2').removeClass('upAttr2 sx_icon2');
+                $('.reg_time').siblings('span').eq(1).addClass('DownAttr2').parent().siblings().children().siblings().removeClass('DownAttr2');
+                $('.reg_time').siblings('span').eq(0).removeClass('upAttr2');
+                sort_order = 'DESC';
+            } else {
+                $('.reg_time').addClass('current').parent().siblings().children().removeClass('current').siblings().removeClass('DownAttr2').removeClass('upAttr2 sx_icon2');
+                $('.reg_time').siblings('span').eq(0).addClass('upAttr2').parent().siblings().children().siblings().removeClass('upAttr2');
+                $('.reg_time').siblings('span').eq(1).removeClass('DownAttr2');
+                sort_order = 'ASC';
+            }
+        } else if (tname == "count") {
+            m++;
+            if (m % 2 == 0) {
+                $('.count').addClass('current').parent().siblings().children().removeClass('current').siblings().removeClass('DownAttr2').removeClass('upAttr2 sx_icon2');
+                $('.count').siblings('span').eq(1).addClass('DownAttr2').parent().siblings().children().siblings().removeClass('DownAttr2');
+                $('.count').siblings('span').eq(0).removeClass('upAttr2');
+                sort_order = 'DESC';
+            } else {
+                $('.count').addClass('current').parent().siblings().children().removeClass('current').siblings().removeClass('DownAttr2').removeClass('upAttr2 sx_icon2');
+                $('.count').siblings('span').eq(0).addClass('upAttr2').parent().siblings().children().siblings().removeClass('upAttr2');
+                $('.count').siblings('span').eq(1).removeClass('DownAttr2');
+                sort_order = 'ASC';
+            }
+        }
+        afterDianji(true, tname);
+        api.addEventListener({
+            name: 'scrolltobottom',
+            extra: {
+                threshold: 120 //设置距离底部多少距离时触发，默认值为0，数字类型
+            }
+        }, function(ret, err) {
+            afterDianji(false, tname);
+        });
+    }
+
+    function afterDianji(isPull, tname) {
+        //如果不是下拉刷新同时数据取完了
+        if (!isPull && isOver) {
+            return;
+        }
+        //判断如果是下拉刷刷，
+        if (isPull) {
+            pageNum = 1;
+            isOver = false;
+        }
+        var obj = {
+            // 'class_id': api.pageParam.cid,
+            'user_id': user_id,
+            'status': api.pageParam.fans_status,
+            'page': pageNum,
+            'size': 10,
+            'field': tname,
+            'order': sort_order
+        }
+        var objArr = sort_ASCII(obj);
+        var timestamp = fntimestamp();
+        var version = '2.0';
+        var arr = apiSecret + timestamp + version + '';
+        for (i in objArr) {
+            arr += objArr[i];
+        }
+        console.log("点击筛选粉丝" + arr);
+        var sign = hex_md5(arr);
+        api.ajax({
+            url: commonUrl + 'soukeAppTttService/service/disRelated/findTeam_ac',
+            method: 'post',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            data: {
+                body: {
+                    'apiKey': apiKey,
+                    'timestamp': timestamp,
+                    'sign': sign,
+                    'user_id': user_id,
+                    'status': api.pageParam.fans_status,
+                    'page': pageNum,
+                    'size': 10,
+                    'field': tname,
+                    'order': sort_order
+                }
+            }
+        }, function(ret, err) {
+            // alert("点击后："+JSON.stringify(ret));
+            if (ret) {
+                //  alert(decodeURIComponent(JSON.stringify( ret ).UrlEncode()));
+                var data = ret.result_data.items;
+                var size = ret.result_data.size;
+                if (data != "") {
+                    $(".no_collect").hide();
+                    $api.css(statu, 'display:block;');
+                    pageNum++;
+                } else {
+                    $(".no_collect").show();
+                    $api.css(statu, 'display:none;');
+                    statu.innerHTML = "暂无数据";
+                }
+                if (data.length < size && data != "") {
+                    $(".no_collect").hide();
+                    statu.innerHTML = "已经到底啦 ~ 别扯了";
+                    isOver = true;
+                }
+                fnShowData(data, isPull);
+            } else {
+                api.toast({
+                    msg: '唉！网络不见了，请检查网络连接',
+                    duration: 2000,
+                    location: 'middle'
+                });
+
+            }
+        });
+    }
+    //弹出蒙版  设置开关
+    //打开筛选页-------begin
+    window.showFlag = false;
+
+    function openShaixuanLayout(frame_name, win_name) {
+        $('.sx').addClass('current').parent().siblings().children().removeClass('current').siblings().removeClass('DownAttr2').removeClass('upAttr2 sx_icon2');
+        if (window.showFlag == false) {
+            api.openFrame({
+                name: 'shaixuan_slidLayout',
+                url: '../frame/shaixuan_slidLayout.html',
+                rect: {
+                    x: 0,
+                    y: 0,
+                    w: 'auto',
+                    h: api.pageParam.body_h
+                },
+                pageParam: {
+                    headerH: headerH + 6,
+                    frame_name: frame_name,
+                    win_name: win_name,
+                },
+                bounces: false,
+                bgColor: 'rgba(0,0,0,0)',
+                vScrollBarEnabled: true,
+                hScrollBarEnabled: true
+            });
+            window.showFlag = true;
+        } else {
+            closeShaixuanLayout();
+        }
+    }
+
+    function closeShaixuanLayout() {
+        api.closeFrame({
+            name: 'shaixuan_slidLayout'
+        });
+        window.showFlag = false;
+    }
+    //打开筛选页-------end
+</script>
+
+</html>

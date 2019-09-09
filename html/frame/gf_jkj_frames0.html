@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0" />
+  <title>title</title>
+  <link rel="stylesheet" type="text/css" href="../../css/api.css" />
+  <link rel="stylesheet" type="text/css" href="../../css/style.css" />
+  <style>
+    html,body{
+      height: 100%;
+      width: 100%;
+      background-color: #fff;
+    }
+
+  </style>
+</head>
+
+<body>
+  <!-- 商品列表部分 begin-->
+  <div id="list">
+      <!-- <div class="yh_card" style="cursor:pointer;" tapmode onclick="openGoodDel();">
+        <div class="yh_img_div">
+          <img src="http://img.alicdn.com/imgextra/i4/666412682/TB2WeWtdFmWBuNjSspdXXbugXXa_!!666412682.jpg_400x400" class="yh_card_img 1" />
+          <div class="yh_bottom">预估佣金：18.59</div>
+        </div>
+        <div style="background:#fff;padding:0.5rem;">
+            <div class="good_title"><img src="../../image/sharepage_tianmao.png" alt="" class="tt">双飞人爽水喷雾学生提神醒脑驱赶蚊虫便携装喷雾清凉外出旅行60ml</div>
+            <div class="tm_price">
+              <div class="tm_left">天猫价 ￥12</div>
+              <div class="tm_right">月销 9</div>
+            </div>
+            <div class="qh_price">
+                <div class="qh_left"><span class="qh_left_quan">券后￥</span>&nbsp;5.8</div>
+                <div class="qh_right">3元券</div>
+            </div>
+        </div>
+    </div>
+    <div class="yh_card" style="cursor:pointer;" tapmode>
+      <div class="yh_img_div">
+        <img src="http://img.alicdn.com/imgextra/i4/666412682/TB2WeWtdFmWBuNjSspdXXbugXXa_!!666412682.jpg_400x400" class="yh_card_img 1" />
+        <div class="yh_bottom">预估佣金：18.59</div>
+      </div>
+      <div style="background:#fff;padding:0.5rem;">
+          <div class="good_title"><img src="../../image/sharepage_tianmao.png" alt="" class="tt">双飞人爽水喷雾学生提神醒脑驱赶蚊虫便携装喷雾清凉外出旅行60ml</div>
+          <div class="tm_price">
+            <div class="tm_left">天猫价 ￥12</div>
+            <div class="tm_right">月销 9</div>
+          </div>
+          <div class="qh_price">
+              <div class="qh_left"><span class="qh_left_quan">券后￥</span>&nbsp;5.8</div>
+              <div class="qh_right">3元券</div>
+          </div>
+      </div>
+  </div> -->
+  </div>
+  <!-- 商品列表部分 end-->
+</body>
+  <script type="text/javascript" src="../../script/api.js"></script>
+  <script type="text/javascript" src="../../script/jquery.js"></script>
+  <script type="text/javascript" src="../../script/api_common.js"></script>
+  <script type="text/javascript">
+    apiready = function() {
+      api.ajax({
+          url: 'http://m.sqkb.com/coupon/k9/element?cate_collection_id=0',
+          method: 'get',
+          data: {
+            body: {}
+          }
+      },function(ret, err){
+          if (ret) {
+              // alert( JSON.stringify( ret ) );
+              var data=ret.data.timeline_element;
+              getTwoData(data);
+          } else {
+              // alert( JSON.stringify( err ) );
+          }
+      });
+    };
+    function getTwoData(data){
+      // var html='';
+      // for(var i=0;i<data.length;i++){
+      //   if(!empty(data[i].coupon_list)){
+      //     html+='<div class="yh_card" style="cursor:pointer;"  tapmode onclick="openGoodDel('+data[i].coupon_list[0].item_id+',0);">';
+      //     html+='<div class="yh_img_div">';
+      //     html+='<img src="'+data[i].coupon_list[0].pic+'" class="yh_card_img 1" />';
+      //     html+='</div>';
+      //     html+='<div style="background:#fff;padding:0.5rem;">';
+      //     if(data[i].coupon_list[0].shop_type=="1"){
+      //       html+='<div class="good_title"><img src="../../image/sharepage_tianmao.png" alt="" class="tt">'+data[i].coupon_list[0].title+'</div>';
+      //       html+='<div class="tm_price">';
+      //       html+='<div class="tm_left">天猫价 ￥'+data[i].coupon_list[0].raw_price+'</div>';
+      //       html+='<div class="tm_right">月销 '+data[i].coupon_list[j].month_sales+'</div>';
+      //       html+='</div>';
+      //     }else if(data[i].coupon_list[0].shop_type=="0"){
+      //       html+='<div class="good_title"><img src="../../image/sharepage_taobao.png" alt="" class="tt">'+data[i].coupon_list[0].title+'</div>';
+      //       html+='<div class="tm_price">';
+      //       html+='<div class="tm_left">淘宝价 ￥'+data[i].coupon_list[0].raw_price+'</div>';
+      //       html+='<div class="tm_right">月销 '+data[i].coupon_list[0].month_sales+'</div>';
+      //       html+='</div>';
+      //     }
+      //
+      //     html+='<div class="qh_price">';
+      //     html+='<div class="qh_left"><span class="qh_left_quan">券后￥</span>&nbsp;'+data[i].coupon_list[0].zk_price+'</div>';
+      //     html+='</div>';
+      //     html+='</div>';
+      //     html+='</div>';
+      //   }else if(!empty(data[i].topic_list)){
+      //     html+='<div class="yh_card" style="cursor:pointer;"  tapmode onclick="openGoodDel('+data[i].topic_list[0].coupon_info.item_id+',0);">';
+      //     html+='<div class="yh_img_div">';
+      //     html+='<img src="'+data[i].topic_list[0].coupon_info.pic+'" class="yh_card_img 1" />';
+      //     html+='</div>';
+      //     html+='<div style="background:#fff;padding:0.5rem;">';
+      //     if(data[i].topic_list[0].coupon_info.shop_type=="1"){
+      //       html+='<div class="good_title"><img src="../../image/sharepage_tianmao.png" alt="" class="tt">'+data[i].topic_list[0].title+'</div>';
+      //       html+='<div class="tm_price">';
+      //       html+='<div class="tm_left">天猫价 ￥'+data[i].topic_list[0].coupon_info.raw_price+'</div>';
+      //       html+='<div class="tm_right">月销 '+data[i].topic_list[j].coupon_info.month_sales+'</div>';
+      //       html+='</div>';
+      //     }else if(data[i].topic_list[0].coupon_info.shop_type=="0"){
+      //       html+='<div class="good_title"><img src="../../image/sharepage_taobao.png" alt="" class="tt">'+data[i].topic_list[0].coupon_info.title+'</div>';
+      //       html+='<div class="tm_price">';
+      //       html+='<div class="tm_left">淘宝价 ￥'+data[i].topic_list[0].coupon_info.raw_price+'</div>';
+      //       html+='<div class="tm_right">月销 '+data[i].topic_list[0].coupon_info.month_sales+'</div>';
+      //       html+='</div>';
+      //     }
+      //
+      //     html+='<div class="qh_price">';
+      //     html+='<div class="qh_left"><span class="qh_left_quan">券后￥</span>&nbsp;'+data[i].topic_list[0].coupon_info.zk_price+'</div>';
+      //     html+='<div class="qh_right">'+data[i].topic_list[0].coupon_info.ticket.coupon_price+'元券</div>';
+      //     html+='</div>';
+      //     html+='</div>';
+      //     html+='</div>';
+      //   }
+      // }
+      var cont_1='';
+      for(var i=0;i<data.length;i++){
+        if(!empty(data[i].coupon_list)){
+          // var tkfee=(data[i].tk_fee*share_rebate1*share_rebate2)/10000;
+          cont_1+='<div class="box_1"  tapmode onclick="openGoodDel('+data[i].coupon_list[0].item_id+',-1);">';
+          cont_1+='<div class="d_card">';
+          cont_1+='<div class="d_card_img">';
+          cont_1+='<img src="'+data[i].coupon_list[0].pic+'" alt="">';
+          cont_1+='</div>';
+          cont_1+='<div class="d_right">';
+          cont_1+='<div class="right_card">';
+          cont_1+='<div class="rightA">';
+          cont_1+='<div class="right_top">';
+          cont_1+='<div class="top_title">'+data[i].coupon_list[0].title+'</div>';
+          cont_1+='</div>';
+          cont_1+='<div class="right_bottom">';
+          cont_1+='<div class="right_bottom_1">';
+          if(data[i].coupon_list[0].shop_type=="1"){
+            cont_1+='<div class="right_tm">天猫价  ￥'+data[i].coupon_list[0].raw_price+'</div>';
+          }else if(data[i].coupon_list[0].shop_type=="0"){
+            cont_1+='<div class="right_tm">淘宝价  ￥'+data[i].coupon_list[0].raw_price+'</div>';
+          }
+          cont_1+='<div class="right_yx">月销 '+data[i].coupon_list[0].month_sales+'</div>';
+          cont_1+='</div>';
+          cont_1+='<div class="right_bottom_2">';
+          cont_1+='<div class="right_qhj"><img src="../../image/ic_page_sc_gapprice.png" alt="">￥ '+data[i].coupon_list[0].zk_price+'</div>';
+          // cont_1+='<div class="right_quan">'+data[i].coupon_jian+'元券</div>';
+          cont_1+='</div>';
+          cont_1+='</div>';
+          cont_1+='</div>';
+          cont_1+='</div>';
+          cont_1+='</div>';
+          cont_1+='</div>';
+          cont_1+='</div>';
+        }else if(!empty(data[i].topic_list)){
+          cont_1+='<div class="box_1"  tapmode onclick="openGoodDel('+data[i].topic_list[0].coupon_info.item_id+',-1);">';
+          cont_1+='<div class="d_card">';
+          cont_1+='<div class="d_card_img">';
+          cont_1+='<img src="'+data[i].topic_list[0].coupon_info.pic+'" alt="">';
+          cont_1+='</div>';
+          cont_1+='<div class="d_right">';
+          cont_1+='<div class="right_card">';
+          cont_1+='<div class="rightA">';
+          cont_1+='<div class="right_top">';
+          cont_1+='<div class="top_title">'+data[i].topic_list[0].coupon_info.title+'</div>';
+          cont_1+='</div>';
+          cont_1+='<div class="right_bottom">';
+          cont_1+='<div class="right_bottom_1">';
+          if(data[i].topic_list[0].coupon_info.shop_type=="1"){
+            cont_1+='<div class="right_tm">天猫价  ￥'+data[i].topic_list[0].coupon_info.raw_price+'</div>';
+          }else if(data[i].topic_list[0].coupon_info.shop_type=="0"){
+            cont_1+='<div class="right_tm">淘宝价  ￥'+data[i].topic_list[0].coupon_info.raw_price+'</div>';
+          }
+          cont_1+='<div class="right_yx">月销 '+data[i].topic_list[0].coupon_info.month_sales+'</div>';
+          cont_1+='</div>';
+          cont_1+='<div class="right_bottom_2">';
+          cont_1+='<div class="right_qhj"><img src="../../image/ic_page_sc_gapprice.png" alt="">￥ '+data[i].topic_list[0].coupon_info.zk_price+'</div>';
+          cont_1+='<div class="right_quan">'+data[i].topic_list[0].coupon_info.ticket.coupon_price+'元券</div>';
+          cont_1+='</div>';
+          cont_1+='</div>';
+          cont_1+='</div>';
+          cont_1+='</div>';
+          cont_1+='</div>';
+          cont_1+='</div>';
+          cont_1+='</div>';
+        }
+
+      }
+        $("#list").append(cont_1);
+    }
+      </script>
+
+      </html>

@@ -1,0 +1,640 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0" />
+    <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+    <title>分类商品列表页</title>
+    <link rel="stylesheet" type="text/css" href="../../css/api.css" />
+    <link rel="stylesheet" type="text/css" href="../../css/style.css" />
+    <style>
+        #box_1 {
+            display: none;
+        }
+        /* 返回顶部样式开始 */
+
+        .actGotop {
+            position: fixed;
+            _position: absolute;
+            bottom: 3rem;
+            right: 0.5rem;
+            width: 3.5rem;
+            height: 3.5rem;
+            display: none;
+            z-index: 999
+        }
+
+        .actGotop a,
+        .actGotop a:link {
+            width: 3.5rem;
+            height: 3.5rem;
+            display: inline-block;
+            background: url(../../image/ic_back_top.png) no-repeat;
+            background-size: 3.5rem 3.5rem;
+            outline: none;
+        }
+
+        .actGotop a:hover {
+            background: url(../../image/ic_back_top.png) no-repeat;
+            outline: none;
+            background-size: 3.5rem 3.5rem;
+        }
+        /* 返回顶部样式开始 */
+    </style>
+</head>
+
+<body>
+    <!-- 返回顶部按钮 -->
+    <div class="actGotop">
+        <a href="javascript:;" title="返回顶部"></a>
+    </div>
+    <!-- 商品列表部分 begin-->
+    <div class="box" id="box">
+        <!-- <div class="yh_card" style="cursor:pointer;" tapmode >
+        <div class="yh_img_div">
+          <img src="http://img.alicdn.com/imgextra/i4/666412682/TB2WeWtdFmWBuNjSspdXXbugXXa_!!666412682.jpg_400x400" class="yh_card_img 1" />
+          <div class="yh_bottom">爆款商品</div>
+        </div>
+        <div style="background:#fff;padding:0.5rem;">
+            <div class="good_title"><img src="../../image/sharepage_tianmao.png" alt="" class="tt">双飞人爽水喷雾学生提神醒脑驱赶蚊虫便携装喷雾清凉外出旅行60ml</div>
+            <div class="tm_price">
+              <div class="tm_left">天猫价 ￥12</div>
+              <div class="tm_right">月销 9</div>
+            </div>
+            <div class="qh_price">
+                <div class="qh_left"><span class="qh_left_quan">券后￥</span>&nbsp;5.8</div>
+                <div class="qh_right">3元券</div>
+            </div>
+        </div>
+    </div> -->
+    </div>
+    <div id="box_1">
+        <!-- <div class="d_card">
+      <div class="d_card_img">
+        <img src="http://img.alicdn.com/imgextra/i4/666412682/TB2WeWtdFmWBuNjSspdXXbugXXa_!!666412682.jpg_400x400" alt="">
+        <div class="d_bottom">爆款商品</div>
+      </div>
+      <div class="d_right">
+        <div class="right_card">
+            <div class="rightA">
+                <div class="right_top">
+                    <div class="top_title">抖音同款   红石榴防护喷雾  150ml</div>
+                    <div class="top_title_del">30天无理由退换货！</div>
+                </div>
+                <div class="right_bottom">
+                  <div class="right_bottom_1">
+                    <div class="right_tm">天猫价  ￥58.8</div>
+                    <div class="right_yx">月销 5.6万</div>
+                  </div>
+                  <div class="right_bottom_2">
+                    <div class="right_qhj"><img src="../../image/ic_page_sc_gapprice.png" alt="">￥ 13.8</div>
+                    <div class="right_quan">45元券</div>
+                  </div>
+                </div>
+            </div>
+        </div>
+      </div>
+    </div> -->
+    </div>
+    <!-- 商品列表部分 end-->
+    <div id="statu" style="font-size:0.8rem;color:#fd5f3e;background-color:#f5f5f5;height:30px;line-height:30px;text-align:center;clear:both;"><img src="../../image/loading.d997b79c.svg" alt="" style="width:1rem;height:1rem;vertical-align:middle;">加载中...</div>
+    <div class="noWlan">
+        <div class="nowlanItem">
+            <div class="no_net"><img src="../../image/no_net.png" /></div>
+            <p class="no_p">网络竟然崩溃了</p>
+            <p class="load_p">别紧张，试试看刷新页面</p>
+            <div class="loadBtn" onclick="javascript:location.reload();">点击刷新</div>
+        </div>
+    </div>
+</body>
+<script type="text/javascript" src="../../script/api.js"></script>
+<script type="text/javascript" src="../../script/jquery.js"></script>
+<script type="text/javascript" src="../../script/api_common.js"></script>
+<script type="text/javascript" src="../../script/md5.js"></script>
+<script type="text/javascript">
+    $(document).ready(function() {
+        // 返回顶部
+        $(window).scroll(function() {
+            if ($(window).scrollTop() >= 500) {
+                $('.actGotop').fadeIn("fast");
+            } else {
+                $('.actGotop').fadeOut(300);
+            }
+        });
+        $('.actGotop').click(function() {
+            $('html,body').animate({
+                scrollTop: '0px'
+            }, 300);
+        });
+    });
+    var keyword;
+    var user_id;
+    var pageNum = 1;
+    var isOver = false; //默认没有取完数据
+    var statu; //滑到底部状态
+    var sort_order, selled_type; //点击筛选状态变化
+    var min_level_name, min_share_rebate, level_name, max_shop_rebate, min_shop_rebate, max_level_name; //计算佣金比率
+    var dis_level_id, shop_rebate, max_share_rebate, share_rebate, my_share_rebate, my_shop_rebate; //计算佣金比率
+    var volume, commission, price; //限制
+    apiready = function() {
+        getEvent();
+        closePopframe();
+        if (!empty($api.getStorage("userInfo"))) {
+            user_id = $api.getStorage("userInfo").user_id;
+        } else {
+            user_id = '';
+        }
+        statu = $api.byId('statu');
+        keyword = api.pageParam.keyword;
+        jisuan(-1, user_id);
+        fnxianzhi();
+        api.addEventListener({
+            name: 'style_type'
+        }, function(ret, err) {
+            if (ret) {
+                //  alert( JSON.stringify( ret ) );
+                if (ret.value.type == 1) {
+                    $("#box").hide();
+                    $("#box_1").show();
+                } else if (ret.value.type == 2) {
+                    $("#box").show();
+                    $("#box_1").hide();
+                }
+            } else {
+                //  alert( JSON.stringify( err ) );
+            }
+        });
+        api.addEventListener({
+            name: 'dianji'
+        }, function(ret, err) {
+            if (ret) {
+                dianji(ret.value.tname);
+                tname = ret.value.tname;
+                //  sort_order=ret.value.sort_order;
+            } else {
+                //  alert( JSON.stringify( err ) );
+            }
+        });
+
+        loadMyFa(true, keyword);
+        // loadFresh();
+        api.addEventListener({
+            name: 'scrolltobottom',
+            extra: {
+                threshold: 120 //设置距离底部多少距离时触发，默认值为0，数字类型
+            }
+        }, function(ret, err) {
+
+            // loadMyFa(false, keyword);
+        });
+
+    };
+
+    // function loadFresh() {
+    //     RefreshLoad();
+    // }
+    var n = 0;
+
+    function dianji(tname) {
+
+      $api.byId('box').innerHTML = '';
+      $api.byId('box_1').innerHTML = '';
+
+      if (tname == 0) {
+        sort_order = 'total_sales_des';
+      } else if (tname == "volume") {
+          sort_order = 'total_sales_des';
+      } else if (tname == "real_price") {
+          n++;
+          if (n % 2 == 0) {
+              sort_order = 'price_des';
+          } else {
+              sort_order = 'price_asc';
+          }
+      } else if (tname == "discount") {
+          sort_order = 'tk_rate_des';
+      }
+        if (tname == 0) {
+            var pageNum = 1;
+            loadMyFa(true, keyword);
+            // 监听事件apiReady滚动到底部，加载更多功能
+            api.addEventListener({
+                name: 'scrolltobottom',
+                extra: {
+                    threshold: 120 //设置距离底部多少距离时触发，默认值为0，数字类型
+                }
+            }, function(ret, err) {
+
+                loadMyFa(false, keyword);
+            });
+        } else {
+            afterDianji(true, tname);
+            api.addEventListener({
+                name: 'scrolltobottom',
+                extra: {
+                    threshold: 120 //设置距离底部多少距离时触发，默认值为0，数字类型
+                }
+            }, function(ret, err) {
+                afterDianji(false, tname);
+            });
+        }
+    }
+    // 查询搜索限制
+    function fnxianzhi() {
+        var obj = {}
+        var objArr = sort_ASCII(obj);
+        var timestamp = fntimestamp();
+        var version = '2.0';
+        var arr = apiSecret + timestamp + version + '';
+        for (i in objArr) {
+            arr += objArr[i];
+        }
+        // console.log(arr);
+        var sign = hex_md5(arr);
+        api.ajax({
+            url: commonUrl + 'soukeAppTttService/service/api/getvolumeandcommission_ac',
+            method: 'post',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            data: {
+                body: {
+                    'apiKey': apiKey,
+                    'timestamp': timestamp,
+                    'sign': sign
+                }
+            }
+        }, function(ret, err) {
+            // console.log("搜索限制结果" + JSON.stringify(ret));
+            if (ret) {
+                volume = ret.result_volume;
+                commission = ret.result_commission;
+                price = ret.result_price;
+                // search_hint = ret.result_search_hint;
+                // $("#top-sousuo").attr("placeholder", search_hint);
+            } else {
+                api.toast({
+                    msg: ret.result_message,
+                    duration: 2000,
+                    location: 'middle'
+                });
+
+            }
+        });
+    }
+
+    function afterDianji(isPull, tname) {
+        //如果不是下拉刷新同时数据取完了
+        if (!isPull && isOver) {
+            return;
+        }
+        //判断如果是下拉刷刷，
+        // if (isPull) {
+        //
+        //     pageNum = 1;
+        //     isOver = false;
+        // }
+        var obj = {
+            'sort': sort_order,
+            'page_size': 10,
+            'page_no': pageNum,
+            'start_tk_rate': commission,
+            'start_price': price
+        };
+        var objArr = sort_ASCII(obj);
+        var timestamp = fntimestamp();
+        var version = '2.0';
+        var arr = apiSecret + timestamp + version + '';
+        for (i in objArr) {
+            if (objArr[i] != undefined) {
+                arr += objArr[i];
+            }
+        }
+
+        var sign = hex_md5(arr);
+        // console.log(arr);
+        api.ajax({
+            url: commonUrl + 'soukeAppTttService/service/ali/findmaterial_ac',
+
+            method: 'post',
+            headers: {
+                'Content-Type': 'application/json;charset=utf-8'
+            },
+            data: {
+                body: {
+                    'sort': sort_order,
+                    'apiKey': apiKey,
+                    'timestamp': timestamp,
+                    'sign': sign,
+                    'q': keyword,
+                    'page_size': 10,
+                    'page_no': pageNum,
+                    'start_tk_rate': commission,
+                    'start_price': price
+                }
+            }
+        }, function(ret, err) {
+            api.hideProgress();
+            if (ret) {
+                if (ret) {
+                    $(".noWlan").hide();
+                    console.log("淘宝商品信息------：" + JSON.stringify(ret));
+                    if (ret.result_data.tbk_dg_material_optional_response) {
+                        var data = ret.result_data.tbk_dg_material_optional_response.result_list.map_data;
+                        // var size = ret.result_data.size;
+                        if (data != "") {
+                            $api.css(statu, 'display:block;');
+                            pageNum++;
+                            if (data.length < 10) {
+                                statu.innerHTML = "已经到底啦 ~ 别扯了";
+                                lazyload();
+                                // 一排两个商品
+                                getTwoData(data);
+                                // 一排一个商品
+                                getOneData(data);
+                                isOver = true;
+                            } else {
+                                lazyload();
+                                // 一排两个商品
+                                getTwoData(data);
+                                // 一排一个商品
+                                getOneData(data);
+                                isOver = false;
+                            }
+                        } else {
+                            statu.innerHTML = "暂无数据";
+                        }
+
+
+                    } else {
+                        statu.innerHTML = "此宝贝没有参加淘宝推广"
+                    }
+                } else {
+                    api.toast({
+                        // msg: ret.result_message,
+                        msg: "瞬间有些拥堵，请重试…",
+                        duration: 2000,
+                        location: 'middle'
+                    });
+
+                }
+            } else {
+                $(".noWlan").show();
+                serviceErr();
+                // api.alert({
+                //     msg: JSON.stringify(err)
+                // });
+            }
+        });
+
+    }
+
+    function loadMyFa(isPull, keyword) {
+        // alert(pageNum);
+        if (!isPull && isOver) {
+            return;
+        }
+        //判断如果是下拉刷新，
+        if (isPull) {
+            pageNum = 1;
+            isOver = false;
+        }
+        var obj = {
+            'sort': sort_order,
+            'page_size': 10,
+            'page_no': pageNum,
+            'start_tk_rate': commission,
+            'start_price': price
+        };
+        var objArr = sort_ASCII(obj);
+        var timestamp = fntimestamp();
+        var version = '2.0';
+        var arr = apiSecret + timestamp + version + '';
+        for (i in objArr) {
+            if (objArr[i] != undefined) {
+                arr += objArr[i];
+            }
+        }
+
+        var sign = hex_md5(arr);
+        console.log(arr);
+        api.ajax({
+            url: commonUrl + 'soukeAppTttService/service/ali/findmaterial_ac',
+
+            method: 'post',
+            headers: {
+                'Content-Type': 'application/json;charset=utf-8'
+            },
+            data: {
+                body: {
+                    'sort': sort_order,
+                    'apiKey': apiKey,
+                    'timestamp': timestamp,
+                    'sign': sign,
+                    'q': keyword,
+                    'page_size': 10,
+                    'page_no': pageNum,
+                    'start_tk_rate': commission,
+                    'start_price': price
+                }
+            }
+        }, function(ret, err) {
+            api.hideProgress();
+            if (ret) {
+                if (ret) {
+                    $(".noWlan").hide();
+                    console.log("淘宝商品信息------：" + JSON.stringify(ret));
+                    if (ret.result_data.tbk_dg_material_optional_response) {
+                        var data = ret.result_data.tbk_dg_material_optional_response.result_list.map_data;
+                        // var size = ret.result_data.size;
+                        if (data != "") {
+                            $api.css(statu, 'display:block;');
+                            pageNum++;
+                            if (data.length < 10) {
+                                statu.innerHTML = "已经到底啦 ~ 别扯了";
+                                // lazyload();
+                                // 一排两个商品
+                                getTwoData(data);
+                                // 一排一个商品
+                                getOneData(data);
+                                // isOver = true;
+                            } else {
+                                // lazyload();
+                                // 一排两个商品
+                                getTwoData(data);
+                                // 一排一个商品
+                                getOneData(data);
+                            }
+                        } else {
+                            statu.innerHTML = "暂无数据";
+                        }
+
+
+                    } else {
+                        statu.innerHTML = "此宝贝没有参加淘宝推广"
+                    }
+                } else {
+                    api.toast({
+                        // msg: ret.result_message,
+                        msg: "瞬间有些拥堵，请重试…",
+                        duration: 2000,
+                        location: 'middle'
+                    });
+
+                }
+            } else {
+                $(".noWlan").show();
+                serviceErr();
+                // api.alert({
+                //     msg: JSON.stringify(err)
+                // });
+            }
+        });
+    }
+    //一排2个商品
+    function getTwoData(data) {
+      var html = '';
+      for (var i = 0; i < data.length; i++) {
+          if (data[i].coupon_amount == undefined || data[i].coupon_amount == "") {
+              var coupon_amount = 0;
+              var qh_price = data[i].zk_final_price - coupon_amount;
+              var tk_fee = qh_price * data[i].commission_rate / 10000;
+          } else {
+              var qh_price = data[i].zk_final_price - data[i].coupon_amount;
+              var tk_fee = qh_price * data[i].commission_rate / 10000;
+          }
+          var tkfee = "0.00";
+          if (user_id == "") {
+              tkfee = (tk_fee * my_share_rebate * min_share_rebate) / 10000;
+          } else {
+              tkfee = (tk_fee * my_share_rebate * share_rebate) / 10000;
+          }
+          html += '<div class="yh_card" style="cursor:pointer;"  tapmode onclick="openGoodDel(' + data[i].num_iid + ',-1);">';
+          html += '<div class="yh_img_div">';
+          html += '<img src="' + data[i].pict_url + '" class="yh_card_img 1" />';
+          if (tkfee != 0 && !isNaN(tkfee)) {
+              html += '<div class="yh_bottom">预估佣金' + Math.floor(tkfee * 100) / 100 + '</div>';
+          }
+          html += '</div>';
+          html += '<div style="background:#fff;padding:0.5rem;">';
+          if (empty(data[i].coupon_amount)) {
+              if (data[i].user_type == "1") {
+                  html += '<div class="good_title"><img src="../../image/sharepage_tianmao.png" alt="" class="tt">' + data[i].title + '</div>';
+                  html += '<div class="tm_price">';
+                  html += '<div class="tm_left">天猫价 ￥' + data[i].reserve_price + '</div>';
+                  html += '<div class="tm_right">月销：' + data[i].volume + '</div>';
+                  html += '</div>';
+              } else if (data[i].user_type == "0") {
+                  html += '<div class="good_title"><img src="../../image/sharepage_taobao.png" alt="" class="tt">' + data[i].title + '</div>';
+                  html += '<div class="tm_price">';
+                  html += '<div class="tm_left">淘宝价 ￥' + data[i].reserve_price + '</div>';
+                  html += '<div class="tm_right">月销：' + data[i].volume + '</div>';
+                  html += '</div>';
+              }
+          } else {
+              if (data[i].user_type == "1") {
+                  html += '<div class="good_title"><img src="../../image/sharepage_tianmao.png" alt="" class="tt">' + data[i].title + '</div>';
+                  html += '<div class="tm_price">';
+                  html += '<div class="tm_left">天猫价 ￥' + data[i].zk_final_price + '</div>';
+                  html += '<div class="tm_right">月销：' + data[i].volume + '</div>';
+                  html += '</div>';
+              } else if (data[i].user_type == "0") {
+                  html += '<div class="good_title"><img src="../../image/sharepage_taobao.png" alt="" class="tt">' + data[i].title + '</div>';
+                  html += '<div class="tm_price">';
+                  html += '<div class="tm_left">淘宝价 ￥' + data[i].zk_final_price + '</div>';
+                  html += '<div class="tm_right">月销：' + data[i].volume + '</div>';
+                  html += '</div>';
+              }
+          }
+          html += '<div class="qh_price">';
+          if (data[i].coupon_amount == 0 || empty(data[i].coupon_amount)) {
+              html += '<div class="qh_left"><span class="qh_left_quan">折扣价￥</span>&nbsp;' + data[i].zk_final_price + '</div>';
+          } else {
+              html += '<div class="qh_left"><span class="qh_left_quan">券后￥</span>&nbsp;' + Math.floor(qh_price * 100) / 100 + '</div>';
+              html += '<div class="qh_right">' + data[i].coupon_amount + '元券</div>';
+          }
+          html += '</div>';
+          html += '</div>';
+          html += '</div>';
+      }
+      if (!isOver) {
+          //     $api.byId('box').innerHTML = html;
+          // } else {
+          $api.byId('box').innerHTML += html;
+      }
+    }
+    //一排一个商品
+    function getOneData(data) {
+        var cont_1 = '';
+        for (var i = 0; i < data.length; i++) {
+            if (data[i].coupon_amount == undefined || data[i].coupon_amount == "") {
+                var coupon_amount = 0;
+                var qh_price = data[i].zk_final_price - coupon_amount;
+                var tk_fee = qh_price * data[i].commission_rate / 10000;
+            } else {
+                var qh_price = data[i].zk_final_price - data[i].coupon_amount;
+                var tk_fee = qh_price * data[i].commission_rate / 10000;
+            }
+            var tkfee = "0.00";
+            if (user_id == "") {
+                tkfee = (tk_fee * my_share_rebate * min_share_rebate) / 10000;
+            } else {
+                tkfee = (tk_fee * my_share_rebate * share_rebate) / 10000;
+            }
+            cont_1 += '<div class="box_1" tapmode onclick="openGoodDel(' + data[i].num_iid + ',-1);">';
+            cont_1 += '<div class="d_card">';
+            cont_1 += '<div class="d_card_img">';
+            cont_1 += '<img src="../../image/album_d.png" data-original="' + data[i].pict_url + '" class="lazyimg" alt="">';
+            if (tkfee != 0 && !isNaN(tkfee)) {
+                cont_1 += '<div class="d_bottom">预估佣金' + Math.floor(tkfee * 100) / 100 + '</div>';
+            }
+            cont_1 += '</div>';
+            cont_1 += '<div class="d_right">';
+            cont_1 += '<div class="right_card">';
+            cont_1 += '<div class="rightA">';
+            cont_1 += '<div class="right_top">';
+            cont_1 += '<div class="top_title">' + data[i].title + '</div>';
+            cont_1 += '<div class="top_title_del">店铺：' + data[i].shop_title + '</div>';
+            cont_1 += '</div>';
+            cont_1 += '<div class="right_bottom">';
+            cont_1 += '<div class="right_bottom_1">';
+            if (empty(data[i].coupon_amount)) {
+                if (data[i].user_type == "1") {
+                    cont_1 += '<div class="right_tm">天猫价  ￥' + data[i].reserve_price + '</div>';
+                } else if (data[i].user_type == "0") {
+                    cont_1 += '<div class="right_tm">淘宝价  ￥' + data[i].reserve_price + '</div>';
+                }
+            } else {
+                if (data[i].user_type == "1") {
+                    cont_1 += '<div class="right_tm">天猫价  ￥' + data[i].zk_final_price + '</div>';
+                } else if (data[i].user_type == "0") {
+                    cont_1 += '<div class="right_tm">淘宝价  ￥' + data[i].zk_final_price + '</div>';
+                }
+            }
+            cont_1 += '<div class="right_yx">月销：' + data[i].volume + '</div>';
+            cont_1 += '</div>';
+            cont_1 += '<div class="right_bottom_2">';
+            if (data[i].coupon_amount == 0 || empty(data[i].coupon_amount)) {
+                cont_1 += '<div class="right_qhj"><span class="zhekoujia">折扣价</span>￥ ' + data[i].zk_final_price + '</div>';
+            } else {
+                cont_1 += '<div class="right_qhj"><span class="zhekoujia">券后价</span>￥ ' + Math.floor(qh_price * 100) / 100 + '</div>';
+                cont_1 += '<div class="right_quan">' + data[i].coupon_amount + '元券</div>';
+            }
+            cont_1 += '</div>';
+            cont_1 += '</div>';
+            cont_1 += '</div>';
+            cont_1 += '</div>';
+            cont_1 += '</div>';
+            cont_1 += '</div>';
+            cont_1 += '</div>';
+        }
+        if (!isOver) {
+            //     $api.byId('box_1').innerHTML = cont_1;
+            // } else {
+            $api.byId('box_1').innerHTML += cont_1;
+        }
+    }
+</script>
+
+</html>

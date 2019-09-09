@@ -1,0 +1,1976 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0" />
+    <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+    <title>搜索结果页</title>
+    <link rel="stylesheet" type="text/css" href="../../css/api.css" />
+    <link rel="stylesheet" type="text/css" href="../../css/style.css" />
+    <!-- <link rel="stylesheet" type="text/css" href="../../css/aui.css" /> -->
+    <style>
+        /* 返回顶部样式开始 */
+
+        .actGotop {
+            position: fixed;
+            _position: absolute;
+            bottom: 3rem;
+            right: 0.5rem;
+            width: 3.5rem;
+            height: 3.5rem;
+            display: none;
+            z-index: 999
+        }
+
+        .actGotop a,
+        .actGotop a:link {
+            width: 3.5rem;
+            height: 3.5rem;
+            display: inline-block;
+            background: url(../../image/ic_back_top.png) no-repeat;
+            background-size: 3.5rem 3.5rem;
+            outline: none;
+        }
+
+        .actGotop a:hover {
+            background: url(../../image/ic_back_top.png) no-repeat;
+            outline: none;
+            background-size: 3.5rem 3.5rem;
+        }
+        /* 返回顶部样式开始 */
+
+        body {
+            height: 100%;
+            width: 100%;
+            background: #fff;
+        }
+
+        header {
+            width: 100%;
+            height: 84px;
+            background: #fff;
+            overflow: hidden;
+            margin-top: 8px;
+        }
+
+        header .header-top {
+            display: -webkit-box;
+            display: -webkit-flex;
+            display: flex;
+            width: 100%;
+            height: 84px;
+            position: relative;
+            border-bottom: solid 1px #f6f6f6;
+        }
+
+        .headerItem {
+            height: 44px;
+            width: calc(100% - 24px);
+            vertical-align: middle;
+            display: inline-block;
+            position: absolute;
+            top: 0;
+            left: 12px;
+        }
+
+        .headerItem div {
+            float: left;
+        }
+
+        .headerItem .header_back {
+            width: 9px;
+            height: 16px;
+            float: left;
+            margin-top: 12px;
+        }
+
+        .headerItem .header_back img {
+            width: 9px;
+            height: 16px;
+            background-size: 100% 100%;
+            vertical-align: middle;
+        }
+
+        .headerItem .header_title {
+            width: calc(100% - 44px);
+            line-height: 44px;
+            text-align: center;
+            margin-left: 13px;
+        }
+
+        .headerItem .header_right {
+            width: 22px;
+            height: 22px;
+            float: right;
+            margin-top: 8px;
+        }
+
+        .headerItem .header_right img {
+            width: 22px;
+            height: 22px;
+            background-size: 100% 100%;
+        }
+
+        .top-sousuo {
+            height: 3.5rem;
+            width: 100%;
+            margin-top: 1.8rem;
+        }
+
+        .top_search {
+            width: 75%;
+            height: 30px;
+            margin-left: 3%;
+            margin-right: 3%;
+            background: #EDEDED;
+            border-radius: 25px;
+            font-size: 12px;
+            vertical-align: middle;
+            display: inline-block;
+            margin-top: 8px;
+            color: #888888;
+            position: relative;
+        }
+
+        .clearS {
+            position: absolute;
+            right: 0.5rem;
+            top: 0.5rem;
+            width: 0.8rem;
+            height: 0.8rem;
+            background: url(../../image/ic_title_bar_edit_clear.png) no-repeat;
+            background-size: 100% 100%;
+            display: none;
+        }
+
+        .top_search img {
+            width: 12px;
+            height: 13px;
+            background-size: 100% 100%;
+            margin: 8px 15px;
+            vertical-align: middle;
+        }
+
+        .top_search span {
+            width: calc(100% - 4.0rem);
+            display: inline-block;
+            position: absolute;
+            right: 2.0rem;
+            top: 0.25rem;
+        }
+
+        .top_search span input {
+            width: 100%;
+            height: 20px;
+        }
+
+        .searchBtn {
+            background: linear-gradient(to right, #FF9901, #FF2420);
+            width: calc(100% - 84%);
+            height: 30px;
+            float: right;
+            border-radius: 25px;
+            margin-right: 3%;
+            line-height: 30px;
+            text-align: center;
+            margin-top: 8px;
+            color: #fff;
+            font-size: 14px;
+        }
+        /*没搜索之前css begin*/
+        /*清除浏览器中 input重type为search中的叉号  -----ply 2018-07-04新增*/
+
+        input::-webkit-search-cancel-button {
+            display: none;
+        }
+        /*--清除IE下的 search 叉号*/
+
+        input[type=search]::-ms-clear {
+            display: none;
+        }
+        /*没搜索之前css end*/
+        /*商品列表css begin*/
+
+        .tabItem {
+            width: 100%;
+            height: auto;
+            border-bottom: solid 0.05rem #f6f6f6;
+            overflow: hidden;
+            background: #f9f9f9;
+        }
+
+        .tabItem .tab_list {
+            width: 100%;
+            height: 2.7rem;
+            background: #fff;
+            box-sizing: border-box;
+        }
+
+        .tabItem .tab_list ul li {
+            float: left;
+            height: 2.5rem;
+            position: relative;
+        }
+
+        .tabItem .tab_list ul li a {
+            width: 100%;
+            height: 2.5rem;
+            color: #333;
+        }
+
+        .tabItem .old {
+            display: block;
+            width: 100%;
+            height: 100%;
+            text-align: center;
+            font-size: 0.8rem;
+            color: #333;
+        }
+
+        .tabItem #test li .current {
+            color: #fd5f3e;
+        }
+
+        .tabItem .tab_list ul li.listB {
+            width: 22%;
+            line-height: 2.5rem;
+            text-align: center;
+            font-size: 14px;
+        }
+
+        .tabItem .tab_list ul li.listS {
+            width: 12%;
+        }
+
+        .tabItem .tab_list ul li.style_1 {
+            width: 1.8rem;
+            height: 1.6rem;
+            margin-top: 0.3rem;
+            background: url("../../image/ic_page_search_index_switch_dc.png") center center no-repeat;
+            background-size: 100% 100%;
+        }
+
+        .tabItem .tab_list ul li.style_2 {
+            width: 1.8rem;
+            height: 1.6rem;
+            background: url("../../image/ic_page_search_index_switch_sc.png") center center no-repeat;
+            margin-top: 0.3rem;
+            background-size: 100% 100%;
+        }
+
+        .tabItem ul li .current {
+            color: #fd5f3e;
+        }
+
+        .tabItem .youhuiquan_status {
+            width: calc(100%);
+            height: 30px;
+            margin: 0 auto;
+            background: #fff;
+        }
+
+        .tabItem .youhuiquan_status .has_coupon_left {
+            float: left;
+            color: #999;
+            font-size: 12px;
+            line-height: 25px;
+            padding: 0rem 1rem;
+        }
+
+        .tabItem .youhuiquan_status .has_coupon_left img {
+            width: 25px;
+            height: 15px;
+            background-size: 100% 100%;
+            vertical-align: middle;
+            margin-right: 10px;
+            display: inline-block;
+        }
+
+        .tabItem .youhuiquan_status .has_coupon_right {
+            float: right;
+            padding: 0rem 1rem;
+        }
+
+        .aui-switch {
+            width: 2.3rem;
+            height: 1.25rem;
+            position: relative;
+            vertical-align: top;
+            border: 1px solid #dddddd;
+            background: #fff;
+            border-radius: 0.6rem;
+            background-clip: content-box;
+            display: inline-block;
+            outline: none;
+            -webkit-appearance: none;
+            appearance: none;
+            -webkit-user-select: none;
+            user-select: none;
+            -webkit-box-sizing: border-box;
+            box-sizing: border-box;
+            -webkit-background-clip: padding-box;
+            background-clip: padding-box;
+            -webkit-transition: all 0.2s linear;
+            transition: all 0.2s linear;
+            margin-top: 3px;
+        }
+
+        .aui-switch:before {
+            width: 1.1rem;
+            height: 1.1rem;
+            position: absolute;
+            top: 0;
+            left: 0;
+            border-radius: 0.6rem;
+            background-color: #fff;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.4);
+            content: '';
+            -webkit-transition: left 0.2s;
+            transition: left 0.2s;
+        }
+
+        .aui-switch:checked {
+            border-color: #ec7500;
+            background-color: #fd5f3e;
+        }
+
+        .aui-switch:checked:before {
+            left: 1.1rem;
+        }
+
+        .upAttr {
+            position: absolute;
+            width: 0.4em;
+            height: 0.3rem;
+            top: 30%;
+            right: 20%;
+        }
+
+        .upAttr1 {
+            background: url(../../image/huaqian_iicon_uparrow_default.png) no-repeat;
+            background-size: 100% 100%;
+        }
+
+        .upAttr2 {
+            background: url(../../image/huaqian_icon_uparrow_selected.png) no-repeat;
+            background-size: 100% 100%;
+        }
+
+        .DownAttr {
+            position: absolute;
+            width: 0.4em;
+            height: 0.3rem;
+            top: 51%;
+            right: 20%;
+        }
+
+        .DownAttr1 {
+            background: url(../../image/huaqian_icon_downarrow_default.png) no-repeat;
+            background-size: 100% 100%;
+        }
+
+        .DownAttr2 {
+            background: url(../../image/huaqian_icon_downarrow_selected.png) no-repeat;
+            background-size: 100% 100%;
+        }
+
+        .tabItem .tj_list {
+            width: 100%;
+            height: 3.5rem;
+            overflow-x: auto;
+            overflow-y: hidden;
+            background: #F9F9F9;
+            margin-top: 0.5rem;
+        }
+
+        .tabItem .tj_list ul#tj_list {
+            /*width:800px;*/
+            height: 100%;
+        }
+
+        .tabItem .tj_list ul li {
+            height: 2.0rem;
+            line-height: 2.0rem;
+            padding: 0 20px;
+            background: #fff;
+            color: #888888;
+            text-align: center;
+            margin: 5px;
+            border-radius: 25px;
+            float: left;
+            font-size: 0.8rem;
+        }
+
+        .search_think {
+            width: 100%;
+            height: 100%;
+            background: #fff;
+            z-index: 999;
+            position: fixed;
+            display: none;
+            font-size: 12px;
+        }
+
+        .search_think ul {
+            list-style: none;
+            margin: 0;
+            padding: 0;
+        }
+
+        .search_think ul li {
+            height: 40px;
+            width: 100%;
+            line-height: 40px;
+            border-bottom: solid 1px #f4f4f4;
+            text-indent: 1em;
+        }
+
+        .fix_nav {
+            /*padding-top: 1.0rem;*/
+            position: fixed;
+            left: 0;
+            top: 0;
+            z-index: 99999;
+        }
+
+        .header-top .to_back {
+            height: 100%;
+            width: 19px;
+        }
+
+        .header-top .to_back img {
+            width: 9px;
+            height: 16px;
+            background-size: 100% 100%;
+            vertical-align: middle;
+            display: inline-block;
+            margin-top: 44px;
+            margin-left: 10px;
+        }
+
+        #box_1 {
+            display: none;
+        }
+
+        .b-line {
+            position: relative;
+        }
+
+        html,
+        body,
+        div,
+        dl,
+        dt,
+        dd,
+        ol,
+        ul,
+        li,
+        h1,
+        h2,
+        h3,
+        h4,
+        h5,
+        h6,
+        p,
+        blockquote,
+        pre,
+        button,
+        fieldset,
+        form,
+        input,
+        legend,
+        textarea,
+        th,
+        td {
+            margin: 0;
+            padding: 0;
+        }
+
+        .tab-nav {
+            height: 40px;
+            line-height: 40px;
+            display: block;
+            position: relative;
+            background: #fff;
+            z-index: 1;
+            /*width: 60%;*/
+            margin: 0 auto;
+        }
+
+        .tab-nav:after {
+            content: '';
+            position: absolute;
+            z-index: 2;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 1px;
+            border-bottom: 1px solid #e2e2e2;
+            -webkit-transform: scaleY(0.5);
+            transform: scaleY(0.5);
+            -webkit-transform-origin: 0 100%;
+            transform-origin: 0 100%;
+        }
+
+        .tab-nav-item {
+            height: 40px;
+            line-height: 40px;
+            position: relative;
+            text-align: center;
+            color: #585858;
+            font-size: 0.9rem;
+            display: block;
+            float: left;
+            width: 33.333%;
+        }
+
+        li {
+            list-style: none;
+        }
+
+        .tab-nav-item.tab-active:before {
+            content: ' ';
+            width: 50%;
+            height: 3px;
+            position: absolute;
+            left: 50%;
+            bottom: 1px;
+            margin-left: -25%;
+            z-index: 4;
+            background-image: -webkit-gradient(linear, left top, right top, from(#fd9e16), to(#ec7500));
+            background-image: -webkit-linear-gradient(left, #fd9e16, #ec7500);
+            background-image: -moz-linear-gradient(left, #fd9e16, #ec7500);
+            background-image: linear-gradient(to right, #fd9e16, #ec7500);
+            background-color: #ec7500;
+            border-radius: 4px;
+        }
+
+        .tab-nav-item.tab-active a {
+            color: #343434;
+            font-size: 0.85rem;
+        }
+
+        .tab-nav-item a {
+            display: inherit;
+            font-size: 0.85rem;
+            color: #666;
+        }
+    </style>
+</head>
+
+<body>
+    <!-- 返回顶部按钮 -->
+    <div class="actGotop">
+        <a href="javascript:;" title="返回顶部"></a>
+    </div>
+    <header id="header">
+        <div class="header-top">
+            <div class="to_back"><img src="../../image/ic_back.png" alt="" onclick="api.closeWin();"></div>
+            <div class="top-sousuo">
+                <div class="top_search" tapmode><img src="../../image/ic_title_bar_edit_glass_gray.png" /><span><input id="top-sousuo" type="search" value="" style="border:none;outline:none;" onkeypress="enterSearch(event)" placeholder="输入商品名称或粘贴淘宝标题"/></span>
+                    <div class="clearS" id="clearS" onclick="fnguanbi();" tapmode></div>
+                </div>
+                <div class="searchBtn" onclick="fnsousuo();" tapmode>搜索</div>
+            </div>
+        </div>
+    </header>
+    <!-- 搜索联想词-->
+    <div class="search_think">
+        <ul id="search_think">
+        </ul>
+    </div>
+    <!-- 商品列表 begin  -->
+    <div class="boxItem">
+        <!-- 头部导航 begin-->
+        <div class="tabItem">
+            <div class="aui-tab" data-ydui-tab="">
+                <div class="b-line">
+                    <ul class="tab-nav ">
+                        <li id="tb" class="tab-nav-item tab-active" onclick="fnSwitchFrame(0)">淘宝</li>
+                        <li id="pdd" class="tab-nav-item" onclick="fnSwitchFrame(1)">拼多多</li>
+                        <li id="jd" class="tab-nav-item" onclick="fnSwitchFrame(2)">京东</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="tab_list">
+                <ul id="test">
+                    <li class="listB"><a href="javascript:void(0)" class="old current common zonghe" tapmode onclick="dianji(0)">综合</a></li>
+                    <li class="listB"><a href="javascript:void(0)" class="old common xiaoliang" tapmode onclick="dianji('total_sales')">销量</a></li>
+                    <li class="listB"><a href="javascript:void(0)" class="old differ jiage" tapmode onclick="dianji('price')">价格</a><span class="upAttr upAttr1"></span><span class="DownAttr DownAttr1"></span></li>
+                    <li class="listB"><a href="javascript:void(0)" class="old differ quane" tapmode onclick="dianji('tk_rate')">优惠率</a></li>
+                    <li class="listS style_1" id="listS"></li>
+                </ul>
+            </div>
+            <!-- <div class="tj_list">
+          <ul id="tj_list">
+            <li>抖音同款热门</li>
+          </ul>
+        </div> -->
+            <div class="youhuiquan_status">
+                <div class="has_coupon_left"><img src="../../image/search_ticket.png" alt="">仅显示优惠券商品</div>
+                <div class="has_coupon_right">
+                    <input class="aui-switch" type="checkbox" id="has_coupon" name="coupon" /></div>
+            </div>
+        </div>
+        <!-- 头部导航 begin-->
+        <div class="box" id="box">
+            <!-- <div class="yh_card" style="cursor:pointer;" tapmode >
+            <div class="yh_img_div">
+              <img src="http://img.alicdn.com/imgextra/i4/666412682/TB2WeWtdFmWBuNjSspdXXbugXXa_!!666412682.jpg_400x400" class="yh_card_img 1" />
+              <div class="yh_bottom">爆款商品</div>
+            </div>
+            <div style="background:#fff;padding:0.5rem;">
+                <div class="good_title"><img src="../../image/sharepage_tianmao.png" alt="" class="tt">双飞人爽水喷雾学生提神醒脑驱赶蚊虫便携装喷雾清凉外出旅行60ml</div>
+                <div class="tm_price">
+                  <div class="tm_left">天猫价 ￥12</div>
+                  <div class="tm_right">月销 9</div>
+                </div>
+                <div class="qh_price">
+                    <div class="qh_left"><span class="qh_left_quan">券后￥</span>&nbsp;5.8</div>
+                    <div class="qh_right">3元券</div>
+                </div>
+            </div>
+        </div> -->
+        </div>
+        <div id="box_1">
+            <!-- <div class="d_card">
+          <div class="d_card_img">
+            <img src="http://img.alicdn.com/imgextra/i4/666412682/TB2WeWtdFmWBuNjSspdXXbugXXa_!!666412682.jpg_400x400" alt="">
+            <div class="d_bottom">爆款商品</div>
+          </div>
+          <div class="d_right">
+            <div class="right_card">
+                <div class="rightA">
+                    <div class="right_top">
+                        <div class="top_title">抖音同款   红石榴防护喷雾  150ml</div>
+                        <div class="top_title_del">30天无理由退换货！</div>
+                    </div>
+                    <div class="right_bottom">
+                      <div class="right_bottom_1">
+                        <div class="right_tm">天猫价  ￥58.8</div>
+                        <div class="right_yx">月销 5.6万</div>
+                      </div>
+                      <div class="right_bottom_2">
+                        <div class="right_qhj"><img src="../../image/ic_page_sc_gapprice.png" alt="">￥ 13.8</div>
+                        <div class="right_quan">45元券</div>
+                      </div>
+                    </div>
+                </div>
+            </div>
+          </div>
+        </div> -->
+        </div>
+        <div id="statu" style="font-size:0.8rem;color:#fd5f3e;background-color:#f5f5f5;height:30px;line-height:30px;text-align:center;clear:both;"><img src="../../image/loading.d997b79c.svg" alt="" style="width:1rem;height:1rem;vertical-align:middle;">加载中...</div>
+    </div>
+    <div class="noWlan">
+        <div class="nowlanItem">
+            <div class="no_net"><img src="../../image/no_net.png" /></div>
+            <p class="no_p">网络竟然崩溃了</p>
+            <p class="load_p">别紧张，试试看刷新页面</p>
+            <div class="loadBtn" onclick="javascript:location.reload();">点击刷新</div>
+        </div>
+    </div>
+</body>
+<script type="text/javascript" src="../../script/api.js"></script>
+<script type="text/javascript" src="../../script/jquery.js"></script>
+<script type="text/javascript" src="../../script/api_common.js"></script>
+<script type="text/javascript" src="../../script/md5.js"></script>
+<script type="text/javascript" src="../../script/tab.js"></script>
+<script type="text/javascript">
+    $(document).ready(function() {
+        // 返回顶部
+        $(window).scroll(function() {
+            if ($(window).scrollTop() >= 500) {
+                $('.actGotop').fadeIn("fast");
+            } else {
+                $('.actGotop').fadeOut(300);
+            }
+        });
+        $('.actGotop').click(function() {
+            $('html,body').animate({
+                scrollTop: '0px'
+            }, 300);
+        });
+    });
+    var keyword;
+    var user_id;
+    var type = 0; //0淘宝 1拼多多 2京东
+    var pageNum = 1;
+    var isOver = false; //默认没有取完数据
+    var statu; //滑到底部状态
+    var sort_order = 'tk_total_sales_des'; //点击筛选状态变化
+    var min_level_name, min_share_rebate, level_name, max_shop_rebate, min_shop_rebate, max_level_name; //计算淘宝佣金比率
+    var dis_level_id, shop_rebate, max_share_rebate, share_rebate, my_share_rebate, my_shop_rebate; //计算淘宝佣金比率
+    var pdd_min_level_name, pdd_min_share_rebate, pdd_level_name, pdd_max_shop_rebate, pdd_min_shop_rebate, pdd_max_level_name; //计算拼多多佣金比率
+    var pdd_dis_level_id, pdd_shop_rebate, pdd_max_share_rebate, pdd_share_rebate, pdd_share_ratio, pdd_split_rate; //计算拼多多佣金比率
+    var jd_min_level_name, jd_min_share_rebate, jd_level_name, jd_max_shop_rebate, jd_min_shop_rebate, jd_max_level_name; //计算拼多多佣金比率
+    var jd_dis_level_id, jd_shop_rebate, jd_max_share_rebate, jd_share_rebate, jd_share_ratio, jd_split_rate; //计算拼多多佣金比率
+    var has_coupon = false;
+    var tname = 0; // tname : 0综合  total_sales销量  price价格  tk_rate优惠率
+    var volume, commission, price; //限制
+    var result = [];
+    var n = 0,
+        m = 0,
+        q = 0;
+    var h = $(window).scrollTop();
+    var sliderH = $('#header').height();
+    var allH = sliderH;
+    apiready = function() {
+        if (!empty($api.getStorage("userInfo"))) {
+            user_id = $api.getStorage("userInfo").user_id;
+        } else {
+            user_id = '';
+        }
+        getEvent();
+        closePopframe();
+        statu = $api.byId('statu');
+        // api.closeFrame({
+        //     name: 'search_frame'
+        // });
+        class_ac(999);
+        jisuan(-1, user_id);
+        Pddjisuan(user_id);
+        keyword = api.pageParam.keyword;
+        type = api.pageParam.type;
+        if (type == 1) {
+            $("#pdd").addClass("tab-active");
+            $("#tb").removeClass("tab-active");
+        } else if (type == 2) {
+            $("#jd").addClass("tab-active");
+            $("#tb").removeClass("tab-active");
+        }
+        $("#top-sousuo").val(keyword);
+        findXiangguan();
+        fnxianzhi();
+        fnSwitchFrame(type);
+        // loadFresh();
+        // 商品列表数据
+        // 监听事件apiReady滚动到底部，加载更多功能
+        api.addEventListener({
+            name: 'scrolltobottom',
+            extra: {
+                threshold: 120 //设置距离底部多少距离时触发，默认值为0，数字类型
+            }
+        }, function(ret, err) {
+            loadMyFa(type, keyword);
+        });
+    };
+
+    function fnsousuo() {
+        keyword = $("#top-sousuo").val();
+        if (keyword != "") {
+            fnSwitchFrame(type);
+        } else {
+            api.toast({
+                msg: '搜索内容不能为空哦',
+                duration: 2000,
+                location: 'middle'
+            });
+        }
+    }
+
+    function fnSwitchFrame(t) {
+        console.log("搜索类型：" + t);
+        type = t;
+        isOver = false;
+        pageNum = 1;
+        keyword = $("#top-sousuo").val();
+        if (keyword == "") {
+            return;
+        }
+        $(".search_think").hide();
+        $api.byId('box').innerHTML = "";
+        $api.byId('box_1').innerHTML = "";
+        var obj = {
+            'user_id': user_id,
+            'key_word': encodeURIComponent(keyword)
+        };
+        var objArr = sort_ASCII(obj);
+        var timestamp = fntimestamp();
+        var version = '2.0';
+        var arr = apiSecret + timestamp + version + '';
+        for (i in objArr) {
+            arr += objArr[i];
+        }
+        var sign = hex_md5(arr);
+        // alert(sign);
+        api.ajax({
+            url: commonUrl + 'soukeAppTttService/service/api/addKeyword_ac',
+            method: 'post',
+            headers: {
+                'Content-Type': 'application/json;charset=utf-8'
+            },
+            data: {
+                body: {
+                    'apiKey': apiKey,
+                    'timestamp': timestamp,
+                    'sign': sign,
+                    'user_id': user_id,
+                    'key_word': keyword
+                }
+            }
+        }, function(ret, err) {
+            if (ret) {
+                if (ret.result_code == 200) {
+                    // console.log("搜索："+JSON.stringify(ret));
+                    if ($.inArray(keyword, result) == -1) {
+                        var sss = $api.getStorage('lsli');
+                        //  alert(sss);
+                        if (sss != undefined) {
+                            if (find(sss, keyword) == true) {
+                                loadMyFa(type, keyword);
+                            } else {
+                                sss.push(keyword);
+                                $api.setStorage('lsli', sss);
+                                api.execScript({
+                                    name: 'search_win',
+                                    script: 'getHistoryList();'
+                                });
+                                loadMyFa(type, keyword);
+                            }
+                        } else {
+                            result.push(keyword);
+                            $api.setStorage('lsli', result);
+                            api.execScript({
+                                name: 'search_win',
+                                script: 'getHistoryList();'
+                            });
+                            loadMyFa(type, keyword);
+                        }
+                    }
+                } else {
+                    api.toast({
+                        // msg: ret.result_message,
+                        msg: "瞬间有些拥堵，请重试…",
+                        duration: 2000,
+                        location: 'middle'
+                    });
+
+                }
+            } else {
+                serviceErr();
+                // api.alert({ msg: JSON.stringify(err) });
+            }
+        });
+    }
+    // 查询搜索限制
+    function fnxianzhi() {
+        var obj = {}
+        var objArr = sort_ASCII(obj);
+        var timestamp = fntimestamp();
+        var version = '2.0';
+        var arr = apiSecret + timestamp + version + '';
+        for (i in objArr) {
+            arr += objArr[i];
+        }
+        // console.log(arr);
+        var sign = hex_md5(arr);
+        api.ajax({
+            url: commonUrl + 'soukeAppTttService/service/api/getvolumeandcommission_ac',
+            method: 'post',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            data: {
+                body: {
+                    'apiKey': apiKey,
+                    'timestamp': timestamp,
+                    'sign': sign
+                }
+            }
+        }, function(ret, err) {
+            // console.log("搜索限制结果" + JSON.stringify(ret));
+            if (ret) {
+                volume = ret.result_volume;
+                commission = ret.result_commission;
+                price = ret.result_price;
+                search_hint = ret.result_search_hint;
+                $("#top-sousuo").attr("placeholder", search_hint);
+                var jd_status = ret.result_jd_status;
+                var pdd_status = ret.result_pdd_status;
+
+                if (jd_status == 0 && pdd_status == 0) {
+                    $("#jd").hide();
+                    $("#pdd").hide();
+                    $(".tab-nav-item").css("width", "100%");
+                } else {
+                    if (jd_status == 0) {
+                        $("#jd").hide();
+                        $(".tab-nav-item").css("width", "50%");
+                    }
+                    if (pdd_status == 0) {
+                        $("#pdd").hide();
+                        $(".tab-nav-item").css("width", "50%");
+                    }
+                }
+            } else {
+                api.toast({
+                    msg: ret.result_message,
+                    duration: 2000,
+                    location: 'middle'
+                });
+
+            }
+        });
+    }
+
+    //排序  tname : 0综合  total_sales销量  price价格  tk_rate优惠率
+    function dianji(tname) {
+        // $api.setStorage('tname', tname);
+        // sx = 1;
+        if (tname == 0) {
+            $('.zonghe').addClass('current').parent().siblings().children().removeClass('current').siblings().removeClass('DownAttr2').removeClass('upAttr2 sx_icon2');
+            sort_order = 'tk_total_sales_des';
+        } else if (tname == "total_sales") {
+            $('.xiaoliang').addClass('current').parent().siblings().children().removeClass('current').siblings().removeClass('DownAttr2').removeClass('upAttr2 sx_icon2');
+            sort_order = 'total_sales_des';
+        } else if (tname == "price") {
+            n++;
+            if (n % 2 == 0) {
+                $('.jiage').addClass('current').parent().siblings().children().removeClass('current').siblings().removeClass('DownAttr2').removeClass('upAttr2 sx_icon2');
+                $('.jiage').siblings('span').eq(1).addClass('DownAttr2').parent().siblings().children().siblings().removeClass('DownAttr2');
+                $('.jiage').siblings('span').eq(0).removeClass('upAttr2');
+                // sort_order = 'DESC';
+                sort_order = 'price_des';
+            } else {
+                $('.jiage').addClass('current').parent().siblings().children().removeClass('current').siblings().removeClass('DownAttr2').removeClass('upAttr2 sx_icon2');
+                $('.jiage').siblings('span').eq(0).addClass('upAttr2').parent().siblings().children().siblings().removeClass('upAttr2');
+                $('.jiage').siblings('span').eq(1).removeClass('DownAttr2');
+                // sort_order = 'ASC';
+                sort_order = 'price_asc';
+            }
+        } else if (tname == "tk_rate") {
+            $('.quane').addClass('current').parent().siblings().children().removeClass('current').siblings().removeClass('DownAttr2').removeClass('upAttr2 sx_icon2');
+            sort_order = 'tk_rate_des';
+        }
+
+        pageNum = 1;
+        isOver = false;
+        $api.byId('box').innerHTML = "";
+        $api.byId('box_1').innerHTML = "";
+        loadMyFa(type, keyword);
+        // 监听事件apiReady滚动到底部，加载更多功能
+        api.addEventListener({
+            name: 'scrolltobottom',
+            extra: {
+                threshold: 120 //设置距离底部多少距离时触发，默认值为0，数字类型
+            }
+        }, function(ret, err) {
+
+            loadMyFa(type, keyword);
+        });
+
+    }
+
+    // isOver: 数据是否取完     type:0淘宝 1拼多多 2京东
+    function loadMyFa(type, keyword) {
+        api.showProgress({
+            style: 'default',
+            animationType: 'fade',
+            title: '数据加载中',
+            text: '',
+            modal: false
+        });
+        console.log(keyword);
+        if (isOver) {
+            api.hideProgress();
+            return;
+        }
+
+        // //判断如果是下拉刷新，
+        // if (isPull) {
+        //     pageNum = 1;
+        //     isOver = false;
+        // }
+        if (type == 0) {
+            //淘宝搜索
+            findTaobao(keyword);
+        } else if (type == 1) {
+            //拼多多搜索
+            findPddSingle(keyword);
+        } else if (type == 2) {
+            //京东搜索
+            findJdSingle(keyword)
+            // api.hideProgress(keyword);
+            // statu.innerHTML = "已经到底啦 ~ 别扯了";
+            // return;
+        }
+    }
+    //拼多多搜索
+    function findPddSingle(keyword) {
+        console.log(keyword);
+        if (isOver) {
+            return;
+        }
+        //判断如果是下拉刷新，
+        // if (isPull) {
+        //     pageNum = 1;
+        //     isOver = false;
+        // }
+        var with_coupon = 0;
+        if (has_coupon) {
+            with_coupon = 1;
+        } else {
+            with_coupon = 0;
+        }
+        var pdd_sort_order = 0
+        if (sort_order == 'tk_total_sales_des') {
+            pdd_sort_order = 0;
+        } else if (sort_order == 'total_sales_des') {
+            pdd_sort_order = 6;
+        } else if (sort_order == 'price_des') {
+            pdd_sort_order = 4;
+        } else if (sort_order == 'price_asc') {
+            pdd_sort_order = 3;
+        } else if (sort_order == 'tk_rate_des') {
+            pdd_sort_order = 2;
+        }
+        var size = 10;
+        var obj = {
+            'sort_type': pdd_sort_order,
+            'key_word': encodeURIComponent($api.byId("top-sousuo").value),
+            'size': size,
+            'page_no': pageNum,
+            'with_coupon': with_coupon
+        };
+        var objArr = sort_ASCII(obj);
+        var timestamp = fntimestamp();
+        var version = '2.0';
+        var arr = apiSecret + timestamp + version + '';
+        for (i in objArr) {
+            arr += objArr[i];
+        }
+
+        var sign = hex_md5(arr);
+        // console.log(arr);
+        api.ajax({
+            url: commonUrl + 'soukeAppTttService/service/pdd/findPddSingle',
+            method: 'post',
+            headers: {
+                'Content-Type': 'application/json;charset=utf-8'
+            },
+            data: {
+                body: {
+                    'apiKey': apiKey,
+                    'timestamp': timestamp,
+                    'sign': sign,
+                    'sort_type': pdd_sort_order,
+                    'key_word': $api.byId("top-sousuo").value,
+                    'size': size,
+                    'page_no': pageNum,
+                    'with_coupon': with_coupon
+                }
+            }
+        }, function(ret, err) {
+            api.hideProgress();
+            if (ret) {
+                if (ret.result_code == 200) {
+                    // openinstall上报拼多多搜索数据
+                    if (openinstaus == 1) {
+                    var openinstall = api.require('openinstall');
+                    openinstall.reportEffectPoint({
+                        effectId: 'PddSearch',
+                        effectValue: 1
+                    });
+                  }
+                    $(".noWlan").hide();
+                    console.log("商品信息：" + JSON.stringify(ret));
+                    if (ret.result_data.hasOwnProperty("error_response")) {
+                        var error_msg = ret.result_data.error_response.error_msg;
+                        api.toast({
+                            msg: error_msg,
+                            duration: 2000,
+                            location: 'middle'
+                        });
+                        statu.innerHTML = "暂无数据";
+                        return;
+                    }
+                    if (ret.result_data.goods_search_response.goods_list) {
+                        var data = ret.result_data.goods_search_response.goods_list;
+                        console.log(JSON.stringify(data))
+                        // var size = ret.result_data.goods_search_response.total_count;
+                        if (data != "") {
+                            // $api.css(statu, 'display:block;');
+                            pageNum++;
+                            if (data.length < size) {
+                                statu.innerHTML = "已经到底啦 ~ 别扯了";
+                                getTwoPddData(data);
+                                getOnePddData(data);
+                                isOver = true;
+                            } else {
+                                getTwoPddData(data);
+                                getOnePddData(data);
+                            }
+                        } else {
+                            statu.innerHTML = "暂无数据";
+                        }
+                        // console.log("+++++++++++++++++++++++++++："+JSON.stringify(data));
+                    } else {
+                        statu.innerHTML = "此宝贝没有参加拼多多推广"
+                    }
+                } else {
+                    // alert(JSON.stringify(ret));
+                    api.toast({
+                        msg: ret.result_message,
+                        duration: 2000,
+                        location: 'middle'
+                    });
+                }
+
+            } else {
+                $(".noWlan").hide();
+                serviceErr();
+                // api.alert({
+                //     msg: JSON.stringify(err)
+                // });
+
+            }
+        });
+
+    }
+    //淘宝搜索
+    function findTaobao(keyword) {
+        var obj = {
+            'sort': sort_order,
+            'page_size': 10,
+            'page_no': pageNum,
+            'has_coupon': has_coupon,
+            'start_tk_rate': commission,
+            'start_price': price
+        };
+        var objArr = sort_ASCII(obj);
+        var timestamp = fntimestamp();
+        var version = '2.0';
+        var arr = apiSecret + timestamp + version + '';
+        for (i in objArr) {
+            if (objArr[i] != undefined) {
+                arr += objArr[i];
+            }
+        }
+
+        var sign = hex_md5(arr);
+        console.log(arr);
+        api.ajax({
+            url: commonUrl + 'soukeAppTttService/service/ali/findmaterial_ac',
+
+            method: 'post',
+            headers: {
+                'Content-Type': 'application/json;charset=utf-8'
+            },
+            data: {
+                body: {
+                    'sort': sort_order,
+                    'apiKey': apiKey,
+                    'timestamp': timestamp,
+                    'sign': sign,
+                    'q': keyword,
+                    'page_size': 10,
+                    'page_no': pageNum,
+                    'has_coupon': has_coupon,
+                    'start_tk_rate': commission,
+                    'start_price': price
+                }
+            }
+        }, function(ret, err) {
+            api.hideProgress();
+            if (ret) {
+                if (ret) {
+                    // openinstall上报淘宝搜索数据
+                    if (openinstaus == 1) {
+                    var openinstall = api.require('openinstall');
+                    openinstall.reportEffectPoint({
+                        effectId: 'TbSearch',
+                        effectValue: 1
+                    });
+                  }
+                    $(".noWlan").hide();
+                    console.log("淘宝商品信息------：" + JSON.stringify(ret));
+                    if (ret.result_data.tbk_dg_material_optional_response) {
+                        var data = ret.result_data.tbk_dg_material_optional_response.result_list.map_data;
+                        // var size = ret.result_data.size;
+                        if (data != "") {
+                            $api.css(statu, 'display:block;');
+                            pageNum++;
+                            if (data.length < 10) {
+                                statu.innerHTML = "已经到底啦 ~ 别扯了";
+                                lazyload();
+                                // 一排两个商品
+                                getTwoData(data);
+                                // 一排一个商品
+                                getOneData(data);
+                                isOver = true;
+                            } else {
+                                lazyload();
+                                // 一排两个商品
+                                getTwoData(data);
+                                // 一排一个商品
+                                getOneData(data);
+                            }
+                        } else {
+                            statu.innerHTML = "暂无数据";
+                        }
+
+
+                    } else {
+                        statu.innerHTML = "此宝贝没有参加淘宝推广"
+                    }
+                } else {
+                    api.toast({
+                        // msg: ret.result_message,
+                        msg: "瞬间有些拥堵，请重试…",
+                        duration: 2000,
+                        location: 'middle'
+                    });
+
+                }
+            } else {
+                $(".noWlan").show();
+                serviceErr();
+                // api.alert({
+                //     msg: JSON.stringify(err)
+                // });
+            }
+        });
+    }
+
+    //京东搜索
+    var jd_sort_order = 'price';
+    var sort = 'desc';
+    function findJdSingle(keyword) {
+        if (has_coupon) {
+            with_coupon = 1;
+        } else {
+            with_coupon = 0;
+        }
+        if (sort_order == 'tk_total_sales_des') {
+            jd_sort_order = 'price';
+            sort = 'desc'
+        } else if (sort_order == 'total_sales_des') {
+            jd_sort_order = 'inOrderCount30Days';
+            sort = 'desc'
+        } else if (sort_order == 'price_des') {
+            jd_sort_order = 'price';
+            sort = 'desc'
+        } else if (sort_order == 'price_asc') {
+            jd_sort_order = 'price';
+            sort = 'asc'
+        } else if (sort_order == 'tk_rate_des') {
+            jd_sort_order = 'commission';
+            sort = 'desc'
+        }
+        var obj = {
+          'key_word': encodeURIComponent($api.byId("top-sousuo").value),
+          'size': 10,
+          'page_no': pageNum,
+          'with_coupon': with_coupon,
+          'sortName': jd_sort_order,
+          'sort' : sort
+        };
+        var objArr = sort_ASCII(obj);
+        var timestamp = fntimestamp();
+        var version = '2.0';
+        var arr = apiSecret + timestamp + version + '';
+        for (i in objArr) {
+            if (objArr[i] != undefined) {
+                arr += objArr[i];
+            }
+        }
+
+        var sign = hex_md5(arr);
+        // console.log(arr);
+        api.ajax({
+            url: commonUrl + 'soukeAppTttService/service/jd/findJdSingle',
+
+            method: 'post',
+            headers: {
+                'Content-Type': 'application/json;charset=utf-8'
+            },
+            data: {
+                body: {
+                  'apiKey': apiKey,
+                  'timestamp': timestamp,
+                  'sign': sign,
+                  'sortName': jd_sort_order,
+                  'key_word': $api.byId("top-sousuo").value,
+                  'size': 10,
+                  'page_no': pageNum,
+                  'sort' : sort,
+                  'with_coupon': with_coupon
+                }
+            }
+        }, function(ret, err) {
+            api.hideProgress();
+            if (ret) {
+                if (ret) {
+                    // openinstall上报搜索数据
+                    if (openinstaus == 1) {
+                    var openinstall = api.require('openinstall');
+                    openinstall.reportEffectPoint({
+                        effectId: 'JdSearch',
+                        effectValue: 1
+                    });
+                  }
+                    $(".noWlan").hide();
+                    console.log("JD商品信息------：" + JSON.stringify(ret));
+                    if (ret.result_data.sysOriginalMsg) {
+                        var data = ret.result_data.data;
+                        // alert(JSON.stringify(data))
+                        // var size = ret.result_data.size;
+                        if (data != "") {
+                            $api.css(statu, 'display:block;');
+                            pageNum++;
+                            if (data.length < 10) {
+                                statu.innerHTML = "已经到底啦 ~ 别扯了";
+                                lazyload();
+                                // 一排两个商品
+                                getTwoJdData(data);
+                                // 一排一个商品
+                                getOneJdData(data);
+                                isOver = true;
+                            } else {
+                                lazyload();
+                                // 一排两个商品
+                                getTwoJdData(data);
+                                // 一排一个商品
+                                getOneJdData(data);
+                            }
+                        } else {
+                            statu.innerHTML = "暂无数据";
+                        }
+
+
+                    } else {
+                        statu.innerHTML = "此宝贝没有参加京东推广"
+                    }
+                } else {
+                    api.toast({
+                        // msg: ret.result_message,
+                        msg: "瞬间有些拥堵，请重试…",
+                        duration: 2000,
+                        location: 'middle'
+                    });
+
+                }
+            } else {
+                $(".noWlan").show();
+                serviceErr();
+                // api.alert({
+                //     msg: JSON.stringify(err)
+                // });
+            }
+        });
+    }
+
+    //一排2个商品
+    function getTwoData(data) {
+        var html = '';
+        for (var i = 0; i < data.length; i++) {
+            if (data[i].coupon_amount == undefined || data[i].coupon_amount == "") {
+                var coupon_amount = 0;
+                var qh_price = data[i].zk_final_price - coupon_amount;
+                var tk_fee = qh_price * data[i].commission_rate / 10000;
+            } else {
+                var qh_price = data[i].zk_final_price - data[i].coupon_amount;
+                var tk_fee = qh_price * data[i].commission_rate / 10000;
+            }
+            var tkfee = "0.00";
+            if (user_id == "") {
+                tkfee = (tk_fee * my_share_rebate * min_share_rebate) / 10000;
+            } else {
+                tkfee = (tk_fee * my_share_rebate * share_rebate) / 10000;
+            }
+            html += '<div class="yh_card" style="cursor:pointer;"  tapmode onclick="openGoodDel(' + data[i].num_iid + ',-1);">';
+            html += '<div class="yh_img_div">';
+            html += '<img src="' + data[i].pict_url + '" class="yh_card_img 1" />';
+            if (tkfee != 0 && !isNaN(tkfee)) {
+                html += '<div class="yh_bottom">预估佣金' + Math.floor(tkfee * 100) / 100 + '</div>';
+            }
+            html += '</div>';
+            html += '<div style="background:#fff;padding:0.5rem;">';
+            if (empty(data[i].coupon_amount)) {
+                if (data[i].user_type == "1") {
+                    html += '<div class="good_title"><img src="../../image/sharepage_tianmao.png" alt="" class="tt">' + data[i].title + '</div>';
+                    html += '<div class="tm_price">';
+                    html += '<div class="tm_left">天猫价 ￥' + data[i].reserve_price + '</div>';
+                    html += '<div class="tm_right">月销：' + data[i].volume + '</div>';
+                    html += '</div>';
+                } else if (data[i].user_type == "0") {
+                    html += '<div class="good_title"><img src="../../image/sharepage_taobao.png" alt="" class="tt">' + data[i].title + '</div>';
+                    html += '<div class="tm_price">';
+                    html += '<div class="tm_left">淘宝价 ￥' + data[i].reserve_price + '</div>';
+                    html += '<div class="tm_right">月销：' + data[i].volume + '</div>';
+                    html += '</div>';
+                }
+            } else {
+                if (data[i].user_type == "1") {
+                    html += '<div class="good_title"><img src="../../image/sharepage_tianmao.png" alt="" class="tt">' + data[i].title + '</div>';
+                    html += '<div class="tm_price">';
+                    html += '<div class="tm_left">天猫价 ￥' + data[i].zk_final_price + '</div>';
+                    html += '<div class="tm_right">月销：' + data[i].volume + '</div>';
+                    html += '</div>';
+                } else if (data[i].user_type == "0") {
+                    html += '<div class="good_title"><img src="../../image/sharepage_taobao.png" alt="" class="tt">' + data[i].title + '</div>';
+                    html += '<div class="tm_price">';
+                    html += '<div class="tm_left">淘宝价 ￥' + data[i].zk_final_price + '</div>';
+                    html += '<div class="tm_right">月销：' + data[i].volume + '</div>';
+                    html += '</div>';
+                }
+            }
+            html += '<div class="qh_price">';
+            if (data[i].coupon_amount == 0 || empty(data[i].coupon_amount)) {
+                html += '<div class="qh_left"><span class="qh_left_quan">折扣价￥</span>&nbsp;' + data[i].zk_final_price + '</div>';
+            } else {
+                html += '<div class="qh_left"><span class="qh_left_quan">券后￥</span>&nbsp;' + Math.floor(qh_price * 100) / 100 + '</div>';
+                html += '<div class="qh_right">' + data[i].coupon_amount + '元券</div>';
+            }
+            html += '</div>';
+            html += '</div>';
+            html += '</div>';
+        }
+        if (!isOver) {
+            //     $api.byId('box').innerHTML = html;
+            // } else {
+            $api.byId('box').innerHTML += html;
+        }
+    }
+    //一排一个商品
+    function getOneData(data) {
+        var cont_1 = '';
+        for (var i = 0; i < data.length; i++) {
+            if (data[i].coupon_amount == undefined || data[i].coupon_amount == "") {
+                var coupon_amount = 0;
+                var qh_price = data[i].zk_final_price - coupon_amount;
+                var tk_fee = qh_price * data[i].commission_rate / 10000;
+            } else {
+                var qh_price = data[i].zk_final_price - data[i].coupon_amount;
+                var tk_fee = qh_price * data[i].commission_rate / 10000;
+            }
+            var tkfee = "0.00";
+            if (user_id == "") {
+                tkfee = (tk_fee * my_share_rebate * min_share_rebate) / 10000;
+            } else {
+                tkfee = (tk_fee * my_share_rebate * share_rebate) / 10000;
+            }
+            cont_1 += '<div class="box_1" tapmode onclick="openGoodDel(' + data[i].num_iid + ',-1);">';
+            cont_1 += '<div class="d_card">';
+            cont_1 += '<div class="d_card_img">';
+            cont_1 += '<img src="../../image/album_d.png" data-original="' + data[i].pict_url + '" class="lazyimg" alt="">';
+            if (tkfee != 0 && !isNaN(tkfee)) {
+                cont_1 += '<div class="d_bottom">预估佣金' + Math.floor(tkfee * 100) / 100 + '</div>';
+            }
+            cont_1 += '</div>';
+            cont_1 += '<div class="d_right">';
+            cont_1 += '<div class="right_card">';
+            cont_1 += '<div class="rightA">';
+            cont_1 += '<div class="right_top">';
+            cont_1 += '<div class="top_title">' + data[i].title + '</div>';
+            cont_1 += '<div class="top_title_del">店铺：' + data[i].shop_title + '</div>';
+            cont_1 += '</div>';
+            cont_1 += '<div class="right_bottom">';
+            cont_1 += '<div class="right_bottom_1">';
+            if (empty(data[i].coupon_amount)) {
+                if (data[i].user_type == "1") {
+                    cont_1 += '<div class="right_tm">天猫价  ￥' + data[i].reserve_price + '</div>';
+                } else if (data[i].user_type == "0") {
+                    cont_1 += '<div class="right_tm">淘宝价  ￥' + data[i].reserve_price + '</div>';
+                }
+            } else {
+                if (data[i].user_type == "1") {
+                    cont_1 += '<div class="right_tm">天猫价  ￥' + data[i].zk_final_price + '</div>';
+                } else if (data[i].user_type == "0") {
+                    cont_1 += '<div class="right_tm">淘宝价  ￥' + data[i].zk_final_price + '</div>';
+                }
+            }
+            cont_1 += '<div class="right_yx">月销：' + data[i].volume + '</div>';
+            cont_1 += '</div>';
+            cont_1 += '<div class="right_bottom_2">';
+            if (data[i].coupon_amount == 0 || empty(data[i].coupon_amount)) {
+                cont_1 += '<div class="right_qhj"><span class="zhekoujia">折扣价</span>￥ ' + data[i].zk_final_price + '</div>';
+            } else {
+                cont_1 += '<div class="right_qhj"><span class="zhekoujia">券后价</span>￥ ' + Math.floor(qh_price * 100) / 100 + '</div>';
+                cont_1 += '<div class="right_quan">' + data[i].coupon_amount + '元券</div>';
+            }
+            cont_1 += '</div>';
+            cont_1 += '</div>';
+            cont_1 += '</div>';
+            cont_1 += '</div>';
+            cont_1 += '</div>';
+            cont_1 += '</div>';
+            cont_1 += '</div>';
+        }
+        if (!isOver) {
+            //     $api.byId('box_1').innerHTML = cont_1;
+            // } else {
+            $api.byId('box_1').innerHTML += cont_1;
+        }
+    }
+    //一排2个商品
+    function getTwoPddData(data) {
+        var html = '';
+        for (var i = 0; i < data.length; i++) {
+            var real_price = data[i].min_group_price - data[i].coupon_discount;
+            var tk_fee = real_price * data[i].promotion_rate / 100000;
+            var tkfee = "0.00";
+            if (user_id == "") {
+                tkfee = (tk_fee * pdd_share_ratio * pdd_min_share_rebate) / 10000;
+            } else {
+                tkfee = (tk_fee * pdd_share_ratio * pdd_share_rebate) / 10000;
+            }
+            html += '<div class="yh_card" style="cursor:pointer;"  tapmode onclick="openPddGoodDel(' + data[i].goods_id + ');">';
+            html += '<div class="yh_img_div">';
+            html += '<img src="' + data[i].goods_thumbnail_url + '" class="yh_card_img 1" />';
+            if (tkfee != 0 && !isNaN(tkfee)) {
+                html += '<div class="yh_bottom">预估佣金' + Math.floor(tkfee * 100) / 100 + '</div>';
+            }
+            html += '</div>';
+            html += '<div style="background:#fff;padding:0.5rem;">';
+            html += '<div class="good_title"><img src="../../image/icon_pdd.png" alt="" class="tt">' + data[i].goods_name + '</div>';
+            html += '<div class="tm_price">';
+            // if (data[i].coupon_discount == 0 || empty(data[i].coupon_discount)) {
+            //     html += '<div class="tm_left">多多价 ￥' + data[i].min_normal_price / 100 + '</div>';
+            // } else {
+            html += '<div class="tm_left">多多价 ￥' + data[i].min_group_price / 100 + '</div>';
+            // }
+            html += '<div class="tm_right">月销：' + data[i].sales_tip + '</div>';
+            html += '</div>';
+            html += '<div class="qh_price">';
+            // if (data[i].coupon_discount == 0 || empty(data[i].coupon_discount)) {
+            //     var zkl = (real_price / 100) / (data[i].min_normal_price / 100) / 0.1; //计算折扣率
+            //     html += '<div class="qh_left"><span class="qh_left_quan">折扣价￥</span>&nbsp;' + real_price / 100 + '</div>';
+            //     html += '<div class="qh_right">' + Math.floor(zkl * 100) / 100 + '折</div>';
+            // } else {
+            html += '<div class="qh_left"><span class="qh_left_quan">券后￥</span>&nbsp;' + real_price / 100 + '</div>';
+            html += '<div class="qh_right">' + data[i].coupon_discount / 100 + '元券</div>';
+            // }
+            html += '</div>';
+            html += '</div>';
+            html += '</div>';
+        }
+        if (!isOver) {
+            //     $api.byId('box').innerHTML = html;
+            // } else {
+            $api.byId('box').innerHTML += html;
+        }
+    }
+    //一排一个商品
+    function getOnePddData(data) {
+        var cont_1 = '';
+        for (var i = 0; i < data.length; i++) {
+            var real_price = data[i].min_group_price - data[i].coupon_discount;
+            var tk_fee = real_price * data[i].promotion_rate / 100000;
+            var tkfee = "0.00";
+            if (user_id == "") {
+                tkfee = (tk_fee * pdd_share_ratio * pdd_min_share_rebate) / 10000;
+            } else {
+                tkfee = (tk_fee * pdd_share_ratio * pdd_share_rebate) / 10000;
+            }
+            cont_1 += '<div class="box_1" tapmode  onclick="openPddGoodDel(' + data[i].goods_id + ');">';
+            cont_1 += '<div class="d_card">';
+            cont_1 += '<div class="d_card_img">';
+            cont_1 += '<img src="' + data[i].goods_thumbnail_url + '" alt="">';
+            if (tkfee != 0 && !isNaN(tkfee)) {
+                cont_1 += '<div class="d_bottom">预估佣金' + Math.floor(tkfee * 100) / 100 + '</div>';
+            }
+            cont_1 += '</div>';
+            cont_1 += '<div class="d_right">';
+            cont_1 += '<div class="right_card">';
+            cont_1 += '<div class="rightA">';
+            cont_1 += '<div class="right_top">';
+            cont_1 += '<div class="top_title">' + data[i].goods_name + '</div>';
+            cont_1 += '<div class="top_title_del">店铺：' + data[i].mall_name + '</div>';
+
+            cont_1 += '</div>';
+            cont_1 += '<div class="right_bottom">';
+            cont_1 += '<div class="right_bottom_1">';
+            // if (data[i].coupon_discount == 0 || empty(data[i].coupon_discount)) {
+            //     cont_1 += '<div class="right_tm">多多价  ￥' + data[i].min_normal_price / 100 + '</div>';
+            // } else {
+            cont_1 += '<div class="right_tm">多多价  ￥' + data[i].min_group_price / 100 + '</div>';
+            // }
+            cont_1 += '<div class="right_yx">月销：' + data[i].sales_tip + '</div>';
+            cont_1 += '</div>';
+            cont_1 += '<div class="right_bottom_2">';
+            // if (data[i].coupon_discount == 0 || empty(data[i].coupon_discount)) {
+            //     var zkl = (real_price / 100) / (data[i].min_normal_price / 100) / 0.1; //计算折扣率
+            //     cont_1 += '<div class="right_qhj"><span class="zhekoujia">折扣价</span>￥' + real_price / 100 + '</div>';
+            //     cont_1 += '<div class="right_quan">' + Math.floor(zkl * 100) / 100 + '折</div>';
+            // } else {
+            cont_1 += '<div class="right_qhj"><span class="zhekoujia">券后价</span>￥ ' + real_price / 100 + '</div>';
+            cont_1 += '<div class="right_quan">' + data[i].coupon_discount / 100 + '元券</div>';
+            // }
+            cont_1 += '</div>';
+            cont_1 += '</div>';
+            cont_1 += '</div>';
+            cont_1 += '</div>';
+            cont_1 += '</div>';
+            cont_1 += '</div>';
+            cont_1 += '</div>';
+        }
+        if (!isOver) {
+            //     $api.byId('box_1').innerHTML = cont_1;
+            // } else {
+            $api.byId('box_1').innerHTML += cont_1;
+        }
+    }
+
+    //一排2个商品
+    function getTwoJdData(data) {
+        var html = '';
+        for (var i = 0; i < data.length; i++) {
+          if(data[i].couponInfo.hasOwnProperty("couponList")){
+            var real_price = data[i].priceInfo.price - data[i].couponInfo.couponList[0].discount;
+          }else{
+            real_price = data[i].priceInfo.price;
+            // $('qh_right').hide()
+          }
+            // var real_price = data[i].priceInfo.price - data[i].couponInfo[0].discount;
+            var tk_fee = real_price * data[i].promotion_rate / 100000;
+            var tkfee = "0.00";
+            if (user_id == "") {
+                tkfee = (tk_fee * jd_share_ratio * jd_min_share_rebate) / 10000;
+            } else {
+                tkfee = (tk_fee * jd_share_ratio * jd_share_rebate) / 10000;
+            }
+            html += '<div class="yh_card" style="cursor:pointer;"  tapmode onclick="openJdGoodDel(' + data[i].skuId + ');">';
+            html += '<div class="yh_img_div">';
+            html += '<img src="' + data[i].imageInfo.imageList[0].url + '" class="yh_card_img 1" />';
+            if (tkfee != 0 && !isNaN(tkfee)) {
+                html += '<div class="yh_bottom">预估佣金' + Math.floor(tkfee * 100) / 100 + '</div>';
+            }
+            html += '</div>';
+            html += '<div style="background:#fff;padding:0.5rem;">';
+            html += '<div class="good_title"><img src="../../image/icon_jd.png" alt="" class="tt">' + data[i].skuName + '</div>';
+            html += '<div class="tm_price">';
+            // if (data[i].coupon_discount == 0 || empty(data[i].coupon_discount)) {
+            //     html += '<div class="tm_left">多多价 ￥' + data[i].min_normal_price / 100 + '</div>';
+            // } else {
+            html += '<div class="tm_left">京东价 ￥' + data[i].priceInfo.price  + '</div>';
+            // }
+            html += '<div class="tm_right">月销：' + data[i].inOrderCount30Days + '</div>';
+            html += '</div>';
+            html += '<div class="qh_price">';
+            // if (data[i].coupon_discount == 0 || empty(data[i].coupon_discount)) {
+            //     var zkl = (real_price / 100) / (data[i].min_normal_price / 100) / 0.1; //计算折扣率
+            //     html += '<div class="qh_left"><span class="qh_left_quan">折扣价￥</span>&nbsp;' + real_price / 100 + '</div>';
+            //     html += '<div class="qh_right">' + Math.floor(zkl * 100) / 100 + '折</div>';
+            // } else {
+            html += '<div class="qh_left"><span class="qh_left_quan">券后￥</span>&nbsp;' + real_price + '</div>';
+            if(data[i].couponInfo.hasOwnProperty("couponList")){
+              // var real_price = data[i].priceInfo.price - data[i].couponInfo.couponList[0].discount;
+              html += '<div class="qh_right">' + data[i].couponInfo.couponList[0].discount + '元券</div>';
+            }else{
+              // real_price = data[i].priceInfo.price;
+               $('qh_right').hide()
+            }
+            // html += '<div class="qh_right">' + data[i].couponInfo.couponList[0].discount + '元券</div>';
+            // }
+            html += '</div>';
+            html += '</div>';
+            html += '</div>';
+        }
+        if (!isOver) {
+            //     $api.byId('box').innerHTML = html;
+            // } else {
+            $api.byId('box').innerHTML += html;
+        }
+    }
+    //一排一个商品
+    function getOneJdData(data) {
+        var cont_1 = '';
+        for (var i = 0; i < data.length; i++) {
+          if(data[i].couponInfo.hasOwnProperty("couponList")){
+            var real_price = data[i].priceInfo.price - data[i].couponInfo.couponList[0].discount;
+          }else{
+            real_price = data[i].priceInfo.price;
+            // $('qh_right').hide()
+          }
+            var tk_fee = real_price * data[i].promotion_rate / 100000;
+            var tkfee = "0.00";
+            if (user_id == "") {
+                tkfee = (tk_fee * jd_share_ratio * jd_min_share_rebate) / 10000;
+            } else {
+                tkfee = (tk_fee * jd_share_ratio * jd_share_rebate) / 10000;
+            }
+            cont_1 += '<div class="box_1" tapmode  onclick="openJdGoodDel(' + data[i].skuId + ');">';
+            cont_1 += '<div class="d_card">';
+            cont_1 += '<div class="d_card_img">';
+            cont_1 += '<img src="' + data[i].imageInfo.imageList[0].url + '" alt="">';
+            if (tkfee != 0 && !isNaN(tkfee)) {
+                cont_1 += '<div class="d_bottom">预估佣金' + Math.floor(tkfee * 100) / 100 + '</div>';
+            }
+            cont_1 += '</div>';
+            cont_1 += '<div class="d_right">';
+            cont_1 += '<div class="right_card">';
+            cont_1 += '<div class="rightA">';
+            cont_1 += '<div class="right_top">';
+            cont_1 += '<div class="top_title">' + data[i].skuName + '</div>';
+            cont_1 += '<div class="top_title_del">店铺：' + data[i].brandName + '</div>';
+
+            cont_1 += '</div>';
+            cont_1 += '<div class="right_bottom">';
+            cont_1 += '<div class="right_bottom_1">';
+            // if (data[i].coupon_discount == 0 || empty(data[i].coupon_discount)) {
+            //     cont_1 += '<div class="right_tm">多多价  ￥' + data[i].min_normal_price / 100 + '</div>';
+            // } else {
+            cont_1 += '<div class="right_tm">京东价  ￥' + data[i].priceInfo.price + '</div>';
+            // }
+            cont_1 += '<div class="right_yx">月销：' + data[i].inOrderCount30Days + '</div>';
+            cont_1 += '</div>';
+            cont_1 += '<div class="right_bottom_2">';
+            // if (data[i].coupon_discount == 0 || empty(data[i].coupon_discount)) {
+            //     var zkl = (real_price / 100) / (data[i].min_normal_price / 100) / 0.1; //计算折扣率
+            //     cont_1 += '<div class="right_qhj"><span class="zhekoujia">折扣价</span>￥' + real_price / 100 + '</div>';
+            //     cont_1 += '<div class="right_quan">' + Math.floor(zkl * 100) / 100 + '折</div>';
+            // } else {
+            cont_1 += '<div class="right_qhj"><span class="zhekoujia">券后价</span>￥ ' + real_price  + '</div>';
+            if(data[i].couponInfo.hasOwnProperty("couponList")){
+              cont_1 += '<div class="right_quan">' + data[i].couponInfo.couponList[0].discount + '元券</div>';
+            }else{
+              // real_price = data[i].priceInfo.price;
+               $('right_quan').hide()
+            }
+
+            // }
+            cont_1 += '</div>';
+            cont_1 += '</div>';
+            cont_1 += '</div>';
+            cont_1 += '</div>';
+            cont_1 += '</div>';
+            cont_1 += '</div>';
+            cont_1 += '</div>';
+        }
+        if (!isOver) {
+            //     $api.byId('box_1').innerHTML = cont_1;
+            // } else {
+            $api.byId('box_1').innerHTML += cont_1;
+        }
+    }
+
+    //切换样式按钮事件
+    $("#listS").click(function() {
+        if ($(this).hasClass("style_1")) {
+            $(this).removeClass("style_1");
+            $(this).addClass("style_2");
+            $("#box").hide();
+            $("#box_1").show();
+        } else {
+            $(this).removeClass("style_2");
+            $(this).addClass("style_1");
+            $("#box").show();
+            $("#box_1").hide();
+        }
+    });
+    //推荐列表
+    // function tuijian(keyword) {
+    //     api.ajax({
+    //         url: "http://m.sqkb.com/search/searchRecommondByWordData?sortType=7&word=" + keyword,
+    //         method: 'get',
+    //     }, function(ret, err) {
+    //         // alert( JSON.stringify( ret ) );
+    //         if (ret) {
+    //             if (ret.data.rec_word_list == "" || ret.data == undefined || ret.data == null) {
+    //                 $(".tj_list").hide();
+    //             } else {
+    //                 var data = ret.data.rec_word_list;
+    //                 var rec_cont = '';
+    //                 if (data.length > 10) {
+    //                     for (var i = 0; i < 10; i++) {
+    //                         rec_cont += '<li>' + data[i] + '</li>';
+    //                     }
+    //                 } else {
+    //                     for (var i = 0; i < data.length; i++) {
+    //                         rec_cont += '<li>' + data[i] + '</li>';
+    //                     }
+    //                 }
+    //
+    //                 $("#tj_list").append(rec_cont);
+    //                 var tjli = $("#tj_list li");
+    //                 tjli.click(function() {
+    //                     $("#top-sousuo").val($(this).html());
+    //                     $("#tj_list").html('');
+    //                     fnsousuo();
+    //                 })
+    //                 var liwidth = 0;
+    //                 for (var j = 0; j < tjli.length; j++) {
+    //                     // alert($(tjli[j]).width());
+    //                     liwidth += parseInt($(tjli[j]).width());
+    //                 }
+    //
+    //                 liwidth = (tjli.length * 60) + liwidth;
+    //                 $("#tj_list").css("width", liwidth + "px");
+    //             }
+    //         } else {
+    //             $(".tj_list").hide();
+    //         }
+    //     });
+    // }
+    //点击清空输入搜索的关键字
+    //清空搜索框关键字
+    function fnguanbi() {
+        // $(".search_think").hide();
+        $api.byId('top-sousuo').value = '';
+
+    }
+    //调用手机输入法中的搜索按键进行搜索  -----ply 2018-07-04新增
+    function enterSearch(e) {
+        keyword = $("#top-sousuo").val();
+        if (e.keyCode == 13 && keyword != "") {
+            fnsousuo();
+        } else {
+            api.toast({
+                msg: '搜索内容不能为空哦',
+                duration: 2000,
+                location: 'middle'
+            });
+        }
+    }
+    // 导航条定位
+    $(window).scroll(function() {
+        //获得当前已滚动上去的距离
+        var h = $(window).scrollTop();
+        var sliderH = $('#header').height();
+        var allH = sliderH;
+        if (h >= allH) {
+            $(".tabItem").addClass('fix_nav');
+            $(".b-line").css("margin-top", "1.5rem");
+        } else {
+            $(".tabItem").removeClass('fix_nav');
+            $(".b-line").css("margin-top", "0");
+        }
+    });
+    //列表样式
+    function class_ac(session_id) {
+        var obj = {
+            'section_id': session_id
+        };
+
+        var objArr = sort_ASCII(obj);
+        var timestamp = fntimestamp();
+        var version = '2.0';
+        var arr = apiSecret + timestamp + version + '';
+        for (i in objArr) {
+            arr += objArr[i];
+        }
+        // console.log(arr);
+        var sign = hex_md5(arr);
+        api.ajax({
+            url: commonUrl + 'soukeAppTttService/service/section/class_ac ',
+            method: 'post',
+            headers: {
+                'Content-Type': 'application/json;charset=utf-8'
+            },
+            data: {
+                body: {
+                    'apiKey': apiKey,
+                    'timestamp': timestamp,
+                    'sign': sign,
+                    'section_id': session_id
+                }
+            }
+        }, function(ret, err) {
+            if (ret) {
+                if (ret.result_code == 200) {
+                    // console.log("样式信息------："+JSON.stringify(ret));
+                    if (ret.result_class.show_type == 1) {
+                        $("#listS").removeClass("style_1");
+                        $("#listS").addClass("style_2");
+                        $("#box").hide();
+                        $("#box_1").show();
+                    } else {
+                        $("#listS").removeClass("style_2");
+                        $("#listS").addClass("style_1");
+                        $("#box").show();
+                        $("#box_1").hide();
+                    }
+                } else {
+                    api.toast({
+                        msg: ret.result_message,
+                        duration: 2000,
+                        location: 'middle'
+                    });
+
+                }
+            } else {
+                // api.alert({ msg: JSON.stringify(err) });
+            }
+        });
+    }
+    //推荐相关词
+    function findXiangguan() {
+        $("#top-sousuo").bind('input porpertychange', function() {
+            if ($("#top-sousuo").val().length > 0) {
+                $(".clearS").show();
+                api.ajax({
+                    url: 'http://m.sqkb.com/search/searchSuggestWordData?word=' + $("#top-sousuo").val(),
+                    method: 'get',
+                }, function(ret, err) {
+                    if (ret) {
+                        $(".search_think").show();
+                        // alert( JSON.stringify( ret ) );
+                        var dataList = ret.data.list;
+                        var cont = '';
+                        for (var i = 0; i < dataList.length; i++) {
+                            cont += '<li>' + dataList[i] + '</li>';
+                        }
+                        $api.byId('search_think').innerHTML = cont;
+                        var search_think = $(".search_think ul li");
+                        search_think.click(function() {
+                            $("#top-sousuo").val($(this).html());
+                            $(".search_think").hide();
+                            fnsousuo();
+                        })
+                    }
+                });
+            } else {
+                $(".search_think").hide();
+                $(".clearS").hide();
+            }
+        });
+        $("#top-sousuo").bind("input focus", function() {
+            if ($("#top-sousuo").val().length > 0) {
+                $(".clearS").show();
+            } else {
+                $(".clearS").hide();
+            }
+        })
+    };
+    //历史关键词是否包含当前搜索标题
+    function find(sss, keyword) {
+        for (var i = 0; i < sss.length; i++) {
+            if (sss[i] == keyword) {
+                return true;
+            }
+        }
+    }
+    //控制是否显示优惠券商品
+    $("#has_coupon").click(function() {
+        $api.byId('box').innerHTML = "";
+        $api.byId('box_1').innerHTML = "";
+        isOver = false;
+        pageNum = 1;
+        if ($("#has_coupon").attr("checked") == "checked") {
+            // $("#has_coupon").removeAttr("checked");
+            has_coupon = true;
+            var coupon_keyword = $("#top-sousuo").val();
+            loadMyFa(type, coupon_keyword);
+        } else {
+            // $("#has_coupon").attr("checked", true);
+            has_coupon = false;
+            var coupon_keyword = $("#top-sousuo").val();
+            loadMyFa(type, coupon_keyword);
+        }
+    })
+
+    // function closeWin() {
+    //     api.closeToWin({
+    //         name: 'search_win',
+    //         url: './search_win.html',
+    //         reload: true,
+    //         bounces: false,
+    //         allowEdit: true
+    //     });
+    // }
+</script>
+
+</html>

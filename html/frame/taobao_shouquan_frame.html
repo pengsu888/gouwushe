@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0" />
+    <title>淘宝授权</title>
+    <link rel="stylesheet" type="text/css" href="../../css/api.css" />
+    <link rel="stylesheet" type="text/css" href="../../css/aui.css" />
+    <style>
+        html,
+        body {
+            height: 100%;
+            background: #F4F4F4;
+            width: 100%;
+            overflow: hidden;
+        }
+
+        .aui-scrollView {
+            width: 100%;
+            height: 100%;
+            -webkit-box-flex: 1;
+            -webkit-flex: 1;
+            -ms-flex: 1;
+            flex: 1;
+            overflow-y: auto;
+            overflow-x: hidden;
+            -webkit-overflow-scrolling: touch;
+            /* position: relative; */
+            margin-bottom: -1px;
+        }
+
+        .aui-code-box {
+            padding: 40px 20px;
+            text-align: center;
+        }
+
+        .aui-code-box h2 {
+            color: #ff5000;
+            font-size: 1.0rem;
+            font-weight: normal;
+        }
+
+        .aui-code-box p {
+            color: #ccc;
+            font-size: 0.85rem;
+            width: 100%;
+        }
+
+        .aui-code-box p {
+            color: #999999;
+            font-size: 0.85rem;
+            width: 100%;
+        }
+
+        .aui-code-btn {
+            padding-top: 50px;
+        }
+
+        .aui-code-box button {
+            background: #ff5000;
+            height: 45px;
+            line-height: 45px;
+            border: none;
+            color: #ffffff;
+            border-radius: 30px;
+            width: 100%;
+            font-size: 0.85rem;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="aui-scrollView" id='statu'>
+        <div class="aui-code-box">
+            <h2>您尚未授权淘宝，授权后即可跳转淘宝</h2>
+            <p>点击下方按钮授权您的淘宝账号</p>
+            <p class="aui-code-btn" id="taobaoOpen">
+                <button>立即授权</button>
+            </p>
+        </div>
+    </div>
+</body>
+<script type="text/javascript" src="../../script/api.js"></script>
+<script type="text/javascript" src="../../script/jquery.js"></script>
+<script type="text/javascript" src="../../script/api_common.js"></script>
+<script type="text/javascript" src="../../script/md5.js"></script>
+<script type="text/javascript">
+    var user_id;
+    apiready = function() {
+            $("#statu").hide();
+            if (!empty($api.getStorage("userInfo"))) {
+                user_id = $api.getStorage("userInfo").user_id;
+            } else {
+                api.openWin({
+                    name: 'user_login',
+                    url: '../login/user_login.html',
+                    pageParam: {
+                        name: 'test'
+                    }
+                });
+            }
+            if ($api.getStorage('tbToken') == 1) {
+                $("#statu").hide();
+                fnTishi();
+            } else {
+                $("#statu").show();
+            }
+        }
+        // 商品异常提示弹窗
+    function fnTishi() {
+        var dialogBox = api.require('dialogBox');
+        dialogBox.alert({
+            texts: {
+                // title: '提示',
+                content: '淘宝已经授权成功啦~',
+                leftBtnTitle: '点击返回'
+            },
+            styles: {
+                bg: '#fff',
+                w: 300,
+                corner: 8,
+                title: {
+                    marginT: 20,
+                    icon: 'widget://image/icon_pay_tick_selected.png',
+                    iconSize: 40,
+                    titleSize: 18,
+                    titleColor: '#000'
+                },
+                content: {
+                    color: '#000',
+                    size: 18
+                },
+                left: {
+                    marginB: 20,
+                    marginL: 85,
+                    w: 130,
+                    h: 35,
+                    corner: 5,
+                    bg: '#ff5000',
+                    color: '#fff',
+                    size: 14
+                }
+            }
+        }, function(ret) {
+            if (ret.eventType == 'left') {
+                var dialogBox = api.require('dialogBox');
+                dialogBox.close({
+                    dialogName: 'alert'
+                });
+                api.closeWin({
+                    name: 'taobao_shouquan_win',
+                    animation: {
+                        type: "fade", //动画类型（详见动画类型常量）
+                        subType: "from_right", //动画子类型（详见动画子类型常量）
+                        duration: 300 //动画过渡时间，默认300毫秒
+                    }
+                });
+            }
+        });
+    }
+    $("#taobaoOpen").click(function() {
+        var alibaichuan = api.require('mAliBaiChuan');
+        alibaichuan.initTae(function(ret, err) {
+            if (ret) {
+                // alert("ret:" + JSON.stringify(ret));
+                alibaichuan.showLogin(function(ret, err) {
+                    if (ret) {
+                      $("#statu").hide();
+                      fnTishi();
+                        // api.toast({
+                        //     msg: '授权成功',
+                        //     duration: 2000,
+                        //     location: 'middle'
+                        // });
+                        $api.setStorage('tbToken', 1);
+                    } else {
+                        $("#taobaoOpen").attr("checked", false);
+                        api.toast({
+                            msg: '取消了授权',
+                            duration: 2000,
+                            location: 'middle'
+                        });
+                    }
+                });
+            } else {
+                // alert("err:" + JSON.stringify(err));
+            }
+        });
+    })
+</script>
+
+</html>

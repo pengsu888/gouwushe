@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0" />
+    <title>活动通知</title>
+    <link rel="stylesheet" type="text/css" href="../../css/api.css" />
+    <link rel="stylesheet" type="text/css" href="../../css/style.css" />
+    <link rel="stylesheet" type="text/css" href="../../css/aui.css" />
+    <style media="screen">
+        .aui-bar-nav.aui-bar-light .aui-iconfont {
+            color: #999999;
+            font-weight: bold;
+        }
+    </style>
+</head>
+
+<body>
+    <header class="aui-bar aui-bar-nav aui-bar-light" id="header">
+        <div class="aui-pull-left aui-btn" tapmode onclick="closeWin();">
+            <span class="aui-iconfont aui-icon-left"></span>
+        </div>
+        <div class="aui-title" id="header_title">活动通知</div>
+    </header>
+</body>
+<script type="text/javascript" src="../../script/api.js"></script>
+<script type="text/javascript" src="../../script/jquery.js"></script>
+<script type="text/javascript">
+    apiready = function() {
+        $api.fixStatusBar($api.dom('header'));
+        api.setStatusBarStyle({
+            style: 'dark' //黑色
+                // style: 'light' //白色
+        });
+        var header = $api.byId('header');
+        $api.fixStatusBar(header);
+        var headerH = $api.offset(header).h;
+        $("#header_title").html(api.pageParam.class_name);
+        api.openFrame({
+            name: 'push_hdtxOne_frame',
+            url: '../frame/push_hdtxOne_frame.html',
+            reload: true,
+            rect: {
+                x: 0,
+                y: headerH,
+                w: 'auto',
+                h: 'auto'
+            },
+            pageParam: {
+                pushType: api.pageParam.pushType
+            },
+            bounces: false
+        });
+    };
+
+    function closeWin() {
+        api.closeWin({
+            name: 'push_hdtxOne_win'
+        });
+    }
+</script>
+
+</html>

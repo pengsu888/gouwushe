@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0" />
+  <title>title</title>
+  <link rel="stylesheet" type="text/css" href="../../css/api.css" />
+  <link rel="stylesheet" type="text/css" href="../../css/style.css" />
+</head>
+
+<body>
+    <header id="header">
+      <div class="header-top">
+          <div class="headerItem">
+            <div class="header_back" onclick="closeWin();">
+              <img src="../../image/nav_back_black.png" alt="">
+            </div>
+            <div class="header_title" id="header_title">邀请好友</div>
+          </div>
+      </div>
+    </header>
+</body>
+  <script type="text/javascript" src="../../script/api.js"></script>
+  <script type="text/javascript" src="../../script/jquery.js"></script>
+  <script type="text/javascript">
+    var $body,body_h;
+    apiready = function() {
+        api.setStatusBarStyle({
+            style: 'dark' //黑色
+                // style: 'light' //白色
+        });
+        var header = $api.byId('header');
+        $api.fixStatusBar(header);
+        var headerH = $api.offset(header).h;
+        $body = $api.dom('body');
+    		body_h = $api.offset($body).h;
+        api.openFrame({
+            name: 'yaoqinghaoyou_frame',
+            url: '../frame/yaoqinghaoyou_frame.html',
+            reload:true,
+            rect: {
+                x: 0,
+                y: headerH,
+                w: 'auto',
+                h: 'auto'
+            },
+            pageParam: {
+    					body_h:body_h,
+              // user_code:api.pageParam.user_code
+    				},
+            bounces: false
+        });
+    };
+    function closeWin(){
+      api.closeWin({
+          name: 'yaoqinghaoyou_win'
+      });
+    }
+  </script>
+
+</html>

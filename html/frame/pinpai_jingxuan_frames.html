@@ -1,0 +1,343 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0" />
+    <title>品牌精选商品板块</title>
+    <link rel="stylesheet" type="text/css" href="../../css/api.css" />
+    <link rel="stylesheet" type="text/css" href="../../css/style.css" />
+    <style>
+        /* 返回顶部样式开始 */
+
+        .actGotop {
+            position: fixed;
+            _position: absolute;
+            bottom: 3rem;
+            right: 0.5rem;
+            width: 3.5rem;
+            height: 3.5rem;
+            display: none;
+            z-index: 999
+        }
+
+        .actGotop a,
+        .actGotop a:link {
+            width: 3.5rem;
+            height: 3.5rem;
+            display: inline-block;
+            background: url(../../image/ic_back_top.png) no-repeat;
+            background-size: 3.5rem 3.5rem;
+            outline: none;
+        }
+
+        .actGotop a:hover {
+            background: url(../../image/ic_back_top.png) no-repeat;
+            outline: none;
+            background-size: 3.5rem 3.5rem;
+        }
+        /* 返回顶部样式开始 */
+
+        html,
+        body {
+            height: 100%;
+            width: 100%;
+            background-color: #fff;
+            /*overflow-x: hidden;
+      overflow-y: auto;*/
+        }
+    </style>
+</head>
+
+<body>
+    <!-- 返回顶部按钮 -->
+    <div class="actGotop">
+        <a href="javascript:;" title="返回顶部"></a>
+    </div>
+    <!-- 商品列表部分 begin-->
+    <div id="box">
+        <!-- <div class="yh_card" style="cursor:pointer;" tapmode >
+  <div class="yh_img_div">
+    <img src="http://img.alicdn.com/imgextra/i4/666412682/TB2WeWtdFmWBuNjSspdXXbugXXa_!!666412682.jpg_400x400" class="yh_card_img 1" />
+    <div class="yh_bottom">爆款商品</div>
+  </div>
+  <div style="background:#fff;padding:0.5rem;">
+      <div class="good_title"><img src="../../image/sharepage_tianmao.png" alt="" class="tt">双飞人爽水喷雾学生提神醒脑驱赶蚊虫便携装喷雾清凉外出旅行60ml</div>
+      <div class="tm_price">
+        <div class="tm_left">天猫价 ￥12</div>
+        <div class="tm_right">月销 9</div>
+      </div>
+      <div class="qh_price">
+          <div class="qh_left"><span class="qh_left_quan">券后￥</span>&nbsp;5.8</div>
+          <div class="qh_right">3元券</div>
+      </div>
+  </div>
+</div> -->
+    </div>
+    <div id="box_1">
+        <!-- <div class="d_card">
+<div class="d_card_img">
+  <img src="http://img.alicdn.com/imgextra/i4/666412682/TB2WeWtdFmWBuNjSspdXXbugXXa_!!666412682.jpg_400x400" alt="">
+  <div class="d_bottom">爆款商品</div>
+</div>
+<div class="d_right">
+  <div class="right_card">
+      <div class="rightA">
+          <div class="right_top">
+              <div class="top_title">抖音同款   红石榴防护喷雾  150ml</div>
+              <div class="top_title_del">30天无理由退换货！</div>
+          </div>
+          <div class="right_bottom">
+            <div class="right_bottom_1">
+              <div class="right_tm">天猫价  ￥58.8</div>
+              <div class="right_yx">月销 5.6万</div>
+            </div>
+            <div class="right_bottom_2">
+              <div class="right_qhj"><img src="../../image/ic_page_sc_gapprice.png" alt="">￥ 13.8</div>
+              <div class="right_quan">45元券</div>
+            </div>
+          </div>
+      </div>
+  </div>
+</div>
+</div> -->
+    </div>
+    <div id="statu" style="font-size:0.8rem;color:#fd5f3e;background-color:#f5f5f5;height:30px;line-height:30px;text-align:center;clear:both;"><img src="../../image/loading.d997b79c.svg" alt="" style="width:1rem;height:1rem;vertical-align:middle;">加载中...</div>
+    <!-- 商品列表部分 end-->
+</body>
+<script type="text/javascript" src="../../script/api.js"></script>
+<script type="text/javascript" src="../../script/jquery.js"></script>
+<script type="text/javascript" src="../../script/api_common.js"></script>
+<script type="text/javascript" src="../../script/md5.js"></script>
+<script type="text/javascript">
+    $(document).ready(function() {
+        // 返回顶部
+        $(window).scroll(function() {
+            if ($(window).scrollTop() >= 500) {
+                $('.actGotop').fadeIn("fast");
+            } else {
+                $('.actGotop').fadeOut(300);
+            }
+        });
+        $('.actGotop').click(function() {
+            $('html,body').animate({
+                scrollTop: '0px'
+            }, 300);
+        });
+    });
+    var user_id;
+    var pageNum = 1;
+    var isOver = false; //默认没有取完数据
+    var statu; //滑到底部状态
+    var min_level_name, min_share_rebate, level_name, max_shop_rebate, min_shop_rebate, max_level_name; //计算佣金比率
+    var dis_level_id, shop_rebate, max_share_rebate, share_rebate, my_share_rebate, my_shop_rebate; //计算佣金比率
+    apiready = function() {
+        if (!empty($api.getStorage("userInfo"))) {
+            user_id = $api.getStorage("userInfo").user_id;
+        } else {
+            user_id = '';
+        }
+        // setTimeout(function() { //延时50毫秒
+        LoadingOne();
+        // }, 50)
+        jisuan(-1, user_id);
+        statu = $api.byId('statu');
+        loadFresh();
+        setTimeout(function() {
+            loadMyFa(true);
+        }, 500)
+        api.addEventListener({
+            name: 'scrolltobottom',
+            extra: {
+                threshold: 120 //设置距离底部多少距离时触发，默认值为0，数字类型
+            }
+        }, function(ret, err) {
+
+            loadMyFa(false);
+        });
+    };
+
+    function loadFresh() {
+        RefreshLoad();
+    }
+
+    function loadMyFa(isPull) {
+        if (!isPull && isOver) {
+            return;
+        }
+        //判断如果是下拉刷新，
+        if (isPull) {
+            pageNum = 1;
+            isOver = false;
+        }
+        console.log('http://gateway.shihuizhu.net/open/brand/' + api.pageParam.cate_collection_id + '/' + pageNum + '');
+        api.ajax({
+            url: 'http://gateway.shihuizhu.net/open/brand/' + api.pageParam.cate_collection_id + '/' + pageNum + '',
+            method: 'get',
+            headers: {
+                'Content-Type': 'application/json;charset=utf-8',
+                'APPID': '1811121757175422',
+                'APPKEY': 'c0fac0447b9bfe0e159b64c8f94d0e25'
+            },
+            data: {
+                body: {}
+            }
+        }, function(ret, err) {
+            api.hideProgress();
+            if (ret) {
+                console.log("品牌精选----：" + JSON.stringify(ret));
+                if (ret.return == 0) {
+                    var data = ret.result;
+                    // var size = ret.status_code;
+                    if (data != "") {
+                        $api.css(statu, 'display:block;');
+                        pageNum++;
+                    } else {
+                        statu.innerHTML = "暂无数据";
+                    }
+                    if (data.length < 10 && data != "") {
+                        statu.innerHTML = "已经到底啦 ~ 别扯了";
+                        isOver = true;
+                    }
+                    // getTwoData(data,isPull);
+                    getOneData(data, isPull);
+                } else {
+                    statu.innerHTML = "已经到底啦 ~ 别扯了";
+                    isOver = true;
+                }
+
+            } else {
+                // alert( JSON.stringify( err ) );
+            }
+        });
+    }
+    //一排2个商品
+    function getTwoData(data, isPull) {
+        var html = '';
+        for (var i = 0; i < data.length; i++) {
+            var tkfee = data[i].price * data[i].ratio / 100;
+            // if (data[i].ticket==null) {
+            //    tkfee =
+            // }else {
+            //    tkfee = (data[i].raw_price - data[i].ticket.coupon_price) * data[i].commission_rate / 100;
+            // }
+            html += '<div class="yh_card" style="cursor:pointer;"  tapmode onclick="openGoodDel(' + data[i].gid + ',' + data[i].video_id + ',-1);">';
+            html += '<div class="yh_img_div">';
+            html += '<img src="http://' + data[i].thumb + '" class="yh_card_img 1" />';
+            var yg_tkfee = "";
+            if (user_id == "") {
+                yg_tkfee = (tkfee * my_share_rebate * min_share_rebate) / 10000;
+                html += '<div class="yh_bottom">预估佣金' + Math.floor(yg_tkfee * 100) / 100 + '</div>';
+            } else {
+                yg_tkfee = (tkfee * my_share_rebate * share_rebate) / 10000;
+                html += '<div class="yh_bottom">预估佣金' + Math.floor(yg_tkfee * 100) / 100 + '</div>';
+            }
+            if (data[i].video_id != "") {
+                cont_1 += '<div class="video_img"><img src="../../image/goods/page_coupon_list_has_video_icon.png" alt="" /></div>';
+            }
+            html += '</div>';
+            html += '<div style="background:#fff;padding:0.5rem;">';
+            if (data[i].site == "tmall") {
+                html += '<div class="good_title"><img src="../../image/sharepage_tianmao.png" alt="" class="tt">' + data[i].title + '</div>';
+                html += '<div class="tm_price">';
+                html += '<div class="tm_left">天猫价 ￥' + data[i].prime + '</div>';
+                html += '<div class="tm_right">月销 ' + data[i].final_sales + '</div>';
+                html += '</div>';
+            } else {
+                html += '<div class="good_title"><img src="../../image/sharepage_taobao.png" alt="" class="tt">' + data[i].title + '</div>';
+                html += '<div class="tm_price">';
+                html += '<div class="tm_left">淘宝价 ￥' + data[i].prime + '</div>';
+                html += '<div class="tm_right">月销 ' + data[i].final_sales + '</div>';
+                html += '</div>';
+            }
+            html += '<div class="qh_price">';
+            if (data[i].coupon_money == "") {
+                html += '<div class="qh_left"><span class="zhekoujia">折扣价</span>￥' + data[i].price + '</div>';
+            } else {
+                html += '<div class="qh_left"><span class="zhekoujia">券后价</span>￥' + data[i].price + '</div>';
+                html += '<div class="qh_right">' + data[i].coupon_money + '元券</div>';
+            }
+            html += '</div>';
+            html += '</div>';
+            html += '</div>';
+        }
+        if (isPull) {
+            $api.byId('box').innerHTML = html;
+        } else {
+            $api.byId('box').innerHTML += html;
+        }
+    }
+
+    //一排一个商品
+    function getOneData(data, isPull) {
+        var cont_1 = '';
+        for (var i = 0; i < data.length; i++) {
+            var tkfee = data[i].price * data[i].ratio / 100;
+            cont_1 += '<div class="box_1" tapmode  onclick="openGoodDel(' + data[i].gid + ',' + data[i].video_id + ',-1);">';
+            cont_1 += '<div class="d_card">';
+            cont_1 += '<div class="d_card_img">';
+            cont_1 += '<img src="http://' + data[i].thumb + '" alt="">';
+            var yg_tkfee = "";
+            if (user_id == "") {
+                yg_tkfee = (tkfee * my_share_rebate * min_share_rebate) / 10000;
+                cont_1 += '<div class="d_bottom">预估佣金' + Math.floor(yg_tkfee * 100) / 100 + '</div>';
+            } else {
+                yg_tkfee = (tkfee * my_share_rebate * share_rebate) / 10000;
+                cont_1 += '<div class="d_bottom">预估佣金' + Math.floor(yg_tkfee * 100) / 100 + '</div>';
+            }
+            // if (data[i].video_id != "") {
+            //     cont_1 += '<div class="video_img"><img src="../../image/goods/page_coupon_list_has_video_icon.png" alt="" /></div>';
+            // }
+            cont_1 += '</div>';
+            cont_1 += '<div class="d_right">';
+            cont_1 += '<div class="right_card">';
+            cont_1 += '<div class="rightA">';
+            cont_1 += '<div class="right_top">';
+            cont_1 += '<div class="top_title">' + data[i].title + '</div>';
+            // cont_1+='<div class="top_title_del">'+data[i].sub_title+'</div>';
+            cont_1 += '</div>';
+            cont_1 += '<div class="right_bottom">';
+            cont_1 += '<div class="right_bottom_1">';
+            if (data[i].site == "tmall") {
+                cont_1 += '<div class="right_tm">天猫价  ￥' + data[i].prime + '</div>';
+            } else {
+                cont_1 += '<div class="right_tm">淘宝价  ￥' + data[i].prime + '</div>';
+            }
+            cont_1 += '<div class="right_yx">月销 ' + data[i].final_sales + '</div>';
+            cont_1 += '</div>';
+            cont_1 += '<div class="right_bottom_2">';
+            if (data[i].coupon_money == "") {
+                cont_1 += '<div class="right_qhj"><span class="zhekoujia">折扣价</span>￥' + data[i].price + '</div>';
+            } else {
+                cont_1 += '<div class="right_qhj"><span class="zhekoujia">券后价</span>￥' + data[i].price + '</div>';
+                cont_1 += '<div class="right_quan">' + data[i].coupon_money + '元券</div>';
+            }
+            cont_1 += '</div>';
+            cont_1 += '</div>';
+            cont_1 += '</div>';
+            cont_1 += '</div>';
+            cont_1 += '</div>';
+            cont_1 += '</div>';
+            cont_1 += '</div>';
+        }
+        if (isPull) {
+            $api.byId('box_1').innerHTML = cont_1;
+        } else {
+            $api.byId('box_1').innerHTML += cont_1;
+        }
+    }
+
+    function openGoodDel(goods_id, video_id, section_id) {
+        api.openWin({
+            name: 'good_detail',
+            url: '../goods/good_detail.html',
+            pageParam: {
+                goods_id: goods_id,
+                video_id: video_id,
+                section_id: section_id
+            }
+        });
+    }
+</script>
+
+</html>

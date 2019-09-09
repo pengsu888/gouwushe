@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0" />
+    <!-- 解决IOS数字出现蓝色数字问题  -->
+    <meta name="format-detection" content="telephone=no" />
+    <title>联系人</title>
+    <link rel="stylesheet" type="text/css" href="../../css/api.css" />
+    <link rel="stylesheet" type="text/css" href="../../css/aui.css" />
+    <style>
+        body {}
+    </style>
+</head>
+
+<body>
+
+</body>
+<script type="text/javascript" src="../../script/api.js"></script>
+<script type="text/javascript" src="../../script/jquery.js"></script>
+<script type="text/javascript" src="../../script/api_common.js"></script>
+<script type="text/javascript" src="../../script/md5.js"></script>
+<script type="text/javascript" src="../../script/pinyin.js"></script>
+<script type="text/javascript">
+    apiready = function() {
+        // 初始化通讯录权限
+        api.requestPermission({
+            list: ['contacts'],
+            code: 1
+        }, function(ret, err) {
+            // api.alert({
+            //     // msg: JSON.stringify(ret)
+            // });
+        });
+        api.openContacts(function(ret, err) {
+            // alert('111111'+ JSON.stringify(ret));
+            // alert('222222'+JSON.stringify(err));
+            if (ret && ret.status) {
+                var call_nick = ret.name;
+                var callees = ret.phone.replace(/\s+/g, "");
+                alert(callees);
+                api.execScript({
+                    name: 'net_phone_win',
+                    frameName: 'net_dial.frame',
+                    script: 'fntyl("' + call_nick + '","' + callees + '");'
+                });
+                // alert(ret.status);
+                api.execScript({
+                    name: 'net_phone_win',
+                    script: 'listLi("0");'
+                });
+                api.execScript({
+                    name: 'net_phone_win',
+                    script: 'listDj("0");'
+                });
+            } else {}
+        });
+        //判断手机类型
+        if (api.systemType == "ios") {
+            api.execScript({
+                name: 'net_phone_win',
+                script: 'listLi("0");'
+            });
+            api.execScript({
+                name: 'net_phone_win',
+                script: 'listDj("0");'
+            });
+        }
+        // else if (api.systemType == "android") {
+        //     self.isIos = 0;
+        // }
+        // DVContacts.openContactsUI(function(ret, err) {
+        //     if (ret) {
+        //         alert(JSON.stringify(ret));
+        //     } else {
+        //         alert(JSON.stringify(err));
+        //     }
+        // });
+        // DVContacts.allContacts(function(ret, err) {
+        //     if (ret) {
+        //         console.log("联系人信息" + JSON.stringify(ret));
+        // if(ret.status){
+        //     for (var i = 0; i < ret.contacts.length; i++) {
+        //       var lianxiren =ret.contacts[i];
+        //       var obj={
+        //         "employee_id": 191,
+        //         "remark": "",
+        //         "phonetic": "", //名字的拼音
+        //         "namephonetic": "",
+        //         "position": "研发",
+        //         "dept_id": "",
+        //         "isdeleted": "N",
+        //         "tags": "",
+        //         "dept_name": "",
+        //         "isremark": 1,
+        //         "phones": []
+        //       };
+        //       obj.remark= lianxiren.fullName;
+        //       if (lianxiren.fullName!=''&&lianxiren.fullName!=undefined) {
+        //         obj.phonetic=ConvertPinyin(lianxiren.fullName);
+        //       }
+        //       obj.dept_name = lianxiren.note;
+        //       obj.phones = lianxiren.phones;
+        //       // alert(JSON.stringify(obj));
+        //       contacts.push(obj);
+        //     }
+        //     var UIListContacts = api.require('UIListContacts');
+        //     UIListContacts.open({
+        //         rect: {
+        //             x: 0,
+        //             y: 44,
+        //             w: api.frameWidth,
+        //             h: api.frameHeight - 104
+        //         },
+        //         contacts: contacts,
+        //         fixedOn: api.frameName
+        //     }, function(ret) {
+        //         if (ret) {
+        //             alert(JSON.stringify(ret));
+        //         }
+        //     });
+        // }
+        //
+        //     } else {
+        //         alert(JSON.stringify(err));
+        //     }
+        // });
+    };
+</script>
+
+</html>

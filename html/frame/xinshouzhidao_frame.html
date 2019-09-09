@@ -1,0 +1,313 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0" />
+    <title>新手指导</title>
+    <link rel="stylesheet" type="text/css" href="../../css/api.css" />
+</head>
+<style media="screen">
+    html,
+    body {
+        height: 100%;
+        width: 100%;
+        background: #f4f4f4;
+    }
+
+    .gonggao {
+        width: 95%;
+        height: 100%;
+        margin: 0 auto;
+        overflow-x: hidden;
+        overflow-y: auto;
+    }
+
+    .gonggao .gonggao_list {
+        width: 100%;
+        background: #fff;
+        margin: 10px 0px 20px 0px;
+        border-radius: 10px;
+    }
+
+    .gonggao .gonggao_list .gonggao_title {
+        width: calc(100% - 30px);
+        height: 30px;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        display: -webkit-box;
+        -webkit-line-clamp: 1;
+        -webkit-box-orient: vertical;
+        word-break: break-all;
+        font-size: 16px;
+        color: #333;
+        margin: 0 auto;
+        line-height: 30px;
+    }
+
+    .gonggao .gonggao_list .gonggao_img {
+        width: 100%;
+        height: auto;
+        overflow: hidden;
+        border-radius: 10px 10px 0px 0px;
+    }
+
+    .gonggao .gonggao_list .gonggao_img img {
+        width: 100%;
+        height: 100%;
+        background-size: 100% 100%;
+    }
+
+    .gonggao .gonggao_list .gonggao_btm {
+        width: calc(100% - 30px);
+        margin: 0 auto 0 auto;
+        height: 44px;
+        line-height: 44px;
+        color: #333;
+    }
+
+    .gonggao .gonggao_list .gonggao_btm .gonggao_time {
+        width: 50%;
+        float: left;
+        text-align: left;
+        font-size: 14px;
+    }
+
+    .gonggao .gonggao_list .gonggao_btm .gonggao_del {
+        width: 50%;
+        float: right;
+        text-align: right;
+    }
+
+    .gonggao .gonggao_list .gonggao_btm .gonggao_del img {
+        width: 22px;
+        height: 22px;
+        background-size: 100% 100%;
+        padding-top: 8px;
+    }
+</style>
+
+<body>
+    <div class="gonggao" id="list">
+        <!-- <div class="gonggao_list">
+          <div class="gonggao_img"><img src="../../image/lunbotu.jpg" alt=""></div>
+          <div class="gonggao_btm">
+            <div class="gonggao_time">大牌羽绒服低至99元</div>
+            <div class="gonggao_del"><img src="../../image/home/store_circle_share.png" alt=""></div>
+          </div>
+        </div> -->
+    </div>
+</body>
+<script type="text/javascript" src="../../script/api.js"></script>
+<script type="text/javascript" src="../../script/jquery.js"></script>
+<script type="text/javascript" src="../../script/api_common.js"></script>
+<script type="text/javascript" src="../../script/md5.js"></script>
+<script type="text/javascript">
+    var user_id;
+    var dialogBox;
+    apiready = function() {
+        if (!empty($api.getStorage("userInfo"))) {
+            user_id = $api.getStorage("userInfo").user_id;
+            dialogBox = api.require('dialogBox');
+        } else {
+            api.openWin({
+                name: 'user_login',
+                url: '../login/user_login.html',
+                pageParam: {
+                    name: 'test'
+                }
+            });
+        }
+        getData();
+
+    };
+
+    function getData() {
+        var obj = {
+            'user_id': user_id,
+        };
+        var objArr = sort_ASCII(obj);
+        var timestamp = fntimestamp();
+        var version = '2.0';
+        var arr = apiSecret + timestamp + version + '';
+        for (i in objArr) {
+            arr += objArr[i];
+        }
+        var sign = hex_md5(arr);
+        // alert(sign);
+        api.ajax({
+            url: commonUrl + 'soukeAppTttService/service/user/getGuide_ac',
+            method: 'post',
+            headers: {
+                'Content-Type': 'application/json;charset=utf-8'
+            },
+            data: {
+                body: {
+                    'apiKey': apiKey,
+                    'timestamp': timestamp,
+                    'sign': sign,
+                    'user_id': user_id,
+                }
+            }
+        }, function(ret, err) {
+            if (ret) {
+                if (ret.result_code == 200) {
+                    console.log("新手指导" + JSON.stringify(ret));
+                    var data = ret.result_data;
+                    var html = '';
+                    for (var i = 0; i < data.length; i++) {
+                        html += '<div class="gonggao_list">';
+                        html += '<div class="gonggao_img" tapmode onclick="fnOpenGuanfangggInfo(\'' + data[i].title + '\',\'' + data[i].notice_url + '\')"><img src="' + data[i].pict_url + '" alt=""></div>';
+                        html += '<div class="gonggao_btm">';
+                        html += '<div class="gonggao_time">' + data[i].title + '</div>';
+                        html += '<div class="gonggao_del" tapmode onclick="actionMenu(\'' + data[i].title + '\',\'' + data[i].notice_url + '\');"><img src="../../image/home/store_circle_share.png" alt=""></div>';
+                        html += '</div>';
+                        html += '</div>';
+                    }
+                    $api.byId('list').innerHTML = html;
+
+                } else {
+                    api.toast({
+                        msg: ret.result_message,
+                        duration: 2000,
+                        location: 'middle'
+                    });
+
+                }
+            } else {
+                // api.alert({ msg: JSON.stringify(err) });
+            }
+        });
+    }
+
+    function fnOpenGuanfangggInfo(title, notice_url) {
+        api.openWin({
+            name: 'guanfanggg_info_win',
+            url: './guanfanggg_info_win.html',
+            pageParam: {
+                head_title: title,
+                notice_url: notice_url
+            }
+        });
+    }
+
+    function actionMenu(title, notice_url) {
+        dialogBox.actionMenu({
+            rect: {
+                h: 150
+            },
+            texts: {
+                cancel: '取消'
+            },
+            tapClose: true,
+            items: [{
+                text: '微信好友',
+                icon: 'widget://image/goods/share_wx.png'
+            }, {
+                text: '朋友圈',
+                icon: 'widget://image/goods/share_wxzone.png'
+            }, {
+                text: 'QQ',
+                icon: 'widget://image/goods/share_qq.png'
+            }, {
+                text: '微信收藏',
+                icon: 'widget://image/goods/share_creat.png'
+            }, {
+                text: 'QQ空间',
+                icon: 'widget://image/goods/share_qqzone.png'
+                    // }, {
+                    //     text: '微博',
+                    //     icon: 'widget://image/goods/share_wb.png'
+            }],
+            styles: {
+                bg: '#FFF',
+                column: 4,
+                itemText: {
+                    color: '#000',
+                    size: 12,
+                    marginT: 4,
+                },
+                itemIcon: {
+                    size: 40
+                },
+                cancel: {
+                    bg: 'fs://icon.png',
+                    color: '#000',
+                    h: 44,
+                    size: 14
+                }
+            }
+        }, function(ret) {
+            if (ret.eventType == "cancel") {
+                closeDialog();
+            } else if (ret.index == 0) {
+                closeDialog();
+                shareOne('session', title, notice_url);
+            } else if (ret.index == 1) {
+                closeDialog();
+                shareOne('timeline', title, notice_url);
+            } else if (ret.index == 2) {
+                closeDialog();
+                shareTwo('QFriend', title, notice_url);
+            } else if (ret.index == 3) {
+                closeDialog();
+                shareOne('favorite', title, notice_url);
+            } else if (ret.index == 4) {
+                closeDialog();
+                shareTwo('QZone', title, notice_url);
+            } else if (ret.index == 5) {
+                closeDialog();
+                shareTwo('xinLang', title, notice_url);
+            }
+        });
+    }
+
+    function closeDialog() {
+        dialogBox.close({
+            dialogName: 'actionMenu'
+        });
+    }
+
+    function shareOne(type, title, notice_url) {
+        var wx = api.require('wx');
+        wx.shareWebpage({
+            apiKey: '',
+            scene: type,
+            title: '券券推新手攻略',
+            description: title,
+            thumb: commonUrl + 'soukeAppTttService/images/logo/logo.jpg',
+            contentUrl: notice_url
+        }, function(ret, err) {
+            // alert(err.code);
+            console.log("分享返回结果：" + JSON.stringify(err.code));
+            if (ret.status) {
+                // alert('分享成功');
+            } else {
+                // alert(err.code);
+            }
+        });
+
+    }
+
+    function shareTwo(type, title, notice_url) {
+        var qq = api.require('QQPlus');
+        qq.shareNews({
+            type: type,
+            url: notice_url,
+            title: '券券推新手攻略',
+            description: title,
+            imgUrl: commonUrl + 'soukeAppTttService/images/logo/logo.jpg'
+        }, function(ret, err) {
+            if (ret.status) {
+                // alert("分享成功！");
+            } else {
+                // api.alert({
+                //     msg: JSON.stringify(err)
+                // });
+            }
+        });
+        // alert(text);
+    }
+</script>
+
+</html>

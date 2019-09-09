@@ -1,0 +1,376 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0" />
+    <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+    <title>个人资料</title>
+    <link rel="stylesheet" type="text/css" href="../../css/api.css" />
+    <!-- <link rel="stylesheet" type="text/css" href="../../css/style.css" /> -->
+    <style>
+        html,
+        body {
+            height: 100%;
+            background: #F4F4F4;
+            width: 100%;
+        }
+
+        .set_user {
+            width: calc(100%- 24px);
+            height: 70px;
+            background: #fff;
+            margin: 0 12px;
+        }
+
+        .set_area {
+            width: 100%;
+            height: auto;
+            background: #fff;
+            overflow: hidden;
+        }
+
+        .set_img {
+            width: 40px;
+            height: 40px;
+            background-size: 100% 100%;
+            float: right;
+            margin-top: 15px;
+            border-radius: 50%;
+        }
+
+        .set_img img {
+            border-radius: 50%;
+        }
+
+        .user_zl {
+            height: 50px;
+            width: calc(100% - 97px);
+            margin-left: 16px;
+            float: left;
+            margin-top: 30px;
+        }
+
+        .user_zh {
+            width: 100%;
+            height: 25px;
+            line-height: 25px;
+        }
+
+        .check_edit {
+            color: #888;
+        }
+
+        .mine_forward {
+            margin-top: 42px;
+        }
+
+        .set_item {
+            width: calc(100% - 24px);
+            height: 55px;
+            background: #fff;
+            margin: 0 12px;
+            position: relative;
+        }
+
+        .set_right {
+            width: 7px;
+            height: 12px;
+            float: right;
+        }
+
+        img {
+            width: 100%;
+            height: 100%;
+            background-size: 100% 100%;
+        }
+
+        .set_border {
+            border-bottom: solid 1px #dddddd;
+        }
+
+        .set_middle {
+            width: auto;
+            height: 55px;
+            float: left;
+            line-height: 55px;
+            font-size: 0.9rem;
+        }
+
+        .set_middle1 {
+            width: auto;
+            height: 70px;
+            float: left;
+            line-height: 70px;
+            font-size: 0.9rem;
+        }
+
+        .set_version {
+            width: 120px;
+            height: 55px;
+            line-height: 55px;
+            position: absolute;
+            color: #888;
+            text-align: right;
+            right: 20px;
+            top: 0;
+            font-size: 0.9rem;
+        }
+
+        .forward_top {
+            margin-top: 21px;
+        }
+
+        .set_top {
+            margin-top: 10px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="set_area">
+        <div class="set_user set_border">
+            <div class="set_middle1">头像</div>
+            <img src="../../image/home/v2_ic_avatar.png" alt="" class="set_img" id="set_img" onclick="changeHeadIcon();">
+        </div>
+        <div class="set_item set_border">
+            <div class="set_middle">ID</div>
+            <div class="set_version" id="my_id">4046698</div>
+        </div>
+        <div class="set_item" onclick="fnOpenFunction('edit_nickname_win');">
+            <div class="set_middle">昵称</div>
+            <div class="set_version" id="nickname">138***9876</div>
+            <div class="set_right forward_top">
+                <img src="../../image/home/ic_mine_come.png" alt="">
+            </div>
+        </div>
+    </div>
+    <div class="set_area set_top">
+        <!-- <div class="set_item set_border" onclick="fnOpenFunction('mine_label_win');">
+        <div class="set_middle">我的标签</div>
+        <div class="set_version" id="my_label">未设置</div>
+        <div class="set_right forward_top">
+          <img src="../../image/home/ic_mine_come.png" alt="">
+        </div>
+      </div> -->
+        <div class="set_item" onclick="fnOpenFunction('bind_phone_win');">
+            <div class="set_middle">手机号码</div>
+            <div class="set_version" id="my_phone">138***9876</div>
+            <div class="set_right forward_top">
+                <img src="../../image/home/ic_mine_come.png" alt="">
+            </div>
+        </div>
+    </div>
+
+</body>
+<script type="text/javascript" src="../../script/api.js"></script>
+<script type="text/javascript" src="../../script/jquery.js"></script>
+<script type="text/javascript" src="../../script/api_common.js"></script>
+<script type="text/javascript" src="../../script/md5.js"></script>
+<script type="text/javascript">
+    var user_id, user_nickname;
+    var user_phone_status; //记录用户是否绑定过手机号 0是为绑定，1是绑定
+    apiready = function() {
+            user_id = $api.getStorage("userInfo").user_id;
+            getUserInfo();
+        }
+        //获取用户信息
+    function getUserInfo() {
+        var obj = {
+            'user_id': user_id
+        };
+        var objArr = sort_ASCII(obj);
+        var timestamp = fntimestamp();
+        var version = '2.0';
+        var arr = apiSecret + timestamp + version + '';
+        for (i in objArr) {
+            arr += objArr[i];
+        }
+        var sign = hex_md5(arr);
+        api.ajax({
+            url: commonUrl + 'soukeAppTttService/service/user/message_ac',
+            method: 'post',
+            headers: {
+                'Content-Type': 'application/json;charset=utf-8'
+            },
+            data: {
+                body: {
+                    'apiKey': apiKey,
+                    'timestamp': timestamp,
+                    'sign': sign,
+                    'user_id': user_id,
+                }
+            }
+        }, function(ret, err) {
+            if (ret) {
+                if (ret.result_code == 200) {
+                    console.log("用户信息" + JSON.stringify(ret));
+                    $("#set_img").attr("src", ret.result_user.head);
+                    $api.byId('nickname').innerHTML = ret.result_user.nickname;
+                    user_nickname = ret.result_user.nickname;
+                    if (empty(ret.result_user.phone)) {
+                        $api.byId('my_phone').innerHTML = "未设置";
+                        user_phone_status = 0;
+                    } else {
+                        var tel = ret.result_user.phone;
+                        var mtel = tel.substr(0, 3) + '****' + tel.substr(7);
+                        $api.byId('my_phone').innerHTML = mtel;
+                        user_phone_status = 1;
+                    }
+                    $api.byId('my_id').innerHTML = ret.result_user.id;
+                    // if(ret.result_user.is_set==0){
+                    //   $api.byId('my_label').innerHTML='未设置';
+                    // }else {
+                    //   $api.byId('my_label').innerHTML='已设置';
+                    // }
+
+                } else {
+                    api.toast({
+                        msg: ret.result_message,
+                        duration: 2000,
+                        location: 'middle'
+                    });
+                }
+            } else {
+                // api.alert({ msg: JSON.stringify(err) });
+            }
+        });
+    }
+    //打开相关页面；
+    function fnOpenFunction(winName) {
+        api.openWin({
+            name: winName,
+            url: '../win/' + winName + '.html',
+            pageParam: {
+                nickname: user_nickname,
+                user_phone_status: user_phone_status
+            }
+        });
+    }
+    var photo_list = {};
+
+    function changeHeadIcon() {
+      var resultList = api.hasPermission({
+          list: ['photos']
+      });
+      if (!resultList[0].granted) {
+          //存储未授权
+          api.requestPermission({
+              list: ['photos'],
+              code: 1000
+          }, function(ret, err) {
+              // api.alert({
+              //     msg: JSON.stringify(ret)
+              // });
+              if (!ret.never) {
+                  //禁止权限
+                  return;
+              } else {
+                  changeHeadIconTo();
+              }
+          });
+      } else {
+          changeHeadIconTo();
+      }
+      // api.alert({
+      //     msg: JSON.stringify(resultList)
+      // });
+  }
+  function changeHeadIconTo() {
+        api.actionSheet({
+            title: '',
+            cancelTitle: '取消',
+            buttons: ['拍照', '从相册中选择']
+        }, function(ret, err) {
+            var index = ret.buttonIndex;
+            var sourceType = "album";
+            if (index == 1) {
+                sourceType = "camera";
+            }
+            if (index == 3) {
+                return;
+            }
+            api.getPicture({
+                sourceType: sourceType,
+                encodingType: 'png',
+                mediaValue: 'pic',
+                destinationType: 'url',
+                allowEdit: true,
+                saveToPhotoAlbum: true,
+                quality: 50
+            }, function(ret, err) {
+                if (ret) {
+                    //						alert("图片"+JSON.stringify(ret));
+                    var cont = '';
+                    if (ret.data == "") {} else {
+                        // photo_list['user_img']=ret.data;
+                        $("#set_img").attr("src", ret.data);
+                        var obj = {
+                            'user_id': user_id,
+                        };
+                        var objArr = sort_ASCII(obj);
+                        var timestamp = fntimestamp();
+                        var version = '2.0';
+                        var arr = apiSecret + timestamp + version + '';
+                        for (i in objArr) {
+                            arr += objArr[i];
+                        }
+                        var sign = hex_md5(arr);
+                        api.ajax({
+                            url: commonUrl + 'soukeAppTttService/service/user/upload_ac',
+                            method: 'post',
+                            // headers: {
+                            //     'Content-Type': 'application/json;charset=utf-8'
+                            // },
+                            data: {
+                                values: {
+                                    'apiKey': apiKey,
+                                    'timestamp': timestamp,
+                                    'sign': sign,
+                                    'user_id': user_id
+                                },
+                                files: {
+                                    file: ret.data
+                                }
+                            }
+                        }, function(ret, err) {
+                            console.log("上传头像" + JSON.stringify(ret));
+                            if (ret) {
+                                if (ret.result_code == 200) {
+
+                                    api.toast({
+                                        msg: '上传成功',
+                                        duration: 2000,
+                                        location: 'middle'
+                                    });
+                                    api.execScript({
+                                        name: 'set_win',
+                                        frameName: 'set_frame',
+                                        script: 'document.location.reload();'
+                                    });
+                                    api.execScript({
+                                        // name: 'main',
+                                        frameName: 'my_frame',
+                                        script: 'document.location.reload();'
+                                    });
+                                } else {
+                                    api.toast({
+                                        msg: '上传失败',
+                                        duration: 2000,
+                                        location: 'middle'
+                                    });
+                                }
+                            } else {
+                                api.alert({
+                                    msg: JSON.stringify(err)
+                                });
+                            }
+                        });
+                    }
+                }
+            });
+        });
+    }
+</script>
+
+</html>

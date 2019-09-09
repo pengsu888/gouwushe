@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0" />
+  <title>VIP邀请码头部</title>
+  <link rel="stylesheet" type="text/css" href="../../css/api.css" />
+  <!-- <link rel="stylesheet" type="text/css" href="../../css/style.css" /> -->
+  <style media="screen">
+  body,html{
+    width: 100%;
+    height: 100%;
+  }
+  header{
+    width: 100%;
+    height: 44px;
+    background: #fff;
+    overflow: hidden;
+  }
+  header .header-top{
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: flex;
+    width: 100%;
+    height: 44px;
+    position: relative;
+  }
+
+  .headerItem{
+    height: 44px;
+    width: calc(100% - 24px);
+    border-bottom:solid 1px #f6f6f6;
+    vertical-align: middle;
+    display: inline-block;
+    position: absolute;
+    top:0;
+    left: 12px;
+  }
+  .headerItem div{
+    float:left;
+  }
+  .headerItem .header_back{
+    width:9px;
+    height: 16px;
+    float:left;
+    margin-top: 12px;
+  }
+  .headerItem .header_back img{
+    width:9px;
+    height: 16px;
+    background-size: 100% 100%;
+    vertical-align: middle;
+  }
+  .headerItem .header_title{
+    width:calc(100% - 108px);
+    line-height: 44px;
+    text-align: center;
+    margin-left: 40px;
+  }
+  .headerItem .header_title .header_down{
+    width: 7px;
+    height: 4px;
+    background-size: 100% 100%;
+    position: relative;
+    top:-4px;
+    right: -5px;
+  }
+  .headerItem .header_title .header_up{
+    -moz-transform:rotate(180deg);
+    -webkit-transform:rotate(180deg);
+     filter:progid:DXImageTransform.Microsoft.BasicImage(rotation=3);
+  }
+  .headerItem .header_right{
+    width: 58px;
+    height: 22px;
+    float: right;
+    margin-top: 8px;
+    font-size: 12px;
+  }
+  .headerItem .header_right img{
+    width: 25px;
+    height: 25px;
+    background-size: 100% 100%;
+    vertical-align: middle;
+    display: inline-block;
+    margin-right: 5px;
+  }
+  .header-bottom{
+    height: 37px;
+    width: 100%;
+  }
+  .header-bottom ul{list-style: none;padding: 0;margin: 0;}
+  .header-bottom ul li{
+    float: left;
+    width: 25%;
+    line-height: 37px;
+    text-align: center;
+  }
+  .header-bottom ul li.li_active{
+    border-bottom: 3px solid #fd5f3e;
+    color:#fd5f3e;
+  }
+  </style>
+</head>
+
+<body>
+    <header id="header">
+      <div class="header-top">
+          <div class="headerItem">
+            <div class="header_back" onclick="closeWin();">
+              <img src="../../image/nav_back_black.png" alt="">
+            </div>
+            <div class="header_title"><span  id="header_title">VIP专属邀请码</span></div>
+          </div>
+      </div>
+
+    </header>
+    <div class="header-bottom">
+      <ul id="class_list">
+        <li class="li_active">全部</li>
+        <li>已使用</li>
+        <li>未使用</li>
+        <li>已失效</li>
+      </ul>
+    </div>
+</body>
+  <script type="text/javascript" src="../../script/api.js"></script>
+  <script type="text/javascript" src="../../script/jquery.js"></script>
+  <script type="text/javascript">
+  var headerH;
+    apiready = function() {
+        api.setStatusBarStyle({
+            style: 'dark' //黑色
+                // style: 'light' //白色
+        });
+      //接收订单类型
+        api.addEventListener({
+            name: 'vip_order_title'
+        }, function(ret, err){
+            if( ret ){
+                //  alert( JSON.stringify( ret ) );
+                 $api.byId('header_title').innerHTML=ret.value.order_title;
+            }else{
+                //  alert( JSON.stringify( err ) );
+            }
+        });
+
+        var header = $api.byId('header');
+        $api.fixStatusBar(header);
+        headerH= $api.offset(header).h;
+        //打开分类页
+    		api.openFrameGroup({
+    			name : 'classify2',
+    			scrollEnabled : true,
+    			rect : {
+    				x : 0,
+    				y : headerH+40,
+    				w : 'auto',
+    				h : 'auto'
+    			},
+    			index : 0,
+    			preload : 0,
+    			frames : [{
+    				name : 'vipall_yqm_frame',
+    				url : '../frame/vipall_yqm_frame.html',
+    				bounces : false,
+    				vScrollBarEnabled : false,
+    				hScrollBarEnabled : false,
+    				pageParam: {
+    					order_status:null,
+    				}
+    			}, {
+    				name : 'vipysy_yqm_frame',
+    				url : '../frame/vipysy_yqm_frame.html',
+    				bounces : false,
+    				vScrollBarEnabled : false,
+    				hScrollBarEnabled : false,
+            pageParam: {
+    					order_status:1,
+    				}
+    			}, {
+    				name : 'vipwsy_yqm_frame',
+    				url : '../frame/vipwsy_yqm_frame.html',
+    				bounces : false,
+    				vScrollBarEnabled : false,
+    				hScrollBarEnabled : false,
+            pageParam: {
+    					order_status:0,
+    				}
+    			}, {
+    				name : 'vipysx_yqm_frame',
+    				url : '../frame/vipsx_yqm_frame.html',
+    				bounces : false,
+    				vScrollBarEnabled : false,
+    				hScrollBarEnabled : false,
+            pageParam: {
+    					order_status:2,
+    				}
+    			}],
+    		}, function(ret, err) {
+    			var _index = ret.index;
+    			$("#class_list > li").eq(_index).addClass("li_active");
+    			$("#class_list > li").eq(_index).siblings().removeClass("li_active");
+    		});
+    		//点击菜单
+    		$("#class_list > li").click(function() {
+    			var li_index = $(this).index();
+    			$(this).addClass("active").siblings().removeClass("li_active");
+    			api.setFrameGroupIndex({
+    				name : 'classify2',
+    				index : li_index,
+    				scroll : true,
+    			});
+    		});
+    };
+    function closeWin(){
+      api.closeWin({
+          name: 'vip_yqm_win'
+      });
+    }
+  </script>
+
+</html>

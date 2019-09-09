@@ -1,0 +1,982 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <title>优选商城商品详情</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1">
+    <link rel="stylesheet" type="text/css" href="../../css/aui.css" />
+    <link rel="stylesheet" type="text/css" href="../../css/aui-slide.css" />
+    <link rel="stylesheet" href="../../css/iconfont.css">
+    <link rel="stylesheet" type="text/css" href="../../css/swiper.min.css" />
+    <style>
+        html,
+        body {
+            position: relative;
+        }
+        /* 返回顶部样式开始 */
+
+        .actGotop {
+            position: fixed;
+            _position: absolute;
+            bottom: 3rem;
+            right: 0.5rem;
+            width: 3.5rem;
+            height: 3.5rem;
+            display: none;
+            z-index: 999
+        }
+
+        .actGotop a,
+        .actGotop a:link {
+            width: 3.5rem;
+            height: 3.5rem;
+            display: inline-block;
+            background: url(../../image/ic_back_top.png) no-repeat;
+            background-size: 3.5rem 3.5rem;
+            outline: none;
+        }
+
+        .actGotop a:hover {
+            background: url(../../image/ic_back_top.png) no-repeat;
+            outline: none;
+            background-size: 3.5rem 3.5rem;
+        }
+        /* 返回顶部样式开始 */
+
+        body {
+            background: rgb(243, 242, 242);
+            font-family: Helvetica Neue, Helvetica, Arial, sans-serif, "微软雅黑";
+            font-size: 14px;
+            color: #000;
+            margin: 0;
+            padding: 0;
+            opacity: 0;
+        }
+
+        .aui-bar-nav {
+            background: transparent;
+        }
+
+        @media only screen and (min-width:400px) {}
+
+        @media only screen and (min-width:375px) {}
+
+        @media only screen and (min-width:425px) {}
+        /*自定义样式开始*/
+
+        .contener {
+            /*margin-bottom: 2.5rem;*/
+            /*padding-top: 0.6rem;*/
+        }
+
+        .aui-icon-left,
+        .aui-icon-more {
+            background: rgba(0, 0, 0, 0.4);
+            color: #fff;
+        }
+
+        .aui-bar-nav .aui-btn .aui-iconfont {
+            text-align: center;
+            line-height: 1.5rem;
+            width: 1.5rem;
+            height: 1.5rem;
+            border-radius: 50%;
+        }
+
+        .good_title {
+            /*多行文本溢出变为省略号开始*/
+            overflow: hidden;
+            text-overflow: ellipsis;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            /*多行文本溢出变为省略号结束*/
+        }
+
+        .tm_tip,
+        .tb_tip {
+            background: #c40001;
+            padding: 0.15rem 0.2rem;
+            color: #fff;
+            font-size: 0.4rem;
+            border-radius: 0.2rem;
+            position: relative;
+            top: -0.15rem;
+        }
+
+        .tb_tip {
+            background: #ff6a0c;
+        }
+
+        .tm_price {
+            font-size: 0.8rem;
+            color: red;
+            padding-top: 0.3rem;
+        }
+
+        .qh_price {
+            position: relative;
+            padding: 0.3rem 0;
+        }
+
+        .qh_right {
+            position: absolute;
+            right: 0.5rem;
+            top: 0.5rem;
+            font-size: 0.5rem;
+            color: grey;
+        }
+
+        .qh_left {
+            color: #fe2321;
+            font-size: 0.9rem;
+            font-weight: 600;
+        }
+
+        .qh_middle {
+            margin-left: 1.0rem;
+            position: absolute;
+            right: 120px;
+            top: 7px;
+            font-size: 0.6rem;
+        }
+
+        .qh_middle span {
+            color: #fe2321;
+            font-size: 0.9rem;
+            font-weight: 800;
+        }
+
+        .qh_sh {
+            padding: 0.13rem 0.25rem;
+            border-radius: 0.2rem;
+            position: relative;
+            top: -0.2rem;
+            color: #fff;
+            font-size: 0.3rem;
+            font-weight: 500;
+            background: -moz-linear-gradient(left, #ff8f03, #fe2c1b);
+            /*Mozilla*/
+            background: -webkit-gradient(linear, 0 50%, 100% 50%, from(#ff8f03), to(#fe2c1b));
+            /*Old gradient for webkit*/
+            background: -webkit-linear-gradient(left, #ff8f03, #fe2c1b);
+            /*new gradient for Webkit*/
+            background: -o-linear-gradient(left, #ff8f03, #fe2c1b);
+            /*Opera11*/
+        }
+
+        .quan_area {
+            width: 100%;
+            position: relative;
+            cursor: pointer;
+        }
+
+        .quan_txt {
+            position: absolute;
+            top: 0;
+            left: 0;
+        }
+
+        .quan_txt p {
+            color: #fff!important;
+            letter-spacing: 1px;
+        }
+
+        .qixian {
+            font-size: 0.35rem;
+            letter-spacing: 1px;
+            font-size: 0.45rem;
+        }
+
+        .store {
+            margin: 0.3rem 0;
+            background: #fff;
+        }
+
+        .fenshu {
+            width: 0.7rem;
+            display: inline-block;
+            position: relative;
+            top: 0.15rem;
+            left: 0.1rem;
+        }
+
+        .fs_div {
+            text-align: center;
+            font-size: 10px;
+        }
+
+        .footer_big {
+            width: 100%;
+            height: 45px;
+            background-color: #545454;
+            position: fixed;
+            z-index: 99999;
+            bottom: 0;
+            left: 0;
+            text-align: center;
+        }
+
+        .footer_l {
+            width: 100%;
+            height: 45px;
+            font-size: 14px;
+            line-height: 45px;
+            background: #FA4D2D;
+            color: #fff;
+            text-align: center;
+        }
+
+        .good_detail {
+            text-align: center;
+            margin-top: 0.3rem;
+            background: #fff;
+            padding: 0.45rem 0;
+        }
+
+        .img_cont {
+            width: 100%;
+            min-height: 5rem;
+            text-align: center;
+            background: url(../../image/loading.d997b79c.svg) no-repeat center;
+            background-size: 3rem;
+        }
+
+        .img_cont img {
+            margin: auto;
+            width: 100%;
+        }
+
+        .tao_title {
+            width: 100%;
+            height: 1.2rem;
+            line-height: 1.2rem;
+            color: #fff;
+            font-size: .7rem;
+            text-align: center;
+            background-color: #ff2e48;
+        }
+
+        .tao_message {
+            width: 94%;
+            height: 12.2rem;
+            margin-left: 3%;
+            margin-top: .4rem;
+            font-size: .71rem;
+            padding: .3rem .5rem;
+            border: 2px dashed #f32d05;
+            background-color: #fdebe7;
+            color: #f64c1f;
+            overflow-y: scroll;
+        }
+
+        .yujifan {
+            margin-left: 3%;
+            margin-top: .5rem;
+        }
+
+        .pass_buy .buy_copydiv {
+            line-height: 2rem;
+            font-size: .7rem;
+            color: #f64c1f;
+            text-align: right;
+        }
+
+        .line_copy {
+            width: 94%;
+            margin-left: 3%;
+            height: 1.2rem;
+        }
+
+        .yijianfuzhi {
+            width: 3rem;
+            display: inline-block;
+            float: right;
+            color: white;
+            padding: 0;
+            display: inline-block;
+            background: rgb(255, 46, 72);
+        }
+
+        .newclass {
+            color: red;
+        }
+
+        .icon-xiashuangjiantou {
+            display: inline-block;
+            vertical-align: middle;
+            margin-left: .2rem;
+        }
+
+        #swiper_slide {
+            height: 340px;
+            background: #efefef;
+            width: 100%;
+        }
+        /*店铺信息*/
+
+        .info_item1 {
+            width: 100%;
+            height: 30px;
+            background: #fff;
+            margin-top: 1px;
+            font-size: 14px;
+        }
+
+        .info_item1 ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .info_item1 ul li {
+            width: 33.3%;
+            height: 30px;
+            float: left;
+            text-align: center;
+            font-size: 12px;
+            line-height: 30px;
+        }
+
+        .info_item1 ul li img {
+            width: 18px;
+            height: 17px;
+            background-size: 100% 100%;
+            margin-right: 5px;
+            vertical-align: middle;
+            display: inline-block;
+        }
+
+        .info_item2 {
+            width: 100%;
+            height: auto;
+            background: #fff;
+            margin-top: 6px;
+            font-size: 14px;
+            /*display: none;*/
+        }
+
+        .info_item2 p {
+            padding: 10px 15px;
+            line-height: 20px;
+            color: #666;
+        }
+
+        .info_item2 p span.tuijian_title {
+            color: #ff4f14;
+        }
+
+        .info_item3 {
+            width: 100%;
+            height: 60px;
+            background: #fff;
+            margin-top: 6px;
+            /*display: none;*/
+        }
+
+        .info_item3 ul {
+            list-style: none;
+            width: calc(100% - 20px);
+            height: 40px;
+            padding: 10px;
+            margin: 0;
+        }
+
+        .info_item3 ul li {
+            float: left;
+        }
+
+        .info_item3 ul li.dianpu_img {
+            height: 40px;
+            width: 40px;
+            /*background: #FF8A04;*/
+            border-radius: 50%;
+        }
+
+        .info_item3 ul li.dianpu_img img {
+            width: 100%;
+            height: 100%;
+            background-size: 100% 100%;
+            border-radius: 50%;
+        }
+
+        .info_item3 ul li.dianpu_name {
+            height: 40px;
+            width: calc(100% - 160px);
+            /*background: #FF3B1A;*/
+            margin-right: 10px;
+            margin-left: 10px;
+        }
+
+        .info_item3 ul li.dianpu_name .dp_name {
+            width: 100%;
+            height: 20px;
+            line-height: 20px;
+            text-align: left;
+        }
+
+        .info_item3 ul li.dianpu_name .dp_type_c {
+            width: 132px;
+            height: 24px;
+        }
+
+        .info_item3 ul li.dianpu_name .dp_type_c img {
+            width: 50%;
+            height: 50%;
+            margin-top: 5px;
+            background-size: 100% 100%;
+        }
+
+        .info_item3 ul li.dianpu_name .dp_type_b {
+            width: 84px;
+            height: 36px;
+        }
+
+        .info_item3 ul li.dianpu_name .dp_type_b img {
+            width: 50%;
+            height: 50%;
+            margin-top: 5px;
+            background-size: 100% 100%;
+        }
+
+        .info_item3 ul li.check_dianpu {
+            width: 100px;
+            color: #999;
+            text-align: right;
+            /*background: #388F68;*/
+            font-size: 12px;
+        }
+
+        .info_item3 ul li.check_dianpu img {
+            width: 7px;
+            height: 13px;
+            background-size: 100% 100%;
+            margin-left: 10px;
+            vertical-align: middle;
+        }
+
+        .info_item1 ul li span.good_count {
+            padding: 3px;
+            height: 15px;
+            color: #fff;
+            line-height: 15px;
+            border-radius: 2px;
+            margin-left: 5px;
+        }
+
+        .high {
+            background: #FF4400;
+        }
+
+        .ping {
+            background: #FFB900;
+        }
+
+        .low {
+            background: #2DA800;
+        }
+        /*轮播图*/
+
+        .swiper-container {
+            width: 100%;
+            height: 100%;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .swiper-slide {
+            text-align: center;
+            font-size: 18px;
+            background: #f4f4f4;
+            /* Center slide text vertically */
+            display: -webkit-box;
+            display: -ms-flexbox;
+            display: -webkit-flex;
+            display: flex;
+            -webkit-box-pack: center;
+            -ms-flex-pack: center;
+            -webkit-justify-content: center;
+            justify-content: center;
+            -webkit-box-align: center;
+            -ms-flex-align: center;
+            -webkit-align-items: center;
+            align-items: center;
+        }
+
+        .swiper-slide img {
+            width: 100%;
+            height: 100%;
+            background-size: 100% 100%;
+        }
+
+        .swiper-pagination-bullet {
+            width: 8px;
+            height: 8px;
+            display: inline-block;
+            border-radius: 100%;
+            background: #fff;
+            opacity: .5;
+        }
+
+        .swiper-pagination-bullet-active {
+            opacity: 1;
+            background: #d80800;
+        }
+
+        .video_slide {
+            position: relative;
+        }
+
+        .video_slide .video_play {
+            height: 55px;
+            width: 55px;
+            background: url('../../image/goods/ic_video_play.png') no-repeat;
+            position: absolute;
+            left: 50%;
+            top: 50%;
+            margin-top: -27px;
+            margin-left: -27px;
+            background-size: 100% 100%;
+        }
+
+        .detail_img_area {
+            width: calc(100% - 24px);
+            height: auto;
+            margin: 20px auto 40px auto;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="contener">
+        <!-- 轮播图部分开始 -->
+        <div id="swiper_slide">
+            <!-- <div class="aui-slide-wrap" id="auto_play">
+                <div class="aui-slide-node bg-dark">
+                    <img src="../../image/zhanwei.jpg" style="width:100%;" />
+                </div>
+            </div> -->
+        </div>
+
+        <!-- 轮播图部分结束 -->
+        <!-- 商品加上优惠券的介绍开始 -->
+        <div style="padding:0.5rem;background: #fff;">
+            <div class="good_title">
+                <!-- <span class="tm_tip">天猫</span>
+                <span class="tb_tip">淘宝</span> -->
+                <span id="title"></span>
+            </div>
+            <div class="tm_price">
+                <span class="ori_price">价格 ￥<span>0.00</span></span>
+            </div>
+        </div>
+        <div class="good_detail">
+            查看宝贝详情
+        </div>
+        <!-- 宝贝详情结束 -->
+        <!-- 宝贝详情隐藏与展示开始 -->
+        <div class="detail_img_area">
+
+        </div>
+        <!-- 宝贝详情隐藏与展示结束 -->
+    </div>
+    <footer class="footer_big">
+        <style>
+            .zan {
+                width: 35%;
+                margin: 0rem auto 0.2rem auto;
+            }
+        </style>
+        <div class="footer_l" onclick="openByBtn();">
+            立即购买
+        </div>
+    </footer>
+    <!-- 返回顶部按钮 -->
+    <div class="actGotop">
+        <a href="javascript:;" title="返回顶部"></a>
+    </div>
+</body>
+
+</html>
+<script type="text/javascript" src="../../script/aui-popup.js"></script>
+<script type="text/javascript" src="../../script/api.js"></script>
+<script type="text/javascript" src="../../script/jquery.js"></script>
+<script type="text/javascript" src="../../script/aui-slide.js"></script>
+<script type="text/javascript" src="../../script/api_common.js"></script>
+<script type="text/javascript" src="../../script/md5.js"></script>
+<script type="text/javascript" src="../../script/swiper.min.js"></script>
+<script>
+    $(document).ready(function() {
+        // 返回顶部
+        $(window).scroll(function() {
+            if ($(window).scrollTop() >= 500) {
+                $('.actGotop').fadeIn("fast");
+            } else {
+                $('.actGotop').fadeOut(300);
+            }
+        });
+        $('.actGotop').click(function() {
+            $('html,body').animate({
+                scrollTop: '0px'
+            }, 300);
+        });
+    });
+    var isIos, url_type, item_title, user_id;
+    var goods_id;
+    var yuji_zhuan;
+    var alibaichuan = null;
+    var user_id;
+    var tkrates, tk_price, coupon_amount; //商品佣金比率；商品原价,券额
+    var collect_statu;
+    var banner_arr = [];
+    var time;
+    var user_level_id; //用户等级；
+    var gif_level_id; //礼包等级；
+    var user_level_name; //用户等级
+    var mb_level_name; //目标等级
+    var gift_level; //礼包等级id
+    var gift_status; //0，不是永久 1永久
+    apiready = function() {
+        api.addEventListener({
+            name: 'login'
+        }, function(ret, err) {
+            if (ret) {
+                //  alert( JSON.stringify( ret ) );
+                if (ret.value.login) {
+                    location.reload();
+                }
+            } else {
+                //  alert( JSON.stringify( err ) );
+            }
+        });
+        if (!empty($api.getStorage("userInfo"))) {
+            user_id = $api.getStorage("userInfo").user_id;
+        } else {
+            user_id = '';
+
+        }
+        alibaichuan = api.require('mAliBaiChuan');
+        goods_id = api.pageParam.goods_id;
+        api.showProgress({
+            style: 'default',
+            animationType: 'fade',
+            title: '数据加载中',
+            text: '',
+            modal: false
+        });
+        // alibaichuan = api.require('mAliBaiChuan');
+        // initSDK();
+        var popup = new auiPopup();
+
+        function showPopup() {
+            popup.show(document.getElementByClassName("bottom"))
+        }
+
+        //商品描述详情开始
+        // goods_id=api.pageParam.goods_id;
+        var obj = {
+            'goods_id': api.pageParam.goods_id,
+            'user_id': user_id
+        };
+        // alert(api.pageParam.goods_id );
+        var objArr = sort_ASCII(obj);
+        var timestamp = fntimestamp();
+        var version = '2.0';
+        var arr = apiSecret + timestamp + version + '';
+        for (i in objArr) {
+            arr += objArr[i];
+        }
+        console.log(arr);
+        var sign = hex_md5(arr);
+        api.ajax({
+            url: commonUrl + 'soukeAppTttService/service/singleitem/queryselfsingleitemOne_ac',
+            method: 'post',
+            headers: {
+                'Content-Type': 'application/json;charset=utf-8'
+            },
+            data: {
+                body: {
+                    'apiKey': apiKey,
+                    'timestamp': timestamp,
+                    'sign': sign,
+                    'goods_id': api.pageParam.goods_id,
+                    'user_id': user_id
+                }
+            }
+        }, function(ret, err) {
+            console.log("商品详情图片：" + JSON.stringify(ret));
+            api.hideProgress();
+            gift_level = ret.gift_level;
+            gift_status = ret.gift_status;
+            user_level_id = ret.dis_level_id;
+            gif_level_id = ret.result_data.dis_level_id;
+            user_level_name = ret.level_name;
+            mb_level_name = ret.result_data.sk_dis_level.level_name;
+            var htmlLb = '';
+            var details = ret.result_data.sing_img.split(",");
+            var leng = details.length;
+            htmlLb += '<div class="swiper-container">';
+            htmlLb += '<div class="swiper-wrapper">';
+            for (var i = 0; i < leng; i++) {
+                if (i != 0) {
+                    htmlLb += '<div class="swiper-slide"><img src="' + details[i] + '" alt=""></div>';
+                }
+            }
+            htmlLb += '</div>';
+            htmlLb += '<div class="swiper-pagination"></div>';
+            htmlLb += '</div>';
+            $api.byId('swiper_slide').innerHTML = htmlLb;
+            var swiper = new Swiper('.swiper-container', {
+                loop: true, //无休止播放
+                autoHeight: true, //enable auto height   自动高度。设置为true时，wrapper和container会随着当前slide的高度而发生变化。
+                slidesPerView: 1,
+                spaceBetween: 15,
+                pagination: {
+                    el: '.swiper-pagination',
+                    clickable: true,
+                },
+                autoplay: {
+                    delay: 2500,
+                    disableOnInteraction: false,
+                },
+            });
+            $api.byId('title').innerHTML = ret.result_data.sing_title;
+            // $api.text($api.dom(".ori_price"), "价格 ￥" + ret.result_data.sing_price);
+            if (ret.result_data.sing_type == "0") {
+                $api.css($api.dom(".tm_tip"), "display:none;");
+                $api.text($api.dom(".ori_price"), "礼包价 ￥" + ret.result_data.sing_price);
+            } else if (ret.result_data.sing_type == "1") {
+                $api.css($api.dom(".tb_tip"), "display:none;");
+                $api.text($api.dom(".ori_price"), "礼包价 ￥" + ret.result_data.sing_price);
+            }
+            $(".detail_img_area").html(ret.result_data.goods_details);
+            setTimeout(function() {
+                $('body').css({
+                    "opacity": "1",
+                    "transition": ".5s"
+                })
+            }, 500)
+        });
+
+        //图片按需加载
+        (function() {
+            //common
+            function tagName(tagName) {
+                return document.getElementsByTagName(tagName);
+            }
+
+            function $(id) {
+                return document.getElementById(id);
+            }
+
+            function addEvent(obj, type, func) {
+                if (obj.addEventListener) {
+                    obj.addEventListener(type, func, false);
+                } else if (obj.attachEvent) {
+                    obj.attachEvent('on' + type, func);
+                }
+            }
+            //这里可以按照需要配置些参数
+            var v = {
+                    eleGroup: null,
+                    eleTop: null,
+                    eleHeight: null,
+                    screenHeight: null,
+                    visibleHeight: null,
+                    scrollHeight: null,
+                    scrolloverHeight: null,
+                    limitHeight: null
+                }
+                //对数据进行初始化
+            function init(element) {
+                v.eleGroup = tagName(element)
+                screenHeight = document.documentElement.clientHeight;
+                scrolloverHeight = document.body.scrollTop;
+                for (var i = 0, j = v.eleGroup.length; i < j; i++) {
+                    if (v.eleGroup[i].offsetTop <= screenHeight && v.eleGroup[i].getAttribute('data-url')) {
+                        v.eleGroup[i].setAttribute('src', v.eleGroup[i].getAttribute('data-url'));
+                        v.eleGroup[i].removeAttribute('data-url');
+                    }
+                }
+            }
+
+            function lazyLoad() {
+                if (document.body.scrollTop == 0) {
+                    limitHeight = document.documentElement.scrollTop + document.documentElement.clientHeight;
+                } else {
+                    limitHeight = document.body.scrollTop + document.documentElement.clientHeight;
+                }
+                for (var i = 0, j = v.eleGroup.length; i < j; i++) {
+                    if (v.eleGroup[i].offsetTop <= limitHeight && v.eleGroup[i].getAttribute('data-url')) {
+                        v.eleGroup[i].parentNode.style = "background:#fff;";
+                        v.eleGroup[i].src = v.eleGroup[i].getAttribute('data-url');
+                        v.eleGroup[i].removeAttribute('data-url');
+                    }
+                }
+            }
+            init('img')
+            addEvent(window, 'scroll', lazyLoad);
+        })();
+    }
+
+    function initSDK() {
+        var param = {
+            isvcode: "huatao"
+        };
+        var alibaichuan = api.require('mAliBaiChuan');
+        alibaichuan.initTae(param, function(ret, err) {
+            if (ret) {
+                // alert("ret:" + JSON.stringify(ret));
+            } else {
+                // alert("err:" + JSON.stringify(err));
+            }
+        });
+    }
+    var good = document.getElementsByClassName("good_detail")[0];
+
+    function changeIndex(index) {
+        var Top = good.offsetTop;
+        var Index = index;
+        if (Index == 0) {
+            document.body.scrollTop = 0;
+        } else if (Index == 1) {
+            document.body.scrollTop = Top;
+        }
+    }
+
+    function openByBtn() {
+        if (!empty($api.getStorage("userInfo"))) {
+            if (gift_status == 1 && gift_level >= gif_level_id) {
+                api.alert({
+                    title: '提示',
+                    msg: '您无需购买',
+                }, function(ret, err) {
+                    if (ret) {
+                        //  alert( JSON.stringify( ret ) );
+                    } else {
+                        //  alert( JSON.stringify( err ) );
+                    }
+                });
+                return;
+            }
+            if (gift_status == 0 && gift_level > gif_level_id) {
+                api.alert({
+                    title: '提示',
+                    msg: '您无需购买',
+                }, function(ret, err) {
+                    if (ret) {
+                        //  alert( JSON.stringify( ret ) );
+                    } else {
+                        //  alert( JSON.stringify( err ) );
+                    }
+                });
+                return;
+            }
+
+            api.openWin({
+                name: 'jiesuan_win',
+                url: '../win/jiesuan_win.html',
+                pageParam: {
+                    goods_id: api.pageParam.goods_id
+                }
+            });
+
+
+            // if (user_level_id != 1 && (user_level_id - gif_level_id > 0)) {
+            //     api.alert({
+            //         title: '提示',
+            //         msg: '您当前是' + user_level_name + '，不能进行购买低等级',
+            //     }, function(ret, err) {
+            //         if (ret) {
+            //             //  alert( JSON.stringify( ret ) );
+            //         } else {
+            //             //  alert( JSON.stringify( err ) );
+            //         }
+            //     });
+            // } else if (user_level_id != 1 && (user_level_id - gif_level_id == 0)) {
+            //     var buttons;
+            //     var i;
+            //     if (api.systemType == 'android') {
+            //         buttons = ['确定', '取消'];
+            //         i = 1;
+            //     } else {
+            //         buttons = ['取消', '确定'];
+            //         i = 2;
+            //     }
+            //     api.confirm({
+            //         title: '提示',
+            //         msg: '您当前购买，将自动延长VIP有效期时长',
+            //         buttons: buttons
+            //     }, function(ret, err) {
+            //         if (ret) {
+            //             //  alert( JSON.stringify( ret ) );
+            //             var index = ret.buttonIndex;
+            //             if (index == i) {
+            //                 api.openWin({
+            //                     name: 'jiesuan_win',
+            //                     url: '../win/jiesuan_win.html',
+            //                     pageParam: {
+            //                         goods_id: api.pageParam.goods_id
+            //                     }
+            //                 });
+            //             }
+            //         } else {
+            //             //  alert( JSON.stringify( err ) );
+            //         }
+            //     });
+            // } else if (user_level_id != 1 && (user_level_id - gif_level_id < 0)) {
+            //     var buttons;
+            //     var i;
+            //     if (api.systemType == 'android') {
+            //         buttons = ['确定', '取消'];
+            //         i = 1;
+            //     } else {
+            //         buttons = ['取消', '确定'];
+            //         i = 2;
+            //     }
+            //     api.confirm({
+            //         title: '提示',
+            //         msg: '您当前是' + user_level_name + '，购买后将升级为' + mb_level_name + '等级',
+            //         buttons: buttons
+            //     }, function(ret, err) {
+            //         if (ret) {
+            //             //  alert( JSON.stringify( ret ) );
+            //             var index = ret.buttonIndex;
+            //             if (index == i) {
+            //                 api.openWin({
+            //                     name: 'jiesuan_win',
+            //                     url: '../win/jiesuan_win.html',
+            //                     pageParam: {
+            //                         goods_id: api.pageParam.goods_id
+            //                     }
+            //                 });
+            //             }
+            //         } else {
+            //             //  alert( JSON.stringify( err ) );
+            //         }
+            //     });
+            // } else if (user_level_id == 1) {
+            //     api.openWin({
+            //         name: 'jiesuan_win',
+            //         url: '../win/jiesuan_win.html',
+            //         pageParam: {
+            //             goods_id: api.pageParam.goods_id
+            //         }
+            //     });
+            // }
+
+        } else {
+            api.toast({
+                msg: '请先登录',
+                duration: 2000,
+                location: 'middle'
+            });
+            api.openWin({
+                name: 'user_login',
+                url: './../login/user_login.html',
+            });
+        }
+
+    }
+</script>

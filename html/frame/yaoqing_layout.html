@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+    <title>面对面邀请</title>
+    <link rel="stylesheet" type="text/css" href="../css/api.css"/>
+    <link rel="stylesheet" type="text/css" href="../css/style.css" />
+    <style>
+    /*弹出框样式*/
+    	body{
+    		width:100%;
+    		height:100%;
+    		background:none;
+    		font-size:16px;
+        overflow: hidden;
+    	}
+    	.wrapAll{
+    		width:100%;
+    		height:100%;
+    		background:rgba(0,0,0,.7);
+        overflow: hidden;
+    		position:fixed;
+    		top:0;
+    		left:0;
+    		z-index:99;
+    	}
+    	.nl_list {
+    		position: fixed;
+        width: 300px;
+    		height:417px;
+        left: 50%;
+        top:50%;
+        margin-left: -150px;
+        margin-top: -208px;
+    		border-radius: 10px;
+    		z-index: 999;
+    		background: #fff;
+    		box-sizing: border-box;
+    		-webkit-box-sizing: border-box;
+        overflow: hidden;
+    	}
+      .nl_list .gz_title{
+        height: 67px;
+        width: 100%;
+        line-height: 67px;
+        text-align: center;
+        color:#fff;
+        font-size: 20px;
+      }
+      .nl_list .gz_item{
+        height: 350px;
+        width: 100%;
+        background: #fff;
+        overflow-x: hidden;
+  			overflow-y: auto;
+        position: relative;
+      }
+      .nl_list .gz_item .list_title{
+        margin: 40px auto 40px auto;
+        height: 229px;
+        width: 229px;
+      }
+			.nl_list .gz_item .list_title img{
+				width: 100%;
+				height: 100%;
+				background-size: 100% 100%;
+			}
+      .nl_list .gz_item  p{
+        color:#666;
+				font-size: 14px;
+        text-align: center;
+        height: 20px;
+        line-height: 20px;
+        width: 100%;
+      }
+       .close_gz{
+        width: 30px;
+        height: 30px;
+        background: url('../../image/home/video_close.png') no-repeat;
+        background-size: 100% 100%;
+        position: fixed;
+        z-index: 99999;
+        top: 52%;
+        left: 50%;
+        margin-left: -13px;
+        margin-top: 220px;
+      }
+      .submitColor{
+        background: -webkit-linear-gradient(left, #fd7239 , #f94529); /* Safari 5.1 - 6.0 */
+        background: -o-linear-gradient(right, #fd7239, #f94529); /* Opera 11.1 - 12.0 */
+        background: -moz-linear-gradient(right, #fd7239, #f94529); /* Firefox 3.6 - 15 */
+        background: linear-gradient(to right, #fd7239, #f94529); /* 标准的语法 */
+      }
+    </style>
+</head>
+<body>
+<!--弹出框-->
+	<section class='wrapAll' id='wrapAll'>
+	</section>
+	<section class='nl_list'>
+      <div class="gz_title submitColor">面对面邀请</div>
+      <div class="gz_item">
+          <div class="list_title">
+          	<img src="" alt="" id="user_code">
+          </div>
+          <p>使用微信扫一扫，立即开启省钱模式</p>
+        </div>
+	</section>
+  <div class="close_gz"></div>
+</body>
+<script type="text/javascript" src="../../script/api.js"></script>
+<script type="text/javascript" src="../../script/jquery.js"></script>
+<script type="text/javascript" src="../../script/api_common.js"></script>
+<script type="text/javascript">
+	apiready = function(){
+      window.headerH=api.pageParam.headerH;
+			var FNScanner = api.require('FNScanner');
+			FNScanner.encodeImg({
+			    content: commonUrl + 'h5/qqt/index.html?yqm='+api.pageParam.user_code+'&from=singlemessage',
+			    saveToAlbum: false,
+			    saveImg: {
+			        path: 'fs://album.png',
+			        w: 200,
+			        h: 200
+			    }
+			}, function(ret, err) {
+			    if (ret.status) {
+			        // alert(JSON.stringify(api.pageParam.user_code));
+							$("#user_code").attr("src",ret.imgPath);
+			    } else {
+			        // alert(JSON.stringify(err));
+			    }
+			});
+	};
+		//触摸蒙层
+		// document.getElementById('wrapAll').addEventListener('touchstart',function(){
+		// 	closeNLShaixuanLayout();
+		// },false);
+    $(".close_gz").click(function (){
+      closeNLYaoqingLayout();
+    })
+		//调用关闭弹出层的方法
+		function closeNLYaoqingLayout(){
+      api.execScript({
+          name: 'yaoqinghaoyou_win',
+          frameName: 'yaoqinghaoyou_frame',
+          script: 'closeYaoqingLayout();'
+      });
+
+		}
+</script>
+</html>

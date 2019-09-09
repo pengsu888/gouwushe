@@ -1,0 +1,308 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0" />
+    <title>京东订单win</title>
+    <link rel="stylesheet" type="text/css" href="../../css/api.css" />
+    <!-- <link rel="stylesheet" type="text/css" href="../../css/style.css" /> -->
+    <style media="screen">
+        body,
+        html {
+            width: 100%;
+            height: 100%;
+        }
+
+        header {
+            width: 100%;
+            height: 44px;
+            background: #fff;
+            overflow: hidden;
+        }
+
+        header .header-top {
+            display: -webkit-box;
+            display: -webkit-flex;
+            display: flex;
+            width: 100%;
+            height: 44px;
+            position: relative;
+        }
+
+        .headerItem {
+            height: 44px;
+            width: calc(100% - 24px);
+            border-bottom: solid 1px #f6f6f6;
+            vertical-align: middle;
+            display: inline-block;
+            position: absolute;
+            top: 0;
+            left: 12px;
+        }
+
+        .headerItem div {
+            float: left;
+        }
+
+        .headerItem .header_back {
+            width: 9px;
+            height: 16px;
+            float: left;
+            margin-top: 12px;
+        }
+
+        .headerItem .header_back img {
+            width: 9px;
+            height: 16px;
+            background-size: 100% 100%;
+            vertical-align: middle;
+        }
+
+        .headerItem .header_title {
+            width: calc(100% - 108px);
+            line-height: 44px;
+            text-align: center;
+            margin-left: 40px;
+        }
+
+        .headerItem .header_title .header_down {
+            width: 7px;
+            height: 4px;
+            background-size: 100% 100%;
+            position: relative;
+            top: -4px;
+            right: -5px;
+        }
+
+        .headerItem .header_title .header_up {
+            -moz-transform: rotate(180deg);
+            -webkit-transform: rotate(180deg);
+            filter: progid: DXImageTransform.Microsoft.BasicImage(rotation=3);
+        }
+
+        .headerItem .header_right {
+            width: 58px;
+            height: 22px;
+            float: right;
+            margin-top: 8px;
+            font-size: 12px;
+        }
+
+        .headerItem .header_right img {
+            width: 25px;
+            height: 25px;
+            background-size: 100% 100%;
+            vertical-align: middle;
+            display: inline-block;
+            margin-right: 5px;
+        }
+
+        .header-bottom {
+            height: 37px;
+            width: 100%;
+        }
+
+        .header-bottom ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .header-bottom ul li {
+            float: left;
+            width: 25%;
+            line-height: 37px;
+            text-align: center;
+        }
+
+        .header-bottom ul li.li_active {
+            border-bottom: 3px solid #fd5f3e;
+            color: #fd5f3e;
+        }
+    </style>
+</head>
+
+<body>
+    <header id="header">
+        <div class="header-top">
+            <div class="headerItem">
+                <div class="header_back" onclick="closeWin();">
+                    <img src="../../image/nav_back_black.png" alt="">
+                </div>
+                <!--  onclick="openOrderSlidLayout();"-->
+                <div class="header_title"><span id="header_title">京东订单</span>
+                    <!-- <img src="../../image/home/mine_fan_tri.png" alt="" class="header_down"> -->
+                </div>
+                <!-- <div class="header_right" ><img src="../../image/home/mine_time.png" alt="" onclick="selectTime();"><span onclick="searchOrder();">搜索</span></div> -->
+            </div>
+        </div>
+
+    </header>
+    <div class="header-bottom">
+        <ul id="class_list">
+            <li class="li_active">全部</li>
+            <li>待结算</li>
+            <li>已结算</li>
+            <li>已失效</li>
+        </ul>
+    </div>
+</body>
+<script type="text/javascript" src="../../script/api.js"></script>
+<script type="text/javascript" src="../../script/jquery.js"></script>
+<script type="text/javascript">
+    var headerH;
+    apiready = function() {
+        api.setStatusBarStyle({
+            style: 'dark' //黑色
+                // style: 'light' //白色
+        });
+        //接收订单类型
+        api.addEventListener({
+            name: 'order_title'
+        }, function(ret, err) {
+            if (ret) {
+                //  alert( JSON.stringify( ret ) );
+                $api.byId('header_title').innerHTML = ret.value.order_title;
+            } else {
+                //  alert( JSON.stringify( err ) );
+            }
+        });
+
+        var header = $api.byId('header');
+        $api.fixStatusBar(header);
+        headerH = $api.offset(header).h;
+        //打开分类页
+        api.openFrameGroup({
+            name: 'classify1',
+            scrollEnabled: true,
+            rect: {
+                x: 0,
+                y: headerH + 40,
+                w: 'auto',
+                h: 'auto'
+            },
+            index: 0,
+            preload: 0,
+            frames: [{
+                name: 'jd_all_order_frame',
+                url: '../frame/jd_all_order_frame.html',
+                bounces: false,
+                vScrollBarEnabled: false,
+                hScrollBarEnabled: false,
+                pageParam: {
+                    order_status: -1,
+                }
+            }, {
+                name: 'jd_djs_order_frame',
+                url: '../frame/jd_djs_order_frame.html',
+                bounces: false,
+                vScrollBarEnabled: false,
+                hScrollBarEnabled: false,
+                pageParam: {
+                    order_status: 0,
+                }
+            }, {
+                name: 'jd_yjs_order_frame',
+                url: '../frame/jd_yjs_order_frame.html',
+                bounces: false,
+                vScrollBarEnabled: false,
+                hScrollBarEnabled: false,
+                pageParam: {
+                    order_status: 1,
+                }
+            }, {
+                name: 'jd_ysx_order_frame',
+                url: '../frame/jd_ysx_order_frame.html',
+                bounces: false,
+                vScrollBarEnabled: false,
+                hScrollBarEnabled: false,
+                pageParam: {
+                    order_status: 2,
+                }
+            }],
+        }, function(ret, err) {
+            var _index = ret.index;
+            $("#class_list > li").eq(_index).addClass("li_active");
+            $("#class_list > li").eq(_index).siblings().removeClass("li_active");
+        });
+        //点击菜单
+        $("#class_list > li").click(function() {
+            var li_index = $(this).index();
+            $(this).addClass("active").siblings().removeClass("li_active");
+            api.setFrameGroupIndex({
+                name: 'classify1',
+                index: li_index,
+                scroll: true,
+            });
+        });
+    };
+
+    function closeWin() {
+        api.closeWin({
+            name: 'jd_my_order_win'
+        });
+    }
+    //弹出蒙版  设置开关
+    window.showFlag = false;
+
+    function openOrderSlidLayout() {
+        $(".header_down").addClass("header_up");
+        var $body = $api.dom('body');
+        var body_h = $api.offset($body).h;
+        if (window.showFlag == false) {
+            api.openFrame({
+                name: 'order_slidLayout',
+                url: '../frame/order_slidLayout.html',
+                rect: {
+                    x: 0,
+                    y: headerH,
+                    w: 'auto',
+                    h: body_h
+                },
+                // pageParam : {
+                // 	Id:id
+                // },
+                bounces: false,
+                bgColor: 'rgba(0,0,0,0)',
+                vScrollBarEnabled: true,
+                hScrollBarEnabled: true
+            });
+            window.showFlag = true;
+        } else {
+            closeOrderSlidLayout();
+        }
+    }
+
+    function closeOrderSlidLayout() {
+        $(".header_down").removeClass("header_up");
+        api.closeFrame({
+            name: 'order_slidLayout'
+        });
+        window.showFlag = false;
+    }
+
+    function selectTime() {
+        api.openWin({
+            name: 'select_time_win',
+            url: '../frame/select_time_win.html',
+            pageParam: {
+                name: 'test'
+            }
+        });
+
+    }
+
+    function searchOrder() {
+        api.openWin({
+            name: 'dingdan_check_win',
+            url: './dingdan_check_win.html',
+            pageParam: {
+                name: 'test'
+            }
+        });
+
+    }
+</script>
+
+</html>

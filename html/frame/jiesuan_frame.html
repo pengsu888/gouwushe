@@ -1,0 +1,669 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0" />
+    <title>自营订单结算</title>
+    <link rel="stylesheet" type="text/css" href="../../css/api.css" />
+</head>
+<style type="text/css">
+    html,
+    body {
+        width: 100%;
+        height: 100%;
+        overflow: hidden;
+        background: #f4f4f4;
+    }
+
+    .address {
+        width: 100%;
+        height: auto;
+        padding-top: 15px;
+        padding-bottom: 15px;
+        background: linear-gradient(to right, rgb(255, 153, 1), rgb(255, 36, 32));
+    }
+
+    .address ul {
+        width: 100%;
+        height: auto;
+        overflow: hidden;
+        list-style: none;
+        padding: 15px auto;
+    }
+
+    .address ul li {
+        float: left;
+    }
+
+    .address ul li:nth-child(1),
+    .address ul li:nth-child(3) {
+        width: 50px;
+        height: 50px;
+    }
+
+    .address ul li:nth-child(1) img,
+    .address ul li:nth-child(3) img {
+        width: 25px;
+        height: 25px;
+        background-size: 100% 100%;
+        vertical-align: middle;
+        display: inline-block;
+        margin-top: 12px;
+        margin-left: 12px;
+    }
+
+    .address ul li:nth-child(2) {
+        width: calc(100% - 100px);
+        height: auto;
+        font-size: 14px;
+    }
+
+    .address ul li:nth-child(2) div {
+        width: 100%;
+        height: auto;
+        line-height: 20px;
+        color: #fff;
+    }
+
+    .goods_del {
+        width: 100%;
+        height: auto;
+        padding-top: 10px;
+        padding-bottom: 10px;
+        border-bottom: solid 1px #f2f2f2;
+        background: #fff;
+    }
+
+    .goods_del ul {
+        list-style: none;
+        width: calc(100% - 24px);
+        height: 60px;
+        padding: 12px;
+        margin: 0 auto;
+    }
+
+    .goods_del ul li {
+        float: left;
+        height: 60px;
+    }
+
+    .goods_del ul li:nth-child(1) {
+        width: 150px;
+        margin-right: 10px;
+    }
+
+    .goods_del ul li:nth-child(1) img {
+        width: 100%;
+        height: 100%;
+        background-size: 100% 100%;
+    }
+
+    .goods_del ul li:nth-child(2) {
+        /*width: calc(100% - 85px);*/
+        position: relative;
+        width: 50%;
+    }
+
+    .goods_title {
+        font-size: 12px;
+        color: #999;
+        line-height: 20px;
+        width: 100%;
+        height: auto;
+        display: -webkit-box;
+        -webkit-box-orient: vertical;
+        -webkit-line-clamp: 2;
+        overflow: hidden;
+    }
+
+    .vip_del {
+        width: 100%;
+        height: 20px;
+        line-height: 20px;
+        color: #999;
+        position: absolute;
+        font-size: 12px;
+        left: 0;
+        bottom: 0;
+        display: -webkit-box;
+        -webkit-box-orient: vertical;
+        -webkit-line-clamp: 1;
+        overflow: hidden;
+    }
+
+    .vip_del .vip_level {
+        width: 14px;
+        height: 14px;
+        margin-right: 5px;
+    }
+
+    .vip_level img {
+        width: 100%;
+        height: 100%;
+        background-size: 100% 100%;
+        vertical-align: middle;
+    }
+
+    .goods_price {
+        width: 100%;
+        height: 45px;
+        background: #fff;
+        line-height: 45px;
+    }
+
+    .goods_price ul {
+        list-style: none;
+        width: calc(100% - 24px);
+        margin: 0 auto;
+        padding: 0;
+    }
+
+    .goods_price ul li {
+        width: 50%;
+        height: 100%;
+        float: left;
+    }
+
+    .goods_price ul li:nth-child(1) {
+        text-align: left;
+    }
+
+    .goods_price ul li:nth-child(2) {
+        text-align: right;
+        color: red;
+    }
+
+    .zf_type {
+        height: 137px;
+        background: #fff;
+        margin-top: 10px;
+    }
+
+    .zf_title {
+        width: 100%;
+        height: 45px;
+        line-height: 45px;
+        border-bottom: solid 1px #f2f2f2;
+    }
+
+    .zf_title span {
+        margin-left: 12px;
+        color: #999;
+    }
+
+    .type_item {
+        width: 100%;
+        height: 92px;
+    }
+
+    .type_item ul {
+        width: 100%;
+        height: 100%;
+        margin: 0;
+        padding: 0;
+        list-style: none;
+    }
+
+    .type_item ul li {
+        width: 100%;
+        height: 45px;
+        border-bottom: solid 1px #f2f2f2;
+        line-height: 45px;
+    }
+
+    .type_item ul li .type_left {
+        float: left;
+        margin-left: 12px;
+    }
+
+    .type_item ul li .type_left span {
+        width: 27px;
+        height: 27px;
+        margin-right: 8px;
+    }
+
+    .type_item ul li .type_left span img {
+        width: 100%;
+        height: 100%;
+        background-size: 100% 100%;
+        vertical-align: middle;
+    }
+
+    .type_item ul li .type_right {
+        float: right;
+        margin-right: 12px;
+    }
+
+    .type_item ul li .type_right img {
+        width: 16px;
+        height: 16px;
+        background-size: 100% 100%;
+        vertical-align: middle;
+    }
+
+    .sure_btn {
+        width: calc(100% - 50px);
+        height: 36px;
+        background: linear-gradient(to right, rgb(255, 153, 1), rgb(255, 36, 32));
+        line-height: 36px;
+        text-align: center;
+        color: #fff;
+        margin: 30px auto;
+        border-radius: 25px;
+    }
+
+    .red_color {
+        color: red;
+    }
+</style>
+
+<body>
+    <div class="address">
+        <ul>
+            <li><img src="../../image/sell_ordercofirm_address.png" alt=""></li>
+            <li>
+                <div id="user_name">添加地址</div>
+                <div id="address"></div>
+            </li>
+            <li tapmode onclick="openAddress();"><img src="../../image/ic_address.png" alt=""></li>
+        </ul>
+    </div>
+    <div class="goods_del">
+        <ul>
+            <li><img src="../../image/zhanwei.jpg" alt="" id="goods_img"></li>
+            <li>
+                <div class="goods_title" id="title"></div>
+                <div class="vip_del"><span class="vip_level"><img src="../../image/ic_shop_zeng.jpg" alt=""></span><span id="vip_del"></span></div>
+            </li>
+        </ul>
+    </div>
+    <div class="goods_price">
+        <ul>
+            <li>商品总额</li>
+            <li id="price">￥0.00</li>
+        </ul>
+    </div>
+    <div class="zf_type">
+        <div class="zf_title"><span>请选择支付方式</span></div>
+        <div class="type_item">
+            <ul>
+                <li>
+                    <div class="type_left"><span><img src="../../image/wd_lmhhr_shengji_icon_yue.png" alt=""></span>余额支付</div>
+                    <div class="type_right"><img src="../../image/home/login_btn_selete_n.png" alt="" class="type_img" id="1"></div>
+                </li>
+                <li>
+                    <div class="type_left"><span><img src="../../image/wd_lmhhr_shengji_icon_zhifubao.png" alt=""></span>支付宝</div>
+                    <div class="type_right"><img src="../../image/home/login_btn_selete_n.png" alt="" class="type_img" id="2"></div>
+                </li>
+            </ul>
+        </div>
+    </div>
+    <div class="sure_btn" tapmode onclick="sureBtn();">确认</div>
+</body>
+<script type="text/javascript" src="../../script/api.js"></script>
+<script type="text/javascript" src="../../script/jquery.js"></script>
+<script type="text/javascript" src="../../script/api_common.js"></script>
+<script type="text/javascript" src="../../script/md5.js"></script>
+<script type="text/javascript">
+    var dis_level_id, sing_integral, sing_price, sing_img, sing_title, pay_type, address_id, effective_num, effective_cycle;
+    apiready = function() {
+
+        api.addEventListener({
+            name: 'check_address'
+        }, function(ret, err) {
+            if (ret) {
+                //  alert( JSON.stringify( ret ) );
+                address_id = ret.value.address_id;
+                getAddress(ret.value.address_id);
+            } else {
+                //  alert( JSON.stringify( err ) );
+            }
+        });
+        if (!empty($api.getStorage("userInfo"))) {
+            user_id = $api.getStorage("userInfo").user_id;
+            getMorenAddress();
+        } else {
+            api.openWin({
+                name: 'user_login',
+                url: './../login/user_login.html',
+            });
+        }
+        getGoodsInfo();
+    };
+    var zf_type = $(".type_item ul li");
+    zf_type.click(function() {
+        if ($(this).find(".type_img").attr("src") == "../../image/home/login_btn_selete_n.png") {
+            $(".type_right").find("img").attr("src", "../../image/home/login_btn_selete_n.png");
+            $(this).find(".type_img").attr("src", "../../image/home/login_btn_selete_c.png");
+        } else {
+            $(this).find(".type_img").attr("src", "../../image/home/login_btn_selete_n.png");
+        }
+
+    });
+
+    function openAddress() {
+        api.openWin({
+            name: 'address_win',
+            url: '../win/address_win.html',
+            pageParam: {
+                check_address: 2 //代表是选择地址
+            },
+        });
+    }
+
+    function getAddress(address_id) {
+        var obj = {
+            // 'user_id':user_id,
+            'address_id': address_id,
+        };
+        var objArr = sort_ASCII(obj);
+        var timestamp = fntimestamp();
+        var version = '2.0';
+        var arr = apiSecret + timestamp + version + '';
+        for (i in objArr) {
+            arr += objArr[i];
+        }
+        var sign = hex_md5(arr);
+        // alert(sign);
+        api.ajax({
+            url: commonUrl + 'soukeAppTttService/service/singleitem/queryUserAddressOne_ac',
+            method: 'post',
+            headers: {
+                'Content-Type': 'application/json;charset=utf-8'
+            },
+            data: {
+                body: {
+                    'apiKey': apiKey,
+                    'timestamp': timestamp,
+                    'sign': sign,
+                    // 'user_id':user_id,
+                    'address_id': address_id,
+                }
+            }
+        }, function(ret, err) {
+            if (ret) {
+                if (ret.result_code == 200) {
+                    console.log("查询单个地址-----：" + JSON.stringify(ret));
+                    $api.byId('user_name').innerHTML = ret.result_data.name + " " + ret.result_data.phone;
+                    $api.byId('address').innerHTML = ret.result_data.address;
+                } else {
+                    api.toast({
+                        msg: ret.result_message,
+                        duration: 2000,
+                        location: 'middle'
+                    });
+
+                }
+            } else {
+                // api.alert({ msg: JSON.stringify(err) });
+            }
+        });
+    }
+
+    function getMorenAddress() {
+        var obj = {
+            'user_id': user_id,
+        };
+        var objArr = sort_ASCII(obj);
+        var timestamp = fntimestamp();
+        var version = '2.0';
+        var arr = apiSecret + timestamp + version + '';
+        for (i in objArr) {
+            arr += objArr[i];
+        }
+        var sign = hex_md5(arr);
+        // alert(sign);
+        api.ajax({
+            url: commonUrl + 'soukeAppTttService/service/singleitem/queryUserDefaultAddress_ac',
+            method: 'post',
+            headers: {
+                'Content-Type': 'application/json;charset=utf-8'
+            },
+            data: {
+                body: {
+                    'apiKey': apiKey,
+                    'timestamp': timestamp,
+                    'sign': sign,
+                    'user_id': user_id,
+                }
+            }
+        }, function(ret, err) {
+            if (ret) {
+                if (ret.result_code == 200) {
+                    console.log("查询默认地址-----：" + JSON.stringify(ret));
+                    $api.byId('user_name').innerHTML = ret.result_data.name + " " + ret.result_data.phone;
+                    $api.byId('address').innerHTML = ret.result_data.address;
+                    address_id = ret.result_data.id;
+
+                } else {
+                    api.toast({
+                        msg: "请先添加收货地址",
+                        duration: 2000,
+                        location: 'middle'
+                    });
+
+                }
+            } else {
+                // api.alert({ msg: JSON.stringify(err) });
+            }
+        });
+    }
+
+    function getGoodsInfo() {
+        var obj = {
+            'goods_id': api.pageParam.goods_id,
+            'user_id': user_id
+        };
+        // alert(api.pageParam.goods_id );
+        var objArr = sort_ASCII(obj);
+        var timestamp = fntimestamp();
+        var version = '2.0';
+        var arr = apiSecret + timestamp + version + '';
+        for (i in objArr) {
+            arr += objArr[i];
+        }
+        console.log(arr);
+        var sign = hex_md5(arr);
+        api.ajax({
+            url: commonUrl + 'soukeAppTttService/service/singleitem/queryselfsingleitemOne_ac',
+            method: 'post',
+            headers: {
+                'Content-Type': 'application/json;charset=utf-8'
+            },
+            data: {
+                body: {
+                    'apiKey': apiKey,
+                    'timestamp': timestamp,
+                    'sign': sign,
+                    'goods_id': api.pageParam.goods_id,
+                    'user_id': user_id
+                }
+            }
+        }, function(ret, err) {
+            console.log("商品详情图片---：" + JSON.stringify(ret));
+            api.hideProgress();
+            $api.byId('title').innerHTML = ret.result_data.sing_title;
+            $api.byId('price').innerHTML = "￥" + ret.result_data.sing_price;
+            $("#goods_img").attr("src", ret.result_data.sing_img.split(",")[0]);
+            if (ret.result_data.effective_cycle == 1) {
+                $api.byId('vip_del').innerHTML = '可获<span class="red_color">' + ret.result_data.effective_num + '个月</span>' + ret.result_data.sk_dis_level.level_name;
+            } else if (ret.result_data.effective_cycle == 2) {
+                $api.byId('vip_del').innerHTML = '可获<span class="red_color">' + ret.result_data.effective_num + '年</span>' + ret.result_data.sk_dis_level.level_name;
+            } else if (ret.result_data.effective_cycle == 3) {
+                $api.byId('vip_del').innerHTML = '可获<span class="red_color">永久</span>' + ret.result_data.sk_dis_level.level_name;
+            }
+
+            dis_level_id = ret.result_data.dis_level_id;
+            sing_integral = ret.result_data.sing_integral;
+            sing_price = ret.result_data.sing_price;
+            sing_img = ret.result_data.sing_img.split(",")[0];
+            sing_title = ret.result_data.sing_title;
+            effective_cycle = ret.result_data.effective_cycle;
+            effective_num = ret.result_data.effective_num;
+        });
+    }
+
+    function sureBtn() {
+        for (var i = 0; i < zf_type.length; i++) {
+            if ($(zf_type[i]).find(".type_img").attr("src") == "../../image/home/login_btn_selete_c.png") {
+                pay_type = $(zf_type[i]).find(".type_img").attr("id");
+            }
+        }
+        if ($api.byId("address").innerHTML == "") {
+            api.toast({
+                msg: '请选择地址',
+                duration: 2000,
+                location: 'middle'
+            });
+        } else {
+            if (empty(pay_type)) {
+                api.toast({
+                    msg: '请选择支付方式',
+                    duration: 2000,
+                    location: 'middle'
+                });
+            } else {
+                api.showProgress({
+                    style: 'default',
+                    animationType: 'fade',
+                    title: '创建订单中',
+                    text: '请稍后...',
+                    modal: false
+                });
+                var obj = {
+                    'user_id': user_id,
+                    'pay_type': pay_type,
+                    'goods_id': api.pageParam.goods_id,
+                    'address_id': address_id
+                };
+                // alert(api.pageParam.goods_id );
+                var objArr = sort_ASCII(obj);
+                var timestamp = fntimestamp();
+                var version = '2.0';
+                var arr = apiSecret + timestamp + version + '';
+                for (i in objArr) {
+                    arr += objArr[i];
+                }
+                console.log(arr);
+                var sign = hex_md5(arr);
+                api.ajax({
+                    url: commonUrl + 'soukeAppTttService/service/payment_ac',
+                    method: 'post',
+                    headers: {
+                        'Content-Type': 'application/json;charset=utf-8'
+                    },
+                    data: {
+                        body: {
+                            'apiKey': apiKey,
+                            'timestamp': timestamp,
+                            'sign': sign,
+                            'user_id': user_id,
+                            'pay_type': pay_type,
+                            'goods_id': api.pageParam.goods_id,
+                            'address_id': address_id
+                        }
+                    }
+                }, function(ret, err) {
+                  api.hideProgress();
+                    if (ret) {
+                      console.log(JSON.stringify(ret));
+
+                        if (ret.result_code == 200) {
+                            api.hideProgress();
+                            console.log("购买商品：" + JSON.stringify(ret));
+                            if (pay_type == 2) {
+                                var aliPayTradePlus = api.require('aliPayTradePlus');
+                                aliPayTradePlus.payOrder({
+                                    orderInfo: ret.result_data
+                                }, function(ret, err) {
+                                    if (ret.code == 9000) {
+                                        api.toast({
+                                            msg: '支付成功',
+                                            duration: 2000,
+                                            location: 'middle'
+                                        });
+                                        setTimeout(function() {
+                                            api.openWin({
+                                                name: 'vip_order_win',
+                                                url: '../win/vip_order_win.html',
+                                            });
+                                        }, 2000)
+                                        api.closeWin({
+                                            name: 'jiesuan_win'
+                                        });
+                                        // api.execScript({
+                                        //     name: 'jiesuan_win',
+                                        //     // frameName: 'frmName',
+                                        //     script: 'closeWin();'
+                                        // });
+                                    } else if (ret.code == 4000) {
+                                        api.toast({
+                                            msg: '订单支付失败',
+                                            duration: 2000,
+                                            location: 'middle'
+                                        });
+                                    } else if (ret.code == 6002) {
+                                        api.toast({
+                                            msg: '网络连接出错',
+                                            duration: 2000,
+                                            location: 'middle'
+                                        });
+                                    } else if (ret.code == 5000) {
+                                        api.toast({
+                                            msg: '重复请求',
+                                            duration: 2000,
+                                            location: 'middle'
+                                        });
+                                    } else if (ret.code == 6001) {
+                                        api.toast({
+                                            msg: '取消支付',
+                                            duration: 2000,
+                                            location: 'middle'
+                                        });
+                                    } else if (ret.code == 8000) {
+                                        api.toast({
+                                            msg: '订单处理中',
+                                            duration: 2000,
+                                            location: 'middle'
+                                        });
+                                    }
+                                });
+                            } else {
+                                api.toast({
+                                    msg: ret.result_message,
+                                    duration: 2000,
+                                    location: 'middle'
+                                });
+                                // api.execScript({
+                                //     name: 'jiesuan_win',
+                                //     // frameName: 'frmName',
+                                //     script: 'closeWin();'
+                                // });
+                                api.closeWin({
+                                    name: 'jiesuan_win'
+                                });
+
+                                api.openWin({
+                                    name: 'vip_order_win',
+                                    url: '../win/vip_order_win.html',
+                                });
+
+                            }
+                        } else {
+                            api.toast({
+                                msg: ret.result_message,
+                                duration: 2000,
+                                location: 'middle'
+                            });
+                        }
+                    } else {
+                        // alert(JSON.stringify(err));
+                    }
+                });
+            }
+        }
+    }
+</script>
+
+</html>

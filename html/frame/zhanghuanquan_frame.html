@@ -1,0 +1,601 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0" />
+    <title>账户与安全</title>
+    <link rel="stylesheet" type="text/css" href="../../css/api.css" />
+    <link rel="stylesheet" type="text/css" href="../../css/aui.css" />
+    <style>
+        html,
+        body {
+            height: 100%;
+            background: #F4F4F4;
+            width: 100%;
+            overflow: hidden;
+        }
+
+        .set_user {
+            width: calc(100%- 12px);
+            height: 110px;
+            background: #fff;
+            margin-left: 12px;
+        }
+
+        .set_area {
+            width: 100%;
+            height: auto;
+            background: #fff;
+            overflow: hidden;
+        }
+
+        .set_img {
+            width: 50px;
+            height: 50px;
+            background-size: 100% 100%;
+            float: left;
+            margin-top: 30px;
+        }
+
+        .user_zl {
+            height: 50px;
+            width: calc(100% - 97px);
+            margin-left: 16px;
+            float: left;
+            margin-top: 30px;
+        }
+
+        .user_zh {
+            width: 100%;
+            height: 25px;
+            line-height: 25px;
+        }
+
+        .check_edit {
+            color: #888;
+        }
+
+        .mine_forward {
+            margin-top: 42px;
+        }
+
+        .set_item {
+            width: calc(100% - 24px);
+            height: 55px;
+            background: #fff;
+            margin-left: 12px;
+            position: relative;
+        }
+
+        .set_right {
+            width: 25px;
+            height: 25px;
+            float: right;
+        }
+
+        img {
+            width: 100%;
+            height: 100%;
+            background-size: 100% 100%;
+        }
+
+        .set_border {
+            border-bottom: solid 1px #dddddd;
+        }
+
+        .set_middle {
+            width: auto;
+            height: 55px;
+            float: left;
+            line-height: 55px;
+            font-size: 0.7rem;
+        }
+
+        .set_version {
+            width: 120px;
+            height: 55px;
+            line-height: 55px;
+            position: absolute;
+            color: #888;
+            text-align: right;
+            right: 30px;
+            top: 0;
+            font-size: 0.7rem;
+        }
+
+        .set_middle_ts {
+            height: 55px;
+            line-height: 55px;
+            position: absolute;
+            color: #999999;
+            text-align: right;
+            font-size: 0.6rem;
+            padding-left: 75px;
+        }
+
+        .forward_top {
+            margin-top: 16px;
+        }
+
+        .set_top {
+            margin-top: 10px;
+        }
+
+        .aui-switch:checked {
+            border-color: #4DD865;
+            background-color: #4DD865;
+        }
+
+        .aui-switch {
+            float: right;
+            margin-top: 15px;
+            width: 2.3rem;
+            height: 1.2rem;
+            position: relative;
+            vertical-align: top;
+            border: 1px solid #dddddd;
+            background-color: #fff;
+            border-radius: 0.6rem;
+            background-clip: content-box;
+            display: inline-block;
+            outline: none;
+            -webkit-appearance: none;
+            appearance: none;
+            -webkit-user-select: none;
+            user-select: none;
+            -webkit-box-sizing: border-box;
+            box-sizing: border-box;
+            -webkit-background-clip: padding-box;
+            background-clip: padding-box;
+            -webkit-transition: all 0.2s linear;
+            transition: all 0.2s linear;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="set_area set_top">
+        <div class="set_item set_border">
+            <div class="set_middle">微信授权</div>
+            <input class="aui-switch" type="checkbox" name="demo2" id="weixinOpen" checked="">
+        </div>
+        <div class="set_item">
+            <div class="set_middle">淘宝授权</div>
+            <div class="set_middle_ts">访问淘宝页面无需输入账号密码</div>
+            <input class="aui-switch" type="checkbox" name="demo2" id="taobaoOpen" checked="">
+        </div>
+    </div>
+    <div class="set_area set_top">
+        <div class="set_item set_border" tapmode onclick="fnOpenSetWx('微信号设置',0);">
+            <div class="set_middle">微信号设置</div>
+            <div class="set_version" id="wx_set"></div>
+            <div class="set_right forward_top">
+                <img src="../../image/home/mine_forward.png" alt="">
+            </div>
+        </div>
+        <div class="set_item" tapmode onclick="fnOpenSetWx('QQ号设置',1);">
+            <div class="set_middle">QQ号设置</div>
+            <div class="set_version" id="qq_set"></div>
+            <div class="set_right forward_top">
+                <img src="../../image/home/mine_forward.png" alt="">
+            </div>
+        </div>
+    </div>
+    <div class="set_area set_top">
+        <div class="set_item  set_border" onclick="checkZfb();">
+            <div class="set_middle">支付宝设置</div>
+            <div class="set_version" id="alipay"></div>
+            <div class="set_right forward_top">
+                <img src="../../image/home/mine_forward.png" alt="">
+            </div>
+        </div>
+        <div class="set_item" onclick="set_loginPwd();">
+            <div class="set_middle">设置/修改登录密码</div>
+            <div class="set_version" id="password"></div>
+            <div class="set_right forward_top">
+                <img src="../../image/home/mine_forward.png" alt="">
+            </div>
+        </div>
+    </div>
+
+</body>
+<script type="text/javascript" src="../../script/api.js"></script>
+<script type="text/javascript" src="../../script/jquery.js"></script>
+<script type="text/javascript" src="../../script/api_common.js"></script>
+<script type="text/javascript" src="../../script/md5.js"></script>
+<script type="text/javascript">
+    var user_id;
+    var zfb_status; //记录支付宝是否被绑定过
+    apiready = function() {
+        if (!empty($api.getStorage("userInfo"))) {
+            user_id = $api.getStorage("userInfo").user_id;
+        } else {
+            api.openWin({
+                name: 'user_login',
+                url: '../login/user_login.html',
+                pageParam: {
+                    name: 'test'
+                }
+            });
+        }
+        if ($api.getStorage('tbToken') == 1) {
+            $("#taobaoOpen").prop("checked", true);
+        } else {
+            $("#taobaoOpen").prop("checked", false);
+        }
+        getSet();
+    }
+
+    function checkMineInfo() {
+        api.openWin({
+            name: 'mine_info_win',
+            url: './mine_info_win.html',
+            reload: true,
+            pageParam: {
+                name: 'test'
+            }
+        });
+
+    }
+
+    function checkZfb() {
+        if (zfb_status == 0) {
+            api.openWin({
+                name: 'bind_zfb_win',
+                url: '../win/bind_zfb_win.html',
+                pageParam: {
+                    name: 'test'
+                }
+            });
+        } else if (zfb_status == 1) {
+            api.openWin({
+                name: 'my_zfb_win',
+                url: '../win/my_zfb_win.html',
+                pageParam: {
+                    name: 'test'
+                }
+            });
+        }
+    }
+
+    function set_loginPwd() {
+        api.openWin({
+            name: 'set_loginpwd_win',
+            url: '../win/set_loginpwd_win.html',
+            pageParam: {
+                name: 'test'
+            }
+        });
+    }
+
+    function fnOpenSetWx(winName, set_sign) {
+        api.openWin({
+            name: 'set_wx_win',
+            url: '../win/set_wx_win.html',
+            pageParam: {
+                winName: winName,
+                set_sign: set_sign //0代表设置微信号，1代表设置QQ号
+            }
+        });
+    }
+
+    function getSet() {
+        var obj = {
+            'user_id': user_id,
+        };
+        var objArr = sort_ASCII(obj);
+        var timestamp = fntimestamp();
+        var version = '2.0';
+        var arr = apiSecret + timestamp + version + '';
+        for (i in objArr) {
+            arr += objArr[i];
+        }
+        var sign = hex_md5(arr);
+        // alert(sign);
+        api.ajax({
+            url: commonUrl + 'soukeAppTttService/service/user/findset_ac',
+            method: 'post',
+            headers: {
+                'Content-Type': 'application/json;charset=utf-8'
+            },
+            data: {
+                body: {
+                    'apiKey': apiKey,
+                    'timestamp': timestamp,
+                    'sign': sign,
+                    'user_id': user_id,
+                }
+            }
+        }, function(ret, err) {
+            if (ret) {
+                if (ret.result_code == 200) {
+                    console.log("查询微信设置：" + JSON.stringify(ret));
+                    if (ret.result_data.weixinOpen == 0) {
+                        $("#weixinOpen").attr("checked", false);
+                    } else {
+                        $("#weixinOpen").attr("checked", true);
+                    }
+                    var tbToken = $api.getStorage('tbToken');
+                    if (ret.result_data.weixin == 0) {
+                        $api.byId('wx_set').innerHTML = "未设置";
+                    } else {
+                        $api.byId('wx_set').innerHTML = "已设置";
+                    }
+                    if (ret.result_data.qq == 0) {
+                        $api.byId('qq_set').innerHTML = "未设置";
+                    } else {
+                        $api.byId('qq_set').innerHTML = "已设置";
+                    }
+                    if (ret.result_data.alipaynum == 0) {
+                        $api.byId('alipay').innerHTML = "未设置";
+                        zfb_status = 0;
+                    } else {
+                        $api.byId('alipay').innerHTML = "已设置";
+                        zfb_status = 1;
+                    }
+                    if (ret.result_data.password == 0) {
+                        $api.byId('password').innerHTML = "未设置";
+                    } else {
+                        $api.byId('password').innerHTML = "已设置";
+                    }
+                } else {
+                    api.toast({
+                        msg: ret.result_message,
+                        duration: 2000,
+                        location: 'middle'
+                    });
+
+                }
+            } else {
+                // api.alert({ msg: JSON.stringify(err) });
+            }
+        });
+    }
+
+    $("#weixinOpen").click(function() {
+        if ($("#weixinOpen").attr("checked") == "checked") {
+            var wx = api.require('wx');
+            wx.auth({
+                apiKey: ''
+            }, function(ret, err) {
+                if (ret.status) {
+                    // alert(JSON.stringify(ret));
+                    wx.getToken({
+                        apiKey: '',
+                        apiSecret: '',
+                        code: ret.code
+                    }, function(ret, err) {
+                        if (ret.status) {
+                            // alert(JSON.stringify(ret));
+                            wx.getUserInfo({
+                                accessToken: ret.accessToken,
+                                openId: ret.openId
+                            }, function(ret, err) {
+                                if (ret.status) {
+                                    // alert(JSON.stringify(ret));
+                                    var wx_unionid = ret.unionid;
+                                    var user_nick = ret.nickname;
+                                    var user_head = ret.headimgurl;
+                                    var user_sex = ret.sex;
+                                    var obj = {
+                                        'user_id': user_id,
+                                        'wx_unionid': wx_unionid,
+                                        'user_nick': encodeURIComponent(user_nick),
+                                        'user_head': encodeURIComponent(user_head),
+                                        'user_sex': user_sex
+                                    };
+                                    console.log(JSON.stringify(obj));
+                                    var objArr = sort_ASCII(obj);
+                                    var timestamp = fntimestamp();
+                                    var version = '2.0';
+                                    var arr = apiSecret + timestamp + version + '';
+                                    for (i in objArr) {
+                                        arr += objArr[i];
+                                    }
+                                    var sign = hex_md5(arr);
+                                    api.ajax({
+                                        url: commonUrl + 'soukeAppTttService/service/user/bandWX_ac',
+                                        method: 'post',
+                                        headers: {
+                                            'Content-Type': 'application/json;charset=utf-8'
+                                        },
+                                        data: {
+                                            body: {
+                                                'apiKey': apiKey,
+                                                'timestamp': timestamp,
+                                                'sign': sign,
+                                                'user_id': user_id,
+                                                'wx_unionid': wx_unionid,
+                                                'user_nick': user_nick,
+                                                'user_head': user_head,
+                                                'user_sex': user_sex
+                                            }
+                                        }
+                                    }, function(ret, err) {
+                                        if (ret) {
+                                            if (ret.result_code == 200) {
+                                                console.log("查询微信授权：" + JSON.stringify(ret));
+                                                api.toast({
+                                                    msg: ret.result_message,
+                                                    duration: 2000,
+                                                    location: 'middle'
+                                                });
+                                            } else {
+                                                api.toast({
+                                                    msg: ret.result_message,
+                                                    duration: 2000,
+                                                    location: 'middle'
+                                                });
+
+                                            }
+                                        } else {
+                                            // api.alert({ msg: JSON.stringify(err) });
+                                        }
+                                    });
+                                } else {
+                                    // alert(err.code);
+                                }
+                            });
+
+                        } else {
+                            // alert(err.code);
+                        }
+                    });
+                } else {
+                    // alert(err.code);
+                }
+            });
+        } else {
+            var obj = {
+                'user_id': user_id,
+            };
+            var objArr = sort_ASCII(obj);
+            var timestamp = fntimestamp();
+            var version = '2.0';
+            var arr = apiSecret + timestamp + version + '';
+            for (i in objArr) {
+                arr += objArr[i];
+            }
+            var sign = hex_md5(arr);
+            api.ajax({
+                url: commonUrl + 'soukeAppTttService/service/user/unbundWX_ac',
+                method: 'post',
+                headers: {
+                    'Content-Type': 'application/json;charset=utf-8'
+                },
+                data: {
+                    body: {
+                        'apiKey': apiKey,
+                        'timestamp': timestamp,
+                        'sign': sign,
+                        'user_id': user_id,
+                    }
+                }
+            }, function(ret, err) {
+                if (ret) {
+                    if (ret.result_code == 200) {
+                        console.log("解绑微信授权：" + JSON.stringify(ret));
+                        api.toast({
+                            msg: ret.result_message,
+                            duration: 2000,
+                            location: 'middle'
+                        });
+                    } else {
+                        api.toast({
+                            msg: ret.result_message,
+                            duration: 2000,
+                            location: 'middle'
+                        });
+
+                    }
+                } else {
+                    // api.alert({ msg: JSON.stringify(err) });
+                }
+            });
+        }
+    })
+
+    $("#taobaoOpen").click(function() {
+        if ($("#taobaoOpen").is(':checked')) {
+            var alibaichuan = api.require('mAliBaiChuan');
+            alibaichuan.initTae(function(ret, err) {
+                if (ret) {
+                    // alert("ret:" + JSON.stringify(ret));
+                    alibaichuan.showLogin(function(ret, err) {
+                        if (ret) {
+                            api.toast({
+                                msg: '授权成功',
+                                duration: 2000,
+                                location: 'middle'
+                            });
+                            // var user_taobao_id = ret.openId;
+                            // var obj = {
+                            //     'user_id': user_id,
+                            //     'user_taobao_id': user_taobao_id
+                            // };
+                            // var objArr = sort_ASCII(obj);
+                            // var timestamp = fntimestamp();
+                            // var version = '2.0';
+                            // var arr = apiSecret + timestamp + version + '';
+                            // for (i in objArr) {
+                            //     arr += objArr[i];
+                            // }
+                            // var sign = hex_md5(arr);
+                            // api.ajax({
+                            //     url: commonUrl + 'soukeAppTttService/service/user/updateusertaobaoid_ac',
+                            //     method: 'post',
+                            //     headers: {
+                            //         'Content-Type': 'application/json;charset=utf-8'
+                            //     },
+                            //     data: {
+                            //         body: {
+                            //             'apiKey': apiKey,
+                            //             'timestamp': timestamp,
+                            //             'sign': sign,
+                            //             'user_id': user_id,
+                            //             'user_taobao_id': user_taobao_id
+                            //         }
+                            //     }
+                            // }, function(ret, err) {
+                            //     if (ret) {
+                            //         if (ret.result_code == 200) {
+                            //             console.log("淘宝授权：" + JSON.stringify(ret));
+                            //             api.toast({
+                            //                 msg: ret.result_message,
+                            //                 duration: 2000,
+                            //                 location: 'middle'
+                            //             });
+                            //         } else {
+                            //             api.toast({
+                            //                 msg: ret.result_message,
+                            //                 duration: 2000,
+                            //                 location: 'middle'
+                            //             });
+                            //
+                            //         }
+                            //     } else {
+                            //         api.alert({
+                            //             msg: JSON.stringify(err)
+                            //         });
+                            //     }
+                            // });
+                            $api.setStorage('tbToken', 1);
+                        } else {
+                            $("#taobaoOpen").attr("checked", false);
+                            api.toast({
+                                msg: '取消了授权',
+                                duration: 2000,
+                                location: 'middle'
+                            });
+                        }
+                    });
+                } else {
+                    // alert("err:" + JSON.stringify(err));
+                }
+            });
+        } else {
+            var alibaichuan = api.require('mAliBaiChuan');
+            alibaichuan.logout(function(ret, err) {
+                if (ret) {
+                    $api.setStorage('tbToken', '');
+                    api.toast({
+                        msg: '授权取消',
+                        duration: 2000,
+                        location: 'middle'
+                    });
+                } else {
+                    $("#taobaoOpen").attr("checked", true);
+                    // api.toast({
+                    //     msg: '取消了授权',
+                    //     duration: 2000,
+                    //     location: 'middle'
+                    // });
+                    // alert(JSON.stringify(err));
+                }
+            });
+        }
+    })
+</script>
+
+</html>

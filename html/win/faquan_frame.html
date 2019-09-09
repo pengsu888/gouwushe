@@ -1,0 +1,749 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0" />
+    <title>发圈win</title>
+    <link rel="stylesheet" type="text/css" href="../../css/api.css" />
+    <!-- <link rel="stylesheet" type="text/css" href="../../css/style.css" /> -->
+    <style media="screen">
+        body,
+        html {
+            width: 100%;
+            height: 100%;
+        }
+
+        header {
+            width: 100%;
+            height: 44px;
+            background: #fff;
+            overflow: hidden;
+        }
+
+        header .header-top {
+            display: -webkit-box;
+            display: -webkit-flex;
+            display: flex;
+            width: 100%;
+            height: 44px;
+            position: relative;
+        }
+
+        .headerItem {
+            height: 44px;
+            width: calc(100% - 24px);
+            border-bottom: solid 1px #f6f6f6;
+            vertical-align: middle;
+            display: inline-block;
+            position: absolute;
+            top: 0;
+            left: 12px;
+        }
+
+        .headerItem div {
+            float: left;
+        }
+
+        .headerItem .header_back {
+            width: 9px;
+            height: 16px;
+            float: left;
+            margin-top: 12px;
+        }
+
+        .headerItem .header_back img {
+            width: 9px;
+            height: 16px;
+            background-size: 100% 100%;
+            vertical-align: middle;
+        }
+
+        .headerItem .header_title {
+            width: calc(100% - 108px);
+            line-height: 44px;
+            text-align: center;
+            margin-left: 40px;
+        }
+
+        .headerItem .header_title .header_down {
+            width: 7px;
+            height: 4px;
+            background-size: 100% 100%;
+            position: relative;
+            top: -4px;
+            right: -5px;
+        }
+
+        .headerItem .header_title .header_up {
+            -moz-transform: rotate(180deg);
+            -webkit-transform: rotate(180deg);
+            filter: progid: DXImageTransform.Microsoft.BasicImage(rotation=3);
+        }
+
+        .headerItem .header_right {
+            width: 58px;
+            height: 22px;
+            float: right;
+            margin-top: 8px;
+            font-size: 12px;
+        }
+
+        .headerItem .header_right img {
+            width: 25px;
+            height: 25px;
+            background-size: 100% 100%;
+            vertical-align: middle;
+            display: inline-block;
+            margin-right: 5px;
+        }
+
+        .header-bottom {
+            height: 42px;
+            width: 100%;
+            box-shadow: 0 1px 5px #f1f1f1;
+        }
+
+        .header-bottom ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .header-bottom ul li {
+            float: left;
+            width: 33.33%;
+            height: 42px;
+            line-height: 42px;
+            text-align: center;
+        }
+
+        .header-bottom ul li.li_active {
+            border-bottom: 2px solid #fd5f3e;
+            color: #fd5f3e;
+        }
+    </style>
+</head>
+
+<body>
+    <header id="header">
+        <!-- <div class="header-top">
+          <div class="headerItem">
+            <div class="header_back" onclick="closeWin();">
+              <img src="../../image/nav_back_black.png" alt="">
+            </div>
+            <div class="header_title"><span  id="header_title">发圈</span></div>
+          </div>
+      </div> -->
+        <div class="header-bottom">
+            <ul id="class_list">
+                <li class="li_active" tapmode onclick="fnChange(0);">每日必发</li>
+                <li tapmode onclick="fnChange(1);">宣传素材</li>
+                <li tapmode onclick="fnChange(2);">学堂</li>
+            </ul>
+        </div>
+    </header>
+
+    <div class="noWlan">
+        <div class="nowlanItem">
+            <div class="no_net"><img src="../../image/no_net.png" /></div>
+            <p class="no_p">网络竟然崩溃了</p>
+            <p class="load_p">别紧张，试试看刷新页面</p>
+            <div class="loadBtn" onclick="javascript:location.reload();">点击刷新</div>
+        </div>
+    </div>
+</body>
+<script type="text/javascript" src="../../script/api.js"></script>
+<script type="text/javascript" src="../../script/jquery.js"></script>
+<script type="text/javascript" src="../../script/api_common.js"></script>
+<script type="text/javascript" src="../../script/md5.js"></script>
+<script type="text/javascript">
+    var headerH;
+    var NVNavigationBar, paodan_id, baodan_id;
+    var taofenxiangtwo_frames = [];
+    var taofenxiangthree_frames = [];
+    var frameNames = ['taofenxiangone_frame', 'taofenxiangtwo', 'taofenxiangthree'];
+    var taofenxiangtwo;
+    var taofenxiangthree;
+    var currentIndex = 0;
+    var two_itemList = [{
+        title: "全部",
+        bg: "#fff",
+        cid: 0
+    }];
+    var three_itemList = [{
+        title: "全部",
+        bg: "#fff",
+        cid: 0
+    }];
+    apiready = function() {
+        api.setStatusBarStyle({
+            style: 'dark' //黑色
+                // style: 'light' //白色
+        });
+        NVNavigationBar = api.require('NVNavigationBar');
+        var header = $api.byId('header');
+        $api.fixStatusBar(header);
+        if (api.systemType == 'ios') {
+            headerH = $api.offset(header).h;
+        } else {
+            headerH = $api.offset(header).h;
+        }
+        api.addEventListener({
+            name: 'fqclose'
+        }, function(ret, err) {
+            console.log(JSON.stringify(ret));
+            NVNavigationBar.close({
+                id: 'first'
+            });
+            NVNavigationBar.close({
+                id: 'last'
+            });
+            fnOpenFrameGroup(1, false);
+            fnOpenFrameGroup2(2, false);
+        });
+
+        fnChange(0);
+        //第三个分类接口
+        three_type()
+        faquanone();
+    };
+
+    function faquanone() {
+        var obj = {
+            // yqm:$("#yqm").val(),
+            'type': 2
+        };
+        var objArr = sort_ASCII(obj);
+        var timestamp = fntimestamp();
+        var version = '2.0';
+        var arr = apiSecret + timestamp + version + '';
+        for (i in objArr) {
+            arr += objArr[i];
+        }
+        var sign = hex_md5(arr);
+        api.ajax({
+            url: commonUrl + 'soukeAppTttService/service/newapp/getTypecircle',
+            method: 'post',
+            headers: {
+                'Content-Type': 'application/json;charset=utf-8'
+            },
+            data: {
+                body: {
+                    "apiKey": apiKey,
+                    "timestamp": timestamp,
+                    "sign": sign,
+                    'type': 2
+                }
+            }
+        }, function(ret, err) {
+            if (ret) {
+                if (ret.result_code == 200) {
+                    $(".noWlan").hide();
+                    // console.log("发圈类目："+ JSON.stringify( ret ) );
+                    var dataItem2;
+                    var menuList = ret.result_data;
+                    for (var i = 0; i < menuList.length; i++) {
+                        dataItem2 = {
+                            title: menuList[i].name,
+                            bg: "#fff",
+                            cid: menuList[i].id
+                        };
+                        two_itemList.push(dataItem2);
+                    }
+                    getHome_group();
+                } else {
+                    $(".noWlan").show();
+                }
+                // alert(JSON.stringify(itemList));
+            } else {
+                $(".noWlan").show();
+                // alert( JSON.stringify( err ) );
+            }
+        });
+    }
+
+    function three_type() {
+        var obj = {
+            // yqm:$("#yqm").val(),
+            'type': 3
+        };
+        var objArr = sort_ASCII(obj);
+        var timestamp = fntimestamp();
+        var version = '2.0';
+        var arr = apiSecret + timestamp + version + '';
+        for (i in objArr) {
+            arr += objArr[i];
+        }
+        var sign = hex_md5(arr);
+        api.ajax({
+            url: commonUrl + 'soukeAppTttService/service/newapp/getTypecircle',
+            method: 'post',
+            headers: {
+                'Content-Type': 'application/json;charset=utf-8'
+            },
+            data: {
+                body: {
+                    "apiKey": apiKey,
+                    "timestamp": timestamp,
+                    "sign": sign,
+                    'type': 3
+                }
+            }
+        }, function(ret, err) {
+            if (ret) {
+                if (ret.result_code == 200) {
+                    $(".noWlan").hide();
+                    // console.log("发圈类目："+ JSON.stringify( ret ) );
+                    var dataItem2;
+                    var menuList = ret.result_data;
+                    for (var i = 0; i < menuList.length; i++) {
+                        dataItem2 = {
+                            title: menuList[i].name,
+                            bg: "#fff",
+                            cid: menuList[i].id
+                        };
+                        three_itemList.push(dataItem2);
+                    }
+                    getHome_group2();
+                } else {
+                    $(".noWlan").show();
+                }
+                // alert(JSON.stringify(itemList));
+            } else {
+                $(".noWlan").show();
+                // alert( JSON.stringify( err ) );
+            }
+        });
+    }
+
+    function closeWin() {
+        api.closeFrame({
+            name: 'faquan_frame'
+        });
+    }
+
+    function fnNavigationBar(index, isOpen) {
+        // alert(JSON.stringify(window[frameNames[index]]))
+        if (isOpen) {
+            currentIndex = index;
+            // alert(typeof window[frameNames[index] + '_id']);
+            // if (typeof window[frameNames[index] + '_id'] == 'undefined') {
+            NVNavigationBar.close({
+                id: 'first'
+            });
+            NVNavigationBar.open({
+                rect: {
+                    y: headerH,
+                    w: api.winWidth,
+                    h: 44,
+                    x: 0
+                },
+                styles: {
+                    orientation: 'horizontal',
+                    bg: '#FFF',
+                    bgAlpha: 1,
+                    font: {
+                        size: 14,
+                        sizeSelected: 16,
+                        color: '#666',
+                        colorSelected: '#f00',
+                        alpha: 1
+                    },
+                    itemSize: {
+                        w: 90,
+                        h: 44
+                    }
+                },
+                selectedIndex: 0,
+                items: window[frameNames[index]].item,
+                id: 'first'
+            }, function(ret, err) {
+                console.log(JSON.stringify(ret))
+                switch (ret.eventType) {
+                    case 'show':
+                        window[frameNames[currentIndex] + '_id'] = ret.id;
+                        break;
+                    case 'click':
+                        api.setFrameGroupIndex({
+                            name: frameNames[currentIndex],
+                            index: ret.index,
+                            scroll: true
+                        });
+                        break;
+                }
+            });
+            // } else {
+            //     NVNavigationBar.setSelected({
+            //         id: window[frameNames[index] + '_id'],
+            //         index: 0,
+            //         selected: true
+            //     }, function(ret) {
+            //
+            //     });
+            // }
+        } else {
+            if (typeof window[frameNames[index] + '_id'] != 'undefined') {
+                NVNavigationBar.hide({
+                    id: window[frameNames[index] + '_id']
+                });
+            }
+        }
+    };
+
+    function fnNavigationBar2(index, isOpen) {
+        // alert(JSON.stringify(window[frameNames[index]]))
+        if (isOpen) {
+            currentIndex = index;
+            // if (window[frameNames[index] + '_id'] == 'last') {
+            NVNavigationBar.close({
+                id: 'last'
+            });
+            NVNavigationBar.open({
+                rect: {
+                    y: headerH,
+                    w: api.winWidth,
+                    h: 44,
+                    x: 0
+                },
+                styles: {
+                    orientation: 'horizontal',
+                    bg: '#FFF',
+                    bgAlpha: 1,
+                    font: {
+                        size: 14,
+                        sizeSelected: 16,
+                        color: '#666',
+                        colorSelected: '#f00',
+                        alpha: 1
+                    },
+                    itemSize: {
+                        w: 90,
+                        h: 44
+                    }
+                },
+                selectedIndex: 0,
+                items: window[frameNames[index]].item,
+                id: 'last'
+            }, function(ret, err) {
+                console.log(JSON.stringify(ret))
+                switch (ret.eventType) {
+                    case 'show':
+                        window[frameNames[currentIndex] + '_id'] = ret.id;
+                        break;
+                    case 'click':
+                        api.setFrameGroupIndex({
+                            name: frameNames[currentIndex],
+                            index: ret.index,
+                            scroll: true
+                        });
+                        break;
+                }
+            });
+            // } else {
+            //     NVNavigationBar.show({
+            //         id: window[frameNames[index] + '_id']
+            //     });
+            // }
+        } else {
+            if (typeof window[frameNames[index] + '_id'] != 'undefined') {
+                NVNavigationBar.hide({
+                    id: window[frameNames[index] + '_id']
+                });
+            }
+        }
+    };
+
+    function getHome_group() {
+        // alert("----"+JSON.stringify(itemList));
+        taofenxiangtwo = {
+            item: two_itemList,
+            // font: {
+            //     color: '#333',
+            //     colorSelected: '#FF2420',
+            //     size: 15,
+            //     sizeSelected: 15
+            // }
+        };
+        for (var i = 0; i < taofenxiangtwo.item.length; i++) {
+            if (i == 0) {
+                taofenxiangtwo_frames.push({
+                    name: 'faquan_mrbf',
+                    url: '../frame/faquan_mrbf.html',
+                    vScrollBarEnabled: false,
+                    bounces: false,
+                    bgColor: '#fff',
+                    pageParam: {
+                        type: taofenxiangtwo.item[i].title,
+                        cat: 2
+                    }
+                });
+            } else {
+                taofenxiangtwo_frames.push({
+                    name: 'faquan_mrbf' + i,
+                    url: '../frame/faquan_mrbf.html',
+                    vScrollBarEnabled: false,
+                    bounces: false,
+                    bgColor: '#fff',
+                    pageParam: {
+                        type: taofenxiangtwo.item[i].title,
+                        subcat: taofenxiangtwo.item[i].cid,
+                        cat: 2
+                    }
+                });
+            }
+        };
+
+        // fnChange(0);
+    }
+
+    function getHome_group2() {
+        // alert("----"+JSON.stringify(itemList));
+        taofenxiangthree = {
+            item: three_itemList,
+            // font: {
+            //     color: '#333',
+            //     colorSelected: '#FF2420',
+            //     size: 15,
+            //     sizeSelected: 15
+            // }
+        };
+        for (var i = 0; i < taofenxiangthree.item.length; i++) {
+            if (i == 0) {
+                taofenxiangthree_frames.push({
+                    name: 'faquan_mrbf',
+                    url: '../frame/faquan_mrbf.html',
+                    vScrollBarEnabled: false,
+                    bounces: false,
+                    bgColor: '#fff',
+                    pageParam: {
+                        type: taofenxiangthree.item[i].title,
+                        cat: 3
+                    }
+                });
+            } else {
+                taofenxiangthree_frames.push({
+                    name: 'faquan_mrbf' + i,
+                    url: '../frame/faquan_mrbf.html',
+                    vScrollBarEnabled: false,
+                    bounces: false,
+                    bgColor: '#fff',
+                    pageParam: {
+                        type: taofenxiangthree.item[i].title,
+                        subcat: taofenxiangthree.item[i].cid,
+                        cat: 3
+                    }
+                });
+            }
+        };
+
+        // fnChange2(0);
+    }
+    var taofenxiangtwo_count = 0;
+    var taofenxiangthree_count = 0;
+
+    function fnChange(index) {
+        var menus = $("#class_list li");
+        if (index == 0) {
+            $api.addCls(menus[0], 'li_active');
+            $api.removeCls(menus[1], 'li_active');
+            $api.removeCls(menus[2], 'li_active');
+            fnOpenFrame(0, true);
+            fnOpenFrameGroup(1, false);
+            fnOpenFrameGroup2(2, false);
+        } else if (index == 1) {
+            $api.addCls(menus[1], 'li_active');
+            $api.removeCls(menus[0], 'li_active');
+            $api.removeCls(menus[2], 'li_active');
+            taofenxiangtwo_count++;
+            fnOpenFrameGroup(1, true);
+            fnNavigationBar(1, true);
+            fnOpenFrame(0, false);
+            fnOpenFrameGroup2(2, false);
+        } else if (index == 2) {
+            $api.addCls(menus[2], 'li_active');
+            $api.removeCls(menus[0], 'li_active');
+            $api.removeCls(menus[1], 'li_active');
+            taofenxiangthree_count++;
+            fnOpenFrameGroup2(2, true);
+            fnNavigationBar2(2, true);
+            fnOpenFrame(0, false);
+            fnOpenFrameGroup(1, false);
+        }
+
+
+
+        // for (var i = 0; i < menus.length; i++) {
+        //     if (index == i) {
+        //         $api.addCls(menus[i], 'li_active');
+        //         if (i == 0) {
+        //             fnOpenFrame(i, true);
+        //         } else {
+        //             taofenxiangtwo_count++;
+        //             fnOpenFrameGroup(i, true);
+        //             fnNavigationBar(i, true);
+        //         }
+        //
+        //     } else {
+        //         $api.removeCls(menus[i], 'li_active');
+        //         if (i == 1) {
+        //             taofenxiangtwo_count = 0;
+        //             fnOpenFrame(i, false);
+        //         } else {
+        //             fnOpenFrameGroup(i, false);
+        //             fnNavigationBar(i, false);
+        //         }
+        //     }
+        // }
+    };
+
+    // function fnChange2(index) {
+    //     var menus = $("#class_list li");
+    //     for (var i = 0; i < menus.length; i++) {
+    //         if (index == i) {
+    //             $api.addCls(menus[i], 'li_active');
+    //             if (i == 0) {
+    //                 fnOpenFrame(i, true);
+    //             } else {
+    //                 taofenxiangthree_count++;
+    //                 fnOpenFrameGroup2(i, true);
+    //                 fnNavigationBar(i, true);
+    //             }
+    //
+    //         } else {
+    //             $api.removeCls(menus[i], 'li_active');
+    //             if (i == 1) {
+    //                 taofenxiangthree_count = 0;
+    //                 fnOpenFrame(i, false);
+    //             } else {
+    //                 fnOpenFrameGroup2(i, false);
+    //                 fnNavigationBar(i, false);
+    //             }
+    //         }
+    //     }
+    // };
+
+    function fnOpenFrameGroup(index, isOpen) {
+        if (taofenxiangtwo_count > 1) {
+            NVNavigationBar.setSelected({
+                id: 'first',
+                index: 0,
+                selected: true
+            }, function(ret) {
+
+            });
+            api.setFrameGroupIndex({
+                name: frameNames[index],
+                index: 0,
+                scroll: true
+            });
+        }
+        if (isOpen) {
+            currentIndex = index;
+            api.openFrameGroup({
+                name: frameNames[index],
+                background: '#fff',
+                scrollEnabled: true,
+                rect: {
+                    x: 0,
+                    y: headerH + 44,
+                    w: api.winWidth,
+                    h: api.winHeight - headerH - 44 - 44 - api.safeArea.bottom
+                },
+                index: 0,
+                frames: window[frameNames[index] + '_frames']
+            }, function(ret, err) {
+                NVNavigationBar.setSelected({
+                    id: 'first',
+                    index: ret.index,
+                    selected: true
+                }, function(ret) {
+
+                });
+            });
+        } else {
+            api.setFrameGroupAttr({
+                name: frameNames[index],
+                hidden: true
+            });
+        }
+    };
+
+    function fnOpenFrameGroup2(index, isOpen) {
+        if (taofenxiangthree_count > 1) {
+            NVNavigationBar.setSelected({
+                id: 'last',
+                index: 0,
+                selected: true
+            }, function(ret) {
+
+            });
+            api.setFrameGroupIndex({
+                name: frameNames[index],
+                index: 0,
+                scroll: true
+            });
+        }
+        if (isOpen) {
+            currentIndex = index;
+            api.openFrameGroup({
+                name: frameNames[index],
+                background: '#fff',
+                scrollEnabled: true,
+                rect: {
+                    x: 0,
+                    y: headerH + 44,
+                    w: api.winWidth,
+                    h: api.winHeight - headerH - 44 - 44 - api.safeArea.bottom
+                },
+                index: 0,
+                frames: window[frameNames[index] + '_frames']
+            }, function(ret, err) {
+
+                NVNavigationBar.setSelected({
+                    id: 'last',
+                    index: ret.index,
+                    selected: true
+                }, function(ret) {
+
+                });
+
+            });
+        } else {
+            api.setFrameGroupAttr({
+                name: frameNames[index],
+                hidden: true
+            });
+        }
+    };
+
+    function fnOpenFrame(index, isOpen) {
+        if (isOpen) {
+            api.openFrame({
+                name: 'faquan_mrbf',
+                url: '../frame/faquan_mrbf.html',
+                rect: {
+                    x: 0,
+                    y: headerH,
+                    w: api.winWidth,
+                    h: api.winHeight - headerH - 44 - api.safeArea.bottom
+                },
+                pageParam: {
+                    cat: 1
+                },
+                bounces: true,
+                bgColor: '#fff',
+                vScrollBarEnabled: true,
+                hScrollBarEnabled: true
+            });
+        } else {
+            api.setFrameAttr({
+                name: frameNames[index],
+                hidden: true
+            });
+
+        }
+    }
+</script>
+
+</html>

@@ -1,0 +1,404 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0" />
+    <title>账单类别蒙版</title>
+    <link rel="stylesheet" type="text/css" href="../../css/api.css" />
+    <link rel="stylesheet" type="text/css" href="../../css/style.css" />
+    <style>
+        /*弹出框样式*/
+
+        body {
+            width: 100%;
+            height: 100%;
+            background: none;
+            font-size: 16px;
+            overflow: hidden;
+        }
+
+        .wrapAll {
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, .5);
+            overflow: hidden;
+            position: fixed;
+            top: 0;
+            left: 0;
+            z-index: 99;
+        }
+
+        .nl_list {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            z-index: 999;
+            background: #fff;
+            box-sizing: border-box;
+            -webkit-box-sizing: border-box;
+        }
+
+        .nl_list .orderList {
+            width: 100%;
+            height: 100%;
+        }
+
+        .nl_list .orderList ul {
+            /*list-style: none;padding: 0;margin: 0 auto;width: calc(100% - 12px);*/
+        }
+
+        .nl_list .orderList ul li {
+            /*  float: left;
+        width:calc(32.5% - 12px);
+        height: 30px;
+        line-height: 30px;
+        border-radius: 16px;
+        border: solid 1px #999;
+        margin:15px 6px 0 6px;
+        color:#999;
+        text-align: center;*/
+        }
+
+        .sx_btn {
+            margin: 10px;
+        }
+
+        .sx_btn button {
+            width: 48%;
+            text-align: center;
+            border-radius: 32px;
+            background: #eee;
+            padding: 2% 0 2% 0;
+            font-size: 0.85em;
+            outline: none;
+        }
+
+        .sx_btn button:nth-child(2) {
+            margin-left: 2%;
+            background: #fd5f3e;
+            color: #fff;
+        }
+
+        .nl_list .orderList ul li.li_active {
+            border: solid 1px #fd5f3e;
+            color: #fd5f3e;
+        }
+        /**/
+
+        .sz_type {
+            border-bottom: 1px solid #ddd;
+            height: 60px;
+            line-height: 60px;
+            font-size: 14px;
+            color: #444;
+        }
+
+        .sz_type span {
+            padding-left: 5%;
+            width: 18%;
+        }
+
+        .sz_type ul {
+            float: right;
+            width: 69%;
+        }
+
+        .sz_type ul li {
+            float: left;
+            background: #eee;
+            color: #666;
+            width: 26%;
+            border-radius: 23px;
+            height: 28px;
+            margin-top: 14px;
+            line-height: 28px;
+            text-align: center;
+            color: #9f9f9f;
+            font-size: 0.8rem;
+        }
+
+        .sz_type ul li.on {
+            background: #fecfc5;
+            color: #fd5f3e;
+        }
+
+        .sz_type ul li:nth-child(2),
+        .sz_type ul li:nth-child(3) {
+            margin-left: 8%;
+        }
+
+        .kj_sx {
+            width: 90%;
+            margin: 0 auto;
+            height: 300px;
+            overflow-x: hidden;
+            overflow-y: scroll;
+        }
+        
+        .kj_sx p {
+            padding: 5% 0 2% 0;
+            font-size: 14px;
+            color: #444;
+        }
+
+        .kj_sx ul {}
+
+        .kj_sx ul li {
+            float: left;
+            border-radius: 5px;
+            height: 28px;
+            margin-top: 3%;
+            line-height: 28px;
+            text-align: center;
+            color: #9f9f9f;
+            font-size: 0.8rem;
+            background: #eee;
+            width: 31%;
+        }
+
+        .kj_sx ul li:nth-child(3n+2) {
+            margin-left: 3%;
+            margin-right: 3%;
+        }
+
+        .kj_sx ul li.on {
+            background: #fecfc5;
+            color: #fd5f3e;
+            background-image: url(../../image/home/label_select.png);
+            background-repeat: no-repeat;
+            background-position-x: 100%;
+            background-position-y: 100%;
+            background-size: 22%;
+        }
+    </style>
+</head>
+
+<body>
+    <!--弹出框-->
+    <section class='wrapAll' id='wrapAll'>
+    </section>
+    <section class='nl_list'>
+        <div class="orderList">
+            <div class="sz_type">
+                <span>收支类型</span>
+                <ul>
+                    <li class="on" id="0">全部</li>
+                    <li id="1">收入</li>
+                    <li id="2">支出</li>
+                </ul>
+                <div style="clear:both"></div>
+            </div>
+            <div class="kj_sx">
+                <p>快捷筛选</p>
+                <ul>
+                    <!-- <li class="on" id="1">管理奖励</li>
+                    <li id="2">管理奖励</li>
+                    <li id="3">管理奖励</li>
+                    <li id="4">管理奖励</li>
+                    <li id="5">管理奖励</li>
+                    <li id="6">管理奖励</li>
+                    <li id="7">管理奖励</li>
+                    <li id="8">管理奖励</li>
+                    <li id="9">管理奖励</li>
+                    <li id="2">管理奖励</li>
+                    <li id="3">管理奖励</li>
+                    <li id="4">管理奖励</li>
+                    <li id="5">管理奖励</li>
+                    <li id="6">管理奖励</li>
+                    <li id="7">管理奖励</li>
+                    <li id="8">管理奖励</li>
+                    <li id="9">管理奖励</li>
+                    <li id="2">管理奖励</li>
+                    <li id="3">管理奖励</li>
+                    <li id="4">管理奖励</li>
+                    <li id="5">管理奖励</li>
+                    <li id="6">管理奖励</li>
+                    <li id="7">管理奖励</li>
+                    <li id="8">管理奖励</li>
+                    <li id="9">管理奖励</li>
+                    <li id="2">管理奖励</li>
+                    <li id="3">管理奖励</li>
+                    <li id="4">管理奖励</li>
+                    <li id="5">管理奖励</li>
+                    <li id="6">管理奖励</li>
+                    <li id="7">管理奖励</li>
+                    <li id="8">管理奖励</li>
+                    <li id="9">管理奖励</li>
+                    <li id="2">管理奖励</li>
+                    <li id="3">管理奖励</li>
+                    <li id="4">管理奖励</li>
+                    <li id="5">管理奖励</li>
+                    <li id="6">管理奖励</li>
+                    <li id="7">管理奖励</li>
+                    <li id="8">管理奖励</li>
+                    <li id="9">管理奖励</li>
+                    <li id="2">管理奖励</li>
+                    <li id="3">管理奖励</li>
+                    <li id="4">管理奖励</li>
+                    <li id="5">管理奖励</li>
+                    <li id="6">管理奖励</li>
+                    <li id="7">管理奖励</li>
+                    <li id="8">管理奖励</li>
+                    <li id="9">管理奖励</li> -->
+                    <div class="tp0"></div>
+                    <div class="tp1"></div>
+                    <div class="tp2"></div>
+                </ul>
+                <div style="clear:both"></div>
+            </div>
+
+            <div class="sx_btn">
+                <button>重置</button>
+                <button>确认</button>
+            </div>
+        </div>
+    </section>
+</body>
+<script type="text/javascript" src="../../script/api.js"></script>
+<script type="text/javascript" src="../../script/jquery.js"></script>
+<script type="text/javascript" src="../../script/api_common.js"></script>
+<script type="text/javascript" src="../../script/md5.js"></script>
+<script type="text/javascript">
+    var type_arr = [];
+    apiready = function() {
+        //默认显示全部
+        type(0);
+
+    };
+    //触摸蒙层
+    document.getElementById('wrapAll').addEventListener('touchstart', function() {
+        closeNLOrderSlidLayout();
+    }, false);
+
+    //调用关闭弹出层的方法
+
+    function closeNLOrderSlidLayout(tx_type, str_arr) {
+        api.execScript({
+            name: 'my_settlement_win',
+            script: 'sx("' + tx_type + '","' + str_arr + '")'
+        });
+    }
+
+    //收支类型切换
+    $(".sz_type ul li").eq(0).click(function() {
+        if ($(".tp0").html() == "") {
+            type(0);
+        }
+    })
+    $(".sz_type ul li").eq(1).click(function() {
+        if ($(".tp1").html() == "") {
+            type(1);
+        }
+    })
+    $(".sz_type ul li").eq(2).click(function() {
+        if ($(".tp2").html() == "") {
+            type(2);
+        }
+    })
+    $(".sz_type ul li").click(function() {
+            $(this).addClass("on").siblings().removeClass("on");
+        })
+        //重置
+    $(".sx_btn button").eq(0).click(function() {
+            $(".sz_type ul li").eq(0).addClass("on").siblings().removeClass("on");
+            $(".kj_sx ul li").eq(0).addClass("on").siblings().removeClass("on");
+            // alert();
+            type_arr = [];
+            type(0);
+            type_arr.push($(".tp0 li").eq(0).attr("id"));
+        })
+        //确认
+    $(".sx_btn button").eq(1).click(function() {
+        var str_arr = type_arr.join(','); //转成字符串
+        var tx_type = $(".sz_type ul li.on").attr("id");
+        //alert(str_arr)
+        // return false;
+        closeNLOrderSlidLayout(tx_type, str_arr);
+    })
+
+    function type(type) {
+        var obj = {
+            'type': type,
+        };
+        var objArr = sort_ASCII(obj);
+        var timestamp = fntimestamp();
+        var version = '2.0';
+        var arr = apiSecret + timestamp + version + '';
+        for (i in objArr) {
+            arr += objArr[i];
+        }
+        var sign = hex_md5(arr);
+        api.ajax({
+            url: commonUrl + 'soukeAppTttService/service/user/flowType_ac',
+            method: 'post',
+            headers: {
+                'Content-Type': 'application/json;charset=utf-8'
+            },
+            data: {
+                body: {
+                    'apiKey': apiKey,
+                    'timestamp': timestamp,
+                    'sign': sign,
+                    'type': type
+                }
+            }
+        }, function(ret, err) {
+            var arr = ret.result_data;
+            if (type == 0) {
+                $(".tp0").html("");
+            }
+            $.each(arr, function(index, val) {
+                    //alert(JSON.stringify(index));
+                    console.log(JSON.stringify(index));
+                    if (type == 0) {
+                        $(".tp0").append("<li id='" + index + "''>" + val + "</li>");
+
+                        $(".tp0").siblings().html("");
+
+                        type_arr = [];
+                        type_arr.push($(".tp0 li").eq(0).attr("id"));
+                    }
+                    if (type == 1) {
+                        $(".tp1").append("<li id='" + index + "''>" + val + "</li>");
+                        $(".tp1").siblings().html("");
+                        type_arr = [];
+                        type_arr.push($(".tp1 li").eq(0).attr("id"));
+
+                    }
+                    if (type == 2) {
+                        $(".tp2").append("<li id='" + index + "''>" + val + "</li>");
+                        $(".tp2").siblings().html("");
+                        type_arr = [];
+                        type_arr.push($(".tp2 li").eq(0).attr("id"));
+
+                    }
+                    //切换后默认选中第一个
+                    $(".kj_sx ul li").eq(0).addClass("on").siblings().removeClass("on");
+
+                })
+                //type_arr.push($(".kj_sx ul li").eq(0).attr("id"));
+
+            //快捷筛选切换
+            $(".kj_sx ul li").click(function() {
+                if ($(this).is(".on")) {
+                    $(this).removeClass("on");
+                    var removeItem = $(this).attr("id");
+                    //从数组中删除点掉的类型
+                    type_arr = $.grep(type_arr, function(value) {
+                        return value != removeItem;
+                    })
+
+                } else {
+                    $(this).addClass("on");
+                    type_arr.push($(this).attr("id"));
+                }
+
+
+            })
+        })
+    }
+</script>
+
+</html>

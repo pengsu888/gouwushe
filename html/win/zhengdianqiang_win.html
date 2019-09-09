@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0" />
+  <title>整点抢win</title>
+  <link rel="stylesheet" type="text/css" href="../../css/api.css" />
+  <link rel="stylesheet" type="text/css" href="../../css/style.css" />
+  <link rel="stylesheet" type="text/css" href="../../css/swiper.min.css" />
+</head>
+<style media="screen">
+  body{
+    width:100%;
+    height:100%;
+    background-color: #fff;
+    overflow-x: hidden;
+    overflow-y: auto;
+  }
+
+  header{
+    height: 6.8rem;
+    width: 100%;
+    position: fixed;
+    top:0;
+    left: 0;
+    z-index: 9999;
+    background: linear-gradient(to right, rgb(255, 153, 1), rgb(255, 36, 32));
+  }
+  /*header .header-top{
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: flex;
+    width: 100%;
+    height: 2.4rem;
+    position: relative;
+  }*/
+
+  .headerItem{
+    height: 2.4rem;
+    width: calc(100% - 24px);
+    vertical-align: middle;
+    display: inline-block;
+    position: absolute;
+    top:0;
+    left: 12px;
+    color:#fff;
+  }
+  #topNav {
+      width: 100%;
+      overflow: hidden;
+      font: 16px/32px hiragino sans gb, microsoft yahei, simsun;
+      /*border-bottom: 1px solid #f8f8f8;*/
+  }
+
+  #topNav .swiper-slide {
+      padding: 0 0.5rem;
+      /*letter-spacing: 0.2rem;*/
+      height: 4.4rem;
+      width: auto;
+      line-height: 2.4rem;
+      text-align: center;
+      color:#fff;
+  }
+  #topNav .swiper-slide span p{
+    font-size: 10px;
+    height: 1.0rem;
+    width: 100%;
+    text-align: center;
+    line-height: 0.8rem;
+  }
+  #topNav .swiper-slide span {
+      display: block;
+      height: 4.4rem;
+      width: 100%;
+      font-size: 1.0rem;
+      letter-spacing: 1px;
+      padding: 0 0.3rem;
+  }
+
+  #topNav .swiper-slide.active span {
+      height: 80%;
+      width: 100%;
+      /*padding: 0 0.3rem;*/
+      /*padding: 0 10px;*/
+      /*transform: scale(1.1);*/
+      color: #FF2D2D;
+      /*border-bottom: 2px solid #FF2D2D;*/
+      background: #fff;
+      border-radius: 4px;
+  }
+</style>
+<body>
+    <header id="header">
+      <div class="header-top">
+          <div class="headerItem">
+            <div class="header_back" onclick="closeWin();">
+              <img src="../../image/nav_back_white.png" alt="">
+            </div>
+            <div class="header_title" id="header_title">整点抢</div>
+          </div>
+      </div>
+      <div id="topNav" class="swiper-container">
+          <div class="swiper-wrapper" id="type">
+              <div class="swiper-slide active" id="1" is_status="1"><span>00:00<p>昨日已抢</p></span></div>
+              <div class="swiper-slide" id="2" is_status="1"><span>10:00<p>昨日已抢</p></span></div>
+              <div class="swiper-slide" id="3" is_status="1"><span>12:00<p>昨日已抢</p></span></div>
+              <div class="swiper-slide" id="4" is_status="1"><span>15:00<p>昨日已抢</p></span></div>
+              <div class="swiper-slide" id="5" is_status="1"><span>20:00<p>昨日已抢</p></span></div>
+              <div class="swiper-slide" id="6" time_id="00" is_status="1"><span>00:00<p>今日开抢</p></span></div>
+              <div class="swiper-slide" id="7" time_id="10" is_status="1"><span>10:00<p>今日开抢</p></span></div>
+              <div class="swiper-slide" id="8" time_id="12" is_status="1"><span>12:00<p>今日开抢</p></span></div>
+              <div class="swiper-slide" id="9" time_id="15" is_status="1"><span>15:00<p>今日开抢</p></span></div>
+              <div class="swiper-slide" id="10" time_id="20" is_status="1"><span>20:00<p>今日开抢</p></span></div>
+              <div class="swiper-slide" id="11" time_id="25" is_status="0"><span>00:00<p>明日开抢</p></span></div>
+              <div class="swiper-slide" id="12" is_status="0"><span>10:00<p>明日开抢</p></span></div>
+              <div class="swiper-slide" id="13" is_status="0"><span>12:00<p>明日开抢</p></span></div>
+              <div class="swiper-slide" id="14" is_status="0"><span>15:00<p>明日开抢</p></span></div>
+              <div class="swiper-slide" id="15" is_status="0"><span>20:00<p>明日开抢</p></span></div>
+          </div>
+      </div>
+    </header>
+</body>
+  <script type="text/javascript" src="../../script/api.js"></script>
+  <script type="text/javascript" src="../../script/jquery.js"></script>
+  <script type="text/javascript" src="../../script/api_common.js"></script>
+  <script type="text/javascript" src="../../script/swiper.min.js"></script>
+  <script type="text/javascript" src="../../script/md5.js"></script>
+  <script type="text/javascript">
+  var mySwiper = new Swiper('#topNav', {
+      freeMode: true,
+      freeModeMomentumRatio: 0.5,
+      slidesPerView: 'auto',
+      centeredSlides: true,//设定为true时，active slide会居中，而不是默认状态下的居左。
+
+  });
+  var timeHH=timeHH();
+  var h_index=0;
+    var zhengdianqiang_group=[];
+    apiready = function() {
+      // alert(api.frameWidth);
+      // if (api.systemType == "ios"){
+      //   $(".swiper-container").css("margin-left", "");
+      // }
+        var header = $api.byId('header');
+        $api.fixStatusBar(header);
+        var headerH = $api.offset(header).h;
+        var paibangList=$(".swiper-slide");
+        for(var i=0;i<paibangList.length;i++){
+          if(i<10 && i>4){
+            if(timeHH>$(paibangList[i]).attr("time_id")){
+              $(paibangList[i]).find("p").html("已开抢");
+              $(paibangList[i]).attr("is_status",1);
+            }else if(timeHH==$(paibangList[i]).attr("time_id")){
+              h_index=i;
+              $(paibangList[i]).find("p").html("抢购中");
+              $(paibangList[i]).attr("is_status",1);
+            }else if(timeHH<$(paibangList[i]).attr("time_id")){
+              $(paibangList[i]).find("p").html("即将开抢");
+              $(paibangList[i]).attr("is_status",0);
+            }
+            if(timeHH>=$(paibangList[i]).attr("time_id") && timeHH<=$(paibangList[i+1]).attr("time_id")){
+              $(paibangList[i]).find("p").html("抢购中");
+              $(paibangList[i]).attr("is_status",1);
+              h_index=i;
+            }
+          }
+          zhengdianqiang_group.push({
+              name: 'zhengdianqiang_frame' + i,
+              url: '../frame/zhengdianqiang_frame.html',
+              vScrollBarEnabled : false,
+              hScrollBarEnabled : false,
+              bounces:true,
+              reload:true,
+              pageParam: {
+                  cateId:$(paibangList[i]).attr("id"),
+                  is_status:$(paibangList[i]).attr("is_status"),
+              }
+          });
+
+        }
+        api.openFrameGroup({
+            name: 'zhengdianqiang_frame',
+            scrollEnabled: true,
+            rect: {
+                x: 0,
+                y: headerH,
+                w: 'auto',
+                h: api.winHeight - headerH
+            },
+            index: h_index,
+      			preload : 0,
+            frames: window['zhengdianqiang_group']
+        }, function(ret, err) {
+            var _index = ret.index;
+            // alert(JSON.stringify(ret));
+            paibangList.eq(_index).addClass("active");
+      			paibangList.eq(_index).siblings().removeClass("active");
+            mySwiper.slideTo( _index );  //控制水平导航条滑动的位置，根据页面滑动而滑动 _index-2让进来选中的居中
+        });
+        paibangList.click(function() {
+          var li_index = $(this).index();
+          $(this).addClass("active").siblings().removeClass("active");
+          api.setFrameGroupIndex({
+            name : 'zhengdianqiang_frame',
+            index : li_index,
+            scroll : true,
+          });
+        });
+    };
+    function closeWin(){
+      api.closeWin({
+          name: 'zhengdianqiang_win'
+      });
+    }
+  </script>
+
+</html>

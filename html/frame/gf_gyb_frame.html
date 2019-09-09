@@ -1,0 +1,342 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0" />
+    <title>高佣榜</title>
+    <link rel="stylesheet" type="text/css" href="../../css/api.css" />
+    <link rel="stylesheet" type="text/css" href="../../css/gf_goodsLib.css" />
+    <style>
+        /* 返回顶部样式开始 */
+
+        .actGotop {
+            position: fixed;
+            _position: absolute;
+            bottom: 3rem;
+            right: 0.5rem;
+            width: 3.5rem;
+            height: 3.5rem;
+            display: none;
+            z-index: 999
+        }
+
+        .actGotop a,
+        .actGotop a:link {
+            width: 3.5rem;
+            height: 3.5rem;
+            display: inline-block;
+            background: url(../../image/ic_back_top.png) no-repeat;
+            background-size: 3.5rem 3.5rem;
+            outline: none;
+        }
+
+        .actGotop a:hover {
+            background: url(../../image/ic_back_top.png) no-repeat;
+            outline: none;
+            background-size: 3.5rem 3.5rem;
+        }
+        /* 返回顶部样式开始 */
+        /*缺省页 start*/
+
+        .aui-take-content-col {
+            /*background-color: #fff;*/
+            width: 100%;
+            /*height: 186px;*/
+            padding-top: 2.0rem;
+            display: none;
+        }
+
+        .aui-img-logo {
+            width: 2.52rem;
+            height: auto;
+            margin: 0 auto;
+        }
+
+        .aui-img-logo img {
+            width: 100%;
+            height: 100%;
+            display: block;
+            border: none;
+            border-radius: 100%;
+        }
+
+        .aui-img-text {
+            text-align: center;
+            padding-top: 0.28rem;
+        }
+
+        .aui-img-text p {
+            font-size: 0.3rem;
+            color: #979797;
+        }
+        /*缺省页 end*/
+    </style>
+</head>
+
+<body>
+    <!-- 返回顶部按钮 -->
+    <div class="actGotop">
+        <a href="javascript:;" title="返回顶部"></a>
+    </div>
+    <div class="selection-list">
+        <!-- <div style="padding-bottom: 45px;"></div>
+                <div class="selection-category" style="z-index: 1000; position: fixed; top: 0px; left: 0px; width: 414px; transform: translateZ(0px);">
+                    <div class="category">
+                        <span class="selected">精选</span>
+                        <span class="">居家百货</span>
+                        <span class="">母婴</span>
+                        <span class="">女装</span>
+                        <span class="">美食</span>
+                        <span class="">美妆</span>
+                        <span class="">个护</span>
+                        <span class="">数码家电</span>
+                        <span class="">鞋包配饰</span>
+                        <span class="">运动户外</span>
+                        <span class="">男装</span>
+                        <span class="">内衣</span>
+                    </div>
+                </div> -->
+        <div class="banner">
+            <img src="../../image/gf_goods/gf_gyb.jpg" alt="banner" />
+        </div>
+        <div class="selection-goods-list">
+            <div class="list" id="gf_gyb">
+                <!-- <div class="goods-items">
+                        <div class="img-wrap">
+                            <div class="LazyLoad is-visible">
+                                <img src="https://oss2.lanlanlife.com/62c7717a57227280fb5426e72ceddeb1_800x800.jpg" alt="克罗瓦925纯银锁骨链 爱心项链镀18K金女小红心简约韩版网红桃心" />
+                            </div>
+                            <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAB4AAAAuCAYAAAA/SqkPAAAAAXNSR0IArs4c6QAAActJREFUWAntl8FLAkEUxr8Xq2BUFEVd66Im6hJGVHSWOhZ0KOhUYB2D6GRdiiDy0l8g3QKJoFPUNTploQVmf0Bd6pZdJKfZQlal3WYGycssyL558973zfwc2ZWYP8LQgqutBZ7fltr438hr1Bq1M4GTY+Ax9/Pp6Xauc5gxHPLu6YlxIByqqaGaWCwUN/b5gIF+YH4OWFoUU3epEjOejgOHKRcZ+akm/Y7lnzNiO77JAsur9rbGRoHEij1WiMSMX9+Aq2tbvrPDjhWjJqGWd9fG8swUOzRqRXDybRq1PDPFDtL/JBTJSbfpUy2NTLVBo1YlJ92nUYsjI/BXT/oUb6ivlEdN9AHCDozeQXiNCIjO6iXFRjIPiQo3PAKMJBXvnmvlmd+cAlX2wTBZm3eLRY0vQZ4NKt7m3cTYsDmLSmWPLyDoVmfNuaMmeuAoZ+jpPv6XqSVGhdwposEwV01wOi9Wzun6fcdWE6NtmIE0ZTJKB4jFYu14L6+DsU1u3tW4gHpjohJfaQpeHFA+X2osVhkzf6wPVE4CbI1/Bd6qRtWYHxxKo82zRYWsK6Jqo+ydBaJDvGeXE1jgdwJPnLNgJCIrpFrPQuYIf926+AKnlWfnoG8msQAAAABJRU5ErkJggg=="
+                                alt="icon" />
+                            <p class="sale"> 月销 929 </p>
+                        </div>
+                        <div class="info">
+                            <div class="info-title">
+                                <p class="title">克罗瓦925纯银锁骨链 爱心项链镀18K金女小红心简约韩版网红桃心</p>
+                            </div>
+                            <div class="info-price">
+                                <div class="price-sale">
+                                    <p class="price">&yen;<span>29</span></p>
+                                    <p class="old-price">&yen;<span>129</span></p>
+                                </div>
+                                <div class="price-tickets">
+                                    <div class="reward">
+                                        <span><i>奖</i>￥4.64</span>
+                                    </div>
+                                    <p class="tickets"><i>券</i><span>&yen; 100</span></p>
+                                </div>
+                            </div>
+                        </div>
+                    </div> -->
+            </div>
+        </div>
+    </div>
+    <div id="statu" style="font-size:0.8rem;color:#fd5f3e;background-color:#f4f4f4;height:50px;line-height:50px;text-align:center;clear:both;"></div>
+    <!-- 缺省页 start -->
+    <div class="aui-take-content-col">
+        <div class="aui-img-logo">
+            <img src="../../image/img_sc_massagenull.png" alt="" />
+        </div>
+        <div class="aui-img-text">
+            <p>暂无数据~</p>
+        </div>
+    </div>
+    <!-- 缺省页 end -->
+</body>
+<script type="text/javascript" src="../../script/api.js"></script>
+<script type="text/javascript" src="../../script/jquery.js"></script>
+<script type="text/javascript" src="../../script/api_common.js"></script>
+<script type="text/javascript" src="../../script/md5.js"></script>
+<script type="text/javascript" src="../../script/swiper.min.js"></script>
+<script type="text/javascript">
+    $(document).ready(function() {
+        // 返回顶部
+        $(window).scroll(function() {
+            if ($(window).scrollTop() >= 500) {
+                $('.actGotop').fadeIn("fast");
+            } else {
+                $('.actGotop').fadeOut(300);
+            }
+        });
+        $('.actGotop').click(function() {
+            $('html,body').animate({
+                scrollTop: '0px'
+            }, 300);
+        });
+    });
+    var pageNum = 1;
+    var isOver = false; //默认没有取完数据
+    var statu; //滑到底部状态
+    var user_id;
+    var pushType;
+    var min_level_name, min_share_rebate, level_name, max_shop_rebate, min_shop_rebate, max_level_name; //计算佣金比率
+    var dis_level_id, shop_rebate, max_share_rebate, share_rebate, my_share_rebate, my_shop_rebate; //计算佣金比率
+    apiready = function() {
+        api.parseTapmode();
+        pushType = api.pageParam.pushType;
+        if (!empty($api.getStorage("userInfo"))) {
+            user_id = $api.getStorage("userInfo").user_id;
+        } else {
+            user_id = '';
+            // checkUserLogin();
+        }
+        getEvent();
+        closePopframe();
+        jisuan(-1, user_id);
+        LoadingOne();
+        statu = $api.byId('statu');
+        loadFresh();
+        setTimeout(function() { //延时1000毫秒
+            loadMyFa(true);
+        }, 1000)
+        // 监听事件apiReady滚动到底部，加载更多功能
+        api.addEventListener({
+            name: 'scrolltobottom',
+            extra: {
+                threshold: 0 //设置距离底部多少距离时触发，默认值为0，数字类型
+            }
+        }, function(ret, err) {
+            LoadingOne();
+            loadMyFa(false);
+        });
+
+        function loadFresh() {
+            RefreshLoad();
+        }
+    };
+    //查询官方商品库
+    function loadMyFa(isEdit) {
+        if (!isEdit && isOver) {
+            return;
+        }
+        //判断如果是下拉刷新，
+        if (isEdit) {
+            pageNum = 1;
+            isOver = false;
+        }
+        var obj = {
+            'page_no': pageNum,
+            'page_size': 10,
+            'device_id': '',
+            'device_type': 'IMEI',
+            'material_id': 13366
+        };
+        var objArr = sort_ASCII(obj);
+        var timestamp = fntimestamp();
+        var version = '2.0';
+        var arr = apiSecret + timestamp + version + '';
+        for (i in objArr) {
+            arr += objArr[i];
+        }
+        var sign = hex_md5(arr);
+        // alert(sign);
+        api.ajax({
+            url: commonUrl + 'soukeAppTttService/service/ali/guessYouLove_ac',
+            method: 'post',
+            headers: {
+                'Content-Type': 'application/json;charset=utf-8'
+            },
+            data: {
+                body: {
+                    'apiKey': apiKey,
+                    'timestamp': timestamp,
+                    'sign': sign,
+                    'page_no': pageNum,
+                    'page_size': 10,
+                    'device_id': '',
+                    'device_type': 'IMEI',
+                    'material_id': 13366
+                }
+            }
+        }, function(ret, err) {
+            api.hideProgress();
+            if (ret) {
+                if (ret.result_code == 200) {
+                    $(".noWlan").hide();
+                    // console.log("查询官方商品库：" + JSON.stringify(ret));
+                    var data = ret.result_data.tbk_dg_optimus_material_response.result_list.map_data;
+                    if (data != "") {
+                        pageNum++;
+                    } else {
+                        $(".aui-take-content-col").show();
+                        // statu.innerHTML = "暂无数据";
+                    }
+                    if (data.length < 10 && data != "") {
+                        statu.innerHTML = "已经到底啦 ~ 别扯了";
+                        isOver = true;
+                    }
+                    fnShowData(data, isEdit);
+                } else {
+                    api.toast({
+                        msg: ret.result_message,
+                        duration: 2000,
+                        location: 'middle'
+                    });
+
+                }
+            } else {
+                $(".noWlan").show();
+                serviceErr();
+                // api.alert({ msg: JSON.stringify(err) });
+            }
+        });
+    }
+
+    function fnShowData(data, isEdit) {
+        var html = '';
+        for (var i = 0; i < data.length; i++) {
+            var message = data[i];
+            var qh_price = message.zk_final_price - message.coupon_amount;
+            var tkfee = qh_price * message.commission_rate / 100;
+            html += '<div class="goods-items" tapmode  onclick="openGoodDel(' + message.item_id + ',-1);">';
+            html += '<div class="img-wrap">';
+            html += '<div class="LazyLoad is-visible">';
+            html += '<img src="http://' + message.pict_url + '" alt="" /></div>';
+            // html += '<img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAB4AAAAuCAYAAAA/SqkPAAAAAXNSR0IArs4c6QAAActJREFUWAntl8FLAkEUxr8Xq2BUFEVd66Im6hJGVHSWOhZ0KOhUYB2D6GRdiiDy0l8g3QKJoFPUNTploQVmf0Bd6pZdJKfZQlal3WYGycssyL558973zfwc2ZWYP8LQgqutBZ7fltr438hr1Bq1M4GTY+Ax9/Pp6Xauc5gxHPLu6YlxIByqqaGaWCwUN/b5gIF+YH4OWFoUU3epEjOejgOHKRcZ+akm/Y7lnzNiO77JAsur9rbGRoHEij1WiMSMX9+Aq2tbvrPDjhWjJqGWd9fG8swUOzRqRXDybRq1PDPFDtL/JBTJSbfpUy2NTLVBo1YlJ92nUYsjI/BXT/oUb6ivlEdN9AHCDozeQXiNCIjO6iXFRjIPiQo3PAKMJBXvnmvlmd+cAlX2wTBZm3eLRY0vQZ4NKt7m3cTYsDmLSmWPLyDoVmfNuaMmeuAoZ+jpPv6XqSVGhdwposEwV01wOi9Wzun6fcdWE6NtmIE0ZTJKB4jFYu14L6+DsU1u3tW4gHpjohJfaQpeHFA+X2osVhkzf6wPVE4CbI1/Bd6qRtWYHxxKo82zRYWsK6Jqo+ydBaJDvGeXE1jgdwJPnLNgJCIrpFrPQuYIf926+AKnlWfnoG8msQAAAABJRU5ErkJggg=="alt="icon" />';
+            html += '<p class="sale"> 月销 ' + message.volume + ' </p></div>';
+            html += '<div class="info">';
+            html += '<div class="info-title">';
+            html += '<p class="title">' + message.title + '</p></div>';
+            html += '<div class="info-price">';
+            html += '<div class="price-sale">';
+            html += '<p class="price">&yen;<span>' + Math.floor(qh_price * 100) / 100 + '</span></p>';
+            html += '<p class="old-price">&yen;<span>' + Math.floor(message.zk_final_price * 100) / 100 + '</span></p></div>';
+            html += '<div class="price-tickets">';
+            html += '<div class="reward">';
+            html += '<span><i>奖</i>￥' + Math.floor(tkfee * 100) / 100 + '</span></div>';
+            if (message.coupon_amount == "0") {} else {
+                html += '<p class="tickets"><i>券</i><span>&yen; ' + message.coupon_amount + '</span></p>';
+            }
+            html += '</div></div></div></div>';
+        }
+        if (isEdit) {
+            $api.byId('gf_gyb').innerHTML = html;
+            isEdit = false;
+        } else {
+            $api.byId('gf_gyb').innerHTML += html;
+        }
+        $(".selection-goods-list").css("display", "flex");
+        $(".aui-text-copy").attr("id", message.order_id);
+        $(".aui-text-copy").click(function() {
+            var clipBoard = api.require('clipBoard');
+            clipBoard.set({
+                value: $(this).attr("id")
+            }, function(ret, err) {
+                if (ret) {
+                    // alert(JSON.stringify(ret));
+                    api.toast({
+                        msg: '复制成功',
+                        duration: 2000,
+                        location: 'middle'
+                    });
+
+                } else {
+                    // alert(JSON.stringify(err));
+                }
+            });
+        })
+    }
+</script>
+
+</html>

@@ -72,10 +72,76 @@ td,th {
 .loading_more:before {
 	display: inline-block; vertical-align: text-bottom;
 	content: ' '; height: 16px; width: 16px; margin-right: 6px;
-	background: url(../image/loading_more.gif) no-repeat center;
+	background: url(../image/loading.d997b79c.svg) no-repeat center;
 	-webkit-background-size: contain;
 	background-size: contain;
-} 
+}
 .loading_more:after {
-	content: '加载更多';	
+	content: '加载更多';
+}
+/*提交按钮css*/
+.submitBtn{
+	width: calc(100% - 24px);
+	height: 44px;
+	line-height: 44px;
+	text-align: center;
+	margin: 10px auto;
+	border-radius: 20px;
+	color:#fff;
+}
+.submitColor{
+	background: linear-gradient(to right, #fd7239, #f94529);
+}
+/*网络不好的时候出现的提示  ----ply2018-07-4新增*/
+.noWlan{
+  width: 100%;
+  height:100%;
+  background: #fff;
+  z-index: 99999;
+  position: fixed;
+  top:0;
+  left:0;
+  display: none;
+
+}
+.noWlan .nowlanItem{
+  width:100%;
+  height: 40%;
+  position: absolute;
+  left: 0;
+  top:20%;
+}
+.noWlan .nowlanItem p.no_p{
+  text-align: center;
+  color: #333;
+  font-size: 18px;
+  margin-top:10px;
+}
+.noWlan .nowlanItem p.load_p{
+  text-align: center;
+  color: #666;
+  font-size: 12px;
+  margin-top:10px;
+}
+.noWlan .nowlanItem div.loadBtn{
+  width:4.0rem;
+  height:1.2rem;
+  border-radius: 1rem;
+  border: 1px solid red;
+  color:red;
+  text-align: center;
+  margin: 0 auto;
+  font-size: 14px;
+  line-height: 1.2rem;
+  margin-top:10px;
+}
+.noWlan .nowlanItem .no_net{
+  width:110px;
+  height: 110px;
+  margin:0 auto;
+}
+.noWlan .nowlanItem .no_net img{
+  width:100%;
+  height:100%;
+  background-size: 100% 100%;
 }

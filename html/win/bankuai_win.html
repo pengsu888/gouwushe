@@ -1,0 +1,375 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0" />
+    <title>title</title>
+    <link rel="stylesheet" type="text/css" href="../../css/api.css" />
+    <!-- <link rel="stylesheet" type="text/css" href="../../css/style.css" /> -->
+    <style>
+        header {
+            width: 100%;
+            height: 5.88rem;
+            overflow: hidden;
+        }
+
+        header .header-top {
+            display: -webkit-box;
+            display: -webkit-flex;
+            display: flex;
+            width: 100%;
+            height: 5.88rem;
+            position: relative;
+        }
+
+        .headerItem {
+            height: 2.0rem;
+            width: 100%;
+            border-bottom: solid 1px #f6f6f6;
+            vertical-align: middle;
+            display: inline-block;
+            position: absolute;
+            top: 1.0rem;
+            left: 0;
+        }
+
+        .headerItem div {
+            float: left;
+        }
+
+        .headerItem .header_back {
+            width: 2.0rem;
+            height: 2.0rem;
+            float: left;
+            margin-left: 1rem;
+        }
+
+        .headerItem .header_back img {
+            width: 1.5rem;
+            height: 1.5rem;
+            background-size: 100% 100%;
+            vertical-align: middle;
+        }
+
+        .headerItem .header_title {
+            width: calc(100% - 6rem);
+            line-height: 1.5rem;
+            text-align: center;
+        }
+
+        .headerItem .header_search {
+            width: 1.5rem;
+            height: 100%;
+            float: right;
+            margin-right: 1.0rem;
+            vertical-align: middle;
+            display: inline-block;
+        }
+
+        .headerItem .header_search img {
+            width: 1.5rem;
+            height: 1.5rem;
+            background-size: 100% 100%;
+            vertical-align: middle;
+            display: inline-block;
+        }
+
+        .tabItem {
+            width: 100%;
+            height: auto;
+            border-bottom: solid 0.05rem #f6f6f6;
+            overflow: hidden;
+            background: #f9f9f9;
+            margin-top: 3.0rem;
+        }
+
+        .tabItem .tab_list {
+            width: 100%;
+            height: 3.0rem;
+            background: #f9f9f9;
+            box-sizing: border-box;
+        }
+
+        .tabItem .tab_list ul li {
+            float: left;
+            height: 3.0rem;
+            position: relative;
+        }
+
+        .tabItem .tab_list ul li a {
+            width: 100%;
+            height: 3.0rem;
+            color: #333;
+        }
+
+        .tabItem .old {
+            display: block;
+            width: 100%;
+            height: 100%;
+            text-align: center;
+            font-size: 0.8rem;
+            color: #333;
+        }
+
+        .tabItem #test li .current {
+            color: #fd5f3e;
+        }
+
+        .tabItem .tab_list ul li.listB {
+            width: 29%;
+            line-height: 3.0rem;
+            text-align: center;
+            font-size: 14px;
+        }
+
+        .tabItem .tab_list ul li.listS {
+            width: 13%;
+        }
+
+        .tabItem .tab_list ul li.style_1 {
+            width: 1.8rem;
+            height: 1.6rem;
+            margin-top: 0.5rem;
+            background: url("../../image/ic_page_search_index_switch_dc.png") center center no-repeat;
+            background-size: 100% 100%;
+        }
+
+        .tabItem .tab_list ul li.style_2 {
+            width: 1.8rem;
+            height: 1.6rem;
+            background: url("../../image/ic_page_search_index_switch_sc.png") center center no-repeat;
+            margin-top: 0.5rem;
+            background-size: 100% 100%;
+        }
+
+        .tabItem ul li .current {
+            color: #fd5f3e;
+        }
+
+        .upAttr {
+            position: absolute;
+            width: 0.4em;
+            height: 0.3rem;
+            top: 30%;
+            right: 24%;
+        }
+
+        .upAttr1 {
+            background: url(../../image/huaqian_iicon_uparrow_default.png) no-repeat;
+            background-size: 100% 100%;
+        }
+
+        .upAttr2 {
+            background: url(../../image/huaqian_icon_uparrow_selected.png) no-repeat;
+            background-size: 100% 100%;
+        }
+
+        .DownAttr {
+            position: absolute;
+            width: 0.4em;
+            height: 0.3rem;
+            top: 51%;
+            right: 24%;
+        }
+
+        .DownAttr1 {
+            background: url(../../image/huaqian_icon_downarrow_default.png) no-repeat;
+            background-size: 100% 100%;
+        }
+
+        .DownAttr2 {
+            background: url(../../image/huaqian_icon_downarrow_selected.png) no-repeat;
+            background-size: 100% 100%;
+        }
+    </style>
+</head>
+
+<body>
+    <header id="header">
+        <div class="header-top">
+            <div class="headerItem">
+                <div class="header_back" onclick="closeWin();">
+                    <img src="../../image/ic_detail_title_bar_back_gray.png" alt="">
+                </div>
+                <div class="header_title" id="header_title">裤装</div>
+                <!-- <div class="header_search" onclick="fnopenSearch();"><img src="../../image/ic_page_main_act_tab_search.png" alt=""></div> -->
+            </div>
+            <div class="tabItem">
+                <div class="tab_list">
+                    <ul id="test">
+                        <li class="listB"><a href="javascript:void(0)" class="old current common zonghe" tapmode onclick="dianji(0)">综合</a></li>
+                        <li class="listB"><a href="javascript:void(0)" class="old common xiaoliang" tapmode onclick="dianji('volume')">销量</a></li>
+                        <li class="listB"><a href="javascript:void(0)" class="old differ jiage" tapmode onclick="dianji('real_price')">价格</a><span class="upAttr upAttr1"></span><span class="DownAttr DownAttr1"></span></li>
+                        <!-- <li class="listB"><a href="javascript:void(0)" class="old differ quane" tapmode onclick="dianji('discount')">优惠率</a></li> -->
+                        <li class="listS style_1" id="listS"></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </header>
+</body>
+<script type="text/javascript" src="../../script/api.js"></script>
+<script type="text/javascript" src="../../script/jquery.js"></script>
+<script type="text/javascript" src="../../script/api_common.js"></script>
+<script type="text/javascript" src="../../script/md5.js"></script>
+<script type="text/javascript">
+    var sort_order;
+    apiready = function() {
+        api.setStatusBarStyle({
+            style: 'dark' //黑色
+                // style: 'light' //白色
+        });
+        var headerTitle = api.pageParam.activity_name;
+        var activity_type = api.pageParam.activity_type;
+        $api.byId('header_title').innerHTML = headerTitle;
+        var header = $api.byId('header');
+        $api.fixStatusBar(header);
+        var headerH = $api.offset(header).h;
+        class_ac(activity_type);
+        api.openFrame({
+            name: 'bankuai_frame',
+            url: '../frame/bankuai_frame.html',
+            rect: {
+                x: 0,
+                y: headerH,
+                w: 'auto',
+                h: 'auto'
+            },
+            pageParam: {
+                activity_type: activity_type
+            },
+            bounces: false
+        });
+    };
+
+    function closeWin() {
+        api.closeWin({
+            name: 'bankuai_win'
+        });
+    }
+    //切换样式按钮事件
+    $("#listS").click(function() {
+        if ($(this).hasClass("style_1")) {
+            $(this).removeClass("style_1");
+            $(this).addClass("style_2");
+            api.sendEvent({
+                name: 'bk_style_type',
+                extra: {
+                    type: 1,
+                }
+            });
+
+        } else {
+            $(this).removeClass("style_2");
+            $(this).addClass("style_1");
+            api.sendEvent({
+                name: 'bk_style_type',
+                extra: {
+                    type: 2,
+                }
+            });
+        }
+    });
+    var n = 0;
+
+    function dianji(tname) {
+        if (tname == 0) {
+            $('.zonghe').addClass('current').parent().siblings().children().removeClass('current').siblings().removeClass('DownAttr2').removeClass('upAttr2 sx_icon2');
+        } else if (tname == "volume") {
+            $('.xiaoliang').addClass('current').parent().siblings().children().removeClass('current').siblings().removeClass('DownAttr2').removeClass('upAttr2 sx_icon2');
+            sort_order = 'DESC';
+        } else if (tname == "real_price") {
+            n++;
+            if (n % 2 == 0) {
+                $('.jiage').addClass('current').parent().siblings().children().removeClass('current').siblings().removeClass('DownAttr2').removeClass('upAttr2 sx_icon2');
+                $('.jiage').siblings('span').eq(1).addClass('DownAttr2').parent().siblings().children().siblings().removeClass('DownAttr2');
+                $('.jiage').siblings('span').eq(0).removeClass('upAttr2');
+                sort_order = 'DESC';
+            } else {
+                $('.jiage').addClass('current').parent().siblings().children().removeClass('current').siblings().removeClass('DownAttr2').removeClass('upAttr2 sx_icon2');
+                $('.jiage').siblings('span').eq(0).addClass('upAttr2').parent().siblings().children().siblings().removeClass('upAttr2');
+                $('.jiage').siblings('span').eq(1).removeClass('DownAttr2');
+                sort_order = 'ASC';
+            }
+        }
+        //  else if (tname == "discount") {
+        //   $('.quane').addClass('current').parent().siblings().children().removeClass('current').siblings().removeClass('DownAttr2').removeClass('upAttr2 sx_icon2');
+        //   sort_order = 'DESC';
+        // }
+        api.sendEvent({
+            name: 'bk_dianji',
+            extra: {
+                tname: tname,
+                sort_order: sort_order
+            }
+        });
+    }
+    //列表样式
+    function class_ac(session_id) {
+        var obj = {
+            'section_id': session_id
+        };
+
+        var objArr = sort_ASCII(obj);
+        var timestamp = fntimestamp();
+        var version = '2.0';
+        var arr = apiSecret + timestamp + version + '';
+        for (i in objArr) {
+            arr += objArr[i];
+        }
+        console.log(arr);
+        var sign = hex_md5(arr);
+        api.ajax({
+            url: commonUrl + 'soukeAppTttService/service/section/class_ac ',
+            method: 'post',
+            headers: {
+                'Content-Type': 'application/json;charset=utf-8'
+            },
+            data: {
+                body: {
+                    'apiKey': apiKey,
+                    'timestamp': timestamp,
+                    'sign': sign,
+                    'section_id': session_id
+                }
+            }
+        }, function(ret, err) {
+            if (ret) {
+                if (ret.result_code == 200) {
+                    console.log("样式信息------：" + JSON.stringify(ret));
+                    if (ret.result_class.show_type == 1) {
+                        $("#listS").removeClass("style_1");
+                        $("#listS").addClass("style_2");
+                        api.sendEvent({
+                            name: 'bk_style_type',
+                            extra: {
+                                type: 1,
+                            }
+                        });
+                    } else {
+                        $("#listS").removeClass("style_2");
+                        $("#listS").addClass("style_1");
+                        api.sendEvent({
+                            name: 'bk_style_type',
+                            extra: {
+                                type: 2,
+                            }
+                        });
+                    }
+                } else {
+                    api.toast({
+                        msg: ret.result_message,
+                        duration: 2000,
+                        location: 'middle'
+                    });
+
+                }
+            } else {
+                // api.alert({ msg: JSON.stringify(err) });
+            }
+        });
+    }
+</script>
+
+</html>

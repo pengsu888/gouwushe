@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0" />
+	<title>淘宝授权弹窗</title>
+	<link rel="stylesheet" type="text/css" href="../../css/api.css" />
+	<style>
+		html,
+		body {
+			height: 98%;
+			background: transparent;
+			-webkit-touch-callout: none;
+			font-family: Tahoma, Geneva, sans-serif;
+			font-style: normal;
+		}
+
+		.authorized {
+			width: 100%;
+			height: 100%;
+			background: rgba(0, 0, 0, .7);
+			overflow: hidden;
+			position: fixed;
+			top: 0;
+			left: 0;
+			z-index: 99;
+			display: none;
+		}
+
+		.sq_nl_list {
+			position: fixed;
+			width: calc(80% - 40px);
+			height: 446px;
+			left: 60px;
+			top: 50%;
+			border-radius: 10px;
+			margin-top: -223px;
+			z-index: 999;
+			box-sizing: border-box;
+			-webkit-box-sizing: border-box;
+			overflow: hidden;
+		}
+
+		p {
+			margin: 0;
+			padding: 0;
+		}
+
+		.tb_sq {
+			text-align: center;
+			background: #fff;
+			border-radius: 10px;
+			height: 100%;
+			width: 100%;
+			top: 69%;
+		}
+
+		.tb_sq p:nth-child(1) {
+			width: 100%;
+			padding: 10% 0 0 0;
+		}
+
+		.tb_sq p:nth-child(1) img {
+			width: 25%;
+			display: inline-block;
+		}
+
+		.tb_sq p:nth-child(2) {
+			font-size: 1rem;
+			color: #333333;
+			padding: 5% 0 10% 0;
+		}
+
+		.tb_sq p:nth-child(3) {
+			font-size: 0.8rem;
+			color: #999999;
+			padding: 0% 15% 10% 15%;
+		}
+
+		.tb_sq p:nth-child(4) {
+			color: #fff;
+			display: inline-block;
+			line-height: 2.5;
+			color: #fff;
+			background: #fa5527;
+			text-align: center;
+			font-size: 1em;
+			width: 8em;
+			margin-left: -4em;
+			border-radius: 25px;
+			position: absolute;
+		}
+
+		.close_gz {
+			width: 15px;
+			height: 15px;
+			background: url('../../image/ic_page_cs_chat_input_close.png') no-repeat;
+			background-size: 100% 100%;
+			position: fixed;
+			z-index: 99999;
+			top: 5%;
+			right: 5%;
+			margin-left: 0px;
+			margin-top: 0px;
+		}
+
+		.submitColor {
+			background: -webkit-linear-gradient(left, #fd7239, #f94529);
+			/* Safari 5.1 - 6.0 */
+			background: -o-linear-gradient(right, #fd7239, #f94529);
+			/* Opera 11.1 - 12.0 */
+			background: -moz-linear-gradient(right, #fd7239, #f94529);
+			/* Firefox 3.6 - 15 */
+			background: linear-gradient(to right, #fd7239, #f94529);
+			/* 标准的语法 */
+		}
+
+		#authorized {
+			background-color: #fff;
+			border-radius: 10px;
+			position: absolute;
+			margin: auto;
+			left: 0;
+			right: 0;
+			top: 0;
+			bottom: 0;
+			width: 220px;
+			height: 280px;
+			-webkit-transition: all .1s;
+			transition: all .1s;
+			-webkit-transform: scale(0);
+			transform: scale(0);
+			opacity: 0;
+		}
+
+		#authorized.in {
+			-webkit-transform: scale(1);
+			transform: scale(1);
+			opacity: 1;
+		}
+
+		img {
+			padding: 15px;
+		}
+	</style>
+</head>
+
+<body>
+	<div id="authorized">
+		<div class="tb_sq">
+			<p><img src="../../image/ic_taobao.png" /></p>
+			<p>请完成淘宝授权</p>
+			<p>淘宝授权后自购或分享产品可以获得收益哦~</p>
+			<p onclick="TbSq();">去授权</p>
+			<!-- <span tapmode onclick="api.closeFrame()"></span> -->
+		</div>
+		<div class="close_gz" tapmode onclick="api.closeFrame()"></div>
+	</div>
+</body>
+<script type="text/javascript" src="../../script/api.js"></script>
+<script type="text/javascript" src="../../script/zepto.min.js"></script>
+<script type="text/javascript">
+	$('#authorized').addClass('in');
+	apiready = function() {
+		$(document.body).on('touchend', function(e) {
+			var authorized = $("#authorized")[0];
+			if (!$.contains(authorized, e.target)) {
+				$('#authorized').removeClass('in');
+				setTimeout(function() {
+					api.closeFrame();
+				}, 200);
+			}
+		});
+	};
+	//跳转淘宝授权页
+	function TbSq() {
+		api.openWin({
+			name: 'tb_sq_win',
+			url: '../win/tb_sq_win.html',
+		});
+		setTimeout(function() {
+			api.closeFrame();
+		}, 200);
+	}
+</script>
+
+</html>

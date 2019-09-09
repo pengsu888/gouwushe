@@ -1,0 +1,310 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0" />
+    <title>微信绑定</title>
+    <link rel="stylesheet" type="text/css" href="../../css/api.css" />
+    <link rel="stylesheet" type="text/css" href="../../css/aui.css" />
+    <style>
+        html,
+        body {
+            height: 100%;
+            background: #F4F4F4;
+            width: 100%;
+            overflow: hidden;
+        }
+
+        .aui-scrollView {
+            width: 100%;
+            height: 100%;
+            -webkit-box-flex: 1;
+            -webkit-flex: 1;
+            -ms-flex: 1;
+            flex: 1;
+            overflow-y: auto;
+            overflow-x: hidden;
+            -webkit-overflow-scrolling: touch;
+            /* position: relative; */
+            margin-bottom: -1px;
+        }
+
+        .aui-code-box {
+            padding: 40px 20px;
+            text-align: center;
+        }
+
+        .aui-code-box h2 {
+            color: #39bc30;
+            font-size: 1.0rem;
+            font-weight: normal;
+        }
+
+        .aui-code-box p {
+            color: #ccc;
+            font-size: 0.85rem;
+            width: 100%;
+        }
+
+        .aui-code-box p {
+            color: #999999;
+            font-size: 0.85rem;
+            width: 100%;
+        }
+
+        .aui-code-btn {
+            padding-top: 50px;
+        }
+
+        .aui-code-box button {
+            background: #39bc30;
+            height: 45px;
+            line-height: 45px;
+            border: none;
+            color: #ffffff;
+            border-radius: 30px;
+            width: 100%;
+            font-size: 0.85rem;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="aui-scrollView" id='statu'>
+        <div class="aui-code-box">
+            <h2>您尚未绑定微信，绑定后登录更便捷</h2>
+            <p>点击下方按钮绑定您的微信账号</p>
+            <p class="aui-code-btn" id="weixinOpen">
+                <button>立即绑定微信</button>
+            </p>
+        </div>
+    </div>
+</body>
+<script type="text/javascript" src="../../script/api.js"></script>
+<script type="text/javascript" src="../../script/jquery.js"></script>
+<script type="text/javascript" src="../../script/api_common.js"></script>
+<script type="text/javascript" src="../../script/md5.js"></script>
+<script type="text/javascript">
+    var user_id;
+    apiready = function() {
+            $("#statu").hide();
+            if (!empty($api.getStorage("userInfo"))) {
+                user_id = $api.getStorage("userInfo").user_id;
+            } else {
+                api.openWin({
+                    name: 'user_login',
+                    url: '../login/user_login.html',
+                    pageParam: {
+                        name: 'test'
+                    }
+                });
+            }
+            getSet();
+        }
+        // 查询微信是否绑定：
+    function getSet() {
+        var obj = {
+            'user_id': user_id,
+        };
+        var objArr = sort_ASCII(obj);
+        var timestamp = fntimestamp();
+        var version = '2.0';
+        var arr = apiSecret + timestamp + version + '';
+        for (i in objArr) {
+            arr += objArr[i];
+        }
+        var sign = hex_md5(arr);
+        // alert(sign);
+        api.ajax({
+            url: commonUrl + 'soukeAppTttService/service/user/findset_ac',
+            method: 'post',
+            headers: {
+                'Content-Type': 'application/json;charset=utf-8'
+            },
+            data: {
+                body: {
+                    'apiKey': apiKey,
+                    'timestamp': timestamp,
+                    'sign': sign,
+                    'user_id': user_id,
+                }
+            }
+        }, function(ret, err) {
+            if (ret) {
+                if (ret.result_code == 200) {
+                    console.log("查询微信是否绑定：" + JSON.stringify(ret));
+                    if (ret.result_data.weixinOpen == 0) {
+                        $("#statu").show();
+                    } else {
+                        $("#statu").hide();
+                        fnTishi();
+                    }
+                } else {
+                    api.toast({
+                        msg: ret.result_message,
+                        duration: 2000,
+                        location: 'middle'
+                    });
+
+                }
+            } else {
+                // api.alert({ msg: JSON.stringify(err) });
+            }
+        });
+    }
+    // 商品异常提示弹窗
+    function fnTishi() {
+        var dialogBox = api.require('dialogBox');
+        dialogBox.alert({
+            texts: {
+                // title: '提示',
+                content: '微信已经授权成功啦~',
+                leftBtnTitle: '点击返回'
+            },
+            styles: {
+                bg: '#fff',
+                w: 300,
+                corner: 8,
+                title: {
+                    marginT: 20,
+                    icon: 'widget://image/icon_pay_tick_selected.png',
+                    iconSize: 40,
+                    titleSize: 18,
+                    titleColor: '#000'
+                },
+                content: {
+                    color: '#000',
+                    size: 18
+                },
+                left: {
+                    marginB: 20,
+                    marginL: 85,
+                    w: 130,
+                    h: 35,
+                    corner: 5,
+                    bg: '#39bc30',
+                    color: '#fff',
+                    size: 14
+                }
+            }
+        }, function(ret) {
+            if (ret.eventType == 'left') {
+                var dialogBox = api.require('dialogBox');
+                dialogBox.close({
+                    dialogName: 'alert'
+                });
+                api.closeWin({
+                    name: 'weixin_shouquan_win',
+                    animation: {
+                        type: "fade", //动画类型（详见动画类型常量）
+                        subType: "from_right", //动画子类型（详见动画子类型常量）
+                        duration: 300 //动画过渡时间，默认300毫秒
+                    }
+                });
+            }
+        });
+    }
+    $("#weixinOpen").click(function() {
+        var wx = api.require('wx');
+        wx.auth({
+            apiKey: ''
+        }, function(ret, err) {
+            if (ret.status) {
+                // alert(JSON.stringify(ret));
+                wx.getToken({
+                    apiKey: '',
+                    apiSecret: '',
+                    code: ret.code
+                }, function(ret, err) {
+                    if (ret.status) {
+                        // alert(JSON.stringify(ret));
+                        wx.getUserInfo({
+                            accessToken: ret.accessToken,
+                            openId: ret.openId
+                        }, function(ret, err) {
+                            if (ret.status) {
+                                // alert(JSON.stringify(ret));
+                                $("#statu").hide();
+                                fnTishi();
+                                // api.toast({
+                                //     msg: '授权成功',
+                                //     duration: 2000,
+                                //     location: 'middle'
+                                // });
+                                var wx_unionid = ret.unionid;
+                                var user_nick = ret.nickname;
+                                var user_head = ret.headimgurl;
+                                var user_sex = ret.sex;
+                                // 上报微信授权：
+                                var obj = {
+                                    'user_id': user_id,
+                                    'wx_unionid': wx_unionid,
+                                    'user_nick': encodeURIComponent(user_nick),
+                                    'user_head': encodeURIComponent(user_head),
+                                    'user_sex': user_sex
+                                };
+                                var objArr = sort_ASCII(obj);
+                                var timestamp = fntimestamp();
+                                var version = '2.0';
+                                var arr = apiSecret + timestamp + version + '';
+                                for (i in objArr) {
+                                    arr += objArr[i];
+                                }
+                                var sign = hex_md5(arr);
+                                api.ajax({
+                                    url: commonUrl + 'soukeAppTttService/service/user/bandWX_ac',
+                                    method: 'post',
+                                    headers: {
+                                        'Content-Type': 'application/json;charset=utf-8'
+                                    },
+                                    data: {
+                                        body: {
+                                            'apiKey': apiKey,
+                                            'timestamp': timestamp,
+                                            'sign': sign,
+                                            'user_id': user_id,
+                                            'wx_unionid': wx_unionid,
+                                            'user_nick': user_nick,
+                                            'user_head': user_head,
+                                            'user_sex': user_sex
+                                        }
+                                    }
+                                }, function(ret, err) {
+                                    if (ret) {
+                                        if (ret.result_code == 200) {
+                                            console.log("上报微信授权：" + JSON.stringify(ret));
+                                            // api.toast({
+                                            //     msg: ret.result_message,
+                                            //     duration: 2000,
+                                            //     location: 'middle'
+                                            // });
+                                        } else {
+                                            api.toast({
+                                                msg: ret.result_message,
+                                                duration: 2000,
+                                                location: 'middle'
+                                            });
+
+                                        }
+                                    } else {
+                                        // api.alert({ msg: JSON.stringify(err) });
+                                    }
+                                });
+                            } else {
+                                // alert(err.code);
+                            }
+                        });
+
+                    } else {
+                        // alert(err.code);
+                    }
+                });
+            } else {
+                // alert(err.code);
+            }
+        });
+    })
+</script>
+
+</html>

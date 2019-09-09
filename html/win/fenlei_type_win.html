@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0" />
+    <title>淘宝分类</title>
+    <link rel="stylesheet" type="text/css" href="../../css/api.css" />
+    <!-- <link rel="stylesheet" type="text/css" href="../../css/style.css" /> -->
+    <style>
+        header {
+            width: 100%;
+            height: 44px;
+            overflow: hidden;
+        }
+
+        header .header-top {
+            display: -webkit-box;
+            display: -webkit-flex;
+            display: flex;
+            width: 100%;
+            height: 44px;
+            position: relative;
+        }
+
+        .headerItem {
+            height: 2.0rem;
+            width: 100%;
+            border-bottom: solid 1px #f6f6f6;
+            vertical-align: middle;
+            display: inline-block;
+            position: absolute;
+            top: 1.0rem;
+            left: 0;
+        }
+
+        .headerItem div {
+            float: left;
+        }
+
+        .headerItem .header_back {
+            width: 2.0rem;
+            height: 2.0rem;
+            float: left;
+            margin-left: 1rem;
+        }
+
+        .headerItem .header_back img {
+            width: 1.5rem;
+            height: 1.5rem;
+            background-size: 100% 100%;
+            vertical-align: middle;
+        }
+
+        .headerItem .header_title {
+            width: calc(100% - 6rem);
+            line-height: 1.5rem;
+            text-align: center;
+        }
+
+        .headerItem .header_search {
+            width: 1.5rem;
+            height: 100%;
+            float: right;
+            margin-right: 1.0rem;
+            vertical-align: middle;
+            display: inline-block;
+        }
+
+        .headerItem .header_search img {
+            width: 1.5rem;
+            height: 1.5rem;
+            background-size: 100% 100%;
+            vertical-align: middle;
+            display: inline-block;
+        }
+    </style>
+</head>
+
+<body>
+    <header id="header">
+        <div class="header-top">
+            <div class="headerItem">
+                <div class="header_back" onclick="closeWin();">
+                    <img src="../../image/ic_detail_title_bar_back_gray.png" alt="">
+                </div>
+                <div class="header_title" id="header_title">淘宝分类</div>
+                <div class="header_search" onclick="fnopenSearch();"><img src="../../image/ic_page_main_act_tab_search.png" alt=""></div>
+            </div>
+            <!-- <div class="tabItem">
+            <div class="tab_list">
+              <ul>
+                <li class="listB">综合</li>
+                <li class="listB">销量</li>
+                <li class="listB">价格</li>
+                <li class="listB">优惠率</li>
+                <li class="listS style_1" id="listS"></li>
+              </ul>
+            </div>
+          </div> -->
+        </div>
+    </header>
+</body>
+<script type="text/javascript" src="../../script/api.js"></script>
+<script type="text/javascript" src="../../script/jquery.js"></script>
+<script type="text/javascript">
+    apiready = function() {
+        api.setStatusBarStyle({
+            style: 'dark' //黑色
+                // style: 'light' //白色
+        });
+        var headerTitle = api.pageParam.class_name;
+        $api.byId('header_title').innerHTML = headerTitle;
+        var header = $api.byId('header');
+        $api.fixStatusBar(header);
+        var headerH = $api.offset(header).h;
+        api.openFrame({
+            name: 'fenlei_type_frame',
+            url: 'widget://html/frame/fenlei_type_frame.html',
+            rect: {
+                x: 0,
+                y: headerH,
+                w: 'auto',
+                h: 'auto'
+            },
+            pageParam: {
+                class_id: api.pageParam.class_id,
+                class_name: api.pageParam.class_name
+            },
+            bounces: false
+        });
+    };
+
+    function closeWin() {
+        api.closeWin({
+            name: 'fenlei_type_win'
+        });
+    }
+
+    function fnopenSearch() {
+        api.openWin({
+            name: 'search_win',
+            url: 'widget://html/home/search_win.html',
+            // pageParam: {
+            //     name: 'test'
+            // }
+            allowEdit: true
+        });
+    }
+    //切换样式按钮事件
+    $("#listS").click(function() {
+        if ($(this).hasClass("style_1")) {
+            $(this).removeClass("style_1");
+            $(this).addClass("style_2");
+            api.sendEvent({
+                name: 'style_type',
+                extra: {
+                    type: 1,
+                }
+            });
+
+        } else {
+            $(this).removeClass("style_2");
+            $(this).addClass("style_1");
+            api.sendEvent({
+                name: 'style_type',
+                extra: {
+                    type: 2,
+                }
+            });
+        }
+    });
+</script>
+
+</html>

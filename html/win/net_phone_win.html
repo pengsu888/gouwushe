@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0" />
+    <title>网络电话win</title>
+    <link rel="stylesheet" type="text/css" href="../../css/api.css" />
+    <link rel="stylesheet" type="text/css" href="../../css/style.css" />
+</head>
+<style media="screen">
+    html,
+    body {
+        -webkit-touch-callout: none;
+        -webkit-text-size-adjust: none;
+        -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+        -webkit-user-select: none;
+        width: 100%;
+        height: 100%;
+        background-color: #fff;
+    }
+
+    .headerItem .header_title {
+        width: calc(100% - 64px);
+        line-height: 44px;
+        text-align: center;
+        margin-left: 13px;
+    }
+
+    .headerItem .header_right {
+        width: 42px;
+        height: 44px;
+        float: right;
+        margin-top: 0px;
+        line-height: 44px;
+        text-align: center;
+    }
+
+    .cancel {
+        display: none;
+    }
+
+    .header-bottom {
+        height: 42px;
+        width: 100%;
+    }
+
+    .header-bottom ul {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+    }
+
+    .header-bottom ul li {
+        float: left;
+        width: 33.333%;
+        line-height: 42px;
+        text-align: center;
+    }
+
+    .header-bottom ul li.li_active {
+        border-bottom: 3px solid #fd5f3e;
+        color: #fd5f3e;
+    }
+</style>
+
+<body>
+    <header id="header">
+        <div class="header-bottom">
+            <ul id="class_list">
+                <li id="tb" class="li_active">拨号</li>
+                <li id="jd">通话记录</li>
+                <li id="pdd">我的话费</li>
+            </ul>
+        </div>
+        <!-- <div class="header-top">
+          <div class="headerItem">
+            <div class="header_back" tapmode onclick="closeWin();">
+              <img src="../../image/nav_back_black.png" alt="">
+            </div>
+            <div class="header_title" id="header_title">网络电话</div>
+            <div class="header_right guanli" tapmode onclick="fnEditList();">管理</div>
+            <div class="header_right cancel" tapmode onclick="fnCancelEditList();">取消</div>
+          </div>
+      </div> -->
+    </header>
+
+
+</body>
+<script type="text/javascript" src="../../script/api.js"></script>
+<script type="text/javascript" src="../../script/jquery.js"></script>
+<script type="text/javascript" src="../../script/api_common.js"></script>
+<script type="text/javascript" src="../../script/md5.js"></script>
+<script type="text/javascript">
+    var headerH;
+    apiready = function() {
+        api.setStatusBarStyle({
+            style: 'dark' //黑色
+                // style: 'light' //白色
+        });
+        var header = $api.byId('header');
+        $api.fixStatusBar(header);
+        if (api.systemType == 'ios') {
+            headerH = $api.offset(header).h;
+        } else {
+            headerH = $api.offset(header).h;
+        }
+        // api.showFloatBox({
+        //     iconPath: 'widget://image/ic_page_sc_gapprice.png',
+        //     duration: 30000
+        // });
+        api.openFrameGroup({
+            name: 'classify2',
+            scrollEnabled: false,
+            rect: {
+                x: 0,
+                y: api.safeArea.top + 44,
+                w: 'auto',
+                h: api.winHeight
+            },
+            index: 0,
+            preload: 0,
+            frames: [{
+                name: 'net_dial.frame',
+                url: '../frame/net_dial.frame.html',
+                bounces: false,
+                vScrollBarEnabled: false,
+                hScrollBarEnabled: false,
+                pageParam: {
+                    dis_power: 'dis_power',
+                }
+            }, {
+                name: 'net.records.frame',
+                url: '../frame/net.records.frame.html',
+                bounces: false,
+                vScrollBarEnabled: false,
+                hScrollBarEnabled: false,
+                pageParam: {
+                    dis_power: 'dis_power',
+                }
+              }, {
+                  name: 'net_yue_frame',
+                  url: '../frame/net_yue_frame.html',
+                  bounces: false,
+                  vScrollBarEnabled: false,
+                  hScrollBarEnabled: false,
+                  pageParam: {
+                      dis_power: 'dis_power',
+                  }
+            }],
+        }, function(ret, err) {
+            //滑动菜单
+            var _index = ret.index;
+            $("#class_list > li").eq(_index).addClass("li_active");
+            $("#class_list > li").eq(_index).siblings().removeClass("li_active");
+            listLi(_index);
+        });
+        //点击菜单
+        $("#class_list > li").click(function() {
+            var li_index = $(this).index();
+            $(this).addClass("active").siblings().removeClass("li_active");
+            listDj(li_index);
+        });
+    };
+    //滑动菜单方法
+    function listLi(_index) {
+        api.setFrameGroupIndex({
+            name: 'classify2',
+            index: _index,
+            scroll: true,
+            reload: false
+        });
+    }
+    //点击菜单方法
+    function listDj(li_index) {
+        api.setFrameGroupIndex({
+            name: 'classify2',
+            index: li_index,
+            scroll: true,
+            reload: false
+        });
+    }
+
+    function closeWin() {
+        api.closeWin({
+            name: 'collect_win'
+        });
+    }
+    // 编辑和删除列表广播事件
+    function fnEditList() {
+        $(".guanli").hide();
+        $(".cancel").show();
+        api.sendEvent({
+            name: 'sc_editBtn',
+            extra: {
+                editBtn: 'edit',
+                click_status: 1 //用来规定点击事件
+            }
+        });
+    }
+
+    function fnCancelEditList() {
+        $(".cancel").hide();
+        $(".guanli").show();
+        api.sendEvent({
+            name: 'sc_editBtn',
+            extra: {
+                editBtn: 'cancel',
+                click_status: 0 //用来规定点击事件
+            }
+        });
+    }
+</script>
+
+</html>

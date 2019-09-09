@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+    <title>粉丝弹出层</title>
+    <link rel="stylesheet" type="text/css" href="../css/api.css"/>
+    <link rel="stylesheet" type="text/css" href="../css/style.css" />
+    <style>
+    /*弹出框样式*/
+    	body{
+    		width:100%;
+    		height:100%;
+    		background:none;
+    		font-size:16px;
+        overflow: hidden;
+    	}
+    	.wrapAll{
+    		width:100%;
+    		height:100%;
+    		background:rgba(0,0,0,.5);
+        overflow: hidden;
+    		position:fixed;
+    		top:0;
+    		left:0;
+    		z-index:99;
+    	}
+    	.nl_list {
+    		position: fixed;
+        width: 225px;
+    		height:238px;
+        left: 50%;
+        top:50%;
+        margin-left: -112px;
+        margin-top: -119px;
+    		border-radius: 5px;
+    		z-index: 999;
+    		background: #fff;
+    		box-sizing: border-box;
+    		-webkit-box-sizing: border-box;
+        overflow: hidden;
+    	}
+      .nl_list .gz_title{
+        height: 60px;
+        width: 100%;
+        line-height: 60px;
+        text-align: center;
+        color:#fff;
+        font-size: 12px;
+      }
+      .nl_list .gz_title ul{list-style: none;margin: 0;padding: 10px;width: 100%;height: 100%;}
+      .nl_list .gz_title ul li{
+        float: left;
+        height: 36px;
+      }
+      .nl_list .gz_title ul li.headIcon{
+        width: 36px;
+        height: 36px;
+        border-radius: 50%;
+        margin-top: 2px;
+      }
+      .nl_list .gz_title ul li.headIcon img{
+        width: 100%;
+        height: 100%;
+        border-radius: 50%;
+        background-size: 100% 100%;
+      }
+      .nl_list .gz_title ul li.fansDel{
+        width: calc(100% - 46px);
+        margin-top: 2px;
+        margin-left: 10px;
+      }
+      .nl_list .gz_title ul li.fansDel div.fans_name,.nl_list .gz_title ul li.fansDel div.fans_yqm{
+        height: 20px;
+        line-height: 20px;
+        width: 100%;
+        text-align: left;
+        overflow: hidden;
+        text-overflow:ellipsis;
+        white-space: nowrap;
+      }
+      .nl_list .gz_title ul li.fansDel div.fans_yqm span.span_copy{
+        height: 14px;
+        width: auto;
+        line-height: 14px;
+        text-align: center;
+        /*background: rgba(255, 255, 255, 0.5);*/
+				border: solid 1px #fff;
+        border-radius: 10px;
+        font-size: 12px;
+        padding: 2px 8px;
+        margin-left: 10px;
+      }
+      .nl_list .gz_item{
+        height: calc(100% - 60px);
+        width: calc(100% - 32px);
+        margin: 0 auto;
+        padding-top: 30px;
+      }
+      .nl_list .gz_item ul{list-style: none;padding:0;margin: 0;height: 30px;width: 100%;}
+      .nl_list .gz_item ul li{
+        float: left;
+        height: 30px;
+        line-height: 30px;
+        width: 50%;
+        font-size: 14px;
+        text-align: center;
+      }
+      .nl_list .gz_item .zcsj{
+        width: 100%;
+        height: 40px;
+        line-height: 40px;
+        border-top: 1px solid #d9d9d9;
+        color:#666;
+        font-size: 12px;
+        text-align: center;
+        margin-top: 47px;
+      }
+       .close_gz{
+        width: 25px;
+        height: 25px;
+        background: url('../../image/home/video_close.png') no-repeat;
+        background-size: 100% 100%;
+        position: fixed;
+        z-index: 99999;
+        top: calc(50% + 238px);
+        left: 50%;
+        margin-left: -13px;
+        margin-top: -107px;
+      }
+      .submitColor{
+        background: -webkit-linear-gradient(left, #fd7239 , #f94529); /* Safari 5.1 - 6.0 */
+        background: -o-linear-gradient(right, #fd7239, #f94529); /* Opera 11.1 - 12.0 */
+        background: -moz-linear-gradient(right, #fd7239, #f94529); /* Firefox 3.6 - 15 */
+        background: linear-gradient(to right, #fd7239, #f94529); /* 标准的语法 */
+      }
+      .gz_color{
+        color:#666;
+        font-size: 12px;
+      }
+    </style>
+</head>
+<body>
+<!--弹出框-->
+	<section class='wrapAll' id='wrapAll'>
+	</section>
+	<section class='nl_list'>
+      <div class="gz_title submitColor">
+        <ul>
+          <li class="headIcon"><img  id="head_img" src="../../image/home/v2_ic_avatar.png" alt=""></li>
+          <li class="fansDel">
+            <div class="fans_name" id="fans_name">淡定从容198808</div>
+            <div class="fans_yqm">邀请码：<span class="span_yqm" id="fans_yqm">KP78GH</span><span class="span_copy copy_btn" tapmode>复制</span></div>
+          </li>
+        </ul>
+      </div>
+      <div class="gz_item">
+        <ul>
+          <li class="gz_color">上月收益(元)</li>
+          <li class="gz_color">累计收益(元)</li>
+        </ul>
+        <ul>
+          <li id="shangyue_lurce">2687.35</li>
+          <li id="all_lurce">12867.68</li>
+        </ul>
+        <div class="zcsj">注册时间：<span id="reg_time">2018-07-12 13:35</span></div>
+      </div>
+	</section>
+  <div class="close_gz"></div>
+</body>
+<script type="text/javascript" src="../../script/api.js"></script>
+<script type="text/javascript" src="../../script/jquery.js"></script>
+<script type="text/javascript" src="../../script/api_common.js"></script>
+<script type="text/javascript" src="../../script/md5.js"></script>
+<script type="text/javascript">
+	apiready = function(){
+    window.frame_name=api.pageParam.frame_name;
+		window.win_name=api.pageParam.win_name;
+		window.fans_id=api.pageParam.fans_id;
+		getData();
+	};
+		//触摸蒙层
+		// document.getElementById('wrapAll').addEventListener('touchstart',function(){
+		// 	closeNLShaixuanLayout();
+		// },false);
+    $(".close_gz").click(function (){
+      closeNLFansDelLayout();
+    })
+		//调用关闭弹出层的方法
+		function closeNLFansDelLayout(){
+        api.execScript({
+            name: window.win_name,
+            frameName: window.frame_name,
+            script: 'closeFansDelLayout();'
+        });
+		}
+		function getData(){
+			var obj={
+        'user_id':window.fans_id,
+      };
+      var objArr=sort_ASCII(obj);
+      var timestamp=fntimestamp();
+      var version='2.0';
+      var arr=apiSecret+timestamp+version+'';
+      for(i in objArr){
+        arr+=objArr[i];
+      }
+      var sign=hex_md5(arr);
+      api.ajax({
+          url: commonUrl+'soukeAppTttService/service/disRelated/findtkByuser_ac',
+          method: 'post',
+          headers: {
+              'Content-Type': 'application/json;charset=utf-8'
+          },
+          data: {
+              body: {
+                  'apiKey':apiKey,
+                  'timestamp':timestamp,
+                  'sign':sign,
+                  'user_id':window.fans_id,
+              }
+          }
+      },function(ret, err){
+          if (ret) {
+              // console.log("粉丝详情"+JSON.stringify( ret ) );
+              if(ret.result_code==200){
+									$("#head_img").attr("src",ret.result_data.head);
+									var nick_name=ret.result_data.nick_name;
+									if(api.pageParam.is_operator==0){
+										if(fncheckPhone(ret.result_data.nick_name)){
+											nick_name=nick_name.substr(0,3)+"****"+nick_name.substr(7);
+										}else{
+											nick_name=nick_name;
+										}
+									}else{
+										nick_name=nick_name;
+									}
+									$api.byId('fans_name').innerHTML=nick_name;
+									$api.byId('fans_yqm').innerHTML=ret.result_data.yqm;
+									$api.byId('shangyue_lurce').innerHTML=ret.result_data.lastMonthFee;
+									$api.byId('all_lurce').innerHTML=ret.result_data.totalFee;
+									$api.byId('reg_time').innerHTML=ret.result_data.register_time;
+              }else{
+                api.toast({
+                    msg: ret.result_message,
+                    duration: 2000,
+                    location: 'middle'
+                });
+              }
+          } else {
+              // alert( JSON.stringify( err ) );
+          }
+      });
+		}
+		$(".copy_btn").click(function (){
+			var clipBoard = api.require('clipBoard');
+			clipBoard.set({
+					value: $("#fans_yqm").html()
+			}, function(ret, err) {
+					if (ret) {
+							// alert(JSON.stringify(ret));
+							api.toast({
+									msg: '复制成功',
+									duration: 2000,
+									location: 'middle'
+							});
+
+					} else {
+							// alert(JSON.stringify(err));
+					}
+			});
+		})
+</script>
+</html>

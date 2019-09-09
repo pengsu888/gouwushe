@@ -1,0 +1,347 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <title>商品查询优惠蒙版</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1">
+    <link rel="stylesheet" type="text/css" href="../../css/aui.css" />
+    <link rel="stylesheet" type="text/css" href="../../css/aui-slide.css" />
+    <link rel="stylesheet" href="../../css/iconfont.css">
+    <style>
+        body {
+            position: relative;
+        }
+
+        .bottom {
+            width: 100%;
+            height: 70px;
+            background: #fff;
+            position: fixed;
+            text-align: center;
+            bottom: 0;
+            /*margin: 2px;*/
+            padding: 2% 0;
+            /*box-shadow: 0 -1px 1px #f1f1f1;*/
+            border-top: 1px solid #f1f1f1;
+        }
+
+        .bottom .bottom_div {
+            background: #33354A;
+            color: #fff;
+            width: 90%;
+            height: 44px;
+            line-height: 44px;
+            bottom: 0;
+            z-index: 99999999;
+            border-radius: 50px;
+            margin: 0 auto;
+            box-shadow: 0px 2px 1px #bbb;
+        }
+
+        .share {
+            color: #fff;
+            height: 44px;
+            line-height: 44px;
+            font-size: 14px;
+            background: -moz-linear-gradient(left, #2D2D2D, #2D2D2D);
+            background: -webkit-gradient(linear, 0 50%, 100% 50%, from(#2D2D2D), to(#2D2D2D));
+            background: -webkit-linear-gradient(left, #2D2D2D, #2D2D2D);
+            background: -o-linear-gradient(left, #2D2D2D, #2D2D2D);
+            border-top-left-radius: 20px;
+            border-bottom-left-radius: 20px;
+            float: left;
+            width: 45%;
+            margin-left: 5%;
+        }
+
+        .buy {
+            color: #fff;
+            height: 44px;
+            line-height: 44px;
+            font-size: 14px;
+            background: -moz-linear-gradient(left, #C33C30, #C33C30);
+            background: -webkit-gradient(linear, 0 50%, 100% 50%, from(#C33C30), to(#C33C30));
+            background: -webkit-linear-gradient(left, #C33C30, #C33C30);
+            background: -o-linear-gradient(left, #C33C30, #C33C30);
+            border-top-right-radius: 20px;
+            border-bottom-right-radius: 20px;
+            float: right;
+            width: 45%;
+            margin-right: 5%;
+        }
+
+        .clear {
+            clear: both;
+        }
+
+        .bottom_div2 {
+            display: none;
+        }
+    </style>
+</head>
+
+<body>
+    <!-- <div class="top">
+   请点击底部"一键找券查佣金"按钮
+  </div> -->
+    <div class="bottom">
+        <div class="bottom_div" tapmode onclick="fnZq()">
+            一键找券查佣金
+        </div>
+        <div class="bottom_div2">
+            <div class="share">分享赚&nbsp;¥&nbsp;<span id="zuan">0.00</span></div>
+            <div class="buy" tapmode onclick="fnBuy()">返佣购买</div>
+            <div class="clear"></div>
+        </div>
+    </div>
+</body>
+<script type="text/javascript" src="../../script/jquery.js"></script>
+<script type="text/javascript" src="../../script/api.js"></script>
+<script type="text/javascript" src="../../script/api_common.js"></script>
+<script type="text/javascript" src="../../script/md5.js"></script>
+<script type="text/javascript">
+    var type_arr = [];
+    var user_id = "";
+    var isIos, item_title;
+    var min_level_name, min_share_rebate, level_name, max_shop_rebate, min_shop_rebate, max_level_name; //计算佣金比率
+    var dis_level_id, shop_rebate, max_share_rebate, share_rebate, my_share_rebate, my_shop_rebate; //计算佣金比率
+    apiready = function() {
+            if (api.systemType == "ios") {
+                isIos = 1;
+            } else if (api.systemType == "android") {
+                isIos = 0;
+            }
+            if (!empty($api.getStorage("userInfo"))) {
+                user_id = $api.getStorage("userInfo").user_id;
+            }
+            jisuan(-1, user_id);
+        }
+        //默认显示全部
+    function fnZq() {
+        if (!empty($api.getStorage("userInfo"))) {
+            user_id = $api.getStorage("userInfo").user_id;
+        } else {
+            api.toast({
+                msg: '请先登录',
+                duration: 1000,
+                location: 'middle'
+            });
+            api.openWin({
+                name: 'user_login',
+                url: '../login/user_login.html',
+            });
+            return;
+        }
+        var goods_id = api.pageParam.itemId;
+        api.showProgress({
+            style: 'default',
+            animationType: 'fade',
+            title: '正在查找中...',
+            text: '',
+            modal: false
+        });
+        findYongJin(user_id, goods_id)
+    }
+
+    function findYongJin(user_id, goods_id) {
+        // alert(user_id+"//"+goods_id)
+        var obj = {
+            'num_iid': goods_id,
+            'user_id': user_id,
+            'section_id': -1
+        };
+        var objArr = sort_ASCII(obj);
+        var timestamp = fntimestamp();
+        var version = '2.0';
+        var arr = apiSecret + timestamp + version + '';
+        for (i in objArr) {
+            arr += objArr[i];
+        }
+        var sign = hex_md5(arr);
+
+        api.ajax({
+            url: commonUrl + 'soukeAppTttService/service/ali/finditemDetail_ac',
+            method: 'post',
+            headers: {
+                'Content-Type': 'application/json;charset=utf-8'
+            },
+            data: {
+                body: {
+                    'apiKey': apiKey,
+                    'timestamp': timestamp,
+                    'sign': sign,
+                    'num_iid': goods_id,
+                    'user_id': user_id,
+                    'section_id': -1
+                }
+            }
+        }, function(ret, err) {
+            console.log("商品详情总接口：" + JSON.stringify(ret));
+            api.hideProgress();
+            if (ret.result_code == 500) {
+                fnOpenTishi(0);
+                return false;
+            }
+            var tkfee = (ret.result_data.zk_final_price - ret.result_data.coupon_money) * ret.result_data.commission_rate / 10000;
+            if (ret != '' || ret != 'underfined') {
+                var yg_tkfee = "";
+                if (user_id == "") {
+                    yg_tkfee = (tkfee * my_share_rebate * min_share_rebate) / 10000;
+                    $("#zuan").html(Math.floor(yg_tkfee * 100) / 100);
+                } else {
+                    yg_tkfee = (tkfee * my_share_rebate * share_rebate) / 10000;
+                    $("#zuan").html(Math.floor(yg_tkfee * 100) / 100);
+                }
+                $(".bottom_div").hide();
+                $(".bottom_div2").show();
+                if (empty(ret.result_data.coupon_money)) {
+                    $(".buy").html("立即购买");
+                }
+                item_title = ret.result_data.title;
+            }
+        })
+    }
+
+    function fnBuy() {
+        if (!empty($api.getStorage("userInfo"))) {
+            var alibaichuan = api.require('mAliBaiChuan');
+            alibaichuan.showLogin(function(ret, err) {
+                if (ret) {
+                    // alert("登录success:" + JSON.stringify(ret));
+                    if (ret.isLogin == "true") {
+                        //url打开
+                        getDataUrl();
+                    }
+                } else {
+                    // alert("登录error:" + JSON.stringify(err));
+                }
+            });
+        } else {
+            api.toast({
+                msg: '请先登录',
+                duration: 1000,
+                location: 'middle'
+            });
+
+            if ($api.getStorage("control_version") == $api.getStorage("now_version")) {
+                if ($api.getStorage("login") == 0) {
+                    api.openWin({
+                        name: 'user_login',
+                        url: '../login/user_login.html',
+                        delay: 1000,
+                    });
+                } else {
+                    api.openWin({
+                        name: 'login',
+                        url: '../login/user_login.html',
+                        delay: 1000,
+                    });
+                }
+            } else {
+                api.openWin({
+                    name: 'login',
+                    url: '../login/user_login.html',
+                    delay: 1000,
+                });
+            }
+        }
+    }
+
+    //获取商品url
+    function getDataUrl() {
+        var is_ios = api.systemType == 'ios' ? 1 : 0;
+        var obj = {
+            'user_id': user_id,
+            'is_ios': isIos,
+            'item_id': api.pageParam.itemId,
+            'url_type': 0,
+            'section_id': -1,
+            'item_title': encodeURIComponent(item_title)
+        };
+        var objArr = sort_ASCII(obj);
+        var timestamp = fntimestamp();
+        var version = '2.0';
+        var arr = apiSecret + timestamp + version + '';
+        for (i in objArr) {
+            arr += objArr[i];
+        }
+        // console.log(arr);
+        var sign = hex_md5(arr);
+        api.ajax({
+            url: commonUrl + 'soukeAppTttService/service/api/switchconnection_ac',
+            method: 'post',
+            headers: {
+                'Content-Type': 'application/json;charset=utf-8'
+            },
+            data: {
+                body: {
+                    'apiKey': apiKey,
+                    'timestamp': timestamp,
+                    'sign': sign,
+                    'user_id': user_id,
+                    'is_ios': isIos,
+                    'item_id': api.pageParam.itemId,
+                    'url_type': 0,
+                    'section_id': -1,
+                    'item_title': item_title
+                }
+            }
+        }, function(ret, err) {
+            if (ret) {
+                console.log("购买商品页面：" + JSON.stringify(ret));
+                if (ret.result_code == 200 || ret.result_code == 404) {
+                    console.log(ret.result_data);
+                    var param = {
+                        url: ret.result_data,
+                        // mmpid: "mm_00000000_0_0",
+                        isvcode: "app",
+                        opentype: "native",
+                        // adzoneid: '0',
+                        // tkkey: '0',
+                        winObj: 'mAliBaiChuan',
+                        fixedOn: 'good_detail.html',
+                        fixed: false,
+                        rect: {
+                            x: 0,
+                            y: 0,
+                            w: api.frameWidth,
+                            h: api.frameHeight
+                        }
+                    };
+                    var alibaichuan = api.require('mAliBaiChuan');
+                    alibaichuan.showTaokeItemByUrlWeb(param, function(ret, err) {
+                        // alert("ret - " + JSON.stringify(ret));
+                        if (ret) {
+                            // alert("ret - " + JSON.stringify(ret));
+                        } else {
+                            // alert("err - " + JSON.stringify(err));
+                        }
+                    });
+                } else if (ret.result_code == 500) {
+                    fnOpenTishi(0);
+                    return false;
+                } else if (ret.result_code == 501) {
+                    api.openFrame({
+                        name: 'tb_sq_tc',
+                        url: '../frame/tb_sq_tc.html',
+                        rect: {
+                            x: 0,
+                            y: 0,
+                            w: api.winWidth,
+                            h: api.winHeight
+                        },
+                        bgColor: 'rgba(0,0,0,0.6)',
+                        bounces: false
+                    });
+                }
+            } else {
+                api.alert({
+                    msg: JSON.stringify(err)
+                });
+            }
+        });
+    }
+</script>
+
+</html>

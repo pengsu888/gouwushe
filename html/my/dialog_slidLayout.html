@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+    <title>title</title>
+    <link rel="stylesheet" type="text/css" href="../css/api.css"/>
+    <link rel="stylesheet" type="text/css" href="../css/style.css" />
+    <style>
+    /*弹出框样式*/
+    	body{
+    		width:100%;
+    		height:100%;
+    		background:none;
+    		font-size:16px;
+        overflow: hidden;
+    	}
+    	.wrapAll{
+    		width:100%;
+    		height:100%;
+    		background:rgba(0,0,0,.5);
+        overflow: hidden;
+    		position:fixed;
+    		top:0;
+    		left:0;
+    		z-index:99;
+    	}
+    	.nl_list {
+    		position: fixed;
+        width: 333px;
+    		height:200px;
+        left: 50%;
+        top:50%;
+        margin-left: -166px;
+        margin-top: -111px;
+    		border-radius: 13px;
+    		z-index: 999;
+    		background: #fff;
+    		box-sizing: border-box;
+    		-webkit-box-sizing: border-box;
+        overflow: hidden;
+    	}
+      .nl_list .dialog{
+        width: 333px;
+        height: 100%;
+      }
+      .nl_list .dialog .dialog_top{
+        width: 100%;
+        height: 44px;
+        line-height: 44px;
+        font-size: 16px;
+        color:#333;
+        text-align: center;
+        background: #f4f4f4;
+      }
+      .nl_list .dialog .dialog_middle{
+        width: auto;
+        padding: 40px;
+        font-size: 16px;
+        color:#333;
+        text-align: center;
+        height: 30px;
+      }
+
+      .nl_list .dialog .dialog_bottom{
+        width: 100%;
+        height: 45px;
+        line-height: 45px;
+        text-align: center;
+        color:#f94529;
+        font-size: 16px;
+        border-top: solid 1px #f4f4f4;
+      }
+    </style>
+</head>
+<body>
+<!--弹出框-->
+	<section class='wrapAll' id='wrapAll'>
+	</section>
+	<section class='nl_list'>
+      <div class="dialog">
+        <div class="dialog_top" id="dialog_title"></div>
+        <div class="dialog_middle" id="dialog_del">
+
+        </div>
+        <div tapmode class="dialog_bottom" onclick="closeNLDialogLayout();">知道啦</div>
+      </div>
+	</section>
+</body>
+<script type="text/javascript" src="../../script/api.js"></script>
+<script type="text/javascript" src="../../script/jquery.js"></script>
+<script type="text/javascript">
+	apiready = function(){
+    window.frame_name=api.pageParam.frame_name;
+    window.dialog_title=api.pageParam.dialog_title;
+    window.dialog_del=api.pageParam.dialog_del;
+    $api.byId('dialog_title').innerHTML=window.dialog_title;
+    $api.byId('dialog_del').innerHTML=window.dialog_del;
+
+	};
+		//触摸蒙层
+		// document.getElementById('wrapAll').addEventListener('touchstart',function(){
+		// 	closeNLShaixuanLayout();
+		// },false);
+		//调用关闭弹出层的方法
+		function closeNLDialogLayout(){
+        api.execScript({
+            name: 'my_lucre_win',
+            frameName: 'my_lucre_frame',
+            script: 'closeDialogLayout();'
+        });
+
+		}
+</script>
+</html>

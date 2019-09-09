@@ -1,0 +1,544 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0" />
+    <title>淘宝订单查询列表页</title>
+    <link rel="stylesheet" type="text/css" href="../../css/api.css" />
+</head>
+<style media="screen">
+    html,
+    body {
+        width: 100%;
+        height: auto;
+        background: #f4f4f4;
+        font-size: 14px;
+        overflow: hidden;
+    }
+
+    .orderItem {
+        height: 212px;
+        width: 100%;
+        background: #fff;
+        margin-bottom: 10px;
+    }
+
+    .orderItem .goods_del {
+        height: 92px;
+        width: calc(100% - 24px);
+        margin: 0 auto;
+    }
+
+    .orderItem .goods_money {
+        height: 70px;
+        width: calc(100% - 24px);
+        margin: 0 auto;
+    }
+
+    .orderItem .goods_order {
+        width: 100%;
+        height: 50px;
+        color: #777;
+        width: calc(100% - 24px);
+        margin: 0 auto;
+        font-size: 12px;
+    }
+
+    .goods_del .goods_img {
+        width: 71px;
+        height: 71px;
+        float: left;
+        margin-top: 20px;
+    }
+
+    img {
+        width: 100%;
+        height: 100%;
+        background-size: 100% 100%;
+    }
+
+    .goods_del .goods_info {
+        height: 71px;
+        width: calc(100% - 78px);
+        float: right;
+        margin-top: 20px;
+    }
+
+    .goods_del .goods_info .goods_title {
+        width: 100%;
+        height: 20px;
+        font-size: 14px;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        margin-bottom: 5px;
+    }
+
+    .goods_del .goods_info .goods_title img {
+        width: 20px;
+        height: 20px;
+        background-size: 100% 100%;
+        vertical-align: middle;
+        display: inline-block;
+        margin-right: 5px;
+    }
+
+    .goods_del .goods_info .goods_dianpu {
+        width: 100%;
+        color: #888;
+        font-size: 12px;
+        margin-bottom: 10px;
+    }
+
+    .goods_del .goods_info .goods_dis {
+        width: 100%;
+        font-size: 14px;
+    }
+
+    .goods_del .goods_info .goods_dis .goods_type_left {
+        width: 50px;
+        text-align: center;
+        float: left;
+        height: 18px;
+        line-height: 18px;
+        margin-right: 10px;
+        color: #fff;
+        line-height: 18px;
+        font-size: 12px;
+    }
+
+    .goods_del .goods_info .goods_dis .goods_type_right {
+        width: 50px;
+        text-align: center;
+        float: left;
+        height: 18px;
+        line-height: 18px;
+        margin-right: 10px;
+        color: #fff;
+        line-height: 18px;
+        font-size: 12px;
+    }
+
+    .gwj_color {
+        background: #666;
+        border-radius: 4px;
+    }
+
+    .djs_color {
+        background: #FD5F3E;
+        border-radius: 15px;
+    }
+
+    .yjs_color {
+        background: #22AC38;
+        border-radius: 15px;
+    }
+
+    .ysx_color {
+        background: #999999;
+        border-radius: 15px;
+    }
+
+    .goods_money ul {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+    }
+
+    .goods_money ul li {
+        width: 33.3%;
+        float: left;
+        height: 40px;
+        text-align: left;
+        color: #888;
+        font-size: 12px;
+        margin-top: 15px;
+    }
+
+    .goods_money ul li p {
+        font-size: 18px;
+        font-weight: 700;
+        color: #444;
+        margin-top: 6px;
+    }
+
+    .goods_order .goods_cjtime {
+        width: 50%;
+        float: left;
+        height: 15px;
+        line-height: 15px;
+        text-align: left;
+        margin-top: 8px;
+    }
+
+    .goods_order .goods_jstime {
+        width: 50%;
+        float: right;
+        height: 15px;
+        line-height: 15px;
+        text-align: right;
+        margin-top: 8px;
+    }
+
+    .goods_order .goods_ddh {
+        width: 100%;
+        float: left;
+        height: 15px;
+        line-height: 15px;
+        text-align: left;
+        margin-top: 3px;
+    }
+
+    .goods_order .goods_ddh span.copy_btn {
+        height: 13px;
+        line-height: 15px;
+        padding: 0 8px;
+        border: solid 1px #777;
+        border-radius: 12px;
+        margin-left: 10px;
+    }
+
+    .orderTip {
+        width: 100%;
+        margin: 10px auto;
+        height: 75px;
+        line-height: 25px;
+        text-align: center;
+        background: #fff;
+    }
+
+    .orderTip p {
+        padding: 10px 12px;
+        font-size: 14px;
+    }
+
+    .orderTip p span {
+        color: #fd5e3f;
+    }
+
+    .orderInfo {
+        width: 100%;
+        height: 40px;
+        background: #fff;
+        line-height: 40px;
+        margin-top: 10px;
+    }
+
+    .orderInfo .order_center div {
+        float: left;
+    }
+
+    .orderInfo .bbxx {
+        color: #666;
+        margin: 0 15px;
+        text-align: center;
+        width: 60px;
+    }
+
+    .orderInfo .order_line {
+        width: 50px;
+        height: 1px;
+        background: #dcdcdc;
+        margin-top: 19px;
+    }
+
+    .orderInfo .order_center {
+        width: 190px;
+        height: 40px;
+        margin: 0 auto;
+    }
+</style>
+
+<body>
+    <div class="orderTip">
+        <!-- <p>该订单为您推广的订单，交易成功后您将获得<span id="yongjin"></span>元佣金到您的账户中</p> -->
+        <p>以下订单为您推广的订单，交易成功后，方可结算佣金到您的账户中</p>
+    </div>
+    <div class="orderInfo">
+        <div class="order_center">
+            <div class="order_line"></div>
+            <div class="bbxx">宝贝信息</div>
+            <div class="order_line"></div>
+        </div>
+    </div>
+    <div id="list">
+        <!-- <div class="orderItem">
+            <div class="goods_del">
+                <div class="goods_img">
+                    <img src="http://img.alicdn.com/imgextra/i4/666412682/TB2WeWtdFmWBuNjSspdXXbugXXa_!!666412682.jpg_400x400" alt="">
+                </div>
+                <div class="goods_info">
+                    <div class="goods_title"><img src="../../image/home/ic_tb_order.png" alt="" class="goods_type">蕉下晴雨伞超级防紫外线折叠伞轻巧方便的晴雨伞哦</div>
+                    <div class="goods_dianpu">所属店铺：蕉下雨伞旗舰店</div>
+                    <div class="goods_dis">
+                        <div class="goods_type_left gwj_color">购物奖</div>
+                        <div class="goods_type_right djs_color">待结算</div>
+                    </div>
+                </div>
+            </div>
+            <div class="goods_money">
+                <ul>
+                    <li>
+                        付款金额(元)
+                        <p>238.88</p>
+                    </li>
+                    <li>
+                        结算预估收入(元)
+                        <p>238.88</p>
+                    </li>
+                    <li>
+                        奖励比率(%)
+                        <p>238.88</p>
+                    </li>
+                </ul>
+            </div>
+            <div class="goods_order">
+                <div class="goods_cjtime">2017-10-30 09:12:42 创建</div>
+                <div class="goods_ddh">订单号：<span class="ddh_num">194667491688146523</span><span class="copy_btn">复制</span></div>
+            </div>
+        </div> -->
+    </div>
+    <div id="statu" style="font-size:0.8rem;color:#fd5f3e;background-color:#f5f5f5;height:30px;line-height:30px;text-align:center;clear:both;"><img src="../../image/loading.d997b79c.svg" alt="" style="width:1rem;height:1rem;vertical-align:middle;">加载中...</div>
+</body>
+<script type="text/javascript" src="../../script/api.js"></script>
+<script type="text/javascript" src="../../script/jquery.js"></script>
+<script type="text/javascript" src="../../script/api_common.js"></script>
+<script type="text/javascript" src="../../script/md5.js"></script>
+<script type="text/javascript">
+    var user_id;
+    var pageNum = 1;
+    var isOver = false; //默认没有取完数据
+    var statu; //滑到底部状态
+    var start_time, end_time;
+    var mon;
+    var order_id;
+    apiready = function() {
+        if (!empty($api.getStorage("userInfo"))) {
+            user_id = $api.getStorage("userInfo").user_id;
+        }
+        statu = $api.byId('statu');
+        if (empty(api.pageParam.order_id)) {
+            order_id = '';
+        } else {
+            order_id = api.pageParam.order_id;
+        }
+        if (empty($api.getStorage("select_time_byDay"))) {
+            start_time = '';
+            end_time = '';
+        } else {
+            $api.setStorage('select_time_byMon', '');
+            if (empty($api.getStorage("select_time_byDay").value.star_time)) {
+                start_time = '';
+            } else {
+                start_time = $api.getStorage("select_time_byDay").value.star_time;
+            }
+            if (empty($api.getStorage("select_time_byDay").value.end_time)) {
+                end_time = '';
+            } else {
+                end_time = $api.getStorage("select_time_byDay").value.end_time;
+            }
+        }
+        if (empty($api.getStorage("select_time_byMon"))) {
+            mon = '';
+        } else {
+            $api.setStorage('select_time_byDay', '');
+
+            if (empty($api.getStorage("select_time_byMon").value.mon)) {
+                mon = '';
+            } else {
+                mon = $api.getStorage("select_time_byMon").value.mon;
+            }
+        }
+        //加载首页板块
+        loadFresh();
+        loadMyFa(true);
+        // 商品列表数据
+        // 监听事件apiReady滚动到底部，加载更多功能
+        api.addEventListener({
+            name: 'scrolltobottom',
+            extra: {
+                threshold: 120 //设置距离底部多少距离时触发，默认值为0，数字类型
+            }
+        }, function(ret, err) {
+
+            loadMyFa(false);
+        });
+    };
+
+    function loadFresh() {
+        RefreshLoad();
+    }
+
+    function loadMyFa(isPull) {
+        if (!isPull && isOver) {
+            return;
+        }
+        //判断如果是下拉刷新，
+        if (isPull) {
+            pageNum = 1;
+            isOver = false;
+        }
+        var obj = {
+            'user_id': user_id,
+            'order_id': order_id,
+            'end_time': end_time,
+            'start_time': start_time,
+            'mon': mon,
+            'page': pageNum,
+            'size': 10
+        };
+        var objArr = sort_ASCII(obj);
+        var timestamp = fntimestamp();
+        var version = '2.0';
+        var arr = apiSecret + timestamp + version + '';
+        for (i in objArr) {
+            arr += objArr[i];
+        }
+        console.log("订单arr：" + arr);
+        var sign = hex_md5(arr);
+        api.ajax({
+            url: commonUrl + 'soukeAppTttService/service/disRelated/findOrderBy_ac',
+            method: 'post',
+            headers: {
+                'Content-Type': 'application/json;charset=utf-8'
+            },
+            data: {
+                body: {
+                    'apiKey': apiKey,
+                    'timestamp': timestamp,
+                    'sign': sign,
+                    'user_id': user_id,
+                    'order_id': order_id,
+                    'end_time': end_time,
+                    'start_time': start_time,
+                    'mon': mon,
+                    'page': pageNum,
+                    'size': 10
+                }
+            }
+        }, function(ret, err) {
+            if (ret) {
+                console.log("我的全部订单" + JSON.stringify(ret));
+                if (ret.result_code == 200) {
+                    var data = ret.result_data.items;
+                    var manage_award = ret.baseconf.manage_award;
+                    var share_award = ret.baseconf.share_award;
+                    var pearl_award = ret.baseconf.pearl_award;
+                    var pay_award = ret.baseconf.pay_award;
+                    var size = ret.result_data.size;
+                    if (data != "") {
+                        $api.css(statu, 'display:block;');
+                        pageNum++;
+                    } else {
+                        statu.innerHTML = "暂无数据";
+                    }
+                    if (data.length < size && data != "") {
+                        statu.innerHTML = "已经到底啦 ~ 别扯了";
+                        isOver = true;
+                    }
+
+                    fnShowData(data, isPull, share_award, manage_award, pearl_award, pay_award);
+                } else {
+                    api.toast({
+                        msg: ret.result_message,
+                        duration: 2000,
+                        location: 'middle'
+                    });
+
+                }
+            } else {
+                // alert( JSON.stringify( err ) );
+            }
+        });
+    }
+
+    function fnShowData(data, isPull, pay_award, share_award, manage_award, pearl_award) {
+        var html = "";
+        for (var i = 0; i < data.length; i++) {
+            $("#yongjin").html(data[i].income);
+            var goods_id = data[i].num_iid;
+            html += '<div class="orderItem">';
+            html += '<div class="goods_del"  onclick="openGoodDel(' + goods_id + ',-1)">';
+            html += '<div class="goods_img">';
+            html += '<img src="' + data[i].pict_url + '" alt="">';
+            html += '</div>';
+            html += '<div class="goods_info">';
+            if (data[i].mall == 0) {
+                html += '<div class="goods_title"><img src="../../image/icon_taobao.png" alt="" class="goods_type">' + data[i].title + '</div>';
+            } else if (data[i].mall == 1) {
+                html += '<div class="goods_title"><img src="../../image/icon_tmall.png" alt="" class="goods_type">' + data[i].title + '</div>';
+            }
+            html += '<div class="goods_dianpu">所属店铺：' + data[i].shop_name + '</div>';
+            html += '<div class="goods_dis">';
+            if (data[i].order_type == 0) {
+                html += '<div class="goods_type_left gwj_color">' + pay_award + '</div>';
+            } else if (data[i].order_type == 1) {
+                html += '<div class="goods_type_left gwj_color">' + share_award + '</div>';
+            } else if (data[i].order_type == 2) {
+                html += '<div class="goods_type_left gwj_color">' + manage_award + '</div>';
+            } else if (data[i].order_type == 3) {
+                html += '<div class="goods_type_left gwj_color">' + pearl_award + '</div>';
+            }
+            if (data[i].order_staues == 0) {
+                html += '<div class="goods_type_right djs_color">未结算</div>';
+            } else if (data[i].order_staues == 1 || data[i].order_staues == 3) {
+                html += '<div class="goods_type_right yjs_color">已结算</div>';
+            } else if (data[i].order_staues == 2) {
+                html += '<div class="goods_type_right ysx_color">已失效</div>';
+            }
+            html += '</div>';
+            html += '</div>';
+            html += '</div>';
+            html += '<div class="goods_money">';
+            html += '<ul>';
+            html += '<li>';
+            html += '付款金额(元)';
+            html += '<p>' + Math.floor(data[i].reserve_price * 100) / 100; + '</p>';
+            html += '</li>';
+            html += '<li>';
+            html += '结算预估收入(元)';
+            html += '<p>' + Math.floor(data[i].income * 100) / 100; + '</p>';
+            html += '</li>';
+            html += '<li>';
+            html += '奖励比率(%)';
+            html += '<p>' + Math.floor(data[i].comm_rate * 100) / 100; + '</p>';
+            html += '</li>';
+            html += '</ul>';
+            html += '</div>';
+            html += '<div class="goods_order">';
+            html += '<div class="goods_cjtime">' + data[i].create_time + ' 创建</div>';
+            if (!empty(data[i].pay_time)) {
+                html += '<div class="goods_jstime">' + data[i].pay_time + ' 结算</div>';
+            }
+            html += '<div class="goods_ddh">订单号：<span class="ddh_num">' + data[i].order_id + '</span><span class="copy_btn" id="' + data[i].order_id + '">复制</span></div>';
+            html += '</div>';
+            html += '</div>';
+        }
+        if (isPull) {
+            $api.byId('list').innerHTML = html;
+        } else {
+            $api.byId('list').innerHTML += html;
+        }
+        $(".copy_btn").click(function() {
+            var clipBoard = api.require('clipBoard');
+            clipBoard.set({
+                value: $(this).attr("id")
+            }, function(ret, err) {
+                if (ret) {
+                    // alert(JSON.stringify(ret));
+                    api.toast({
+                        msg: '复制成功',
+                        duration: 2000,
+                        location: 'middle'
+                    });
+
+                } else {
+                    // alert(JSON.stringify(err));
+                }
+            });
+        })
+    }
+</script>
+
+</html>

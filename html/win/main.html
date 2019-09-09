@@ -1,0 +1,1737 @@
+<!DOCTYPE HTML>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0" />
+    <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+    <meta name="format-detection" content="telephone=no">
+    <title>首页</title>
+    <link rel="stylesheet" type="text/css" href="../../css/api.css" />
+    <style>
+        html,
+        body {
+            height: 100%;
+            display: flex;
+            display: -webkit-flex;
+            display: -webkit-box;
+            flex-flow: column;
+            -webkit-flex-flow: column;
+            -webkit-box-orient: vertical;
+            background-color: rgba(255, 255, 255, 0);
+        }
+
+        .headerH {
+            width: 100%;
+            height: 88px;
+        }
+        /*#header_1{
+              background: #FD503F;
+            }
+            #header_3,#header_4,#header_5{
+              background: linear-gradient(to right, #FF9901 , #FF2420);
+            }*/
+
+        .header {
+            height: 44px;
+            width: 100%;
+            /*display: none;*/
+            /*background: linear-gradient(to right, #FF9901 , #FF2420);*/
+            /*line-height: 84px;*/
+        }
+
+        .header.active {
+            display: block;
+        }
+        /*按钮*/
+
+        .btn {
+            height: 40px;
+            width: 35px;
+            position: absolute;
+            right: 0;
+            bottom: 0;
+        }
+        /*首页头部导航*/
+        /*字体颜色*/
+
+        .header.home>div.active {
+            opacity: 1;
+        }
+
+        .header.home,
+        .header.jkj,
+        .header.topic,
+        .header.collect {
+            /*background: -webkit-linear-gradient(left, #FF9901 , #FF2420);
+              	background: -o-linear-gradient(right, #FF9901, #FF2420);
+              	background: -moz-linear-gradient(right, #FF9901, #FF2420);
+              	background: linear-gradient(to right, #FF9901 , #FF2420);*/
+            height: 44px;
+            width: 100%;
+            background-size: 100% 100%;
+        }
+
+        .top-item {
+            /*background: #f4f5f6;*/
+            height: 48px;
+            width: 100%;
+        }
+
+        .header.home .top-item .top-menu>div {
+            color: #fff;
+            opacity: .8;
+        }
+
+        .header.home .top-item .top-menu>div.active {
+            opacity: 1;
+        }
+
+        .top_search_1 {
+            width: 72%;
+            margin-left: 3%;
+            margin-right: 3%;
+        }
+
+        .top_search_5 {
+            width: 83%;
+            margin-left: 3%;
+            margin-right: 3%;
+        }
+
+        .top-sousuo {
+            height: 44px;
+            width: 100%;
+        }
+
+        #header_1 .top_search {
+            border-radius: 4px;
+            margin-top: 6px;
+            background: rgba(0, 0, 0, 0.2);
+            color: #fff;
+        }
+
+        .top_search {
+            height: 30px;
+            /*margin-left:3%;
+                margin-right: 3%;*/
+            background: #f1f1f1;
+            border-radius: 25px;
+            font-size: 12px;
+            vertical-align: middle;
+            display: inline-block;
+            margin-top: 8px;
+            color: #999;
+        }
+
+        .top_search img {
+            width: 16px;
+            height: 16px;
+            background-size: 100% 100%;
+            margin: 8px 15px;
+            vertical-align: middle;
+        }
+
+        .top_search span {
+            /*margin-top: -56px;*/
+            display: inline-block;
+            line-height: 30px;
+        }
+        /*.header_4 .top-sousuo .gwc_l{
+                float: left;
+                height: 44px;
+              }
+              .header_4 .top-sousuo .gwc_r{
+                float: right;
+                height: 44px;
+              }*/
+
+        .top-sousuo .gwc_l {
+            float: left;
+            height: 44px;
+        }
+
+        .top-sousuo .gwc_r {
+            float: right;
+            height: 44px;
+        }
+
+        .top-sousuo .gwc {
+            width: calc(100% - 89%);
+            /*height: 44px;*/
+            position: relative;
+        }
+
+        .top-sousuo .gwc p {
+            position: absolute;
+            bottom: 5px;
+            left: 0;
+            text-align: center;
+            width: 100%;
+            height: 15px;
+            font-size: 10px;
+            color: #fff;
+        }
+
+        #header_1 .top-sousuo .gwc img {
+            width: 18px;
+            height: 18px;
+            background-size: 100% 100%;
+            display: inline-block;
+            vertical-align: middle;
+            margin-top: 5px;
+            position: absolute;
+            top: 0;
+            left: 50%;
+            margin-left: -9px;
+        }
+
+        .top-sousuo .gwc img {
+            width: 22px;
+            height: 22px;
+            background-size: 100% 100%;
+            display: inline-block;
+            vertical-align: middle;
+            margin-top: 12px;
+            position: absolute;
+            top: 0;
+            left: 50%;
+            margin-left: -11px;
+        }
+
+        .add_btn {
+            width: 43px;
+            height: 38px;
+            background: #fff url('../../image/page_main_home_tab_cate.png') center center no-repeat;
+            /*-webkit-background-size: 43px 38px;
+                background-size: 43px 38px;*/
+            background-size: 100% 100%;
+            box-shadow: -2px 2px 10px #ccc;
+            -moz-box-shadow: -2px 2px 10px #ccc;
+            -webkit-box-shadow: -4px 2px 10px #ccc;
+        }
+        /*视频头部导航*/
+
+        .header.my {
+            height: 0;
+        }
+
+        .content {
+            -webkit-box-flex: 1;
+            -webkit-flex: 1;
+            flex: 1;
+        }
+
+        .search-video-btn {
+            width: 41px;
+            height: 43px;
+            position: absolute;
+            right: 0;
+            top: 0;
+            background: url('../../image/head/sc.png') center center no-repeat;
+            -webkit-background-size: 41px 43px;
+            background-size: 41px 43px;
+        }
+
+        .gambit_menu>div.active {
+            border-bottom: 2px solid #d43d3d;
+        }
+
+        .content {
+            -webkit-flex: 1px;
+            flex: 1px;
+            -webkit-box-flex: 1;
+            /*background-color: #f4f5f6;*/
+        }
+
+        .footer {
+            height: 44px;
+            display: flex;
+            display: -webkit-flex;
+            display: -webkit-box;
+            flex-flow: row;
+            -webkit-flex-flow: row;
+            -webkit-box-orient: horizontal;
+            background: #fff;
+            box-shadow: 0 -1px 1px #f1f1f1;
+            border-top: 1px solid #f1f1f1;
+        }
+
+        .menu {
+            flex: 1;
+            -webkit-flex: 1;
+            -webkit-box-flex: 1;
+            height: 44px;
+            box-sizing: border-box;
+            padding-bottom: 5px;
+            padding-top: 27px;
+            color: #585858;
+            font-size: 10px;
+            text-align: center;
+            background-size: 22px 22px;
+            background-position: center 5px;
+            background-repeat: no-repeat;
+        }
+
+        #header_1,
+        #header_3,
+        #header_5,
+        #header_4 {
+            display: none;
+        }
+    </style>
+</head>
+
+<body>
+    <header class="headerH">
+        <!-- 头部1-->
+        <div class="header home active" id="header_1">
+            <div class="top-sousuo">
+                <div class="gwc gwc_l home_gwcL">
+                    <!-- <img src="../../image/page_main_home_title_cart.png"/>
+                <p id="gwc_nameR">消息</p> -->
+                </div>
+                <div class="top_search  top_search_1" tapmode onclick="openSearchwin();">
+                    <img src="../../image/ic_title_bar_edit_glass_white.png" /><span class="home_search">搜索商品名称或粘贴淘宝标题</span>
+                </div>
+                <div class="gwc gwc_r home_gwcR">
+                    <!-- <img src="../../image/page_main_home_title_cart.png"/>
+              <p id="gwc_nameR">任务</p> -->
+                </div>
+            </div>
+        </div>
+        <!-- 头部3-->
+        <div class="header home active" id="header_3">
+            <div class="top-sousuo">
+                <div class="gwc gwc_l home_gwcL">
+                    <!-- <img src="../../image/page_main_home_title_cart.png"/> -->
+                </div>
+                <div class="top_search  top_search_1" tapmode onclick="openSearchwin();">
+                    <img src="../../image/ic_title_bar_edit_glass_white.png" /><span class="home_search">搜索商品名称或粘贴淘宝标题</span>
+                </div>
+                <div class="gwc gwc_r home_gwcR">
+                    <!-- <img src="../../image/page_main_home_title_cart.png"/> -->
+                </div>
+            </div>
+        </div>
+        <!-- 头部4-->
+        <div class="header home active" id="header_4">
+            <div class="top-sousuo">
+
+                <div class="top_search  top_search_1" tapmode onclick="openSearchwin();">
+                    <img src="../../image/ic_title_bar_edit_glass_white.png" /><span class="home_search">搜索商品名称或粘贴淘宝标题</span>
+                </div>
+                <div class="gwc gwc_r home_gwcL">
+                    <!-- <img src="../../image/page_main_home_title_cart.png"/> -->
+                </div>
+                <div class="gwc gwc_r home_gwcR">
+                    <!-- <img src="../../image/page_main_home_title_cart.png"/> -->
+                </div>
+            </div>
+        </div>
+        <!--头部5 -->
+        <div class="header home active" id="header_5">
+            <div class="top-sousuo">
+                <div class="top_search  top_search_5" tapmode onclick="openSearchwin();">
+                    <img src="../../image/ic_title_bar_edit_glass_gray.png" /><span class="home_search">搜索商品名称或粘贴淘宝标题</span>
+                </div>
+                <div class="gwc gwc_r home_gwcR">
+                    <!-- <img src="../../image/page_main_home_title_cart.png"/> -->
+                </div>
+            </div>
+        </div>
+        <div class="top-item">
+            <div class="top-menu"></div>
+        </div>
+    </header>
+    <section class="content"></section>
+    <footer id="footer" class="footer">
+        <!-- <div class="menu home active " tapmode="active" onclick="fnChange(0)">首页</div>
+            <div class="menu jkj" tapmode="active" onclick="fnChange(1)">9块9</div>
+            <div class="menu gambit" tapmode="active" onclick="fnChange(2)">分类</div>
+            <div class="menu collect" tapmode="active" onclick="fnChange(3)">收藏</div>
+            <div class="menu my" tapmode="active" onclick="fnChange(4)">我的</div> -->
+    </footer>
+    <div class="noWlan">
+        <div class="nowlanItem">
+            <div class="no_net"><img src="../../image/no_net.png" /></div>
+            <p class="no_p">网络竟然崩溃了</p>
+            <p class="load_p">别紧张，试试看刷新页面</p>
+            <div class="loadBtn" tapmode onclick="javascript:location.reload();">点击刷新</div>
+        </div>
+    </div>
+</body>
+<script type="text/javascript" src="../../script/jquery.js"></script>
+<script type="text/javascript" src="../../script/api.js"></script>
+<script type="text/javascript" src="../../script/api_common.js"></script>
+<script type="text/javascript" src="../../script/md5.js"></script>
+<script type="text/javascript">
+    var itemList = [];
+    var menus, headers, headerHeight, footerHeight, headerTop;
+    var navigationBar, home_group_id, jkj_group_id;
+    var status; //用来判断二级页面用哪个平台的接口 status=2，用平台接口，status==1，用官方接口
+    // var frameNames = ['home_group', 'jkj_group','fenlei_frame', 'collect_frame', 'my_frame'];
+    var frameNames = ['home_group', 'my_frame'];
+    var frameNames1 = [];
+    var home_group_frames = [];
+    var home_group, noShopName, value;
+    var currentIndex = 0;
+    var select_index = 0; //用来改变导航条选择的页面；
+    var user_id;
+    // var homeBgColor = 'rgba(0,0,0,0)';
+    var BgIndex = 0;
+    var lunbo_flag = 0;
+    apiready = function() {
+        fnInitPage(); //页面初始化 设置安卓keyBack键双击返回
+        // fnClearCache();//清楚引导页缓存
+        fnInitjpush(); //初始化极光推送
+        fnAddEventListener(); //监听极光推送消息
+        NVNavigationBar = api.require('NVNavigationBar');
+        api.addEventListener({
+            name: 'TBLoginEvent'
+        }, function(ret, err) {
+            console.log(ret.openSid + ',' + ret.openId + ',' + ret.nick + ',' + ret.avatarUrl);
+        });
+        fnxianzhi();
+        homeHeader();
+        api.addEventListener({
+            name: 'bgColor'
+        }, function(ret, err) {
+            // getHome_group();
+            // $(".header").css("background", "linear-gradient(to right, #FF9901 , #FF2420");
+            // lunbo_flag=1;
+            if (BgIndex == '0') {
+                $("body").css({
+                    "background": "linear-gradient(to right,rgb(" + ret.value.key1 + "),rgb(" + ret.value.key2 + "))",
+                    "background-size": "100%",
+                    "z-index": 9999
+                });
+            }
+            // alert(JSON.stringify(ret.value));
+        });
+        api.addEventListener({ //显示到屏幕的事件
+            name: 'viewappear'
+        }, function(ret, err) {
+            api.setStatusBarStyle({
+                style: 'light',
+                color: "transparent"
+            });
+            // alert('window显示');
+        });
+        api.setStatusBarStyle({
+            style: 'light',
+            color: "transparent"
+        });
+        getEvent();
+        closePopframe();
+    };
+    //页面初始化
+    function fnInitPage() {
+        //设置安卓keyBack键双击返回
+        api.addEventListener({
+            name: 'keyback'
+        }, function(ret, err) {
+            api.toast({
+                msg: '再按一次返回键退出' + api.appName,
+                duration: 2000,
+                location: 'middle'
+            });
+            api.addEventListener({
+                name: 'keyback'
+            }, function(ret, err) {
+                api.closeWidget({
+                    id: 'A6012040771437', //这里改成自己的应用ID
+                    retData: {
+                        name: 'closeWidget'
+                    },
+                    silent: true
+                });
+            });
+            setTimeout(function() {
+                exitApp();
+            }, 3000)
+        });
+        //
+        // //开启沉浸式效果
+        // var header = $api.dom('.header');
+        // $api.fixStatusBar(header);
+        // vHeaderHeight = $api.offset(header).h;
+    }
+    //清除记录引导页状态的本地缓存数据
+    function fnClearCache() {
+        api.removePrefs({
+            key: 'isFirst'
+        });
+        api.toast({
+            msg: '引导页缓存数据清除成功！',
+            duration: 2000,
+            location: 'middle'
+        });
+    }
+
+    function loadPop() {
+        var tpw = $api.getStorage('tpw_data');
+        if (!tpw) {
+            getsymbol();
+        }
+        if ($api.getStorage("search_status") == 1 || $api.getStorage("search_status") == undefined) { //判断是否开启智能搜索
+            var value;
+            var clipBoard = api.require('clipBoard');
+            clipBoard.get(function(ret, err) {
+                if (ret) {
+                    // alert(JSON.stringify(ret));
+                    value = ret.value;
+                    getEvents(value);
+                } else {
+                    // alert(JSON.stringify(err));
+                }
+            });
+        }
+        api.closeWin({
+            name: 'sousuo_win'
+        });
+
+    }
+    // 取搜索框关键词
+    function fnxianzhi() {
+        var obj = {}
+        var objArr = sort_ASCII(obj);
+        var timestamp = fntimestamp();
+        var version = '2.0';
+        var arr = apiSecret + timestamp + version + '';
+        for (i in objArr) {
+            arr += objArr[i];
+        }
+        // console.log(arr);
+        var sign = hex_md5(arr);
+        api.ajax({
+            url: commonUrl + 'soukeAppTttService/service/api/getvolumeandcommission_ac',
+            method: 'post',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            data: {
+                body: {
+                    'apiKey': apiKey,
+                    'timestamp': timestamp,
+                    'sign': sign
+                }
+            }
+        }, function(ret, err) {
+            // console.log("取搜索框关键词结果" + JSON.stringify(ret));
+            if (ret) {
+                var search_hint = ret.result_search_hint;
+                $(".home_search").html(search_hint);
+            } else {
+                api.toast({
+                    msg: ret.result_message,
+                    duration: 2000,
+                    location: 'middle'
+                });
+
+            }
+        });
+    }
+
+    function getEvents(value) {
+        if (!empty(value)) {
+            var reg = new RegExp("^[a-zA-Z0-9]{11}$");
+            // alert(value);
+            if (value.search("♀") != -1) {
+                if (!empty($api.getStorage("userInfo"))) {
+                    user_id = $api.getStorage("userInfo").user_id;
+                } else {
+                    var strArr = value.split("♀")[1].split("♀");
+                    var Yaoqingma = strArr[0];
+                    var clipBoard = api.require('clipBoard');
+                    clipBoard.set({
+                        value: ''
+                    }, function(ret, err) {
+                        if (ret) {
+                            // alert(JSON.stringify(ret));
+                        } else {
+                            // alert(JSON.stringify(err));
+                        }
+                    });
+                    var dialogBox = api.require('dialogBox');
+                    dialogBox.discount({
+                        rect: {
+                            w: 275,
+                            h: 360
+                        },
+                        styles: {
+                            bg: '#FFF',
+                            image: {
+                                path: 'widget://image/register_window.png',
+                                marginB: 150
+                            },
+                            cancel: {
+                                icon: 'widget://image/home/home_update_btn_close.png',
+                                marginB: 80,
+                                w: 30,
+                                h: 30
+                            }
+                        }
+                    }, function(ret) {
+                        // alert(JSON.stringify(ret));
+                        if (ret.eventType == 'image') {
+                            api.openWin({
+                                name: 'regist',
+                                url: 'widget://html/login/regist.html',
+                                rect: {
+                                    x: 0,
+                                    y: 0,
+                                    w: 'auto',
+                                    h: 'auto'
+                                },
+                                pageParam: {
+                                    Yaoqingma: Yaoqingma
+                                },
+                                bounces: false,
+                                bgColor: 'rgba(0,0,0,0)',
+                                vScrollBarEnabled: true,
+                                hScrollBarEnabled: true
+                            });
+                            dialogBox.close({
+                                dialogName: 'discount'
+                            });
+                        } else {
+                            dialogBox.close({
+                                dialogName: 'discount'
+                            });
+                        }
+                    });
+                    return;
+                }
+            }
+            getsymbol();
+            var tpw_data = $api.getStorage('tpw_data');
+            // console.log(!tpw_data);
+            value = value.replace(new RegExp('\\$', 'gm'), "￥");
+            if (tpw_data) {
+                for (var i = 0; i < tpw_data.length; i++) {
+                    var symbol = tpw_data[i].symbol;
+                    if (value.search(symbol) != -1) {
+                        // console.log(symbol);
+                        var strArr = value.split(symbol)[1].split(symbol);
+                        jiexitaoKouLing = strArr[0];
+                        if (reg.test(jiexitaoKouLing)) {
+                            popTkl(jiexitaoKouLing);
+                            return;
+                        } else {
+                            var i = 1;
+                            while (true) {
+                                i++;
+                                jiexitaoKouLing = value.split(symbol)[i].split(symbol)[0];
+                                if (empty(jiexitaoKouLing)) {
+                                    break;
+                                }
+                                if (reg.test(jiexitaoKouLing)) {
+                                    popTkl(jiexitaoKouLing);
+                                    return;
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+            jiexitaoKouLing = value;
+            popTitle(jiexitaoKouLing);
+        } else {}
+    }
+    // 查询淘口令符号
+    function getSymbol() {
+        var obj = {}
+        var objArr = sort_ASCII(obj);
+        var timestamp = fntimestamp();
+        var version = '2.0';
+        var arr = apiSecret + timestamp + version + '';
+        for (i in objArr) {
+            arr += objArr[i];
+        }
+        // console.log(arr);
+        var sign = hex_md5(arr);
+        api.ajax({
+            url: commonUrl + 'soukeAppTttService/service/app/getSymbol',
+            method: 'post',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            data: {
+                body: {
+                    'apiKey': apiKey,
+                    'timestamp': timestamp,
+                    'sign': sign
+                }
+            }
+        }, function(ret, err) {
+            // alert("查询淘口令符号：" + JSON.stringify(ret));
+            console.log("查询淘口令符号：" + JSON.stringify(ret));
+            if (ret) {
+                if (ret.result_code == 200) {
+                    var data = ret.result_code.result_data;
+                    for (var i = 0; i < data.length; i++) {}
+                } else {}
+            } else {
+                serviceErr();
+            }
+        });
+    }
+
+    function getClassification() {
+        var obj = {};
+        var objArr = sort_ASCII(obj);
+        var timestamp = fntimestamp();
+        var version = '2.0';
+        var arr = apiSecret + timestamp + version + '';
+        for (i in objArr) {
+            arr += objArr[i];
+        }
+        var sign = hex_md5(arr);
+        api.ajax({
+            url: commonUrl + 'soukeAppTttService/service/user/getClassification',
+            method: 'post',
+            headers: {
+                'Content-Type': 'application/json;charset=utf-8'
+            },
+            data: {
+                body: {
+                    'apiKey': apiKey,
+                    'timestamp': timestamp,
+                    'sign': sign,
+                }
+            }
+        }, function(ret, err) {
+            if (ret) {
+                // console.log("商品分类："+ JSON.stringify( ret ) );
+                $(".noWlan").hide();
+                var dataItem;
+                status = ret.status;
+                var menuList = [];
+                if (status == 1) {
+                    //官方
+                    menuList = ret.resultStr.general_classify;
+                } else {
+                    menuList = ret.general_classify;
+                }
+                if (lunbo_flag == 1) {
+                    itemList = [{
+                        title: "精选",
+                        bg: "transparent",
+                        bgSelected: "widget://image/xiabiao.png",
+                        cid: 0
+                    }];
+                } else {
+                    itemList = [{
+                        title: "精选",
+                        bg: "transparent",
+                        bgSelected: "widget://image/xiabiao_red.png",
+                        cid: 0
+                    }];
+                }
+
+                for (var i = 0; i < menuList.length; i++) {
+                    if (lunbo_flag == 1) {
+                        dataItem = {
+                            title: menuList[i].main_name,
+                            bg: "transparent",
+                            bgSelected: "widget://image/xiabiao.png",
+                            cid: menuList[i].cid
+                        };
+                    } else {
+                        dataItem = {
+                            title: menuList[i].main_name,
+                            bg: "transparent",
+                            bgSelected: "widget://image/xiabiao_red.png",
+                            cid: menuList[i].cid
+                        };
+                    }
+                    itemList.push(dataItem);
+                }
+                getHome_group();
+                home_footer();
+                // alert(JSON.stringify(itemList));
+                // fnChange(0);
+                // home_footer();
+            } else {
+                $(".noWlan").show();
+                // alert( JSON.stringify( err ) );
+            }
+        });
+    }
+
+    function changeStyle(index) {
+        var topMenu = $api.byId('top-menu');
+        var divs = $api.domAll(topMenu, 'div');
+        api.setFrameGroupIndex({
+            name: frameNames[2],
+            index: index,
+            scroll: true
+        });
+        for (var i = 0; i < divs.length; i++) {
+            if (i == index) {
+                $api.addCls(divs[i], 'active');
+            } else {
+                $api.removeCls(divs[i], 'active');
+            }
+        }
+    }
+
+    function fnInit() {
+        var header = $api.dom('.headerH');
+        var footer = $api.byId('footer');
+        menus = $api.domAll(footer, '.menu');
+        headers = $api.domAll(header, '.header');
+        footerHeight = $api.offset(footer).h;
+
+        for (var i = 0; i < headers.length; i++) {
+            $api.fixIos7Bar(headers[i]);
+        }
+        var offset = $api.offset(header);
+        headerHeight = offset.h;
+        var topSOusuoH = $api.dom(".top-sousuo");
+        headerTop = $api.offset(topSOusuoH).h;
+    };
+
+    var index_count = 0; //记录首页导航菜单滑动的位置
+    function fnChange(index, platetype, plateid, platename) {
+        api.sendEvent({
+            name: 'fqclose',
+            extra: {
+                flag: 1
+            }
+        });
+        var menu_index = $api.getStorage("menu_index");
+        if (menu_index == undefined) {
+            $api.setStorage('menu_index', '0');
+            menu_index = 0;
+        }
+        $(".menu").removeClass('active');
+        $(".header").removeClass('active');
+
+        $api.addCls(menus[index], 'active');
+        footer_color();
+        $api.addCls(headers[index], 'active');
+        $api.setStorage("menu_index", index);
+        if (index == menu_index && index != 0 && platetype != 5) {
+            return;
+        }
+        if (index == 0) {
+            index_count++;
+            fnNavigationBar(0, true);
+            //上次点击的是首页  则groupid 为0
+            if (menu_index == '0' || menu_index == undefined) {
+                i = 0;
+            }
+            //初始化
+            if (index_count > 0) {
+                NVNavigationBar.setSelected({
+                    id: 'main',
+                    index: i,
+                    selected: true
+                }, function(ret) {
+
+                });
+                api.setFrameGroupIndex({
+                    name: frameNames[i],
+                    index: 0,
+                    scroll: true
+                });
+            }
+            fnOpenFrameGroup(0, true);
+            if (menu_index == 0) {
+                fnMyFrame(menus.length - 1, false);
+                return;
+            } else if (menu_index == menus.length - 1) {
+                fnMyFrame(menu_index, false);
+            } else {
+                fnOpenFrame(menu_index, false, platetype, platename);
+            }
+            fnMyFrame(menus.length - 1, false);
+            // $api.removeCls(menus[index], 'active');
+            // $api.removeCls(headers[index], 'active');
+        } else if (index == menus.length - 1) {
+            checkUserLogin();
+            fnMyFrame(index, true);
+            if (menu_index == 0) {
+                // index_count = 0;
+                // fnOpenFrameGroup(0, false);
+                // fnNavigationBar(0, false);
+            } else if (menu_index == menus.length - 1) {
+                return;
+            } else {
+                fnOpenFrame(menu_index, false, platetype, platename);
+            }
+            index_count = 0;
+            fnOpenFrameGroup(0, false);
+            // fnNavigationBar(0, false);
+        } else {
+            fnOpenFrame(index, true, platetype, plateid, platename);
+            if (platetype == 5 || platetype == 4) {
+                $api.removeCls(menus[index], 'active');
+                $api.removeCls(headers[index], 'active');
+                $api.addCls(menus[0], 'active');
+                $api.addCls(headers[0], 'active');
+                $api.setStorage("menu_index", 0);
+            }
+            if (platetype == 5 && menu_index == 0) {
+                fnMyFrame(menus.length - 1, false);
+                return;
+            }
+            if (menu_index == 0) {
+                // index_count = 0;i
+                // fnOpenFrameGroup(0, true);
+                // fnNavigationBar(0, true);
+            } else if (menu_index == menus.length - 1) {
+                fnMyFrame(menu_index, false);
+                fnOpenFrameGroup(0, true);
+                fnNavigationBar(0, true);
+            } else if (menu_index == index) {
+                return;
+            } else {
+                // console.log(menu_index);
+                fnOpenFrame(menu_index, false, platetype, platename);
+            }
+        }
+
+        // for (var i = 0; i < menus.length; i++) {
+        //     if (index == i) {
+        //         $api.addCls(menus[i], 'active');
+        //         footer_color();
+        //         $api.addCls(headers[i], 'active');
+        //         if (i == 0) {
+        //             index_count++;
+        //             fnOpenFrameGroup(i, true);
+        //             fnNavigationBar(i, true);
+        //         } else if (i == menus.length - 1) {
+        //             checkUserLogin();
+        //             fnMyFrame(i, true);
+        //         } else {
+        //             fnOpenFrame(i, true, platetype, plateid, platename);
+        //         }
+        //     } else {
+        //         $api.removeCls(menus[i], 'active');
+        //         $api.removeCls(headers[i], 'active');
+        //         if (i == 0) {
+        //             index_count = 0;
+        //             fnOpenFrameGroup(i, false);
+        //             fnNavigationBar(i, false);
+        //         } else if (i == menus.length - 1) {
+        //             fnMyFrame(i, false);
+        //         } else {
+        //             fnOpenFrame(i, false, platetype, platename);
+        //         }
+        //     }
+        // }
+    };
+
+    function fnMyFrame(index, isOpen) {
+        if (isOpen) {
+            api.openFrame({
+                name: frameNames[index],
+                url: './' + frameNames[index] + '.html',
+                bounces: false,
+                rect: {
+                    x: 0,
+                    y: 0,
+                    w: 'auto',
+                    h: api.winHeight - footerHeight
+                },
+                vScrollBarEnabled: false,
+            });
+        } else {
+            // api.setFrameAttr({
+            //     name: frameNames[index],
+            //     hidden: true
+            // });
+            api.closeFrame({
+                name: frameNames[index]
+            });
+        }
+    }
+
+    function fnOpenFrame(index, isOpen, platetype, plateid, platename) {
+        if (platetype == 2) {
+            if (frameNames[index] == "jkj_frame" || frameNames[index] == "collect_frame" || frameNames[index] == "fenlei_frame" || frameNames[index] == "faquan_frame") {
+                if (isOpen) {
+                    api.openFrame({
+                        name: frameNames[index],
+                        url: './' + frameNames[index] + '.html',
+                        bounces: false,
+                        rect: {
+                            x: 0,
+                            y: 0,
+                            w: 'auto',
+                            h: api.winHeight - footerHeight
+                        },
+                        vScrollBarEnabled: false,
+                        reload: true
+                    });
+                } else {
+                    api.setFrameAttr({
+                        name: frameNames[index],
+                        hidden: true
+                    });
+                    api.setFrameAttr({
+                        name: 'feilei_frame_frame',
+                        hidden: true
+                    });
+                    api.setFrameAttr({
+                        name: 'faquan_mrbf',
+                        hidden: true
+                    });
+                }
+            } else {
+                if (frameNames[index] == "shengjizhuan_win" || frameNames[index] == "open_vip_win" || frameNames[index] == "net_phone_win") {
+                    if (!empty($api.getStorage("userInfo"))) {
+                        user_id = $api.getStorage("userInfo").user_id;
+                    } else {
+                        user_id = '';
+                        checkUserLogin();
+                        $api.removeCls(menus[index], 'active');
+                        $api.removeCls(headers[index], 'active');
+                        $api.addCls(menus[0], 'active');
+                        $api.addCls(headers[0], 'active');
+                        $api.setStorage("menu_index", 0);
+                        return;
+                    }
+                }
+                if (isOpen) {
+                    api.openWin({
+                        name: frameNames[index],
+                        url: './' + frameNames[index] + '.html',
+                        pageParam: {
+                            plateid: plateid
+                        }
+                    });
+                    $api.removeCls(menus[index], 'active');
+                    $api.removeCls(headers[index], 'active');
+                    $api.addCls(menus[0], 'active');
+                    $api.addCls(headers[0], 'active');
+                    $api.setStorage("menu_index", 0);
+                } else {
+                    fnOpenFrameGroup(0, true);
+                    fnNavigationBar(0, true);
+                    api.setFrameAttr({
+                        name: frameNames[index],
+                        hidden: true
+                    });
+                    api.setFrameAttr({
+                        name: 'feilei_frame_frame',
+                        hidden: true
+                    });
+                    api.setFrameAttr({
+                        name: 'faquan_mrbf',
+                        hidden: true
+                    });
+                }
+            }
+        } else {
+            fnOpenFrameGroup(0, true);
+            fnNavigationBar(0, true);
+            api.setFrameAttr({
+                name: frameNames[index],
+                hidden: true
+            });
+            api.setFrameAttr({
+                name: 'feilei_frame_frame',
+                hidden: true
+            });
+            api.setFrameAttr({
+                name: 'faquan_mrbf',
+                hidden: true
+            });
+            if (platetype == 1) {
+                if (isOpen) {
+                    openSectionFrame(plateid, platename, true);
+                } else {
+                    api.setFrameAttr({
+                        name: frameNames[index],
+                        hidden: true
+                    });
+                    api.setFrameAttr({
+                        name: 'feilei_frame_frame',
+                        hidden: true
+                    });
+                    api.setFrameAttr({
+                        name: 'faquan_mrbf',
+                        hidden: true
+                    });
+                }
+            } else if (platetype == 3) {
+                if (isOpen) {
+                    openGoodDel(plateid, -1);
+                } else {
+                    api.setFrameAttr({
+                        name: frameNames[index],
+                        hidden: true
+                    });
+                    api.setFrameAttr({
+                        name: 'feilei_frame_frame',
+                        hidden: true
+                    });
+                    api.setFrameAttr({
+                        name: 'faquan_mrbf',
+                        hidden: true
+                    });
+                }
+            } else if (platetype == 4) {
+                if (isOpen) {
+                    // window.location.href = plateid;
+                    api.openWin({
+                        name: 'jump_href_win',
+                        url: 'jump_href_win.html',
+                        pageParam: {
+                            url: plateid,
+                            name: platename,
+                        },
+                    });
+                } else {}
+            } else if (platetype == 5) {
+                if (isOpen) {
+                    open_Gf_bankuai(plateid, "", platename)
+                } else {}
+            } else if (platetype == 6) {
+                if (isOpen) {
+                    openFenlei_type(plateid, platename);
+                } else {
+                    api.setFrameAttr({
+                        name: frameNames[index],
+                        hidden: true
+                    });
+                    api.setFrameAttr({
+                        name: 'feilei_frame_frame',
+                        hidden: true
+                    });
+                    api.setFrameAttr({
+                        name: 'faquan_mrbf',
+                        hidden: true
+                    });
+                }
+            }
+        }
+    };
+
+    function getHome_group() {
+        home_group = {
+            item: itemList,
+        };
+
+        for (var i = 0; i < home_group.item.length; i++) {
+            if (i == 0) {
+                home_group_frames.push({
+                    name: 'home_frame0',
+                    url: 'home_frame0.html',
+                    vScrollBarEnabled: false,
+                    bounces: false,
+                    // bgColor: homeBgColor,
+                    pageParam: {
+                        type: home_group.item[i].title
+                    }
+                });
+            } else {
+                home_group_frames.push({
+                    name: 'home_frame_' + i,
+                    url: 'home_frame.html',
+                    vScrollBarEnabled: false,
+                    bounces: false,
+                    pageParam: {
+                        type: home_group.item[i].title,
+                        cid: home_group.item[i].cid,
+                        status: status
+                    }
+                });
+            }
+        };
+    }
+
+    function fnNavigationBar(index, isOpen) {
+        if (isOpen) {
+            currentIndex = index;
+            NVNavigationBar.close({
+                id: 'main'
+            });
+            var navBarCol = 'rgba(255,255,255,1)';
+            var navFontCol = '#666';
+            var navSelFontCol = '#f00';
+            if (lunbo_flag == 1) {
+                navBarCol = "rgba(0,0,0,0)";
+                navFontCol = '#FFF';
+                navSelFontCol = '#FFF';
+            }
+            NVNavigationBar.open({
+                rect: {
+                    y: api.safeArea.top + headerHeight - 44,
+                    w: api.winWidth - 0,
+                    h: 44,
+                    x: 0
+                },
+                styles: {
+                    orientation: 'horizontal',
+                    bg: navBarCol,
+                    bgAlpha: 1,
+                    font: {
+                        size: 14,
+                        sizeSelected: 16,
+                        color: navFontCol,
+                        colorSelected: navSelFontCol,
+                        alpha: 1
+                    },
+                    itemSize: {
+                        w: 60,
+                        h: 44
+                    }
+                },
+                selectedIndex: i,
+                items: window[frameNames[index]].item,
+                id: 'main'
+            }, function(ret, err) {
+                switch (ret.eventType) {
+                    case 'show':
+                        window[frameNames[currentIndex] + '_id'] = ret.id;
+                        break;
+                    case 'click':
+                        api.setFrameGroupIndex({
+                            name: frameNames[currentIndex],
+                            index: ret.index,
+                            scroll: true
+                        });
+                        break;
+                }
+            });
+        } else {
+            if (typeof window[frameNames[index] + '_id'] != 'undefined') {
+                navigationBar.hide({
+                    id: window[frameNames[index] + '_id']
+                });
+            }
+        }
+    };
+    var i = 0;
+
+    function fnOpenFrameGroup(index, isOpen) {
+        if (isOpen) {
+            currentIndex = index;
+            api.openFrameGroup({
+                name: frameNames[index],
+                background: '#fff',
+                scrollEnabled: true,
+                // background:'transparent', //透明
+                rect: {
+                    x: 0,
+                    y: api.safeArea.top + headerHeight,
+                    w: 'auto',
+                    h: api.winHeight - headerHeight - footerHeight - api.safeArea.top
+                },
+                index: 0,
+                frames: window[frameNames[index] + '_frames']
+            }, function(ret, err) {
+                //frame变化时回调
+                console.log(ret.index);
+                if (ret.index == '0') {
+                    BgIndex = 0;
+                } else {
+                    BgIndex = ret.index;
+                }
+                loadPop();
+                i = ret.index;
+                NVNavigationBar.setSelected({
+                    id: 'main',
+                    index: ret.index,
+                    selected: true
+                }, function(ret) {
+
+                });
+            });
+        } else {
+            api.setFrameGroupAttr({
+                name: frameNames[index],
+                hidden: true
+            });
+            // api.closeFrameGroup({
+            //    name: frameNames[index]
+            // });
+            NVNavigationBar.close({
+                id: 'main'
+            });
+        }
+    };
+    // 搜索
+    function fnSearch() {
+        api.openWin({
+            name: 'search_home',
+            url: 'search_home.html'
+        });
+    }
+    // more
+    function fnMore() {
+        api.openFrame({
+            name: 'home_type_frame',
+            url: 'widget://html/home_type_frame.html',
+            rect: {
+                x: 0,
+                y: 64,
+                w: api.winWidth,
+                h: api.winHeight
+            },
+            pageParam: {
+                name: 'test'
+            },
+            bounces: false,
+            bgColor: 'rgba(0,0,0,0)',
+            vScrollBarEnabled: true,
+            hScrollBarEnabled: true,
+            animation: {
+                type: "movein",
+                subType: "from_top",
+                duration: 500
+            }
+        });
+    }
+
+    function openSearchwin() {
+        api.openWin({
+            name: 'search_win',
+            url: 'widget://html/home/search_win.html',
+            allowEdit: true
+        });
+
+    }
+    //首页头部背景
+    function homeHeader() {
+        var obj = {
+            // yqm:$("#yqm").val(),
+        };
+        var objArr = sort_ASCII(obj);
+        var timestamp = fntimestamp();
+        var version = '2.0';
+        var arr = apiSecret + timestamp + version + '';
+        for (i in objArr) {
+            arr += objArr[i];
+        }
+        var sign = hex_md5(arr);
+        api.ajax({
+            url: commonUrl + 'soukeAppTttService/service/newapp/homepagehead',
+            method: 'post',
+            headers: {
+                'Content-Type': 'application/json;charset=utf-8'
+            },
+            data: {
+                body: {
+                    apiKey: apiKey,
+                    timestamp: timestamp,
+                    sign: sign,
+                }
+            }
+        }, function(ret, err) {
+            if (ret) {
+                // console.log("头部："+JSON.stringify(ret));
+                if (ret.result_code == 200) {
+                    getClassification();
+                    if (ret.result.header.extend_type == 1 || ret.result.header.extend_type == 2) {
+                        $("#header_1").show();
+                        $("#header_3").hide();
+                        $("#header_4").hide();
+                        $("#header_5").hide();
+                        for (var i = 0; i < ret.result.header.data.length; i++) {
+                            if (ret.result.header.data[0].platetype == 1) {
+                                $(".home_gwcL").html('<img  tapmode onclick="openSectionFrame(' + ret.result.header.data[0].plateid + ',\'' + ret.result.header.data[0].platename + '\',true);" src="' + ret.result.header.data[0].img + '"/><p>' +
+                                    ret.result
+                                    .header.data[0].name + '</p>');
+                            } else if (ret.result.header.data[0].platetype == 2) {
+                                $(".home_gwcL").html('<img  tapmode onclick="fnOpenFunction(\'' + ret.result.header.data[0].platetag + '\');" src="' + ret.result.header.data[0].img + '"/><p>' + ret.result.header.data[0].name + '</p>');
+                            } else if (ret.result.header.data[0].platetype == 3) {
+                                $(".home_gwcL").html('<img  tapmode onclick="openGoodDel(' + ret.result.header.data[0].plateid + ',-1);" src="' + ret.result.header.data[0].img + '"/><p>' + ret.result.header.data[0].name + '</p>');
+                            } else if (ret.result.header.data[0].platetype == 4) {
+                                $(".home_gwcL").html('<img  tapmode onclick="window.location.href=' + ret.result.header.data[0].plateid + ';" src="' + ret.result.header.data[0].img + '"/><p>' + ret.result.header.data[0].name + '</p>');
+                            } else if (ret.result.header.data[0].platetype == 5) {
+                                $(".home_gwcR").html('<img  tapmode onclick="open_Gf_bankuai(\'' + ret.result.header.data[i].plateid + '\',0,\'' + ret.result.header.data[i].platename + '\');" src="' + ret.result.header.data[0].img + '"/><p>' +
+                                    ret.result.header.data[0].name + '</p>');
+                            } else if (ret.result.header.data[0].platetype == 6) {
+                                $(".home_gwcL").html('<img  tapmode onclick="openFenlei_type(' + ret.result.header.data[0].plateid + ',\'' + ret.result.header.data[0].platename + '\');" src="' + ret.result.header.data[0].img + '"/><p>' + ret
+                                    .result.header.data[0].name + '</p>');
+                            }
+
+                            if (ret.result.header.data[1].platetype == 1) {
+                                $(".home_gwcR").html('<img  tapmode onclick="openSectionFrame(' + ret.result.header.data[1].plateid + ',\'' + ret.result.header.data[1].platename + '\',true);" src="' + ret.result.header.data[1].img + '"/><p>' +
+                                    ret.result
+                                    .header.data[1].name + '</p>');
+                            } else if (ret.result.header.data[1].platetype == 2) {
+                                $(".home_gwcR").html('<img  tapmode onclick="fnOpenFunction(\'' + ret.result.header.data[1].platetag + '\');" src="' + ret.result.header.data[1].img + '"/><p>' + ret.result.header.data[1].name + '</p>');
+                            } else if (ret.result.header.data[1].platetype == 3) {
+                                $(".home_gwcR").html('<img  tapmode onclick="openGoodDel(' + ret.result.header.data[1].plateid + ',-1);" src="' + ret.result.header.data[1].img + '"/><p>' + ret.result.header.data[1].name + '</p>');
+                            } else if (ret.result.header.data[1].platetype == 4) {
+                                $(".home_gwcR").html('<img  tapmode onclick="window.location.href=' + ret.result.header.data[1].plateid + ';" src="' + ret.result.header.data[1].img + '"/><p>' + ret.result.header.data[1].name + '</p>');
+                            } else if (ret.result.header.data[1].platetype == 5) {
+                                $(".home_gwcR").html('<img  tapmode onclick="open_Gf_bankuai(\'' + ret.result.header.data[i].plateid + '\',0,\'' + ret.result.header.data[i].platename + '\');" src="' + ret.result.header.data[1].img + '"/><p>' +
+                                    ret.result.header.data[1].name + '</p>');
+                            } else if (ret.result.header.data[1].platetype == 6) {
+                                $(".home_gwcR").html('<img  tapmode onclick="openFenlei_type(' + ret.result.header.data[1].plateid + ',\'' + ret.result.header.data[1].platename + '\');" src="' + ret.result.header.data[1].img + '"/><p>' + ret
+                                    .result.header.data[1].name + '</p>');
+                            }
+                        }
+                    } else if (ret.result.header.extend_type == 3) {
+                        $("#header_3").show();
+                        $("#header_1").hide();
+                        $("#header_4").hide();
+                        $("#header_5").hide();
+                        for (var i = 0; i < ret.result.header.data.length; i++) {
+                            if (ret.result.header.data[0].platetype == 1) {
+                                $(".home_gwcL").html('<img  tapmode onclick="openSectionFrame(' + ret.result.header.data[0].plateid + ',\'' + ret.result.header.data[0].platename + '\',true);" src="' + ret.result.header.data[0].img + '"/>');
+                            } else if (ret.result.header.data[0].platetype == 2) {
+                                $(".home_gwcL").html('<img  tapmode onclick="fnOpenFunction(\'' + ret.result.header.data[0].platetag + '\');" src="' + ret.result.header.data[0].img + '"/>');
+                            } else if (ret.result.header.data[0].platetype == 3) {
+                                $(".home_gwcL").html('<img  tapmode onclick="openGoodDel(' + ret.result.header.data[0].plateid + ',-1);" src="' + ret.result.header.data[0].img + '"/>');
+                            } else if (ret.result.header.data[0].platetype == 4) {
+                                $(".home_gwcL").html('<img  tapmode onclick="window.location.href=' + ret.result.header.data[0].plateid + ';" src="' + ret.result.header.data[0].img + '"/>');
+                            } else if (ret.result.header.data[0].platetype == 5) {
+                                $(".home_gwcR").html('<img  tapmode onclick="open_Gf_bankuai(\'' + ret.result.header.data[i].plateid + '\',0,\'' + ret.result.header.data[i].platename + '\');" src="' + ret.result.header.data[0].img + '"/>');
+                            } else if (ret.result.header.data[0].platetype == 6) {
+                                $(".home_gwcL").html('<img  tapmode onclick="openFenlei_type(' + ret.result.header.data[0].plateid + ',\'' + ret.result.header.data[0].platename + '\');" src="' + ret.result.header.data[0].img + '"/>');
+                            }
+
+                            if (ret.result.header.data[1].platetype == 1) {
+                                $(".home_gwcR").html('<img  tapmode onclick="openSectionFrame(' + ret.result.header.data[1].plateid + ',\'' + ret.result.header.data[1].platename + '\',true);" src="' + ret.result.header.data[1].img + '"/>');
+                            } else if (ret.result.header.data[1].platetype == 2) {
+                                $(".home_gwcR").html('<img  tapmode onclick="fnOpenFunction(\'' + ret.result.header.data[1].platetag + '\');" src="' + ret.result.header.data[1].img + '"/>');
+                            } else if (ret.result.header.data[1].platetype == 3) {
+                                $(".home_gwcR").html('<img  tapmode onclick="openGoodDel(' + ret.result.header.data[1].plateid + ',-1);" src="' + ret.result.header.data[1].img + '"/>');
+                            } else if (ret.result.header.data[1].platetype == 4) {
+                                $(".home_gwcR").html('<img  tapmode onclick="window.location.href=' + ret.result.header.data[1].plateid + ';" src="' + ret.result.header.data[1].img + '"/>');
+                            } else if (ret.result.header.data[1].platetype == 5) {
+                                $(".home_gwcR").html('<img  tapmode onclick="open_Gf_bankuai(\'' + ret.result.header.data[i].plateid + '\',0,\'' + ret.result.header.data[i].platename + '\');" src="' + ret.result.header.data[1].img + '"/>');
+                            } else if (ret.result.header.data[1].platetype == 6) {
+                                $(".home_gwcR").html('<img  tapmode onclick="openFenlei_type(' + ret.result.header.data[1].plateid + ',\'' + ret.result.header.data[1].platename + '\');" src="' + ret.result.header.data[1].img + '"/>');
+                            }
+                        }
+                    } else if (ret.result.header.extend_type == 4) {
+                        $("#header_4").show();
+                        $("#header_3").hide();
+                        $("#header_1").hide();
+                        $("#header_5").hide();
+                        for (var i = 0; i < ret.result.header.data.length; i++) {
+                            if (ret.result.header.data[0].platetype == 1) {
+                                $(".home_gwcL").html('<img  tapmode onclick="openSectionFrame(' + ret.result.header.data[0].plateid + ',\'' + ret.result.header.data[0].platename + '\',true);" src="' + ret.result.header.data[0].img + '"/>');
+                            } else if (ret.result.header.data[0].platetype == 2) {
+                                $(".home_gwcL").html('<img  tapmode onclick="fnOpenFunction(\'' + ret.result.header.data[0].platetag + '\');" src="' + ret.result.header.data[0].img + '"/>');
+                            } else if (ret.result.header.data[0].platetype == 3) {
+                                $(".home_gwcL").html('<img  tapmode onclick="openGoodDel(' + ret.result.header.data[0].plateid + ',-1);" src="' + ret.result.header.data[0].img + '"/>');
+                            } else if (ret.result.header.data[0].platetype == 4) {
+                                $(".home_gwcL").html('<img  tapmode onclick="window.location.href=' + ret.result.header.data[0].plateid + ';" src="' + ret.result.header.data[0].img + '"/>');
+                            } else if (ret.result.header.data[0].platetype == 5) {
+                                $(".home_gwcR").html('<img  tapmode onclick="open_Gf_bankuai(\'' + ret.result.header.data[i].plateid + '\',0,\'' + ret.result.header.data[i].platename + '\');" src="' + ret.result.header.data[0].img + '"/>');
+                            } else if (ret.result.header.data[0].platetype == 6) {
+                                $(".home_gwcL").html('<img  tapmode onclick="openFenlei_type(' + ret.result.header.data[0].plateid + ',\'' + ret.result.header.data[0].platename + '\');" src="' + ret.result.header.data[0].img + '"/>');
+                            }
+
+                            if (ret.result.header.data[1].platetype == 1) {
+                                $(".home_gwcR").html('<img  tapmode onclick="openSectionFrame(' + ret.result.header.data[1].plateid + ',\'' + ret.result.header.data[1].platename + '\',true);" src="' + ret.result.header.data[1].img + '"/>');
+                            } else if (ret.result.header.data[1].platetype == 2) {
+                                $(".home_gwcR").html('<img  tapmode onclick="fnOpenFunction(\'' + ret.result.header.data[1].platetag + '\');" src="' + ret.result.header.data[1].img + '"/>');
+                            } else if (ret.result.header.data[1].platetype == 3) {
+                                $(".home_gwcR").html('<img  tapmode onclick="openGoodDel(' + ret.result.header.data[1].plateid + ',-1);" src="' + ret.result.header.data[1].img + '"/>');
+                            } else if (ret.result.header.data[1].platetype == 4) {
+                                $(".home_gwcR").html('<img  tapmode onclick="window.location.href=' + ret.result.header.data[1].plateid + ';" src="' + ret.result.header.data[1].img + '"/>');
+                            } else if (ret.result.header.data[1].platetype == 5) {
+                                $(".home_gwcR").html('<img  tapmode onclick="open_Gf_bankuai(\'' + ret.result.header.data[i].plateid + '\',0,\'' + ret.result.header.data[i].platename + '\');" src="' + ret.result.header.data[1].img + '"/>');
+                            } else if (ret.result.header.data[1].platetype == 6) {
+                                $(".home_gwcR").html('<img  tapmode onclick="openFenlei_type(' + ret.result.header.data[1].plateid + ',\'' + ret.result.header.data[1].platename + '\');" src="' + ret.result.header.data[1].img + '"/>');
+                            }
+                        }
+                    } else if (ret.result.header.extend_type == 5) {
+                        $("#header_5").show();
+                        $("#header_3").hide();
+                        $("#header_4").hide();
+                        $("#header_1").hide();
+                        for (var i = 0; i < ret.result.header.data.length; i++) {
+                            if (ret.result.header.data[i].platetype == 1) {
+                                $(".home_gwcR").html('<img  tapmode onclick="openSectionFrame(' + ret.result.header.data[i].plateid + ',\'' + ret.result.header.data[i].platename + '\',true);" src="' + ret.result.header.data[i].img + '"/>');
+                            } else if (ret.result.header.data[i].platetype == 2) {
+                                $(".home_gwcR").html('<img  tapmode onclick="fnOpenFunction(\'' + ret.result.header.data[i].platetag + '\');" src="' + ret.result.header.data[i].img + '"/>');
+                            } else if (ret.result.header.data[i].platetype == 3) {
+                                $(".home_gwcR").html('<img  tapmode onclick="openGoodDel(' + ret.result.header.data[i].plateid + ',-1);" src="' + ret.result.header.data[i].img + '"/>');
+                            } else if (ret.result.header.data[i].platetype == 4) {
+                                $(".home_gwcR").html('<img  tapmode onclick="window.location.href=' + ret.result.header.data[i].plateid + ';" src="' + ret.result.header.data[i].img + '"/>');
+                            } else if (ret.result.header.data[i].platetype == 5) {
+                                $(".home_gwcR").html('<img  tapmode onclick="open_Gf_bankuai(\'' + ret.result.header.data[i].plateid + '\',0,\'' + ret.result.header.data[i].platename + '\');" src="' + ret.result.header.data[i].img + '"/>');
+                            } else if (ret.result.header.data[i].platetype == 6) {
+                                $(".home_gwcR").html('<img  tapmode onclick="openFenlei_type(' + ret.result.header.data[i].plateid + ',\'' + ret.result.header.data[i].platename + '\');" src="' + ret.result.header.data[i].img + '"/>');
+                            }
+                        }
+                    }
+                    lunbo_flag = ret.result.lunbo_bg;
+                    var homeStr = '';
+                    if (ret.result.header.extend_type != 2) {
+                        if (!empty(ret.result.header.extend_img.bg)) {
+                            if (lunbo_flag == 0) {
+                                if (ret.result.header.extend_img.bg == "back_img") {
+                                    if (api.systemType == "android") {
+                                        $(".header.home").css("background", "url('" + ret.result.header.extend_img.android.uri + "') no-repeat");
+                                        $(".header.home").css("background-size", "100% 100%");
+                                    } else if (api.systemType == "ios") {
+                                        $(".header.home").css("background", "url('" + ret.result.header.extend_img.ios.uri + "') no-repeat");
+                                        $(".header.home").css("background-size", "100% 100%");
+                                    } else if (api.systemType == "iphonex") {
+                                        $(".header.home").css("background", "url('" + ret.result.header.extend_img.iphonex.uri + "') no-repeat");
+                                        $(".header.home").css("background-size", "100% 100%");
+                                    }
+                                } else {
+                                    $(".header.home").css("background", 'linear-gradient(to right, rgb(' + ret.result.header.extend_img.col1 + ') , rgb(' + ret.result.header.extend_img.col2 + '))');
+                                }
+                            }
+                        } else {
+                            $(".header.home").css("background", 'linear-gradient(to right, #FF9901 , #FF2420))');
+                        }
+                    }
+                } else {}
+            } else {
+                // api.alert({ msg: JSON.stringify(err) });
+            }
+        });
+    }
+    //首页底部导航
+    function home_footer() {
+        var obj = {
+            // yqm:$("#yqm").val(),
+        };
+        var objArr = sort_ASCII(obj);
+        var timestamp = fntimestamp();
+        var version = '2.0';
+        var arr = apiSecret + timestamp + version + '';
+        for (i in objArr) {
+            arr += objArr[i];
+        }
+        var sign = hex_md5(arr);
+        api.ajax({
+            url: commonUrl + 'soukeAppTttService/service/newapp/homepagemenu',
+            method: 'post',
+            headers: {
+                'Content-Type': 'application/json;charset=utf-8'
+            },
+            data: {
+                body: {
+                    apiKey: apiKey,
+                    timestamp: timestamp,
+                    sign: sign,
+                }
+            }
+        }, function(ret, err) {
+            if (ret) {
+                // console.log("底部导航："+JSON.stringify(ret));
+                if (ret.result_code == 200) {
+                    var footerStr = '';
+                    for (var i = 0; i < ret.result.menu.data.length; i++) {
+                        if (i == 0) {
+                            footerStr += '<div class="menu home active " tapmode="active" tapmode onclick="fnChange(' + i + ',2,0,0)">' + ret.result.menu.data[0].name + '</div>';
+                        } else if (i == 1) {
+                            footerStr += '<div class="menu jkj" tapmode="active" tapmode onclick="fnChange(' + i + ',' + ret.result.menu.data[i].platetype + ',\'' + ret.result.menu.data[i].plateid + '\',\'' + ret.result.menu.data[i].platename +
+                                '\')">' + ret.result.menu.data[1].name + '</div>';
+                        } else if (i == 2) {
+                            footerStr += '<div class="menu gambit" tapmode="active" tapmode onclick="fnChange(' + i + ',' + ret.result.menu.data[i].platetype + ',\'' + ret.result.menu.data[i].plateid + '\',\'' + ret.result.menu.data[i].platename +
+                                '\')">' + ret.result.menu.data[2].name + '</div>';
+                        } else if (i == 3) {
+                            footerStr += '<div class="menu collect" tapmode="active" tapmode onclick="fnChange(' + i + ',' + ret.result.menu.data[i].platetype + ',\'' + ret.result.menu.data[i].plateid + '\',\'' + ret.result.menu.data[i].platename +
+                                '\')">' + ret.result.menu.data[3].name + '</div>';
+                        } else if (i == 4) {
+                            footerStr += '<div class="menu my" tapmode="active" tapmode onclick="fnChange(' + i + ',2,0,0)">' + ret.result.menu.data[4].name + '</div>';
+                        }
+                        if (i > 0 && i < ret.result.menu.data.length - 1) {
+                            if (ret.result.menu.data[i].platetype == 2) {
+                                frameNames1.push(ret.result.menu.data[i].platetag);
+                            } else if (ret.result.menu.data[i].platetype == 1) {
+                                frameNames1.push('goods_model');
+                            } else {
+                                frameNames1.push('other_frame');
+                            }
+                        }
+                    }
+                    frameNames1.unshift(1, 0);
+                    Array.prototype.splice.apply(frameNames, frameNames1);
+                    $api.byId('footer').innerHTML = footerStr;
+                    $('#footer').css("paddingBottom", api.safeArea.bottom); //解决IOS底部被遮挡问题
+                    fnInit();
+                    fnChange(0);
+                    $api.addCls(menus[0], 'active');
+                    $api.setStorage("menu_index", 0);
+                } else {}
+            } else {
+                // api.alert({ msg: JSON.stringify(err) });
+            }
+        });
+    }
+
+    function footer_color() {
+        var obj = {
+            // yqm:$("#yqm").val(),
+        };
+        var objArr = sort_ASCII(obj);
+        var timestamp = fntimestamp();
+        var version = '2.0';
+        var arr = apiSecret + timestamp + version + '';
+        for (i in objArr) {
+            arr += objArr[i];
+        }
+        var sign = hex_md5(arr);
+        api.ajax({
+            url: commonUrl + 'soukeAppTttService/service/newapp/homepagemenu',
+            method: 'post',
+            headers: {
+                'Content-Type': 'application/json;charset=utf-8'
+            },
+            data: {
+                body: {
+                    apiKey: apiKey,
+                    timestamp: timestamp,
+                    sign: sign,
+                }
+            }
+        }, function(ret, err) {
+            if (ret) {
+                // console.log("底部导航图片："+JSON.stringify(ret));
+                if (ret.result_code == 200) {
+                    for (var i = 0; i < ret.result.menu.data.length; i++) {
+                        if (i == 0) {
+                            $(".footer .home").css("background-image", "url('" + ret.result.menu.data[0].img + "')");
+                            $(".footer .home.active").css("background-image", "url('" + ret.result.menu.data[0].activeimg + "')");
+                        } else if (i == 1) {
+                            $(".footer .jkj").css("background-image", "url('" + ret.result.menu.data[1].img + "')");
+                            $(".footer .jkj.active").css("background-image", "url('" + ret.result.menu.data[1].activeimg + "')");
+                        } else if (i == 2) {
+                            $(".footer .gambit").css("background-image", "url('" + ret.result.menu.data[2].img + "')");
+                            $(".footer .gambit.active").css("background-image", "url('" + ret.result.menu.data[2].activeimg + "')");
+                        } else if (i == 3) {
+                            $(".footer .collect").css("background-image", "url('" + ret.result.menu.data[3].img + "')");
+                            $(".footer .collect.active").css("background-image", "url('" + ret.result.menu.data[3].activeimg + "')");
+                        } else if (i == 4) {
+                            $(".footer .my").css("background-image", "url('" + ret.result.menu.data[4].img + "')");
+                            $(".footer .my.active").css("background-image", "url('" + ret.result.menu.data[4].activeimg + "')");
+                        }
+                    }
+                } else {}
+            } else {
+                // api.alert({ msg: JSON.stringify(err) });
+            }
+        });
+    }
+    var jpush;
+    //极光推送
+    function fnInitjpush() {
+        var ajpush = api.require('ajpush');
+        ajpush.init(function(ret) {
+            if (ret && ret.status) {
+                //success
+            }
+        });
+    }
+
+    function fnAddEventListener() {
+        //安卓通知栏消息被点击
+        api.addEventListener({
+            name: 'appintent'
+        }, function(ret, err) {
+            // alert('通知被点击，收到数据：\n' + JSON.stringify(ret)); //监听通知被点击后收到的数据
+            if (ret && ret.appParam) {
+                clickNotice(ret.appParam.ajpush.extra);
+            }
+        });
+        //ios 通知栏消息点击
+        api.addEventListener({
+            name: 'noticeclicked'
+        }, function(ret, err) {
+            console.log(JSON.stringify(ret))
+            if (ret && ret.value) {
+                clickNotice(ret.value.extra)
+            }
+        });
+        // 极光推送监听
+        var ajpush = api.require('ajpush');
+        ajpush.setListener(function(ret) {
+            console.log(JSON.stringify(ret))
+            if (ret) {
+                clickNotice(ret.extra);
+            }
+        });
+        //监听应用进入后台，通知jpush暂停事件
+        api.addEventListener({
+            name: 'pause'
+        }, function(ret, err) {
+            var ajpush = api.require('ajpush');
+            ajpush.onPause();
+        });
+        //监听应用恢复到前台，通知jpush恢复事件
+        api.addEventListener({
+            name: 'resume'
+        }, function(ret, err) {
+            var ajpush = api.require('ajpush');
+            ajpush.onResume();
+        });
+    }
+
+    function clickNotice(data) {
+        user_id = $api.getStorage("userInfo").user_id;
+        setBadge(); //设置角标数
+        if (!user_id) {
+            console.log('未登录用户，不予跳转');
+            return;
+        };
+        setTimeout(function() {
+            if (data != '') {
+                var result = JSON.parse(JSON.stringify(data));
+                var url = JSON.parse(result.url);
+                // 跳转页面
+                // alert('通知被点击，收到数据：\n' + JSON.stringify(data)); //监听通知被点击后收到的数据
+                var platetype = url.dataType;
+                var plateid = url.dataValue;
+                var platename = url.dataName;
+                // alert('通知被点击，收到数据：\n' + JSON.stringify(platetype));
+                fnJump(platetype, plateid, platename);
+            } else {}
+        }, 300);
+    }
+    //设置应用图标右上角数字，只iOS有效。
+    function setBadge() {
+        if (api.systemType == 'ios') {
+            jpush.setBadge({
+                badge: 0
+            });
+        }
+    }
+    // 跳转
+    function fnJump(platetype, plateid, platename) {
+        if (platetype == 1) { //商品板块
+            openSectionFrame(plateid, platename, true);
+        }
+        if (platetype == 2) { //APP板块
+            fnOpenFunction(plateid, platetype, platename);
+        }
+        if (platetype == 3) { //商品详情页
+            openGoodDel(plateid, -1)
+        }
+        if (platetype == 4) { //外链
+            //  window.location.href = plateid;
+            api.openWin({
+                name: 'jump_href_win',
+                url: 'widget://html/win/jump_href_win.html',
+                pageParam: {
+                    url: plateid,
+                    name: platename,
+                },
+
+            });
+        }
+        if (platetype == 5) { //官方板块
+            open_Gf_bankuai(plateid, platename, true);
+        } else if (platetype == 6) { //淘宝分类
+            openFenlei_type(plateid, platename)
+        } else if (platetype == 7) { //拼多多
+            openPddSectionFrame(plateid, platename, true)
+        } else if (platetype == 8) { //拼多多分类
+            openPddFenlei_type(plateid, platename, true)
+        }
+        if (platetype == 9) { //拼多多商品
+            openPddGoodDel(plateid, platename, true)
+        }
+    }
+</script>
+
+</html>

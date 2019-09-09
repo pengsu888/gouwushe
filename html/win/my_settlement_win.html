@@ -1,0 +1,354 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0" />
+    <title>账单明细</title>
+    <link rel="stylesheet" type="text/css" href="../../css/api.css" />
+    <link rel="stylesheet" type="text/css" href="../../css/style.css" />
+</head>
+<style media="screen">
+    html,
+    body {
+        background-color: rgba(0, 0, 0, 0.4);
+        height: 100%;
+        width: 100%;
+    }
+
+    header,
+    header .header-top {
+        height: 80px;
+    }
+
+    .headerItem .sx {
+        height: auto;
+        margin-top: 12px;
+        font-size: 0.85rem;
+    }
+
+    .sx_box {
+        border-top: 1px solid #ddd;
+        background: #fff;
+        position: fixed;
+    }
+
+    .sx {
+        font-size: 12px;
+        color: #666;
+    }
+
+    .sz_type {
+        border-bottom: 1px solid #ddd;
+        height: 70px;
+        line-height: 70px;
+        font-size: 14px;
+        color: #444;
+    }
+
+    .sz_type span {
+        padding-left: 5%;
+        width: 18%;
+    }
+
+    .sz_type ul {
+        float: right;
+        width: 69%;
+    }
+
+    .sz_type ul li {
+        float: left;
+        background: #eee;
+        color: #666;
+        width: 26%;
+        border-radius: 23px;
+        height: 41px;
+        margin-top: 14px;
+        line-height: 41px;
+        text-align: center;
+        color: #9f9f9f;
+        font-size: 16px;
+    }
+
+    .sz_type ul li.on {
+        background: #fecfc5;
+        color: #fd5f3e;
+    }
+
+    .sz_type ul li:nth-child(2),
+    .sz_type ul li:nth-child(3) {
+        margin-left: 8%;
+    }
+
+    .kj_sx {
+        width: 90%;
+        margin: 0 auto;
+    }
+
+    .kj_sx p {
+        padding: 8% 0 2% 0;
+        font-size: 14px;
+        color: #444;
+    }
+
+    .kj_sx ul {}
+
+    .kj_sx ul li {
+        float: left;
+        border-radius: 5px;
+        height: 41px;
+        margin-top: 14px;
+        line-height: 41px;
+        text-align: center;
+        color: #9f9f9f;
+        font-size: 16px;
+        background: #eee;
+        width: 30%;
+    }
+
+    .kj_sx ul li:nth-child(3n+2) {
+        margin-left: 5%;
+        margin-right: 5%;
+    }
+
+    .kj_sx ul li.on {
+        background: #fecfc5;
+        color: #fd5f3e;
+    }
+
+    .headerItem .sx img {
+        width: 6px;
+        height: 6px;
+        margin: 0 0 0 5px;
+    }
+
+    .headerItem .header_back {
+        width: auto;
+    }
+
+    .submitColor {
+        background: #fff;
+    }
+
+    .headerItem .title_color {
+        color: #333;
+    }
+
+    .aui-dialog-btn {
+        position: relative;
+        display: block;
+        width: 100%;
+        padding: 0 0.25rem;
+        height: 2.2rem;
+        font-size: 0.8rem;
+        line-height: 2.2rem;
+        text-align: center;
+        color: #f94529;
+        border-right: 1px solid #dddddd;
+        white-space: nowrap;
+        text-overflow: ellipsis;
+        overflow: hidden;
+        -webkit-box-sizing: border-box;
+        box-sizing: border-box;
+        -webkit-box-flex: 1;
+        box-flex: 1;
+    }
+
+    .aui-dialog-body {
+        padding: 0.75rem;
+        overflow: hidden;
+        font-size: 0.875em;
+        color: #999;
+    }
+
+    .sx_btn {
+        margin-top: 30%;
+    }
+
+    .sx_btn button {
+        width: 48%;
+        text-align: center;
+        border-radius: 32px;
+        background: #eee;
+        padding: 4% 0 3% 0;
+        margin-bottom: 5%;
+    }
+
+    .sx_btn button:nth-child(2) {
+        margin-left: 2%;
+    }
+</style>
+
+<body>
+    <header id="header" class="submitColor">
+        <div class="header-top">
+            <div class="headerItem">
+                <div class="header_back" onclick="closeWin();">
+                    <img src="../../image/nav_back_black.png" alt="">
+                </div>
+                <div class="header_title title_color" id="header_title">账单明细</div>
+                <div style="clear:both"></div>
+                <div class="header_back sx" onclick="sx();">
+                    筛选<img src="../../image/huaqian_icon_downarrow_default.png" alt="">
+                </div>
+                <div class="header_right" onclick="selectTime();"><img src="../../image/home/mine_time.png" alt=""></div>
+                <div style="clear:both"></div>
+            </div>
+        </div>
+    </header>
+
+</body>
+<script type="text/javascript" src="../../script/api.js"></script>
+<script type="text/javascript" src="../../script/jquery.js"></script>
+<script type="text/javascript">
+    var headerH, $body, body_h;
+
+    apiready = function() {
+        api.setStatusBarStyle({
+            style: 'dark' //黑色
+                // style: 'light' //白色
+        });
+      api.addEventListener({
+          name: 'keyback'
+      }, function(ret, err){
+          if( ret ){
+                $api.setStorage('select_time_byDay2', '');
+                $api.setStorage('select_time_byMon2','');
+                api.closeWin({
+                    name: 'select_time_settlement_win'
+                });
+
+                api.closeWin({
+                    name: 'my_settlement_win'
+                });
+               //alert( JSON.stringify( ret ) );
+          }else{
+               alert( JSON.stringify( err ) );
+          }
+      });
+
+        openFrame();
+    };
+    function openFrame(tx_type,str) {
+      if(tx_type==null){
+        tx_type="";
+      }
+      if(str==null){
+        str="";
+      }
+        $api.fixStatusBar($api.dom('header'));
+        var header = $api.byId('header');
+        $api.fixStatusBar(header);
+        var headerH = $api.offset(header).h;
+        /*if($(".sx_box").is(":visible")){
+           var sx_h=$(".sx_box").height();
+           headerH = headerH+sx_h;
+        }*/
+        $body = $api.dom('body');
+        body_h = $api.offset($body).h;
+        //判断是否按日期搜索
+        var rq="";
+        var tixian="";
+        var spe_type="";
+        if(api.pageParam.rq!=""){
+          rq=api.pageParam.rq;
+        }
+        if(api.pageParam.tixian==1){
+          tixian=1
+        }
+        if(api.pageParam.spe_type!=1){
+          spe_type=api.pageParam.spe_type
+        }
+        api.openFrame({
+            name: 'my_lucre_frame',
+            url: '../frame/my_settlement_frame.html',
+            reload: true,
+            rect: {
+                x: 0,
+                y: headerH,
+                w: 'auto',
+                h: 'auto'
+            },
+            pageParam: {
+                body_h: body_h,
+                str:str,
+                tx_type:tx_type,
+                rq:rq,
+                tixian:tixian,
+                spe_type:spe_type
+            },
+            bounces: false
+        });
+    }
+
+    function closeWin() {
+      api.closeWin({
+                  name: 'select_time_settlement_win'
+              });
+        api.closeWin({
+            name: 'my_settlement_win'
+        });
+    }
+    //打开筛选蒙版
+    window.showFlag = false;
+
+    function sx(tx_type,str) {
+        if (str != null && tx_type!=null) { //选完筛选传值
+            openFrame(tx_type,str)
+        }
+        $(".sx").css("color", "#fd5f3e");
+        $(".sx img").attr("src", "../../image/huaqian_icon_uparrow_selected.png");
+
+        $(".header_down").addClass("header_up");
+        var header = $api.byId('header');
+        var $body = $api.dom('body');
+        var body_h = $api.offset($body).h;
+        var headerH = $api.offset(header).h;
+        if (window.showFlag == false) {
+            api.openFrame({
+                name: 'settlement_slidLayout',
+                url: '../my/settlement_slidLayout.html',
+                rect: {
+                    x: 0,
+                    y: headerH,
+                    w: 'auto',
+                    h: body_h
+                },
+                // pageParam : {
+                // 	Id:id
+                // },
+                bounces: false,
+                bgColor: 'rgba(0,0,0,0)',
+                vScrollBarEnabled: true,
+                hScrollBarEnabled: true
+            });
+            window.showFlag = true;
+        } else {
+            closeOrderSlidLayout();
+        }
+    }
+
+    function closeOrderSlidLayout() {
+        $(".sx").css("color", "#666");
+        $(".sx img").attr("src", "../../image/huaqian_icon_downarrow_default.png");
+        $(".header_down").removeClass("header_up");
+        api.closeFrame({
+            name: 'settlement_slidLayout'
+        });
+        window.showFlag = false;
+    }
+    //日期筛选页面
+    function selectTime() {
+
+        api.closeWin({ name: 'select_time_settlement_win' });
+        api.openWin({
+            name: 'select_time_settlement_win',
+            url: '../frame/select_time_settlement_win.html',
+            pageParam: {
+                name: 'test'
+            }
+        });
+    }
+</script>
+
+</html>

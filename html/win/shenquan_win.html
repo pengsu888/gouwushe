@@ -1,0 +1,341 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0" />
+  <title>每日神券</title>
+  <link rel="stylesheet" type="text/css" href="../../css/api.css" />
+  <link rel="stylesheet" type="text/css" href="../../css/style.css" />
+</head>
+<style media="screen">
+/* 返回顶部样式开始 */
+
+.actGotop {
+    position: fixed;
+    _position: absolute;
+    bottom: 3rem;
+    right: 0.5rem;
+    width: 3.5rem;
+    height: 3.5rem;
+    display: none;
+    z-index:999
+}
+
+.actGotop a,
+.actGotop a:link {
+    width: 3.5rem;
+    height: 3.5rem;
+    display: inline-block;
+    background: url(../../image/ic_back_top.png) no-repeat;
+    background-size: 3.5rem 3.5rem;
+    outline: none;
+}
+
+.actGotop a:hover {
+    background: url(../../image/ic_back_top.png) no-repeat;
+    outline: none;
+    background-size: 3.5rem 3.5rem;
+}
+/* 返回顶部样式开始 */
+    body,html{
+      width: 100%;
+      height: 100%;
+      background-color: #000;
+    }
+    header{
+      position: fixed;
+      top:0;
+      left: 0;
+      z-index: 99999;
+    }
+    .sq_img{
+      height: 273px;
+      width: 100%;
+    }
+    .sq_img img{
+      height: 100%;
+      width: 100%;
+      background-size: 100% 100%;
+    }
+    .sq_body{
+      width: calc(100% - 24px);
+      height: auto;
+      background: #fff;
+      overflow: hidden;
+      margin: 0 auto;
+      padding-bottom: 20px;
+      border-radius: 5px;
+    }
+    .sq_body .sq_title{
+      width: 100%;
+      height: 24px;
+      text-align: center;
+      margin: 0 auto;
+      color: #f94529;
+      border-bottom: dashed 1px #f94529;
+      line-height: 15px;
+    }
+    .sq_title .title_img{
+      width: 50%;
+      height: 12px;
+      background: url('../../image/shenquan1.png') no-repeat;
+      background-size: 100% 100%;
+      margin: 8px auto;
+    }
+    .body_img{
+      width: calc(100% - 40px);
+      height: auto;;
+      margin: 0 auto;
+    }
+    .body_img img{
+      width: 100%;
+      height: 100%;
+      background-size: 100% 100%;
+    }
+    .sq_del{
+      width: calc(100% - 20px);
+      height: auto;
+      border: solid 2px #f94529;
+      position: relative;
+      margin: 0 auto;
+    }
+    .sq_del .del_title{
+      position: absolute;
+      top: -10px;
+      left: 50%;
+      width: 150px;
+      margin-left: -75px;
+      color: 12px;
+      text-align: center;
+      line-height: 20px;
+      color: #f94529;
+      background: #fff;
+      z-index: 999;
+    }
+    .sq_del .sq_del_p{
+      width: calc(100% - 10px);
+      height: calc(100% - 10px);
+      margin: 5px;
+      border: dashed 1px #999;
+    }
+    .sq_del .sq_del_p .sq_p{
+      width: calc(100% - 20px);
+      height: calc(100% - 20px);
+      padding: 10px;
+      color: #666;
+    }
+    .tj_title{
+      width: 100%;
+      height: 30px;
+      line-height: 30px;
+      text-align: center;
+      background: #fff;
+      margin-top: 10px;
+    }
+    .box{
+      background: #000;
+      margin-top: 0;
+    }
+</style>
+<body>
+  <!-- 返回顶部按钮 -->
+  <div class="actGotop">
+      <a href="javascript:;" title="返回顶部"></a>
+  </div>
+    <header id="header">
+      <div class="header-top">
+          <div class="headerItem">
+            <div class="header_back" onclick="closeWin();">
+              <img src="../../image/nav_back_black.png" alt="">
+            </div>
+            <div class="header_title" id="header_title">每日神券</div>
+          </div>
+      </div>
+    </header>
+    <div class="sq_img"><img src="../../image/shenquan.jpg" alt=""></div>
+    <div class="sq_body">
+      <div class="sq_title"><div class="title_img"><span id="title">今日推荐</span></div></div>
+      <div class="body_img"><img src="" alt="" id="body_img"></div>
+      <div class="sq_del">
+        <div class="del_title" id="del_title">多功能全身按摩枕</div>
+        <div class="sq_del_p">
+            <div class="sq_p" id="desc">
+
+            </div>
+        </div>
+      </div>
+    </div>
+    <div class="tj_title">今日好券推荐</div>
+    <div class="box" id="box"></div>
+    <div id="statu" style="font-size:0.8rem;color:#fd5f3e;background-color:#f5f5f5;height:30px;line-height:30px;text-align:center;clear:both;"><img src="../../image/loading.d997b79c.svg" alt="" style="width:1rem;height:1rem;vertical-align:middle;">加载中...</div>
+</body>
+  <script type="text/javascript" src="../../script/api.js"></script>
+  <script type="text/javascript" src="../../script/jquery.js"></script>
+  <script type="text/javascript" src="../../script/api_common.js"></script>
+  <script type="text/javascript">
+  $(document).ready(function() {
+      // 返回顶部
+      $(window).scroll(function() {
+          if ($(window).scrollTop() >= 500) {
+              $('.actGotop').fadeIn("fast");
+          } else {
+              $('.actGotop').fadeOut(300);
+          }
+      });
+      $('.actGotop').click(function() {
+          $('html,body').animate({
+              scrollTop: '0px'
+          }, 300);
+      });
+  });
+    var pageNum=1;
+    apiready = function() {
+        api.setStatusBarStyle({
+            style: 'dark' //黑色
+                // style: 'light' //白色
+        });
+        getEvent();
+        closePopframe();
+        var header = $api.byId('header');
+        $api.fixStatusBar(header);
+        var headerH = $api.offset(header).h;
+        api.ajax({
+            url: 'http://share.sqkb.com/mod/coupon?pageId=60&index=0&page=0&pagesize=20&tabIndex=0&mkid=20&utm=C_qqfriends',
+            method: 'get',
+            data: {
+                body:{}
+            }
+        },function(ret, err){
+            if (ret) {
+                // alert( JSON.stringify( ret ) );
+                var data=ret.data.page_info.contents;
+                for(var i=0;i<data.length;i++){
+                  if(data[i].type==4){
+                    $("#title").html(data[i].title);
+                    var t_data=data[i].data;
+                    for(var j=0;j<t_data.length;j++){
+                      $("#del_title").html(t_data[j].desc_title);
+                      $api.byId('desc').innerHTML=t_data[j].desc;
+                      for(var c=0;c<t_data[j].coupon_list.length;c++){
+                        $("#body_img").attr("src",t_data[j].coupon_list[c].pic);
+                        $(".body_img").attr("id",t_data[j].coupon_list[c].item_id);
+                      }
+                    }
+                  }
+                }
+                $(".body_img").click(function (){
+                  api.openWin({
+                      name: 'good_detail',
+                      url: '../goods/good_detail.html',
+                      pageParam:{
+                        goods_id:$(this).attr("id")
+                      }
+                  });
+                })
+            } else {
+                // alert( JSON.stringify( err ) );
+            }
+        });
+        loadMyFa(true);
+        api.addEventListener({
+            name: 'scrolltobottom',
+            extra: {
+                threshold: 120 //设置距离底部多少距离时触发，默认值为0，数字类型
+            }
+        }, function(ret, err) {
+
+            loadMyFa(false);
+        });
+    };
+    function closeWin(){
+      api.closeWin({
+          name: 'shenquan_win'
+      });
+    }
+    function loadMyFa(isPull){
+      if (!isPull && isOver) {
+          return;
+      }
+      //判断如果是下拉刷新，
+      if (isPull) {
+          pageNum = 1;
+          isOver = false;
+      }
+
+      api.ajax({
+          url: 'http://share.sqkb.com/mod/coupon?pageId=60&index=3&page='+pageNum+'&pagesize=20&tabIndex=0&mkid=20&utm=C_qqfriends',
+          method: 'get',
+          data: {
+            body: {}
+          }
+      },function(ret, err){
+          if (ret) {
+              console.log( JSON.stringify( ret ) );
+              var data=ret.data.page_info.contents[0].coupon_list;
+              // var size = ret.status_code;
+              if (data != "") {
+                  $api.css(statu, 'display:block;');
+                  pageNum++;
+              } else {
+                  statu.innerHTML = "暂无数据";
+              }
+              if (data.length < 10 && data != "") {
+                  statu.innerHTML = "已经到底啦 ~ 别扯了";
+                  isOver = true;
+              }
+              getTwoData(data,isPull);
+          } else {
+              // alert( JSON.stringify( err ) );
+          }
+      });
+    }
+    function getTwoData(data,isPull){
+      var html='';
+      for(var i=0;i<data.length;i++){
+        html+='<div class="yh_card" style="cursor:pointer;"  tapmode onclick="openGoodDel('+data[i].item_id+',-1);">';
+        html+='<div class="yh_img_div">';
+        html+='<img src="'+data[i].pic+'" class="yh_card_img 1" />';
+        // html+='<div class="yh_bottom">预估佣金'+data[i].tk_fee+'</div>';
+        html+='</div>';
+        html+='<div style="background:#fff;padding:0.5rem;">';
+        if(data[i].shop_type=="1"){
+          html+='<div class="good_title"><img src="../../image/sharepage_tianmao.png" alt="" class="tt">'+data[i].title+'</div>';
+          html+='<div class="tm_price">';
+          html+='<div class="tm_left">天猫价 ￥'+data[i].zk_price+'</div>';
+          html+='<div class="tm_right">月销 '+data[i].month_sales+'</div>';
+          html+='</div>';
+        }else if(data[i].shop_type=="0"){
+          html+='<div class="good_title"><img src="../../image/sharepage_taobao.png" alt="" class="tt">'+data[i].title+'</div>';
+          html+='<div class="tm_price">';
+          html+='<div class="tm_left">淘宝价 ￥'+data[i].zk_price+'</div>';
+          html+='<div class="tm_right">月销 '+data[i].month_sales+'</div>';
+          html+='</div>';
+        }
+
+        html+='<div class="qh_price">';
+        html+='<div class="qh_left"><span class="qh_left_quan">券后￥</span>&nbsp;'+data[i].raw_price+'</div>';
+        if(!empty(data[i].ticket)){
+          if(empty(data[i].ticket.coupon_price)){
+            // html+='<div class="qh_right">0元券</div>';
+          }else{
+            html+='<div class="qh_right">'+data[i].ticket.coupon_price+'元券</div>';
+          }
+        }else{
+          // html+='<div class="qh_right">0元券</div>';
+        }
+
+
+        html+='</div>';
+        html+='</div>';
+        html+='</div>';
+      }
+      if (isPull) {
+          $api.byId('box').innerHTML = html;
+      } else {
+          $api.byId('box').innerHTML += html;
+      }
+    }
+  </script>
+
+</html>

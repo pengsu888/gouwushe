@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0" />
+  <title>我的收益win</title>
+  <link rel="stylesheet" type="text/css" href="../../css/api.css" />
+  <link rel="stylesheet" type="text/css" href="../../css/style.css" />
+</head>
+<style media="screen">
+  html,body{
+    background-color: #f4f4f4;
+    height: 100%;
+    width: 100%;
+  }
+  .submitColor {
+     background: linear-gradient(to right, #F04345, #E43435);
+}
+  .aui-dialog-btn {
+      position: relative;
+      display: block;
+      width: 100%;
+      padding: 0 0.25rem;
+      height: 2.2rem;
+      font-size: 0.8rem;
+      line-height: 2.2rem;
+      text-align: center;
+      color: #f94529;
+      border-right: 1px solid #dddddd;
+      white-space: nowrap;
+      text-overflow: ellipsis;
+      overflow: hidden;
+      -webkit-box-sizing: border-box;
+      box-sizing: border-box;
+      -webkit-box-flex: 1;
+      box-flex: 1;
+  }
+  .aui-dialog-body {
+      padding: 0.75rem;
+      overflow: hidden;
+      font-size: 0.875em;
+      color: #333;
+  }
+</style>
+<body>
+    <header id="header" class="submitColor">
+      <div class="header-top">
+          <div class="headerItem">
+            <div class="header_back" onclick="closeWin();">
+              <img src="../../image/nav_back_white.png" alt="">
+            </div>
+            <div class="header_title title_color" id="header_title">我的收益</div>
+            <div class="header_right" onclick="fnOpenYongjingz();"><img src="../../image/home/mine_help_white.png" alt=""></div>
+          </div>
+      </div>
+    </header>
+</body>
+  <script type="text/javascript" src="../../script/api.js"></script>
+  <!-- <script type="text/javascript" src="../../script/jquery.js"></script> -->
+  <script type="text/javascript">
+    var headerH,$body,body_h;
+    apiready = function() {
+        $api.fixStatusBar( $api.dom('header') );
+        var header = $api.byId('header');
+        $api.fixStatusBar(header);
+        var headerH = $api.offset(header).h;
+        $body = $api.dom('body');
+    		body_h = $api.offset($body).h;
+        api.openFrame({
+            name: 'my_lucre_frame',
+            url: '../frame/my_lucre_frame.html',
+            reload:true,
+            rect: {
+                x: 0,
+                y: headerH,
+                w: 'auto',
+                h: 'auto'
+            },
+            pageParam: {
+                body_h:body_h,
+            },
+            bounces: false
+        });
+    };
+    function closeWin(){
+      api.closeWin({
+          name: 'my_lucre_win'
+      });
+    }
+    function fnOpenYongjingz(){
+      api.openWin({
+          name: 'yongjin_shuoming_win',
+          url: './yongjin_shuoming_win.html',
+          pageParam: {
+              name: 'test'
+          }
+      });
+
+    }
+  </script>
+
+</html>

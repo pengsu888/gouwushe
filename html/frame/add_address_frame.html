@@ -1,0 +1,891 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0" />
+    <title>新增地址</title>
+    <link rel="stylesheet" type="text/css" href="../../css/api.css" />
+    <link rel="stylesheet" href="../../css/aui.css">
+    <style>
+        html,
+        body {
+            height: 100%;
+            background: #F4F4F4;
+            width: 100%;
+            color: #333;
+            position: relative;
+        }
+
+        .address_item {
+            width: 100%;
+            height: auto;
+            background: #fff;
+        }
+
+        .add_bottom {
+            border-bottom: solid 1px #ddd;
+        }
+
+        .add_top {
+            margin-top: 10px;
+        }
+
+        .regist_input {
+            width: calc(100% - 24px);
+            background: #fff;
+            margin: 0 auto;
+            height: 55px;
+            position: relative;
+        }
+
+        .regist_input label.label_input {
+            width: 80px;
+            height: 55px;
+            line-height: 55px;
+            float: left;
+            font-size: 14px;
+        }
+
+        .regist_input input.input_phone {
+            width: calc(100% - 119px);
+            height: 55px;
+            line-height: 55px;
+            outline: none;
+            font-size: 14px;
+            color: #999999;
+        }
+
+        .regist_input .area {
+            width: calc(100% - 169px);
+            height: 55px;
+            line-height: 55px;
+        }
+
+        .regist_input .chose {
+            line-height: 55px;
+            position: absolute;
+            right: 0;
+            top: 0;
+            font-size: 14px;
+        }
+
+        .mine_forward {
+            margin-top: 14px;
+        }
+
+        .set_right {
+            width: 25px;
+            height: 25px;
+            float: right;
+        }
+
+        .biaoqian_item label {
+            width: 80px;
+            height: 55px;
+            line-height: 55px;
+        }
+
+        .biaoqian_item {
+            width: calc(100% - 24px);
+            background: #fff;
+            margin: 0 auto;
+            height: auto;
+            padding: 20px auto;
+            overflow: hidden;
+        }
+
+        .biaoqian_item .biaoqian {
+            width: calc(100% - 80px);
+            height: auto;
+            overflow: hidden;
+            float: right;
+            padding-bottom: 15px;
+            /*margin-right: 40px;*/
+        }
+
+        .biaoqian_item .biaoqian ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+            overflow: hidden;
+        }
+
+        .biaoqian_item .biaoqian .add_label {
+            width: calc(100% - 40px);
+            height: 22px;
+            border: solid 1px #eee;
+            border-radius: 14px;
+            margin-top: 14px;
+            display: none;
+        }
+
+        .biaoqian_item .biaoqian .add_label input {
+            height: 22px;
+            width: calc(100% - 188px);
+            font-size: 12px;
+            margin-left: 5px;
+            line-height: 22px;
+            border: none;
+            outline: none;
+            color: #858585;
+            position: absolute;
+        }
+
+        #add_btn {
+            width: 50px;
+            height: 20px;
+            background: #eee;
+            color: #fff;
+            border-radius: 0px 15px 15px 0px;
+            float: right;
+            text-align: center;
+            line-height: 20px;
+            font-size: 12px;
+        }
+
+        .biaoqian_item .biaoqian ul li {
+            float: left;
+            width: auto;
+            margin-right: 15px;
+            height: 22px;
+            line-height: 22px;
+            text-align: center;
+            border-radius: 20px;
+            margin-top: 14px;
+            font-size: 14px;
+            padding: 0 8px;
+        }
+
+        img {
+            width: 100%;
+            height: 100%;
+            background-size: 100% 100%;
+        }
+
+        .bq_active {
+            color: #fd5f3e;
+            border: 1px solid red;
+        }
+
+        .bq_moren {
+            color: #999999;
+            border: 1px solid #999999;
+        }
+
+        .bq_add {
+            color: #999;
+            border: 1px dotted #888;
+        }
+
+        .moren_yuan {
+            width: 16px;
+            height: 16px;
+            float: right;
+            border: 1px solid #ddd;
+            border-radius: 50%;
+            margin-top: 19px;
+            position: relative;
+        }
+
+        .moren_yuan .lan_active {
+            background: #FF8442;
+        }
+
+        .moren_yuan .lan_yuan {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            position: absolute;
+            left: 50%;
+            top: 50%;
+            margin-left: -5px;
+            margin-top: -5px;
+        }
+
+        .addsubmitBtn {
+            width: calc(100% - 24px);
+            height: 44px;
+            line-height: 44px;
+            text-align: center;
+            margin: 10px auto;
+            border-radius: 20px;
+            color: #fff;
+            display: none;
+        }
+
+        .deleteBtn {
+            width: 30%;
+            height: 44px;
+            line-height: 44px;
+            text-align: center;
+            margin: 20px 10px 20px 20px;
+            border-radius: 50px;
+            color: #fff;
+            float: left;
+            display: none;
+        }
+
+        .deleteColor {
+            /*background: linear-gradient(to right, #fd7239, #f94529);*/
+            color: #fd7239;
+            border: 1px solid #fd7239;
+        }
+
+        .submitBtn {
+            width: 50%;
+            height: 44px;
+            line-height: 44px;
+            text-align: center;
+            margin: 20px 20px 0px 10px;
+            border-radius: 50px;
+            color: #fff;
+            float: right;
+            display: none;
+        }
+
+        .submitColor {
+            background: linear-gradient(to right, #fd7239, #f94529);
+        }
+
+        .un {
+            width: 50px;
+            height: 20px;
+            background: #ff4040;
+            color: #fff;
+            border-radius: 0px 15px 15px 0px;
+            float: right;
+            text-align: center;
+            line-height: 20px;
+            font-size: 12px;
+        }
+
+        #bq_update {
+            padding: 0 0px;
+        }
+
+        #zdy {
+            margin-left: 10px;
+            text-align: center;
+            font-size: 12px;
+            border: none;
+            outline: none;
+            color: #999999;
+            margin-left: 15px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="address_item add_bottom">
+        <div class="regist_input">
+            <label class="label_input">收货人:</label>
+            <input type="text" placeholder="请输入收货人姓名" class="input_phone" id="user_name" />
+        </div>
+    </div>
+    <div class="address_item add_bottom">
+        <div class="regist_input">
+            <label class="label_input">联系方式:</label>
+            <input type="tel" placeholder="请输入手机号" maxlength="11" class="input_phone phone_input" id="login_phone" />
+        </div>
+    </div>
+    <div class="address_item add_bottom">
+        <div class="regist_input">
+            <label class="label_input">所在地区:</label>
+            <label class="area" id="my_address"></label>
+            <label class="chose" tapmode onclick="choseCity();">请选择<div class="set_right mine_forward"><img src="../../image/home/mine_forward.png" alt=""></div></label>
+        </div>
+    </div>
+    <div class="address_item add_bottom">
+        <div class="regist_input">
+            <label class="label_input">详细地址:</label>
+            <input type="text" placeholder="街道、门牌号等" class="input_phone" id="address" />
+        </div>
+    </div>
+    <div class="address_item">
+        <div class="biaoqian_item">
+            <label>标签:</label>
+            <div class="biaoqian">
+                <ul>
+                    <li class="bq_moren">&nbsp&nbsp&nbsp&nbsp家&nbsp&nbsp&nbsp&nbsp</li>
+                    <li class="bq_moren">&nbsp&nbsp&nbsp公司&nbsp&nbsp&nbsp</li>
+                    <li class="bq_moren">&nbsp&nbsp&nbsp学校&nbsp&nbsp&nbsp</li>
+                </ul>
+                <ul id="label_list">
+                    <li class="bq_add" onclick="bq_add()">&nbsp&nbsp&nbsp&nbsp&nbsp+&nbsp&nbsp&nbsp&nbsp&nbsp</li>
+                </ul>
+                <!-- <ul id="label_list1"> -->
+                <!-- <li class="bq_add">&nbsp&nbsp&nbsp&nbsp&nbsp+&nbsp&nbsp&nbsp&nbsp&nbsp</li> -->
+                <!-- </ul> -->
+                <div class="add_label"><input type="text" id="add_input" placeholder="最多可输入5个字哦~"><button type="button" tapmode name="button" disabled="disabled" id="add_btn">确定</button></div>
+            </div>
+        </div>
+    </div>
+    <div class="address_item add_top">
+        <div class="regist_input">
+            <label class="label_input">设为默认:</label>
+            <div class="moren_yuan">
+                <div class="lan_yuan"></div>
+            </div>
+        </div>
+    </div>
+    <div class="addsubmitBtn submitColor" tapmode onclick="saveBtn();">保存</div>
+    <div class="deleteBtn deleteColor" tapmode onclick="openDialog();">删除</div>
+    <div class="submitBtn submitColor" tapmode onclick="saveBtn();">保存</div>
+    <input type="hidden" id="label_type" value="0">
+</body>
+<script type="text/javascript" src="../../script/api.js"></script>
+<script type="text/javascript" src="../../script/jquery.js"></script>
+<script type="text/javascript" src="../../script/api_common.js"></script>
+<script type="text/javascript" src="../../script/md5.js"></script>
+<script type="text/javascript" src="../../script/aui-dialog.js"></script>
+<script type="text/javascript">
+    var user_id;
+    var default_flag = 0;
+    apiready = function() {
+        if (!empty($api.getStorage("userInfo"))) {
+            user_id = $api.getStorage("userInfo").user_id;
+        } else {
+            api.openWin({
+                name: 'user_login',
+                url: './../login/user_login.html',
+            });
+        }
+
+        if (api.pageParam.address_flag == 2) { //编辑地址信息
+            addressInfo();
+            $(".addsubmitBtn").hide();
+            $(".deleteBtn").show();
+            $(".submitBtn").show();
+        } else {
+            $(".addsubmitBtn").show();
+            $(".deleteBtn").hide();
+            $(".submitBtn").hide();
+        }
+        if (api.pageParam.list_count == 0) {
+            default_flag = 1
+        }
+    }
+
+    function choseCity() {
+        var UIActionSelector = api.require('UIActionSelector');
+        UIActionSelector.open({
+            datas: 'widget://res/city.json',
+            layout: {
+                row: 5,
+                col: 3,
+                height: 30,
+                size: 12,
+                sizeActive: 14,
+                rowSpacing: 5,
+                colSpacing: 10,
+                maskBg: 'rgba(0,0,0,0.2)',
+                bg: '#fff',
+                color: '#999',
+                colorActive: '#FF2220',
+                colorSelected: '#FF2220'
+            },
+            animation: true,
+            cancel: {
+                text: '取消',
+                size: 12,
+                w: 90,
+                h: 35,
+                bg: '#fff',
+                bgActive: '#ccc',
+                color: '#888',
+                colorActive: '#fff'
+            },
+            ok: {
+                text: '确定',
+                size: 12,
+                w: 90,
+                h: 35,
+                bg: '#fff',
+                bgActive: '#ccc',
+                color: '#888',
+                colorActive: '#fff'
+            },
+            title: {
+                text: '请选择',
+                size: 12,
+                h: 44,
+                bg: '#eee',
+                color: '#999'
+            },
+            fixedOn: api.frameName
+        }, function(ret, err) {
+            if (ret) {
+                // alert(JSON.stringify(ret));
+                if (ret.eventType == 'ok') {
+                    $api.byId('my_address').innerHTML = ret.level1 + ' ' + ret.level2 + ' ' + ret.level3;
+                }
+            } else {
+                // alert(JSON.stringify(err));
+            }
+        });
+    }
+
+    function bq_add() {
+        $api.byId('add_input').value = '';
+        $("#add_btn").attr("disabled", true);
+        $(".add_label").show();
+        $(".bq_add").hide();
+    }
+    // $(".bq_add").click(function() {
+    //
+    // });
+    $("#add_input").keyup(function() {
+        var label_val = $("#add_input").val();
+        if (label_val != "") {
+            $("#add_btn").attr("disabled", false);
+            $("button").css("background", "#FF584A");
+            $(".add_label").css("border", "solid 1px #FF584A");
+        } else {
+            $("#add_btn").attr("disabled", true);
+            $("button").css("background", "#DDD");
+            $(".add_label").css("border", "solid 1px #DDD");
+        }
+    });
+    // var labels=$(".bq_moren");
+    $("#add_btn").click(function() {
+        var label_val = $("#add_input").val();
+        if (label_val.length > 5) {
+            api.toast({
+                msg: "最多只能输入5个字哦~",
+                duration: 2000,
+                location: 'middle'
+            });
+        } else {
+            $(".add_label").hide();
+            var cont = '';
+            if (label_val != "") {
+                cont += '<li class="bq_moren" id="bq_update"><span id="zdy" tapmode onclick="zdy()">' + label_val + '</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span tapmode class="un" onclick="updatebq()">编辑</span></li>';
+                $("#label_list").html(cont);
+                labels.removeClass("bq_active").addClass("bq_moren");
+                $("#bq_update").removeClass("bq_moren").addClass("bq_active");
+                $("#label_type").val(1);
+            }
+        }
+    });
+    //编辑标签
+    function updatebq() {
+        $api.byId('add_input').value = $("#zdy").html();
+        var label_val = $("#add_input").val();
+        if (label_val != "") {
+            $("#add_btn").attr("disabled", false);
+            $("button").css("background", "#FF584A");
+            $(".add_label").css("border", "solid 1px #FF584A");
+        } else {
+            $("#add_btn").attr("disabled", true);
+            $("button").css("background", "#DDD");
+            $(".add_label").css("border", "solid 1px #DDD");
+        }
+        $(".add_label").show();
+        $("#bq_update").hide();
+    }
+    $(".lan_yuan").click(function() {
+        if ($(this).hasClass("lan_active")) {
+            $(this).removeClass("lan_active");
+            default_flag = 0;
+        } else {
+            $(this).addClass("lan_active");
+            default_flag = 1;
+        }
+    });
+
+    function saveBtn() {
+        var name = $api.byId("user_name").value;
+        var phone = $api.byId("login_phone").value;
+        var city = $api.byId('my_address').innerHTML;
+        var address = ' ' + $api.byId("address").value;
+        var all_address = city + address;
+        var label;
+        var label_type = $("#label_type").val();
+        if (label_type == 0) {
+            label = $(".bq_active").html();
+        } else {
+            label = $("#zdy").html();
+        }
+        if (empty(label)) {
+            api.toast({
+                msg: '请选择标签',
+                duration: 2000,
+                location: 'middle'
+            });
+            return;
+        }
+        // alert(user_id+"---"+name+"---"+phone+"---"+all_address+"----"+label+"----"+default_flag);
+        if (empty(name)) {
+            api.toast({
+                msg: '请输入收货人姓名',
+                duration: 2000,
+                location: 'middle'
+            });
+        } else {
+            if (empty(phone)) {
+                api.toast({
+                    msg: '请输入收货人联系电话',
+                    duration: 2000,
+                    location: 'middle'
+                });
+            } else {
+                if (empty(city)) {
+                    api.toast({
+                        msg: '请选择所在地区',
+                        duration: 2000,
+                        location: 'middle'
+                    });
+                } else {
+                    if (empty(address)) {
+                        api.toast({
+                            msg: '请输入详细地址',
+                            duration: 2000,
+                            location: 'middle'
+                        });
+                    } else {
+                        // if (empty(label)) {
+                        //     label = "";
+                        // }
+                        if (api.pageParam.address_flag == 1) {
+                            var obj = {
+                                'user_id': user_id,
+                                'name': encodeURIComponent(name),
+                                'phone': phone,
+                                'address': encodeURIComponent(all_address),
+                                'label': encodeURIComponent(label),
+                                'default_flag': default_flag
+                            };
+                            var objArr = sort_ASCII(obj);
+                            var timestamp = fntimestamp();
+                            var version = '2.0';
+                            var arr = apiSecret + timestamp + version + '';
+                            for (i in objArr) {
+                                arr += objArr[i];
+                            }
+                            var sign = hex_md5(arr);
+                            // alert(sign);
+                            api.ajax({
+                                url: commonUrl + 'soukeAppTttService/service/singleitem/addDisAddress_ac',
+                                method: 'post',
+                                headers: {
+                                    'Content-Type': 'application/json;charset=utf-8'
+                                },
+                                data: {
+                                    body: {
+                                        'apiKey': apiKey,
+                                        'timestamp': timestamp,
+                                        'sign': sign,
+                                        'user_id': user_id,
+                                        'name': name,
+                                        'phone': phone,
+                                        'address': all_address,
+                                        'label': label,
+                                        'default_flag': default_flag
+                                    }
+                                }
+                            }, function(ret, err) {
+                                if (ret) {
+                                    if (ret.result_code == 200) {
+                                        console.log("添加地址-----：" + JSON.stringify(ret));
+                                        api.toast({
+                                            msg: ret.result_message,
+                                            duration: 2000,
+                                            location: 'middle'
+                                        });
+                                        api.execScript({
+                                            name: 'address_win',
+                                            frameName: 'address_frame',
+                                            script: 'location.reload();'
+                                        });
+
+                                        api.execScript({
+                                            name: 'add_address_win',
+                                            // frameName: 'frmName',
+                                            script: 'closeWin();'
+                                        });
+
+                                    } else {
+                                        api.toast({
+                                            msg: ret.result_message,
+                                            duration: 2000,
+                                            location: 'middle'
+                                        });
+
+                                    }
+                                } else {
+                                    api.alert({
+                                        msg: JSON.stringify(err)
+                                    });
+                                }
+                            });
+                        } else if (api.pageParam.address_flag == 2) {
+                            // var address_url='soukeAppTttService/service/singleitem/updateDisAddress_ac';
+                            var obj = {
+                                'user_id': user_id,
+                                'name': encodeURIComponent(name),
+                                'phone': phone,
+                                'address': encodeURIComponent(all_address),
+                                'label': encodeURIComponent(label),
+                                'default_flag': default_flag,
+                                'address_id': api.pageParam.address_id
+                            };
+                            var objArr = sort_ASCII(obj);
+                            var timestamp = fntimestamp();
+                            var version = '2.0';
+                            var arr = apiSecret + timestamp + version + '';
+                            for (i in objArr) {
+                                arr += objArr[i];
+                            }
+                            var sign = hex_md5(arr);
+                            // alert(sign);
+                            api.ajax({
+                                url: commonUrl + 'soukeAppTttService/service/singleitem/updateDisAddress_ac',
+                                method: 'post',
+                                headers: {
+                                    'Content-Type': 'application/json;charset=utf-8'
+                                },
+                                data: {
+                                    body: {
+                                        'apiKey': apiKey,
+                                        'timestamp': timestamp,
+                                        'sign': sign,
+                                        'user_id': user_id,
+                                        'name': name,
+                                        'phone': phone,
+                                        'address': all_address,
+                                        'label': label,
+                                        'default_flag': default_flag,
+                                        'address_id': api.pageParam.address_id
+                                    }
+                                }
+                            }, function(ret, err) {
+                                if (ret) {
+                                    if (ret.result_code == 200) {
+                                        // console.log("修改地址-----："+JSON.stringify(ret));
+                                        api.toast({
+                                            msg: ret.result_message,
+                                            duration: 2000,
+                                            location: 'middle'
+                                        });
+                                        api.execScript({
+                                            name: 'address_win',
+                                            frameName: 'address_frame',
+                                            script: 'location.reload();'
+                                        });
+
+                                        api.execScript({
+                                            name: 'add_address_win',
+                                            // frameName: 'frmName',
+                                            script: 'closeWin();'
+                                        });
+
+                                    } else {
+                                        api.toast({
+                                            msg: ret.result_message,
+                                            duration: 2000,
+                                            location: 'middle'
+                                        });
+
+                                    }
+                                } else {
+                                    api.alert({
+                                        msg: JSON.stringify(err)
+                                    });
+                                }
+                            });
+                        }
+
+
+                    }
+                }
+            }
+        }
+    }
+
+    function addressInfo() {
+        var obj = {
+            // 'user_id':user_id,
+            'address_id': api.pageParam.address_id,
+        };
+        var objArr = sort_ASCII(obj);
+        var timestamp = fntimestamp();
+        var version = '2.0';
+        var arr = apiSecret + timestamp + version + '';
+        for (i in objArr) {
+            arr += objArr[i];
+        }
+        var sign = hex_md5(arr);
+        // alert(sign);
+        api.ajax({
+            url: commonUrl + 'soukeAppTttService/service/singleitem/queryUserAddressOne_ac',
+            method: 'post',
+            headers: {
+                'Content-Type': 'application/json;charset=utf-8'
+            },
+            data: {
+                body: {
+                    'apiKey': apiKey,
+                    'timestamp': timestamp,
+                    'sign': sign,
+                    // 'user_id':user_id,
+                    'address_id': api.pageParam.address_id,
+                }
+            }
+        }, function(ret, err) {
+            if (ret) {
+                if (ret.result_code == 200) {
+                    console.log("查询单个地址-----：" + JSON.stringify(ret));
+                    $api.byId('user_name').value = ret.result_data.name;
+                    // var name=$api.byId("user_name").value;
+                    $api.byId("login_phone").value = ret.result_data.phone;
+                    // var city=$api.byId('my_address').innerHTML;
+
+                    var arr = ret.result_data.address.split(' ');
+                    var lastStr = arr[0] + ' ' + arr[1] + ' ' + arr[2] + ' ';
+                    $api.byId("address").value = arr[3];
+                    // alert(lastStr);
+                    $api.byId('my_address').innerHTML = lastStr;
+                    if (ret.result_data.label != "") {
+                        if (ret.result_data.label == "&nbsp;&nbsp;&nbsp;家&nbsp;&nbsp;&nbsp;" || ret.result_data.label == "&nbsp;&nbsp;&nbsp;公司&nbsp;&nbsp;&nbsp;" || ret.result_data.label == "&nbsp;&nbsp;&nbsp;学校&nbsp;&nbsp;&nbsp;") {
+                            var label_a = $(".bq_moren");
+                            for (var i = 0; i < label_a.length; i++) {
+                                if (ret.result_data.label == $(label_a[i]).html()) {
+                                    $(label_a[i]).removeClass("bq_moren").addClass("bq_active");
+                                }
+                            }
+                        } else {
+                            var cont = "";
+                            cont += '<li class="bq_active" id="bq_update"><span id="zdy" onclick="zdy()">' + ret.result_data.label + '</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="un" onclick="updatebq()">编辑</span></li>';
+                            $("#label_list").html(cont);
+                        }
+                    }
+                    if (ret.result_data.default_flag == 1) {
+                        $(".lan_yuan").addClass("lan_active");
+                        default_flag = 1;
+                    }
+                } else {
+                    api.toast({
+                        msg: ret.result_message,
+                        duration: 2000,
+                        location: 'middle'
+                    });
+
+                }
+            } else {
+                // api.alert({ msg: JSON.stringify(err) });
+            }
+        });
+    }
+    var labels = $(".bq_moren");
+    // var label_active = $(".bq_active");
+    function zdy() {
+        labels.removeClass("bq_active").addClass("bq_moren");
+        $("#bq_update").removeClass("bq_moren").addClass("bq_active");
+        $("#label_type").val(1);
+    }
+    labels.click(function() {
+        $(".bq_active").removeClass("bq_active").addClass("bq_moren");
+        labels.removeClass("bq_active").addClass("bq_moren");;
+        $(this).removeClass("bq_moren").addClass("bq_active");
+        $(".add_label").hide();
+        if (api.pageParam.address_flag == 1) {
+            var cont = '';
+            cont += '<li class="bq_add" onclick="bq_add()">&nbsp&nbsp&nbsp&nbsp&nbsp+&nbsp&nbsp&nbsp&nbsp&nbsp</li>';
+            $("#label_list").html(cont);
+        } else {
+            var label_val = $("#add_input").val();
+            var cont = '';
+            if (label_val != "") {
+                cont += '<li class="bq_moren" id="bq_update"><span id="zdy" tapmode onclick="zdy()">' + label_val + '</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span tapmode class="un" onclick="updatebq()">编辑</span></li>';
+                $("#label_list").html(cont);
+            } else {
+                cont += '<li class="bq_add" onclick="bq_add()">&nbsp&nbsp&nbsp&nbsp&nbsp+&nbsp&nbsp&nbsp&nbsp&nbsp</li>';
+                $("#label_list").html(cont);
+            }
+        }
+        // $(this).removeClass("bq_moren").addClass("bq_active").siblings().removeClass("bq_active").addClass("bq_moren");
+    });
+
+    function openDialog() {
+        var dialog = new auiDialog({});
+        dialog.alert({
+            title: "提示",
+            msg: '确定要删除吗？',
+            buttons: ['取消', '确定']
+        }, function(ret) {
+            if (ret) {
+                if (ret.buttonIndex == 1) {
+                    return;
+                } else if (ret.buttonIndex == 2) {
+                    var obj = {
+                        'address_id': api.pageParam.address_id,
+                    };
+                    var objArr = sort_ASCII(obj);
+                    var timestamp = fntimestamp();
+                    var version = '2.0';
+                    var arr = apiSecret + timestamp + version + '';
+                    for (i in objArr) {
+                        arr += objArr[i];
+                    }
+                    var sign = hex_md5(arr);
+                    // alert(sign);
+                    api.ajax({
+                        url: commonUrl + 'soukeAppTttService/service/singleitem/delDisAddress_ac',
+                        method: 'post',
+                        headers: {
+                            'Content-Type': 'application/json;charset=utf-8'
+                        },
+                        data: {
+                            body: {
+                                'apiKey': apiKey,
+                                'timestamp': timestamp,
+                                'sign': sign,
+                                'address_id': api.pageParam.address_id,
+                            }
+                        }
+                    }, function(ret, err) {
+                        if (ret) {
+                            if (ret.result_code == 200) {
+                                console.log("删除地址-----：" + JSON.stringify(ret));
+                                api.toast({
+                                    msg: ret.result_message,
+                                    duration: 2000,
+                                    location: 'middle'
+                                });
+                                // getData();
+                                api.execScript({
+                                    name: 'address_win',
+                                    frameName: 'address_frame',
+                                    script: 'location.reload();'
+                                });
+
+                                api.execScript({
+                                    name: 'add_address_win',
+                                    // frameName: 'frmName',
+                                    script: 'closeWin();'
+                                });
+                                // setTimeout(function() {
+                                //     api.closeWin({});
+                                // }, 1000)
+
+
+                            } else {
+                                api.toast({
+                                    msg: ret.result_message,
+                                    duration: 2000,
+                                    location: 'middle'
+                                });
+
+                            }
+                        } else {
+                            // api.alert({ msg: JSON.stringify(err) });
+                        }
+                    });
+                }
+            }
+        })
+    }
+</script>
+
+</html>

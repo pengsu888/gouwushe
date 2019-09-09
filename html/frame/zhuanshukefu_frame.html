@@ -1,0 +1,309 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0" />
+    <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+    <title>专属客服</title>
+    <link rel="stylesheet" type="text/css" href="../../css/api.css" />
+    <link rel="stylesheet" type="text/css" href="../../css/style.css" />
+</head>
+<style media="screen">
+    html,
+    body {
+        height: 100%;
+        width: 100%;
+        background: #f4f4f4;
+    }
+
+    .wrap_kefu {
+        height: 100%;
+        width: 100%;
+        overflow-x: hidden;
+        overflow-y: auto;
+    }
+
+    .kefu {
+        width: calc(100% - 24px);
+        height: 80px;
+        background: #fff;
+        margin: 10px auto 0 auto;
+        font-size: 14px;
+    }
+
+    .kefu ul {
+        list-style: none;
+        padding: 10px;
+        margin: 0;
+        height: 60px;
+        width: calc(100% - 20px);
+    }
+
+    .kefu ul li {
+        float: left;
+        height: 100%;
+        width: 100%;
+    }
+
+    .kefu ul li.kefu_img {
+        width: 50px;
+        height: 50px;
+        border-radius: 50%;
+        margin-top: 5px;
+    }
+
+    .kefu ul li.kefu_img img {
+        width: 100%;
+        height: 100%;
+        background-size: 100% 100%;
+    }
+
+    .kefu ul li.kefu_del {
+        width: calc(100% - 152px);
+        height: 100%;
+        margin: 5px 10px 0 10px;
+    }
+
+    .kefu ul li.kefu_del div {
+        width: 100%;
+        height: 30px;
+        line-height: 30px;
+    }
+
+    .kefu ul li.kefu_del div.del_top span.kefu_type {
+        width: 60px;
+        height: 20px;
+        border-radius: 15px;
+        line-height: 20px;
+        text-align: center;
+        border: solid 1px #666;
+        font-size: 12px;
+        color: #666;
+        position: relative;
+        top: -5px;
+        left: 0;
+    }
+
+    .kefu ul li.kefu_del div.del_top span.kefu_name {
+        width: calc(100% - 72px);
+        font-size: 14px;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        margin-left: 10px;
+    }
+
+    .kefu ul li.kefu_del div.del_bot {
+        color: #666;
+    }
+
+    .kefu ul li.kefu_copy {
+        width: 80px;
+        height: 24px;
+        border: solid 1px #f94529;
+        line-height: 24px;
+        text-align: center;
+        color: #f94529;
+        border-radius: 15px;
+        margin-top: 17px;
+        font-size: 14px;
+    }
+</style>
+
+<body>
+    <div class="wrap_kefu" id="list">
+        <!-- <div class="kefu">
+        <ul>
+          <li class="kefu_img"><img src="../../image/home/v2_ic_avatar.png" alt=""></li>
+          <li class="kefu_del">
+            <div class="del_top"><span class="kefu_type">专属客服</span><span class="kefu_name">淡定从容198808</span></div>
+            <div class="del_bot">微信号：18812345678</div>
+          </li>
+          <li class="kefu_copy">一键复制</li>
+        </ul>
+      </div>
+      <div class="kefu">
+        <ul>
+          <li class="kefu_img"><img src="../../image/home/v2_ic_avatar.png" alt=""></li>
+          <li class="kefu_del">
+            <div class="del_top"><span class="kefu_type">专属客服</span><span class="kefu_name">淡定从容198808</span></div>
+            <div class="del_bot">QQ号码：280392627</div>
+          </li>
+          <li class="kefu_copy">一键复制</li>
+        </ul>
+      </div>
+      <div class="kefu">
+        <ul>
+          <li class="kefu_img"><img src="../../image/home/v2_ic_avatar.png" alt=""></li>
+          <li class="kefu_del">
+            <div class="del_top"><span class="kefu_type">专属客服</span><span class="kefu_name">淡定从容198808</span></div>
+            <div class="del_bot">客服工号：8021</div>
+          </li>
+          <li class="kefu_copy">立即咨询</li>
+        </ul>
+      </div> -->
+    </div>
+</body>
+<script type="text/javascript" src="../../script/api.js"></script>
+<script type="text/javascript" src="../../script/jquery.js"></script>
+<script type="text/javascript" src="../../script/api_common.js"></script>
+<script type="text/javascript" src="../../script/md5.js"></script>
+<script type="text/javascript">
+    var user_id;
+    apiready = function() {
+        if (!empty($api.getStorage("userInfo"))) {
+            user_id = $api.getStorage("userInfo").user_id;
+        } else {
+            api.openWin({
+                name: 'user_login',
+                url: '../login/user_login.html',
+                reload: true,
+                bounces: false
+            });
+        }
+        getData();
+    };
+
+    function getData() {
+        var obj = {
+            'user_id': user_id
+        };
+        var objArr = sort_ASCII(obj);
+        var timestamp = fntimestamp();
+        var version = '2.0';
+        var arr = apiSecret + timestamp + version + '';
+        for (i in objArr) {
+            arr += objArr[i];
+        }
+        var sign = hex_md5(arr);
+        api.ajax({
+            url: commonUrl + 'soukeAppTttService/service/user/getCustomer_ac',
+            method: 'post',
+            headers: {
+                'Content-Type': 'application/json;charset=utf-8'
+            },
+            data: {
+                body: {
+                    'apiKey': apiKey,
+                    'timestamp': timestamp,
+                    'sign': sign,
+                    'user_id': user_id,
+                }
+            }
+        }, function(ret, err) {
+            if (ret) {
+                if (ret.result_code == 200) {
+                    console.log("专属客服" + JSON.stringify(ret));
+                    var data = ret.result_data;
+                    var html = '';
+                    for (var i = 0; i < data.length; i++) {
+                        if (data[i].type == "QQ号") {
+                            html += '<div class="kefu">';
+                            html += '<ul>';
+                            html += '<li class="kefu_img"><img src="../../image/home/v2_ic_avatar.png" alt=""></li>';
+                            html += '<li class="kefu_del">';
+                            html += '<div class="del_top"><span class="kefu_type">推荐人</span><span class="kefu_name">' + data[i].nickname + '</span></div>';
+                            html += '<div class="del_bot">' + data[i].type + '：' + data[i].custom_qq + '</div>';
+                            html += '</li>';
+                            html += '<li class="kefu_copy" tapmode onclick="fnCopyQq(' + data[i].custom_qq + ')">一键复制</li>';
+                            html += '</ul>';
+                            html += '</div>';
+                        } else if (data[i].type == "微信号") {
+                            html += '<div class="kefu">';
+                            html += '<ul>';
+                            html += '<li class="kefu_img"><img src="../../image/home/v2_ic_avatar.png" alt=""></li>';
+                            html += '<li class="kefu_del">';
+                            html += '<div class="del_top"><span class="kefu_type">推荐人</span><span class="kefu_name">' + data[i].nickname + '</span></div>';
+                            html += '<div class="del_bot">' + data[i].type + '：' + data[i].custom_qq + '</div>';
+                            html += '</li>';
+                            html += '<li class="kefu_copy" tapmode onclick="fnCopyWx(' + data[i].custom_qq + ')">一键复制</li>';
+                            html += '</ul>';
+                            html += '</div>';
+                        } else if (data[i].type == "客服工号") {
+                            if (data[i].link_type == "0") {
+                                html += '<div class="kefu">';
+                                html += '<ul>';
+                                html += '<li class="kefu_img"><img src="../../image/home/v2_ic_avatar.png" alt=""></li>';
+                                html += '<li class="kefu_del">';
+                                html += '<div class="del_top"><span class="kefu_type">专属客服</span><span class="kefu_name">在线客服</span></div>';
+                                html += '<div class="del_bot">QQ号：' + data[i].custom_qq + '</div>';
+                                html += '</li>';
+                                html += '<li class="kefu_copy" tapmode onclick="fnCopyQq(' + data[i].custom_qq + ')">一键复制</li>';
+                                html += '</ul>';
+                                html += '</div>';
+                            } else if (data[i].link_type == "1") {
+                                html += '<div class="kefu">';
+                                html += '<ul>';
+                                html += '<li class="kefu_img"><img src="../../image/home/v2_ic_avatar.png" alt=""></li>';
+                                html += '<li class="kefu_del">';
+                                html += '<div class="del_top"><span class="kefu_type">专属客服</span><span class="kefu_name">在线客服</span></div>';
+                                // html += '<div class="del_bot">微信号：' + data[i].custom_wx + '</div>';
+                                html += '</li>';
+                                //  链接地址传参需要转义
+                                html += '<li class="kefu_copy" tapmode onclick="fnCopyLink(\'' + data[i].custom_link + '\')">立即咨询</li>';
+                                html += '</ul>';
+                                html += '</div>';
+                            } else {
+                                html += '<div class="kefu">';
+                                html += '<ul>';
+                                html += '<li class="kefu_img"><img src="../../image/home/v2_ic_avatar.png" alt=""></li>';
+                                html += '<li class="kefu_del">';
+                                html += '<div class="del_top"><span class="kefu_type">专属客服</span><span class="kefu_name">在线客服</span></div>';
+                                html += '<div class="del_bot">微信号：' + data[i].custom_wx + '</div>';
+                                html += '</li>';
+                                html += '<li class="kefu_copy" tapmode onclick="fnCopyWx(' + data[i].custom_wx + ')">一键复制</li>';
+                                html += '</ul>';
+                                html += '</div>';
+                            }
+                        }
+
+                    }
+                    $api.byId('list').innerHTML = html;
+
+                } else {
+                    api.toast({
+                        msg: ret.result_message,
+                        duration: 2000,
+                        location: 'middle'
+                    });
+                }
+            } else {
+                serviceErr();
+                // api.alert({
+                //     msg: JSON.stringify(err)
+                // });
+            }
+        });
+    }
+
+    function fnCopyWx(custom_qq) {
+        fnCopy(custom_qq);
+        window.location.href = 'weixin://'; //打开微信对话栏
+    }
+
+    function fnCopyQq(custom_qq) {
+        fnCopy(custom_qq);
+        if (api.systemType == "ios") {
+            setTimeout(function() {
+                window.location.href = 'mqq://im/chat?chat_type=wpa&uin=' + custom_qq + '&version=1&src_type=web'; //打开QQ对话栏 IOS
+            }, 1000)
+        } else {
+            window.location.href = 'mqqwpa://im/chat?chat_type=wpa&uin=' + custom_qq; //打开QQ对话栏 android
+        }
+    }
+    //  window.location.href = plateid;
+    function fnCopyLink(url) {
+        api.openWin({
+            name: 'jump_href_win',
+            url: '../win/jump_href_win.html',
+            pageParam: {
+                url: url,
+                name: '在线客服'
+            },
+
+        });
+    }
+</script>
+
+</html>

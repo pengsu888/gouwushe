@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0" />
+    <!-- 解决IOS数字出现蓝色数字问题  -->
+    <meta name="format-detection" content="telephone=no" />
+    <title>通话记录</title>
+    <link rel="stylesheet" type="text/css" href="../../css/api.css" />
+    <link rel="stylesheet" type="text/css" href="../../css/aui.css" />
+    <link rel="stylesheet" type="text/css" href="../../css/net_records.css" />
+    <style>
+
+    </style>
+</head>
+
+<body>
+    <!-- 头部 -->
+    <div class="aui-card-list">
+        <div class="aui-card-list-header">
+            <div><i class="aui-iconfont aui-icon-my aui-text-danger"></i><span class="aui-text-danger"> 最近联系人</span></div>
+            <i class="aui-iconfont aui-icon-more"></i>
+        </div>
+        <!-- 列表数据 -->
+        <ul>
+            <li class="border-b">
+                <div class="aui-flex aui-insurance-box b-line">
+                    <div class="aui-insurance-img">
+                        <img src="../../image/net_phone/dianxin.png" alt="">
+                    </div>
+                    <div class="aui-flex-box">
+                        <h4>13389088878 (8)</h4>
+                        <h5>天津 中国电信</h5>
+                    </div>
+                    <div>
+                        <h5 id='start_time'>今天</h5>
+                        <p class="aui-sml-text">32分48秒</p>
+                    </div>
+                </div>
+                <div class="flex-wrap right-btns">
+                    <div class="flex-con"><span>呼叫</span></div>
+                    <div class="flex-con red"><span>删除</span></div>
+                </div>
+            </li>
+        </ul>
+        <div class="aui-card-list-footer aui-text-center">
+            查看更多
+        </div>
+    </div>
+</body>
+<script type="text/javascript" src="../../script/api.js"></script>
+<script type="text/javascript" src="../../script/jquery.js"></script>
+<script type="text/javascript" src="../../script/api_common.js"></script>
+<script type="text/javascript" src="../../script/md5.js"></script>
+<script type="text/javascript" src="../../script/net_records.js"></script>
+<script type="text/javascript">
+    var user_id;
+    apiready = function() {
+        fnRecord();
+        iniRightBtns('ul li');
+    };
+
+    function iniRightBtns(selector) {
+        var eLi = $api.domAll(selector),
+            clientX = 0,
+            hasLeft = false;
+        for (var x in eLi) {
+            if (eLi[x] instanceof Element) {
+                eLi[x].addEventListener('touchstart', handleTouchEvent, false);
+                eLi[x].addEventListener('touchmove', handleTouchEvent, false);
+                eLi[x].addEventListener('touchend', handleTouchEvent, false);
+            }
+        }
+
+        function handleTouchEvent(event) {
+            //只跟踪一次触摸
+            if (event.touches.length <= 1) {
+                switch (event.type) {
+                    case 'touchstart':
+                        $api.addCls($api.dom('body'), 'overflow');
+                        clientX = event.changedTouches[0].clientX;
+                        if (this.offsetLeft < 0) {
+                            hasLeft = true;
+                        } else {
+                            hasLeft = false;
+                        }
+                        var eLeft = $api.domAll(selector + '.animation');
+                        if (eLeft.length) {
+                            for (var x in eLeft) {
+                                if (eLeft[x] instanceof Element) {
+                                    $api.removeCls(eLeft[x], 'animation');
+                                    $api.removeCls(eLeft[x], 'left');
+                                }
+                            }
+                        }
+                        break;
+                    case 'touchend':
+                        $api.removeCls($api.dom('body'), 'overflow');
+                        var current = this;
+                        if (Math.abs(this.offsetLeft) <= this.querySelector('.right-btns').offsetWidth / 2) {
+                            $api.addCls(current, 'animation');
+                            current.style.left = 0;
+                            setTimeout(function() {
+                                $api.removeCls(current, 'animation');
+                                $api.removeCls(current, 'left');
+                            }, 300);
+                        } else {
+                            var eLeft = $api.domAll(selector + '.left');
+                            if (eLeft.length) {
+                                for (var x in eLeft) {
+                                    if (eLeft[x] instanceof Element) {
+                                        if (current != eLeft[x]) {
+                                            $api.addCls(eLeft[x], 'animation');
+                                            eLeft[x].style.left = 0;
+                                        }
+                                    }
+                                }
+                            }
+                            $api.addCls(current, 'animation');
+                            $api.addCls(current, 'left');
+                            current.style.left = -current.querySelector('.right-btns').offsetWidth + 'px';
+                            setTimeout(function() {
+                                $api.removeCls(current, 'animation');
+                            }, 300);
+                        }
+                        break;
+                    case 'touchmove':
+                        event.preventDefault(); //阻止滚动
+                        var x = event.changedTouches[0].clientX - clientX;
+                        console.log(hasLeft)
+                        if (hasLeft) {
+                            if (x >= this.querySelector('.right-btns').offsetWidth) {
+                                this.style.left = '0';
+                            } else {
+                                if (x < 0) {
+                                    this.style.left = -this.querySelector('.right-btns').offsetWidth + 'px';
+                                } else {
+                                    this.style.left = -(this.querySelector('.right-btns').offsetWidth - x) + 'px';
+                                }
+                            }
+                        } else {
+                            if (x > 0) {
+                                this.style.left = '0';
+                            } else {
+                                if (x <= -this.querySelector('.right-btns').offsetWidth) {
+                                    this.style.left = -this.querySelector('.right-btns').offsetWidth + 'px';
+                                } else {
+                                    this.style.left = x + 'px';
+                                }
+                            }
+                        }
+                        break;
+                }
+            }
+        }
+    }
+    // 查询用户通话记录
+    function fnRecord() {
+        if (!empty($api.getStorage("userInfo"))) {
+            user_id = $api.getStorage("userInfo").user_id;
+        } else {
+            user_id = '';
+            checkUserLogin();
+        }
+        var obj = {
+            'user_id': user_id
+        }
+        var objArr = sort_ASCII(obj);
+        var timestamp = fntimestamp();
+        var version = '2.0';
+        var arr = apiSecret + timestamp + version + '';
+        for (i in objArr) {
+            arr += objArr[i];
+        }
+        var sign = hex_md5(arr);
+        api.ajax({
+            url: commonUrl + 'soukeAppTttService/service/telbill/getTelFeeRecord',
+            method: 'post',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            data: {
+                body: {
+                    'apiKey': apiKey,
+                    'timestamp': timestamp,
+                    'sign': sign,
+                    'user_id': user_id
+                }
+            }
+        }, function(ret, err) {
+          console.log("查询用户通话记录" + JSON.stringify(ret));
+          // alert("查询用户通话记录" + JSON.stringify(ret));
+            if (ret) {
+                if (ret.result_code == 200) {
+                  var data = ret.result_data;
+                  alert(data[i].start_time);
+                  $api.byId('start_time').innerHTML = data.start_time;
+                  $api.byId('hold_time').innerHTML = data.hold_time;
+                  // start_time == ret.result_data.start_time;
+                  // hold_time == ret.result_data.hold_time;
+                  if (ret.result_data.call_nick!=''){
+                    // callees == ret.result_data.call_nick;
+                    $api.byId('callees').innerHTML = data.call_nick;
+                  } else{
+                    // callees == ret.result_data.callees;
+                    $api.byId('callees').innerHTML = data.callees;
+                  }
+                } else {
+                    api.toast({
+                        msg: ret.result_message,
+                        duration: 2000,
+                        location: 'middle'
+                    });
+                }
+            } else {
+                api.toast({
+                    msg: ret.result_message,
+                    duration: 2000,
+                    location: 'middle'
+                });
+
+            }
+        });
+    }
+</script>
+
+</html>

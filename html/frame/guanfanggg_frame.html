@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0" />
+  <title>官方公告</title>
+  <link rel="stylesheet" type="text/css" href="../../css/api.css" />
+</head>
+<style media="screen">
+  html,body{
+    height: 100%;
+    width: 100%;
+    background: #f4f4f4;
+  }
+  .gonggao{
+    width: calc(100% - 24px);
+    height: 100%;
+    margin: 0 auto;
+    background: #f4f4f4;
+    overflow-y: hidden;
+    overflow-y: auto;
+  }
+  .gonggao .gonggao_list{
+    width: 100%;
+    height: 221px;
+    background: #fff;
+    margin-top: 10px;
+    border-radius: 10px;
+  }
+  .gonggao .gonggao_list .gonggao_title{
+    width: calc(100% - 30px);
+    height: 30px;
+    overflow : hidden;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-line-clamp: 1;
+    -webkit-box-orient: vertical;
+    word-break: break-all;
+    font-size: 14px;
+    color:#333;
+    margin:0 auto;
+    line-height: 30px;
+  }
+  .gonggao .gonggao_list .gonggao_img{
+    width: 100%;
+    height: 150px;
+    overflow: hidden;
+  }
+  .gonggao .gonggao_list .gonggao_img img{
+    width: 100%;
+    height: 100%;
+    background-size: 100% 100%;
+  }
+  .gonggao .gonggao_list .gonggao_btm{
+    width: calc(100% - 30px);
+    margin: 5px auto 0 auto;
+    height: 30px;
+    line-height:30px;
+    color:#666;
+  }
+  .gonggao .gonggao_list .gonggao_btm .gonggao_time{
+    width: 50%;
+    height: 30px;
+    float: left;
+    text-align: left;
+  }
+  .gonggao .gonggao_list .gonggao_btm .gonggao_del{
+    width: 50%;
+    height: 30px;
+    float: right;
+    text-align: right;
+    font-size: 14px;
+    color: #f94529;
+  }
+</style>
+<body>
+    <div class="gonggao" id="list">
+        <!-- <div class="gonggao_list" onclick="fnOpenGuanfangggInfo();">
+          <div class="gonggao_title">大牌羽绒服低至99元</div>
+          <div class="gonggao_img"><img src="http://img.alicdn.com/imgextra/i4/666412682/TB2WeWtdFmWBuNjSspdXXbugXXa_!!666412682.jpg_400x400" alt=""></div>
+          <div class="gonggao_btm">
+            <div class="gonggao_time">2018-08-12</div>
+            <div class="gonggao_del">查看详情</div>
+          </div>
+        </div> -->
+    </div>
+</body>
+  <script type="text/javascript" src="../../script/api.js"></script>
+  <script type="text/javascript" src="../../script/jquery.js"></script>
+  <script type="text/javascript" src="../../script/api_common.js"></script>
+  <script type="text/javascript" src="../../script/md5.js"></script>
+  <script type="text/javascript">
+  var user_id;
+  apiready = function() {
+    if(!empty($api.getStorage("userInfo"))){
+      user_id=$api.getStorage("userInfo").user_id;
+    }else{
+      user_id='';
+    }
+    getData();
+  };
+  function getData(){
+    var obj={
+      'user_id':user_id,
+    };
+    var objArr=sort_ASCII(obj);
+    var timestamp=fntimestamp();
+    var version='2.0';
+    var arr=apiSecret+timestamp+version+'';
+    for(i in objArr){
+      arr+=objArr[i];
+    }
+    var sign=hex_md5(arr);
+    // alert(sign);
+    api.ajax({
+        url: commonUrl+'soukeAppTttService/service/help/h5/findNotice_ac',
+        method: 'post',
+        headers: {
+            'Content-Type': 'application/json;charset=utf-8'
+        },
+        data: {
+            body: {
+                'apiKey':apiKey,
+                'timestamp':timestamp,
+                'sign':sign,
+                'user_id':user_id,
+            }
+        }
+      }, function(ret, err) {
+        if (ret) {
+            if(ret.result_code==200){
+              console.log("官方公告"+JSON.stringify(ret));
+              var data=ret.result_data;
+              var html='';
+              for(var i=0;i<data.length;i++){
+                html+='<div class="gonggao_list">';
+                html+='<div class="gonggao_title">'+data[i].title+'</div>';
+                html+='<div class="gonggao_img" tapmode onclick="fnOpenGuanfangggInfo(\''+data[i].notice_url+'\')"><img src="'+data[i].pict_url+'" alt=""></div>';
+                html+='<div class="gonggao_btm">';
+                html+='<div class="gonggao_time">'+data[i].create_time+'</div>';
+                html+='<div class="gonggao_del" tapmode onclick="fnOpenGuanfangggInfo(\''+data[i].notice_url+'\')">查看详情</div>';
+                html+='</div>';
+                html+='</div>';
+              }
+              $api.byId('list').innerHTML=html;
+
+            }else{
+              api.toast({
+                  msg: ret.result_message,
+                  duration: 2000,
+                  location: 'middle'
+              });
+
+            }
+        } else {
+            api.alert({ msg: JSON.stringify(err) });
+        }
+      });
+  }
+    function fnOpenGuanfangggInfo(notice_url){
+      api.openWin({
+          name: 'guanfanggg_info_win',
+          url: './guanfanggg_info_win.html',
+          pageParam: {
+              head_title:"官方公告",
+              notice_url: notice_url
+          }
+      });
+    }
+  </script>
+
+</html>

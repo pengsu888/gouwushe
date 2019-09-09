@@ -1,0 +1,157 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0" />
+    <meta name="format-detection" content="telephone=no, email=no, date=no, address=no">
+    <title>Hello APP</title>
+    <link rel="stylesheet" type="text/css" href="../../css/api.css" />
+    <link rel="stylesheet" href="../../css/swiper.min.css">
+    <style>
+    html,body{
+      background-color: #f4f4f4;
+      height: 100%;
+      width: 100%;
+      position: relative;
+    }
+    .zfb_icon{
+      width: 100%;
+      height: 124px;
+      background: #fff;
+      overflow: hidden;
+    }
+    .zfb_icon img{
+      width: 114px;
+      height: 114px;
+      background-size: 100% 100%;
+      position: absolute;
+      top:10px;
+      left: 50%;
+      margin-left: -57px;
+    }
+    .registItem{
+      position: absolute;
+      width: 100%;
+      height: calc(100% - 134px);
+      background: #fff;
+      top: 134px;
+      left: 0;
+    }
+    .zfb_zh{
+      width: calc(100% - 12px);
+      height: 55px;
+      border-bottom: solid 1px #ddd;
+      line-height: 55px;
+      margin-left: 12px;
+    }
+    .zfb_zh div{
+      float: left;
+    }
+    .zfb_zh .zfbzh_l{
+      float: left;
+    }
+    .zfb_zh .zfbzh_r{
+      float: right;
+      margin-right: 12px;
+      color: #888;
+    }
+    .editBtn{
+      position: absolute;
+      bottom: 30px;
+      left: 12px;
+    }
+    .tip{
+      width: calc(100% - 24px);
+      color: #888;
+      margin: 15px auto;
+    }
+    </style>
+</head>
+<body>
+    <div class="zfb_icon"><img src="../../image/home/ic_alipay.png" alt=""></div>
+    <div class="registItem">
+      <div class="regist_input">
+        <div class="zfb_zh">
+          <div class="zfbzh_l">支付宝账号</div>
+          <div class="zfbzh_r" id="alipaynum"></div>
+        </div>
+        <div class="zfb_zh">
+          <div class="zfbzh_l">真实姓名</div>
+          <div class="zfbzh_r" id="real_name"></div>
+        </div>
+      </div>
+
+      <div class="submitBtn editBtn submitColor" onclick="changeZfb();">更换支付宝</div>
+    </div>
+</body>
+<script type="text/javascript" src="../../script/api.js"></script>
+<script type="text/javascript" src="../../script/jquery.js"></script>
+<script type="text/javascript" src="../../script/api_common.js"></script>
+<script type="text/javascript" src="../../script/md5.js"></script>
+<script type="text/javascript">
+  var user_id;
+  var alipaynum,real_name;
+  apiready=function (){
+    user_id=$api.getStorage("userInfo").user_id;
+    getUserInfo();
+  }
+  function changeZfb(){
+    api.openWin({
+        name: 'bind_zfb_win',
+        url: '../win/bind_zfb_win.html',
+        pageParam: {
+            zfb_sign:2, //代表更换支付宝的标识；
+            alipaynum:alipaynum
+        }
+    });
+  }
+  //获取用户信息
+  function getUserInfo(){
+    var obj={
+      'user_id':user_id
+    };
+    var objArr=sort_ASCII(obj);
+    var timestamp=fntimestamp();
+    var version='2.0';
+    var arr=apiSecret+timestamp+version+'';
+    for(i in objArr){
+      arr+=objArr[i];
+    }
+    var sign=hex_md5(arr);
+    api.ajax({
+        url: commonUrl+'soukeAppTttService/service/user/message_ac',
+        method: 'post',
+        headers: {
+            'Content-Type': 'application/json;charset=utf-8'
+        },
+        data: {
+            body: {
+                'apiKey':apiKey,
+                'timestamp':timestamp,
+                'sign':sign,
+                'user_id':user_id,
+            }
+        }
+      }, function(ret, err) {
+        if (ret) {
+            if(ret.result_code==200){
+              console.log("用户信息"+JSON.stringify(ret));
+              $api.byId('alipaynum').innerHTML=ret.result_user.alipaynum;
+              $api.byId('real_name').innerHTML=ret.result_user.real_name;
+              alipaynum=ret.result_user.alipaynum;
+            }else{
+                api.toast({
+                    msg: ret.result_message,
+                    duration: 2000,
+                    location: 'middle'
+                });
+
+            }
+        } else {
+            // api.alert({ msg: JSON.stringify(err) });
+        }
+      });
+  }
+</script>
+
+</html>

@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0" />
+    <title>淘宝授权</title>
+    <link rel="stylesheet" type="text/css" href="../../css/api.css" />
+    <link rel="stylesheet" type="text/css" href="../../css/style.css" />
+</head>
+
+<body>
+    <header id="header">
+        <div class="header-top">
+            <div class="headerItem">
+                <div class="header_back" onclick="closeWin();">
+                    <img src="../../image/nav_back_black.png" alt="">
+                </div>
+                <div class="header_title" id="header_title">淘宝授权</div>
+            </div>
+        </div>
+    </header>
+</body>
+<script type="text/javascript" src="../../script/api.js"></script>
+<script type="text/javascript" src="../../script/jquery.js"></script>
+<script type="text/javascript" src="../../script/api_common.js"></script>
+<script type="text/javascript" src="../../script/md5.js"></script>
+<script type="text/javascript">
+    var alibaichuan;
+    apiready = function() {
+        api.setStatusBarStyle({
+            style: 'dark' //黑色
+                // style: 'light' //白色
+        });
+        var header = $api.byId('header');
+        $api.fixStatusBar(header);
+        var headerH = $api.offset(header).h;
+        alibaichuan = api.require('mAliBaiChuan');
+        alibaichuan.initTae(function(ret, err) {
+            if (ret) {
+                // alert("ret:" + JSON.stringify(ret));
+            } else {
+                // alert("err:" + JSON.stringify(err));
+            }
+        });
+
+        // alibaichuan.logout(function(ret, err) {
+        //     if (ret) {
+        //         alert("用户信息 ret - " + JSON.stringify(ret));
+        //     } else {
+        //         alert("用户信息 err - " + JSON.stringify(err));
+        //     }
+        // });
+        var param = {
+            url: "https://oauth.m.taobao.com/authorize?response_type=token&client_id=淘宝联盟APPkey",
+            isvcode: "app",
+            opentype: "html5",
+            winObj: 'mAliBaiChuan',
+            fixedOn: api.frameName,
+            fixed: false,
+            rect: {
+                x: 0,
+                y: 88,
+                w: api.frameWidth,
+                h: 600
+            }
+        };
+        alibaichuan.showTaokeItemByUrlWeb(param, function(ret, err) {
+            if (ret) {
+                // alert("ret - " + JSON.stringify(ret));
+            } else {
+                // alert("err - " + JSON.stringify(err));
+            }
+        });
+        alibaichuan.addPageDidListener(function(ret) {
+            if (ret.url)
+                console.log("接收授权信息" + JSON.stringify(ret))
+                // alert(ret.url)
+            var access_token = ""
+            var taobao_user_nick = ""
+            var taobao_user_id = ""
+            if (ret.url.indexOf('access_token')) {
+                var access_token = getUrlParam(ret.url, "#access_token=")
+            }
+            if (ret.url.indexOf('taobao_user_id')) {
+                var taobao_user_id = getUrlParam(ret.url, "&taobao_user_id=")
+            }
+            if (ret.url.indexOf('taobao_user_nick')) {
+                var taobao_user_nick = getUrlParam(ret.url, "&taobao_user_nick=")
+            }
+            if (access_token != null && taobao_user_nick != null && taobao_user_id) {
+
+                //alert(access_token+"//"+taobao_user_nick+"//"+taobao_user_id)
+                gotoauth(access_token, taobao_user_nick, taobao_user_id)
+            }
+        })
+
+    };
+
+    function closeWin() {
+        api.closeWin({
+            name: 'tb_sq_win'
+        });
+    }
+
+    function getUrlParam(url, val) {
+        //var arr = url.split(val)[1].toString();
+        //  arr =substr(url.lastIndexOf("&"));
+        var arr = url.split(val)[1]
+        var leng = arr.indexOf("&");
+        var result = arr.substring(0, leng);
+        //alert(result)
+        if (result != null) {
+            return result;
+        }
+    }
+
+    function gotoauth(access_token, taobao_user_nick, taobao_user_id) {
+        var user_id;
+        user_id = $api.getStorage("userInfo").user_id;
+        var obj = {
+            'user_id': user_id,
+            'accesstoken': access_token,
+            'taobao_user_nick': encodeURIComponent(taobao_user_nick),
+            'taobao_user_id': taobao_user_id
+        };
+        console.log("打印获取的参数" + JSON.stringify(obj))
+        var objArr = sort_ASCII(obj);
+        var timestamp = fntimestamp();
+        var version = '2.0';
+        var arr = apiSecret + timestamp + version + '';
+        for (i in objArr) {
+            arr += objArr[i];
+        }
+        var sign = hex_md5(arr);
+        api.ajax({
+            url: commonUrl + 'soukeAppTttService/service/channel/gotoauth',
+            method: 'post',
+            headers: {
+                'Content-Type': 'application/json;charset=utf-8'
+            },
+            data: {
+                body: {
+                    'apiKey': apiKey,
+                    'timestamp': timestamp,
+                    'sign': sign,
+                    'user_id': user_id,
+                    'accesstoken': access_token,
+                    'taobao_user_nick': taobao_user_nick,
+                    'taobao_user_id': taobao_user_id,
+                }
+            }
+        }, function(ret, err) {
+            if (ret) {
+                console.log("上传授权信息" + JSON.stringify(ret))
+                if (ret.result_code == "200") {
+                    // openinstall上报授权淘宝数据
+                    if (openinstaus == 1) {
+                    var openinstall = api.require('openinstall');
+                    openinstall.reportEffectPoint({
+                        effectId: 'TbSq',
+                        effectValue: 1
+                    });
+                  }
+                    api.alert({
+                        msg: "授权成功,自购或分享都有奖励啦！"
+                    });
+                    api.closeWin({
+                        name: 'tb_sq_win'
+                    });
+
+                } else {
+                    api.alert({
+                        msg: ret.result_message
+                    });
+                    api.closeWin({
+                        name: 'tb_sq_win'
+                    });
+                }
+            } else {
+                api.alert({
+                    msg: JSON.stringify(err)
+                });
+            }
+
+        })
+    }
+</script>
+
+</html>

@@ -1,0 +1,325 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0" />
+  <!-- 解决IOS数字出现蓝色数字问题  -->
+  <meta name="format-detection" content="telephone=no" />
+  <title>title</title>
+  <link rel="stylesheet" type="text/css" href="../../css/api.css" />
+  <link rel="stylesheet" type="text/css" href="../../css/style.css" />
+  <style media="screen">
+    html,body{
+      height: 100%;
+      width: 100%;
+    }
+  .headerItem .header_title{
+    width:calc(100% - 54px);
+    line-height: 34px;
+    text-align: left;
+    margin-left: 13px;
+  }
+  .headerItem .header_title .header_input{
+    width: 100%;
+    height: 33px;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 25px;
+    color:#fff;
+    margin-top: 5px;
+  }
+  .headerItem .header_title .header_input img{
+    width: 19px;
+    height: 20px;
+    background-size: 100% 100%;
+    vertical-align: middle;
+    display: inline-block;
+    margin: 5px 20px;
+  }
+  .header-bottom{
+    height: 37px;
+    width: 100%;
+  }
+  .header-bottom ul{list-style: none;padding: 0;margin: 0;}
+  .header-bottom ul li{
+    float: left;
+    width: 33.3%;
+    line-height: 37px;
+    text-align: center;
+    font-size: 16px;
+  }
+  .header-bottom ul li.li_active{
+    border-bottom: 3px solid #fd5f3e;
+    color:#fd5f3e;
+  }
+  .header-middle{
+    height: 90px;
+    width: 100%;
+    color: #fff;
+  }
+  .header-middle p.p_title{
+    width: 100%;
+    height: 40px;
+    line-height: 40px;
+    font-size: 14px;
+    text-align: center;
+  }
+  .header-middle p.p_count{
+    width: 100%;
+    height: 40px;
+    line-height: 40px;
+    font-size: 20px;
+    text-align: center;
+  }
+  .fans_tab{
+    height: 50px;
+    width: 100%;
+    background: #fff;
+    margin-top: 3px;
+    border-top: solid 1px #f4f4f4;
+  }
+  .fans_tab ul{list-style: none;padding: 0;margin: 0;}
+  .fans_tab ul li{
+    float: left;
+    width: 33.3%;
+    text-align: center;
+    line-height: 50px;
+    position: relative;
+    font-size: 14px;
+    color: #666;
+  }
+  .upAttr {
+    position: absolute;
+    width: 0.4em;
+    height: 0.3rem;
+    top: 37%;
+    right: 20%;
+  }
+  .upAttr1{
+    background: url(../../image/huaqian_iicon_uparrow_default.png) no-repeat;
+    background-size: 100% 100%;
+  }
+  .upAttr2{
+    background: url(../../image/huaqian_icon_uparrow_selected.png) no-repeat;
+    background-size: 100% 100%;
+  }
+  .DownAttr {
+    position: absolute;
+    width: 0.4em;
+    height: 0.3rem;
+    top: 51%;
+    right: 20%;
+  }
+  .DownAttr1{
+    background: url(../../image/huaqian_icon_downarrow_default.png) no-repeat;
+    background-size: 100% 100%;
+  }
+  .DownAttr2{
+    background: url(../../image/huaqian_icon_downarrow_selected.png) no-repeat;
+    background-size: 100% 100%;
+  }
+  .shaixuan{
+    width: 12px;
+    height: 13px;
+    position: absolute;
+    top:50%;
+    right: 27%;
+    background: url('../../image/home/shaixuan.png') no-repeat;
+    background-size: 100% 100%;
+    margin-top: -7px;
+  }
+  .wrap_fans{
+    margin-top: 50px;
+  }
+
+  </style>
+</head>
+
+<body>
+    <header id="header" class="submitColor">
+      <div class="header-top">
+          <div class="headerItem">
+            <div class="header_back" onclick="closeWin();">
+              <img src="../../image/nav_back_white.png" alt="">
+            </div>
+            <div class="header_title" onclick="openFansSousuo();">
+              <div class="header_input"><img src="../../image/home/home_search.png" alt="">输入要搜索的用户名</div>
+            </div>
+            <div class="header_right" onclick="openGuizeLayout();"><img src="../../image/home/mine_help_white.png" alt=""></div>
+          </div>
+      </div>
+    </header>
+    <div class="header-middle submitColor" id="header-middle">
+      <p class="p_title">我的团队(人)</p>
+      <p class="p_count">8888</p>
+    </div>
+    <div class="header-bottom" id="header-bottom">
+      <ul id="class_list">
+        <li class="li_active">潜在粉丝</li>
+        <li>直属粉丝</li>
+        <li>推荐粉丝</li>
+      </ul>
+    </div>
+    <div class="fans_tab" id="header_tab">
+      <ul>
+        <li>加入时间<span class="upAttr upAttr1"></span><span class="DownAttr DownAttr1"></span></li>
+        <li>团队规模<span class="upAttr upAttr1"></span><span class="DownAttr DownAttr1"></span></li>
+        <li onclick="openShaixuanLayout();"><span class="shaixuan"></span>筛选</li>
+      </ul>
+    </div>
+
+</body>
+  <script type="text/javascript" src="../../script/api.js"></script>
+  <script type="text/javascript" src="../../script/jquery.js"></script>
+  <script type="text/javascript">
+  var headerH,$body,body_h;
+    apiready = function() {
+        var header = $api.byId('header');
+        var headerM=$api.byId('header-middle');
+        var headerB=$api.byId('header-bottom');
+        var headerTab=$api.byId('header_tab');
+        $body = $api.dom('body');
+    		body_h = $api.offset($body).h;
+        $api.fixStatusBar(header);
+        headerH= $api.offset(header).h+$api.offset(headerM).h+$api.offset(headerB).h+$api.offset(headerTab).h;
+        //打开分类页
+    		api.openFrameGroup({
+    			name : 'classify1',
+    			scrollEnabled : true,
+    			rect : {
+    				x : 0,
+    				y : headerH+6,
+    				w : 'auto',
+    				h : 'auto'
+    			},
+    			index : 0,
+    			preload : 0,
+    			frames : [{
+    				name : 'qianzai_fans_frame',
+    				url : 'qianzai_fans_frame.html',
+    				bounces : false,
+    				vScrollBarEnabled : false,
+    				hScrollBarEnabled : false,
+    				pageParam: {
+    					body_h:body_h,
+    				}
+    			}, {
+    				name : 'zhishu_fans_frame',
+    				url : 'zhishu_fans_frame.html',
+    				bounces : true,
+    				vScrollBarEnabled : false,
+    				hScrollBarEnabled : false,
+            pageParam: {
+    					body_h:body_h,
+    				}
+    			}, {
+    				name : 'tuijian_fans_frame',
+    				url : 'tuijian_fans_frame.html',
+    				bounces : false,
+    				vScrollBarEnabled : false,
+    				hScrollBarEnabled : false,
+            pageParam: {
+    					body_h:body_h,
+    				}
+    			}],
+    		}, function(ret, err) {
+    			var _index = ret.index;
+    			$("#class_list > li").eq(_index).addClass("li_active");
+    			$("#class_list > li").eq(_index).siblings().removeClass("li_active");
+    		});
+    		//点击菜单
+    		$("#class_list > li").click(function() {
+    			var li_index = $(this).index();
+    			$(this).addClass("active").siblings().removeClass("li_active");
+    			api.setFrameGroupIndex({
+    				name : 'classify1',
+    				index : li_index,
+    				scroll : true,
+    			});
+    		});
+    };
+    function closeWin(){
+      api.closeWin({
+          name: 'my_fans_win'
+      });
+    }
+    //弹出蒙版  设置开关
+    //打开筛选页-------begin
+  	window.showFlag = false;
+  	function openShaixuanLayout() {
+  		if (window.showFlag == false) {
+  			api.openFrame({
+  				name : 'shaixuan_slidLayout',
+  				url : 'shaixuan_slidLayout.html',
+  				rect : {
+  					x : 0,
+  					y : 0,
+  					w : 'auto',
+  					h : body_h
+  				},
+  				pageParam : {
+  					headerH:headerH+6
+  				},
+  				bounces : false,
+  				bgColor : 'rgba(0,0,0,0)',
+  				vScrollBarEnabled : true,
+  				hScrollBarEnabled : true
+  			});
+  			window.showFlag = true;
+  		} else {
+  			closeShaixuanLayout();
+  		}
+  	}
+    //打开筛选页-------end
+    //打开粉丝规则说明页-------begin
+    window.guizeFlag=false;
+    function openGuizeLayout(){
+  		if (window.guizeFlag == false) {
+  			api.openFrame({
+  				name : 'fansGuize_slidLayout',
+  				url : 'fansGuize_slidLayout.html',
+  				rect : {
+  					x : 0,
+  					y : 0,
+  					w : 'auto',
+  					h : body_h
+  				},
+  				// pageParam : {
+  				// 	headerH:headerH+6
+  				// },
+  				bounces : false,
+  				bgColor : 'rgba(0,0,0,0)',
+  				vScrollBarEnabled : true,
+  				hScrollBarEnabled : true
+  			});
+  			window.guizeFlag = true;
+  		} else {
+  			closeGuizeLayout();
+  		}
+    }
+    //打开粉丝规则说明页-------end
+  	function closeShaixuanLayout() {
+  		api.closeFrame({
+  			name : 'shaixuan_slidLayout'
+  		});
+  		window.showFlag = false;
+  	}
+    function closeGuizeLayout() {
+  		api.closeFrame({
+  			name : 'fansGuize_slidLayout'
+  		});
+  		window.guizeFlag = false;
+  	}
+    function openFansSousuo(){
+      api.openWin({
+          name: 'fans_sousuo_win',
+          url: './fans_sousuo_win.html',
+          pageParam: {
+              name: 'test'
+          }
+      });
+
+    }
+  </script>
+
+</html>

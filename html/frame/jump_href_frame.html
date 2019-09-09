@@ -1,0 +1,301 @@
+<!DOCTYPE HTML>
+<html>
+
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0" />
+	<meta name="format-detection" content="telephone=no, email=no, date=no, address=no">
+	<title>跳转其他APPframe页</title>
+	<link rel="stylesheet" type="text/css" href="../../css/api.css" />
+	<link rel="stylesheet" type="text/css" href="../../css/style.css" />
+</head>
+
+<body>
+</body>
+<script type="text/javascript" src="../../script/api.js"></script>
+<script type="text/javascript" src="../../script/jquery.js"></script>
+<script type="text/javascript" src="../../script/api_common.js"></script>
+<script type="text/javascript">
+	var type;
+	var user_id;
+	apiready = function() {
+		if (!empty($api.getStorage("userInfo"))) {
+			user_id = $api.getStorage("userInfo").user_id;
+		} else {
+			user_id = '';
+		}
+		//初始化阿里百川
+		//阿里百川
+		var alibaichuan = api.require('mAliBaiChuan');
+		alibaichuan.initTae(function(ret, err) {
+			if (ret) {
+				// alert("ret:" + JSON.stringify(ret));
+			} else {
+				// alert("err:" + JSON.stringify(err));
+			}
+		});
+		if (api.pageParam.url.indexOf("[alisdk]") != -1) {
+			type = 1;
+			openBcWebUrl(); //百川打开
+			// alert(1);
+		} else if (api.pageParam.url.indexOf("h5_user_id=") != -1) {
+			type = 3;
+			openWebUrl(); //直接打开
+			// alert(1);
+		} else {
+			// alert(2);
+			type = 2;
+			openWebUrl(); //直接打开
+		}
+	}
+
+	function openWebUrl() {
+		var browser = api.require('webBrowser');
+		var url = api.pageParam.url;
+		if (type == 3) {
+			url += user_id;
+		}
+		browser.openView({
+			url: url,
+			rect: {
+				x: 0,
+				y: api.pageParam.headerH + 10,
+				// w: 'auto',
+				// h: 'auto'
+				w: api.frameWidth,
+				h: api.frameHeight - 10
+			}
+		}, function(ret, err) {
+			switch (ret.state) {
+				case 0:
+					break;
+				case 1:
+					break;
+				case 2:
+					if (ret.url) {
+						var itemId = "";
+						// alert(ret.url);
+						if (getUrlParam(ret.url, "&id") != null) {
+							itemId = getUrlParam(ret.url, "&id");
+						}
+						if (getUrlParam(ret.url, "&itemId") != null) {
+							itemId = getUrlParam(ret.url, "&itemId");
+						}
+						if (itemId != "") {
+							api.openFrame({
+								name: 'href_slidLayout_top',
+								url: '../my/href_slidLayout_top.html',
+								rect: {
+									x: 0,
+									y: api.pageParam.headerH + 10,
+									w: 'auto',
+									h: 50
+								},
+								bounces: false,
+							});
+							api.openFrame({
+								name: 'href_slidLayout_bottom',
+								url: '../my/href_slidLayout_bottom.html',
+								rect: {
+									x: 0,
+									y: api.winHeight - 60 - api.safeArea.bottom,
+									w: 'auto',
+									h: 70
+								},
+								reload: true,
+								bounces: false,
+								pageParam: {
+									itemId: itemId,
+								},
+							});
+						}
+					}
+					break;
+				case 3:
+					if (ret.title) {
+						var title = "";
+						// alert(ret.title);
+						if (getUrlParam(ret.title, "&title") != null) {
+							title = getUrlParam(ret.title, "&title");
+						}
+					}
+					break;
+				case 4:
+					break;
+				default:
+					break;
+			}
+		});
+	}
+
+	function openBcWebUrl() {
+		var alibaichuan = api.require('mAliBaiChuan');
+		var param = {
+			url: api.pageParam.url.split("[alisdk]")[0],
+			// mmpid: "mm_00000000_0_0",
+			isvcode: "app",
+			opentype: "html5",
+			// adzoneid: '0',
+			// tkkey: '0',
+			winObj: 'mAliBaiChuan',
+			fixedOn: 'jump_href_frame',
+			fixed: false,
+			rect: {
+				x: 0,
+				y: 10,
+				w: api.frameWidth,
+				h: api.frameHeight - 10
+			}
+		};
+		alibaichuan.showTaokeItemByUrlWeb(param, function(ret, err) {
+			// alert("ret - " + JSON.stringify(ret));
+			if (ret) {
+				// alert("ret - " + JSON.stringify(ret));
+			} else {
+				// alert("err - " + JSON.stringify(err));
+			}
+		});
+		alibaichuan.addPageDidListener(function(ret) {
+			if (ret.url) {
+				var itemId = "";
+				if (ret.url != null) {
+					if (getUrlParam2(ret.url, "itemId") != null) {
+						itemId = getUrlParam2(ret.url, "itemId");
+					}
+					if (getUrlParam2(ret.url, "&id") != null) {
+						itemId = getUrlParam2(ret.url, "&id");
+					}
+					if (getUrlParam2(ret.url, "?id") != null) {
+						itemId = getUrlParam2(ret.url, "?id");
+					}
+					if (getUrlParam2(ret.url, "?itemid") != null) {
+						itemId = getUrlParam2(ret.url, "?itemid");
+					}
+					if (getUrlParam2(ret.url, "&itemId") != null) {
+						itemId = getUrlParam2(ret.url, "&itemId");
+					}
+					if (getUrlParam2(ret.url, "&item_Id") != null) {
+						itemId = getUrlParam2(ret.url, "&item_Id");
+					}
+					if (getUrlParam2(ret.url, "?item_id") != null) {
+						itemId = getUrlParam2(ret.url, "?item_id");
+					}
+					if (getUrlParam2(ret.url, "&item_id") != null) {
+						itemId = getUrlParam2(ret.url, "&item_id");
+					}
+					if (getUrlParam2(ret.url, "%3Fid%3D") != null) {
+						itemId = getUrlParam2(ret.url, "%3Fid%3D");
+					}
+					if (getUrlParam2(ret.url, 'item_ids"%3A') != null) {
+						itemId = getUrlParam2(ret.url, 'item_ids"%3A');
+					}
+					if (itemId != "") {
+						// alert(itemId);
+						// api.openWin({
+						// 	name: 'good_detail',
+						// 	url: '../goods/good_detail.html',
+						// 	pageParam: {
+						// 		goods_id: itemId,
+						// 		section_id: -1,
+						// 		claer: 1,
+						// 		type: "jump",
+						// 	}
+						// });
+						api.openFrame({
+							name: 'href_slidLayout_top',
+							url: '../my/href_slidLayout_top.html',
+							rect: {
+								x: 0,
+								y: api.pageParam.headerH + 10,
+								w: 'auto',
+								h: 50
+							},
+							bounces: true,
+						});
+						api.openFrame({
+							name: 'href_slidLayout_bottom',
+							url: '../my/href_slidLayout_bottom.html',
+							rect: {
+								x: 0,
+								y: api.winHeight - 60 - api.safeArea.bottom,
+								w: 'auto',
+								h: 70
+							},
+							reload: true,
+							bounces: true,
+							pageParam: {
+								itemId: itemId,
+							},
+						});
+					}
+				}
+			}
+		})
+	}
+	//得到地址传来的参数
+	function getUrlParam(url, val) {
+		var reg = new RegExp("(^|&)" + val + "=([^&]*)(&|$)");
+		var r = decodeURI(url).substr(1).match(reg);
+		if (r != null)
+			return unescape(r[2]);
+		return null;
+	}
+
+	function getUrlParam2(url, val) {
+		var arr = /\d{9,20}/.exec(url.split(val)[1]);
+		if (arr != null) {
+			return arr.toString();
+		}
+	}
+	//监听处理直接打开返回
+	function historyBack() {
+		var browser = api.require('webBrowser');
+		browser.historyBack(
+			function(ret, err) {
+				if (!ret.status) {
+					api.closeWin();
+				}
+			}
+		);
+	}
+	//监听处理百川打开返回
+	function goback() {
+		api.closeFrame({
+			name: 'href_slidLayout_bottom'
+		});
+		api.closeFrame({
+			name: 'href_slidLayout_top'
+		});
+		var alibaichuan = api.require('mAliBaiChuan');
+		alibaichuan.webGoBack(function(ret, err) {
+			if (ret.message == "第一个页面了") {
+				api.closeWin({
+					name: 'jump_href_win',
+					animation: {
+						type: 'push',
+						subType: 'from_left',
+						duration: 300
+					}
+				})
+			}
+		})
+	}
+
+	function goToback() {
+		if (type == 1) {
+			goback();
+		} else {
+			historyBack();
+		}
+	}
+
+	// function getUrlParam(url, val) {
+	// 	console.log(url.split(val)[1]);
+	// 	var arr = /\d{9,20}/.exec(url.split(val)[1]);
+	// 	if (arr != null) {
+	// 		return arr.toString();
+	// 	}
+	// }
+</script>
+
+</html>

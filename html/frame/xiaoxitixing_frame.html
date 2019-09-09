@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0" />
+    <title>消息提醒</title>
+    <link rel="stylesheet" type="text/css" href="../../css/api.css" />
+    <link rel="stylesheet" type="text/css" href="../../css/aui.css" />
+    <style>
+        html,
+        body {
+            height: 100%;
+            background: #F4F4F4;
+            width: 100%;
+            overflow: hidden;
+        }
+
+        .set_user {
+            width: calc(100%- 12px);
+            height: 110px;
+            background: #fff;
+            margin-left: 12px;
+        }
+
+        .set_area {
+            width: 100%;
+            height: auto;
+            background: #fff;
+            overflow: hidden;
+        }
+
+        .set_item {
+            width: calc(100% - 24px);
+            height: 55px;
+            background: #fff;
+            margin-left: 12px;
+            position: relative;
+        }
+
+        .set_border {
+            border-bottom: solid 1px #dddddd;
+        }
+
+        .set_middle {
+            width: auto;
+            height: 55px;
+            float: left;
+            line-height: 55px;
+            font-size: 0.7rem;
+        }
+
+        .set_top {
+            margin-top: 10px;
+        }
+
+        .aui-switch:checked {
+            border-color: #4DD865;
+            background-color: #4DD865;
+        }
+
+        .aui-switch {
+            float: right;
+            margin-top: 15px;
+            width: 2.3rem;
+            height: 1.2rem;
+            position: relative;
+            vertical-align: top;
+            border: 1px solid #dddddd;
+            background-color: #fff;
+            border-radius: 0.6rem;
+            background-clip: content-box;
+            display: inline-block;
+            outline: none;
+            -webkit-appearance: none;
+            appearance: none;
+            -webkit-user-select: none;
+            user-select: none;
+            -webkit-box-sizing: border-box;
+            box-sizing: border-box;
+            -webkit-background-clip: padding-box;
+            background-clip: padding-box;
+            -webkit-transition: all 0.2s linear;
+            transition: all 0.2s linear;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="set_area set_top">
+        <div class="set_item">
+            <div class="set_middle">接收消息通知</div>
+            <input class="aui-switch" type="checkbox" name="demo2" id="push_copy" checked="checked">
+        </div>
+    </div>
+    <!-- <div class="set_area set_top">
+      <div class="set_item set_border">
+        <div class="set_middle">收益提醒</div>
+        <input class="aui-switch" type="checkbox" name="demo2" checked="checked">
+      </div>
+      <div class="set_item">
+        <div class="set_middle">活动提醒</div>
+        <input class="aui-switch" type="checkbox" name="demo2" checked="checked">
+      </div>
+    </div> -->
+    <div class="set_area set_top">
+        <div class="set_item">
+            <div class="set_middle">智能搜索</div>
+            <input class="aui-switch" type="checkbox" name="demo2" id="search_copy" checked="checked">
+        </div>
+    </div>
+</body>
+<script type="text/javascript" src="../../script/api.js"></script>
+<script type="text/javascript" src="../../script/jquery.js"></script>
+<script type="text/javascript" src="../../script/api_common.js"></script>
+<script type="text/javascript">
+    apiready = function() {
+            var ajpush = api.require('ajpush');
+            ajpush.init(function(ret) {
+                if (ret && ret.status) {
+                    //success
+                }
+            });
+            // 判断消息
+            if ($api.getStorage("push_status") == 1 || $api.getStorage("push_status") == undefined) {
+                $("#push_copy").prop("checked", "checked");
+            } else {
+                $("#push_copy").prop("checked", false);
+            }
+            // 判断搜索
+            if ($api.getStorage("search_status") == 1 || $api.getStorage("search_status") == undefined) {
+                $("#search_copy").prop("checked", "checked");
+            } else {
+                $("#search_copy").prop("checked", false);
+            }
+        }
+        // 消息状态
+    $("#push_copy").change(function() {
+        if ($("#push_copy").attr("checked") == "checked") {
+            $api.setStorage('push_status', 1);
+            var ajpush = api.require('ajpush');
+            ajpush.isPushStopped(function(ret) {
+                // alert(ret.isStopped);
+                if (ret.isStopped == 1) {
+                    ajpush.resumePush(function(ret) {
+                        if (ret.status == 1) {
+                            Start_up();
+                        }
+                    });
+                } else {
+                    Start_up();
+                }
+            });
+        } else {
+            $api.setStorage('push_status', 0);
+            var ajpush = api.require('ajpush');
+            ajpush.isPushStopped(function(ret) {
+                // alert(ret.isStopped);
+                if (ret.isStopped == 0) {
+                    ajpush.stopPush(function(ret) {
+                        if (ret.status == 1) {
+                            Start_it();
+                        } else {
+
+                        }
+                    });
+                } else {
+                    Start_it();
+                }
+            });
+        }
+    });
+    // 搜索状态
+    $("#search_copy").change(function() {
+        if ($("#search_copy").attr("checked") == "checked") {
+            $api.setStorage('search_status', 1);
+            api.toast({
+                msg: "开启智能搜索",
+                duration: 2000,
+                location: 'middle'
+            });
+        } else {
+            $api.setStorage('search_status', 0);
+            api.toast({
+                msg: "关闭智能搜索",
+                duration: 2000,
+                location: 'middle'
+            });
+        }
+    });
+    // 启动消息通知
+    function Start_up() {
+        api.toast({
+            msg: "开启消息通知",
+            duration: 2000,
+            location: 'middle'
+        });
+    }
+    // 停止消息通知
+    function Start_it() {
+        api.toast({
+            msg: "关闭消息通知",
+            duration: 2000,
+            location: 'middle'
+        });
+    }
+</script>
+
+</html>

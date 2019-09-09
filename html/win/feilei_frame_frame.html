@@ -1,0 +1,318 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0" />
+    <title>底部分类内容</title>
+    <link rel="stylesheet" type="text/css" href="../../css/api.css" />
+    <style>
+        body {
+            width: 100%;
+            height: 100%;
+            background-color: #fff;
+        }
+
+        .leftList {
+            width: 5.2rem;
+            height: 100%;
+            float: left;
+            background: #fff;
+            position: fixed;
+            left: 0;
+            top: 0;
+            font-size: 14px;
+        }
+
+        .leftList .listItem {
+            width: 100%;
+            height: 100%;
+            overflow-x: hidden;
+            overflow-y: auto;
+        }
+
+        .listItem ul {
+            list-style: none;
+        }
+
+        .listItem ul li {
+            width: 100%;
+            height: 3.0rem;
+            text-align: center;
+            line-height: 3.0rem;
+        }
+
+        .listItem ul li a {
+            color: #333;
+            width: 100%;
+            height: 100%;
+        }
+
+        .listItem ul li.active {
+            color: #FF2521;
+            background: #f4f4f4;
+            list-style: inside;
+        }
+        /*.right_div{
+      width:calc(100% - 5.2rem);
+      height: 100%;
+      background: #f4f4f4;
+      float: right;
+      overflow-x: hidden;
+      overflow-y: auto;
+    }*/
+
+        .rightList {
+            width: calc(100% - 5.2rem);
+            height: 100%;
+            background: #f4f4f4;
+            float: right;
+            overflow-x: hidden;
+            overflow-y: auto;
+            font-size: 14px;
+        }
+
+        .rightList .rightItem {
+            width: 100%;
+            height: 100%;
+        }
+
+        .rightItem ul {
+            list-style: none;
+            height: calc(100% - 20px);
+            width: calc(100% - 20px);
+            margin-left: 10px;
+            background: #fff;
+            overflow: hidden;
+            border-radius: 6px;
+        }
+
+        .rightItem ul li {
+            width: 33.3%;
+            height: 6.0rem;
+            float: left;
+            position: relative;
+        }
+
+        .rightItem ul li img {
+            width: 48px;
+            height: 48px;
+            position: absolute;
+            top: 35%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+        }
+
+        .rightItem ul li p {
+            position: absolute;
+            text-align: center;
+            height: 20px;
+            line-height: 20px;
+            width: 100%;
+            left: 0;
+            bottom: 13%;
+            font-size: 12px;
+            color: #333;
+        }
+
+        .rightItem .right_title {
+            height: 50px;
+            text-align: left;
+            line-height: 50px;
+            overflow: hidden;
+            width: 100%;
+            padding-left: 15px;
+        }
+
+        #menu ul li a.current {
+            color: #FF2521;
+            background: #f4f4f4;
+        }
+
+        header {
+            height: 88px;
+            width: 100%;
+            position: fixed;
+            top: 0;
+            left: 0;
+            z-index: 9999999;
+        }
+
+        .header {
+            height: 88px;
+            width: 100%;
+            overflow: hidden;
+        }
+
+        .btn {
+            height: 40px;
+            width: 35px;
+            position: absolute;
+            right: 0;
+            bottom: 0;
+        }
+
+        .top-sousuo {
+            height: 44px;
+            width: 100%;
+            margin-top: 30px;
+        }
+
+        .top_search {
+            width: 85%;
+            height: 30px;
+            margin-left: 3%;
+            margin-right: 3%;
+            background: #fff;
+            border-radius: 25px;
+            font-size: 12px;
+            vertical-align: middle;
+            display: inline-block;
+            margin-top: 8px;
+            color: #666;
+        }
+
+        .top_search img {
+            width: 14px;
+            height: 14px;
+            background-size: 100% 100%;
+            margin: 8px 15px;
+            vertical-align: middle;
+        }
+
+        .top_search span {
+            margin-top: -56px;
+            display: inline-block;
+        }
+
+        .top-sousuo .gwc {
+            width: calc(100% - 91%);
+            height: 30px;
+            float: right;
+        }
+
+        .top-sousuo .gwc img {
+            width: 23px;
+            height: 20px;
+            background-size: 100% 100%;
+            display: inline-block;
+            vertical-align: middle;
+            margin-top: 13px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="wrap">
+        <div class="leftList">
+            <div class="listItem" id="menu">
+                <ul id="menuList">
+                </ul>
+            </div>
+        </div>
+        <div class="rightList" id="content">
+        </div>
+    </div>
+
+</body>
+<script type="text/javascript" src="../../script/api.js"></script>
+<script type="text/javascript" src="../../script/jquery.js"></script>
+<script type="text/javascript" src="../../script/app.js"></script>
+<script type="text/javascript" src="../../script/api_common.js"></script>
+<script type="text/javascript" src="../../script/md5.js"></script>
+<script type="text/javascript">
+    var status;
+    apiready = function() {
+        var obj = {};
+        var objArr = sort_ASCII(obj);
+        var timestamp = fntimestamp();
+        var version = '2.0';
+        var arr = apiSecret + timestamp + version + '';
+        for (i in objArr) {
+            arr += objArr[i];
+        }
+        var sign = hex_md5(arr);
+        api.ajax({
+            url: commonUrl + 'soukeAppTttService/service/user/getClassification',
+            method: 'post',
+            headers: {
+                'Content-Type': 'application/json;charset=utf-8'
+            },
+            data: {
+                body: {
+                    'apiKey': apiKey,
+                    'timestamp': timestamp,
+                    'sign': sign,
+                }
+            }
+        }, function(ret, err) {
+            if (ret) {
+                console.log("商品分类：" + JSON.stringify(ret));
+                status = ret.status;
+                var menuList = [];
+                if (status == 1) {
+                    //官方
+                    menuList = ret.resultStr.general_classify;
+                } else {
+                    menuList = ret.general_classify;
+                }
+                var cont = '';
+                for (var i = 0; i < menuList.length; i++) {
+                    // alert(menuList[i].main_name);
+                    if (i == 0) {
+                        cont += '<li tapmode><a href="#item' + menuList[i].cid + '" class="current">' + menuList[i].main_name + '</a></li>';
+                    } else {
+                        cont += '<li tapmode><a href="#item' + menuList[i].cid + '">' + menuList[i].main_name + '</a></li>';
+                    }
+                }
+                $api.byId('menuList').innerHTML = cont;
+                getData(menuList);
+            } else {
+                // alert( JSON.stringify( err ) );
+            }
+        });
+    };
+
+    function getData(menuList) {
+        var nextCont = '';
+        for (var i = 0; i < menuList.length; i++) {
+            // alert(menuList[i].cid);
+            // alert(menuList[i].data.length);
+            if (menuList[i].data.length == 0) {
+                continue;
+            }
+            nextCont += '<div class="rightItem item" id="item' + menuList[i].cid + '">';
+            for (var j = 0; j < menuList[i].data.length; j++) {
+                nextCont += '<p class="right_title">' + menuList[i].data[j].next_name + '</p>';
+                nextCont += '<ul>';
+                for (var n = 0; n < menuList[i].data[j].info.length; n++) {
+                    if (status == 1) {
+                        nextCont += '<li tapmode onclick="fnOpenFenlei(\'' + menuList[i].data[j].info[n].son_name + '\',\'' + menuList[i].data[j].info[n].son_name + '\');">';
+                    } else {
+                        nextCont += '<li tapmode onclick="fnOpenFenlei(\'' + menuList[i].data[j].info[n].son_name + '\',\'' + menuList[i].data[j].info[n].key_word + '\');">';
+                    }
+                    nextCont += '<img src="' + menuList[i].data[j].info[n].imgurl + '"/>';
+                    nextCont += '<p>' + menuList[i].data[j].info[n].son_name + '</p>';
+                    nextCont += '</li>';
+                }
+                nextCont += '</ul>';
+            }
+            nextCont += '</div>';
+        }
+        $api.byId('content').innerHTML = nextCont;
+    }
+
+    function fnOpenFenlei(header_title, keyword) {
+        api.openWin({
+            name: 'fenlei_win',
+            url: '../fenlei/fenlei_win.html',
+            pageParam: {
+                headerTitle: header_title,
+                keyword: keyword
+            }
+        });
+
+    }
+</script>
+
+</html>

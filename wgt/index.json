@@ -1,0 +1,11 @@
+{
+	"name": "root",
+    "url": "widget://html/index.html",
+
+	"bgColor": "#fff",
+    "title": "首页",
+    "hideNavigationBar": false,
+	"navigationBar": {
+
+    }
+}

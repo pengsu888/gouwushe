@@ -1,0 +1,230 @@
+<!DOCTYPE HTML>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0" />
+    <meta name="format-detection" content="telephone=no, email=no, date=no, address=no">
+    <title>Hello APP</title>
+    <link rel="stylesheet" type="text/css" href="../../css/api.css" />
+    <link rel="stylesheet" href="../../css/swiper.min.css">
+    <style>
+        html,
+        body {
+            background-color: #f4f4f4;
+            height: 100%;
+            width: 100%;
+            position: relative;
+        }
+
+        .registItem {
+            position: absolute;
+            width: 100%;
+            height: calc(100% - 10px);
+            background: #fff;
+            top: 10px;
+            left: 0;
+        }
+
+        .regist_input {
+            width: calc(100% - 12px);
+            margin-left: 12px;
+            height: 55px;
+            border-bottom: solid 1px #ddd;
+        }
+
+        .regist_input label.label_input {
+            width: 100px;
+            height: 55px;
+            line-height: 55px;
+        }
+
+        .regist_input input {
+            width: calc(100% - 139px);
+            height: 55px;
+            line-height: 55px;
+            outline: none;
+        }
+
+        .regist_input .clear_phone {
+            width: 17px;
+            height: 17px;
+            background-size: 100% 100%;
+            margin-top: 5px;
+            display: none;
+        }
+
+        #clear_phone,
+        #clear_name {
+            display: none;
+        }
+
+        .tip {
+            width: calc(100% - 24px);
+            color: #888;
+            margin: 15px auto;
+            font-size: 12px;
+            display: none;
+        }
+
+        .submitColor {
+            background: linear-gradient(to right, #0AE, #0AE);
+        }
+    </style>
+</head>
+
+<body>
+    <div class="registItem">
+        <div class="regist_input">
+            <label class="label_input">支付宝账号</label>
+            <input type="text" id="login_phone" placeholder="请输入支付宝(邮箱)账号" />
+            <img src="../../image/ic_title_bar_edit_clear.png" alt="" class="clear_phone" id="clear_phone">
+        </div>
+        <div class="regist_input">
+            <label class="label_input">真实姓名</label>
+            <input type="text" placeholder="请输入您的真实姓名" id="true_name" />
+            <img src="../../image/ic_title_bar_edit_clear.png" alt="" class="clear_phone" id="clear_name">
+        </div>
+        <p class="tip">当前支付宝账号：13877869688</p>
+        <div class="submitBtn submitColor" tapmode onclick="submitBtn();">提交</div>
+    </div>
+</body>
+<script type="text/javascript" src="../../script/api.js"></script>
+<script type="text/javascript" src="../../script/jquery.js"></script>
+<script type="text/javascript" src="../../script/api_common.js"></script>
+<script type="text/javascript" src="../../script/md5.js"></script>
+<script type="text/javascript">
+    var user_id;
+    $(function() {
+        $("#login_phone").bind('input porpertychange', function() {
+            if ($("#login_phone").val().length > 0) {
+                $("#clear_phone").show();
+            } else {
+                $("#clear_phone").hide();
+            }
+        });
+        $("#clear_phone").click(function() {
+            $("#clear_phone").hide();
+            $api.byId('login_phone').value = '';
+        });
+        $("#true_name").bind('input porpertychange', function() {
+            if ($("#true_name").val().length > 0) {
+                $("#clear_name").show();
+            } else {
+                $("#clear_name").hide();
+            }
+        });
+        $("#clear_name").click(function() {
+            $("#clear_name").hide();
+            $api.byId('true_name').value = '';
+        });
+    });
+    apiready = function() {
+        user_id = $api.getStorage("userInfo").user_id;
+        window.zfb_sign = api.pageParam.zfb_sign; //1代表绑定支付宝，2代表更换支付宝
+        if (window.zfb_sign == 1) {
+
+        } else if (window.zfb_sign == 2) {
+            $(".tip").show();
+            $(".tip").html(api.pageParam.alipaynum);
+        }
+    }
+
+    function submitBtn() {
+        var patt = new RegExp(/^(?:\w+\.?)*\w+@(?:\w+\.)+\w+|\d{11,11}$/)
+        alert(patt.test($api.byId("login_phone").value))
+        if (patt.test($api.byId("login_phone").value)) {
+            if (!empty($api.byId("true_name").value)) {
+                var obj = {
+                    'user_id': user_id,
+                    'user_alipay': $api.byId("login_phone").value,
+                    'user_realname': encodeURIComponent($api.byId("true_name").value)
+                };
+                var objArr = sort_ASCII(obj);
+                var timestamp = fntimestamp();
+                var version = '2.0';
+                var arr = apiSecret + timestamp + version + '';
+                for (i in objArr) {
+                    arr += objArr[i];
+                }
+                var sign = hex_md5(arr);
+                console.log(arr);
+                api.ajax({
+                    url: commonUrl + 'soukeAppTttService/service/user/alipay_ac',
+                    method: 'post',
+                    headers: {
+                        'Content-Type': 'application/json;charset=utf-8'
+                    },
+                    data: {
+                        body: {
+                            'apiKey': apiKey,
+                            'timestamp': timestamp,
+                            'sign': sign,
+                            'user_id': user_id,
+                            'user_alipay': $api.byId("login_phone").value,
+                            'user_realname': $api.byId("true_name").value
+                        }
+                    }
+                }, function(ret, err) {
+                    if (ret) {
+                        if (ret.result_code == 200) {
+                            // console.log("绑定支付宝"+JSON.stringify(ret));
+                            api.toast({
+                                msg: ret.result_message,
+                                duration: 2000,
+                                location: 'middle'
+                            });
+                            api.execScript({
+                                name: 'zhanghuanquan_win',
+                                frameName: 'zhanghuanquan_frame',
+                                script: 'location.reload();'
+                            });
+                            api.execScript({
+                                name: 'my_zfb_win',
+                                frameName: 'my_zfb_frame',
+                                script: 'location.reload();'
+                            });
+                            api.sendEvent({
+                                name: 'login',
+                                extra: {
+                                    login: true,
+                                }
+                            });
+                            api.execScript({
+                                name: 'bind_zfb_win',
+                                script: 'closeWin();'
+                            });
+
+                        } else {
+                            api.toast({
+                                msg: ret.result_message,
+                                duration: 2000,
+                                location: 'middle'
+                            });
+
+                        }
+                    } else {
+                        // api.alert({ msg: JSON.stringify(err) });
+                    }
+                });
+            } else {
+                api.toast({
+                    msg: '真实姓名不能为空',
+                    duration: 2000,
+                    location: 'middle'
+                });
+
+            }
+
+        } else {
+            api.toast({
+                msg: '支付宝账号有误',
+                duration: 2000,
+                location: 'middle'
+            });
+        }
+
+    }
+</script>
+
+</html>

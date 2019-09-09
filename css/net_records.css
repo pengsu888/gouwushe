@@ -1,0 +1,226 @@
+body, div, dl, dt, dd, ul, ol, li, h1, h2, h3, h4, h5, h6, pre, code, form, fieldset, legend, input, button, textarea, p, blockquote, th, td, nav, header {
+    margin: 0;
+    padding: 0;
+    -webkit-box-sizing: border-box;
+    box-sizing: border-box;
+}
+
+ol, ul {
+    list-style: none;
+}
+
+body, html {
+    font-size: 14px;
+    height: 100%;
+}
+
+body {
+    color: #333;
+}
+
+h1, h2, h3, h4, h5, h6 {
+    font-size: 100%;
+    font-weight: normal;
+}
+
+a {
+    text-decoration: none;
+    font-weight: normal;
+}
+
+img {
+    border: none;
+    vertical-align: middle;
+}
+
+table {
+    border-collapse: collapse;
+}
+
+samll {
+    font-size: 30%;
+}
+
+
+/*头部*/
+
+.aui-card-list-header, .aui-card-list-footer {
+    padding: 0.5rem 0.8rem;
+}
+
+.aui-text-danger {
+    color: #e51c23 !important;
+    font-size: 0.65rem;
+    margin-left: 0.2rem;
+}
+
+
+/*头部*/
+
+#log {
+    position: fixed;
+    left: 0;
+    top: 0;
+    padding: 10px;
+    background-color: red;
+    color: white;
+}
+
+.show {
+    display: block !important;
+}
+
+.hide {
+    display: none !important;
+}
+
+.hover {
+    opacity: .8;
+}
+
+.row-nowrap {
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+}
+
+.flex-wrap {
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: flex;
+}
+
+.flex-con {
+    -webkit-box-flex: 1;
+    -webkit-flex: 1;
+    flex: 1;
+}
+
+.flex-tow {
+    -webkit-box-flex: 2;
+    -webkit-flex: 2;
+    flex: 2;
+}
+
+.flex-vertical {
+    -webkit-box-orient: vertical;
+    -webkit-flex-flow: column;
+    flex-flow: column;
+}
+
+.border-t, .border-b {
+    position: relative;
+}
+
+.border-t:before, .border-b:after {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0;
+    background: #ddd;
+    right: 0;
+    height: 1px;
+    -webkit-transform: scaleY(0.5);
+    transform: scaleY(0.5);
+    -webkit-transform-origin: 0 0;
+    transform-origin: 0 0;
+}
+
+.border-b:after {
+    top: auto;
+    bottom: 0;
+}
+
+
+/*列表部分*/
+
+ul {
+    overflow: hidden;
+}
+
+ul li.animation {
+    -webkit-transition: .3s all;
+    transition: .3s all;
+}
+
+ul li .right-btns {
+    position: absolute;
+    left: 100%;
+    top: 0;
+    bottom: 0;
+}
+
+ul li .right-btns .flex-con {
+    padding: 0 30px;
+    background-color: #27B769;
+    color: white;
+    display: table;
+    white-space: nowrap;
+    height: 100%;
+}
+
+ul li .right-btns .flex-con span {
+    display: table-cell;
+    vertical-align: middle;
+}
+
+ul li .right-btns .flex-con.red {
+    background-color: #ff4c00;
+}
+
+.aui-layout-item-text {
+    -webkit-box-flex: 1;
+    -webkit-flex: 1;
+    flex: 1;
+    min-width: 0;
+		height: 60px;
+    line-height: 35px;
+}
+.aui-flex-box h4 {
+    color: #333;
+    font-size: 0.9rem;
+    font-weight: normal;
+}
+.aui-flex-box h5 {
+    color: #808080;
+    font-size: 0.6rem;
+}
+.aui-layout-item-text p {
+    color: #808080;
+    font-size: 14px;
+    line-height: 1.0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 1;
+}
+
+.aui-insurance-img {
+    width: 40px;
+    height: 40px;
+    margin-right: 5px;
+}
+.aui-insurance-img img {
+    width: 100%;
+    height: auto;
+    display: block;
+    border: none;
+}
+.aui-flex-box {
+    -webkit-flex: 1;
+}
+.aui-sml-text {
+    font-size: 12px;
+    padding-top: 5px;
+}
+.aui-flex {
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: flex;
+    -webkit-box-align: center;
+    -webkit-align-items: center;
+    align-items: center;
+    padding: 10px 20px;
+    position: relative;
+}

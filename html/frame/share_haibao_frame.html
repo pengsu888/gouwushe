@@ -1,0 +1,596 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0" />
+    <title>分享海报</title>
+    <link rel="stylesheet" type="text/css" href="../../css/api.css" />
+    <link rel="stylesheet" type="text/css" href="../../css/style.css" />
+    <link rel="stylesheet" type="text/css" href="../../css/swiper.min.css" />
+</head>
+<style media="screen">
+    html,
+    body {
+        height: 100%;
+        height: calc(100% - 30px);
+        background: #fff;
+        font-family: Helvetica Neue, Helvetica, Arial, sans-serif;
+        font-size: 14px;
+        color: #000;
+        margin: 0;
+        padding: 0;
+    }
+
+    .swiper-container {
+        width: 100%;
+        height: auto;
+        padding-bottom: 60px;
+    }
+
+    .swiper-slide {
+        background-position: center;
+        background-size: cover;
+        width: calc(100% - 96px);
+        height: auto%;
+    }
+
+    .share {
+        width: calc(100% - 24px);
+        height: 40px;
+        margin: 20px auto;
+        color: #fff;
+        line-height: 40px;
+        text-align: center;
+    }
+
+    .share .saveBtn {
+        width: calc(50% - 5px);
+        height: 40px;
+        float: left;
+        border-radius: 20px;
+        background: #F29C48;
+        margin-right: 5px;
+    }
+
+    .share .shareBtn {
+        width: calc(50% - 5px);
+        height: 40px;
+        float: right;
+        border-radius: 20px;
+        margin-left: 5px;
+    }
+
+    .swiper-slide img {
+        width: 100%;
+        height: 100%;
+        background-size: 100% 100%;
+    }
+
+    .pop {
+        width: 100%;
+        height: 100%;
+        background: rgba(0, 0, 0, 0.5);
+        position: absolute;
+        top: 0;
+        left: 0;
+        z-index: 10000004;
+        display: none;
+    }
+
+    .pop.pops {
+        z-index: 10000004;
+    }
+
+    .pop .cont {
+        width: 100%;
+        background: #fff;
+        position: absolute;
+        bottom: 0;
+        border-radius: 2rem 2rem 0 0;
+    }
+
+    .pop .cont .tit {
+        margin: 0 auto;
+        position: relative;
+        width: 15rem;
+        line-height: 3rem;
+        text-align: center;
+        font-size: 1rem;
+    }
+
+    .pop .cont ul {
+        width: 90%;
+        /*height: 9rem;*/
+        margin: 0 auto;
+        overflow: hidden;
+        position: relative;
+        margin-top: 1.2rem;
+    }
+
+    .pop .cont ul li {
+        width: 15%;
+        float: left;
+        margin-right: 10%;
+        text-align: center;
+    }
+
+    .pop .cont ul li:nth-child(4) {
+        margin-right: 0
+    }
+
+    .pop .cont ul li:nth-child(4n+5) {
+        padding: 6% 0 2% 0;
+    }
+
+    .pop .cont ul li img {
+        position: relative;
+        left: 40%;
+        width: 100%;
+        display: block;
+    }
+
+    .pop .cont ul li p {
+        margin: 0 auto;
+        font-size: 0.85rem;
+        font-family: -webkit-body;
+        position: relative;
+        margin-top: 0.6rem;
+        left: 40%;
+        color: #666;
+    }
+
+    .pop .cont .close {
+        width: 80%;
+        height: 2.5rem;
+        background-color: #999999;
+        font-size: 14px;
+        line-height: 2.5rem;
+        color: #fff;
+        margin: 0 auto;
+        text-align: center;
+        border-radius: 2rem;
+        margin-top: 1rem;
+        margin-bottom: 1.0rem;
+    }
+
+    .h_hidden {
+        display: block;
+    }
+
+    .footer {
+        position: fixed;
+        bottom: 0;
+        display: block;
+        width: 100%;
+        height: 60px;
+        border-top: 1px solid #f0f0f0;
+        z-index: 9;
+    }
+
+    .container-fluid {
+        margin-right: auto;
+        margin-left: auto;
+        padding-left: 15px;
+        padding-right: 15px;
+    }
+
+    .row {
+        margin-left: -15px;
+        margin-right: -15px;
+    }
+
+    .col-xs-6 {
+        width: 50%;
+        float: left;
+        text-align: center;
+    }
+
+    .bt1 {
+        display: inline-block;
+        width: 90%;
+        background: linear-gradient(to right, #4eec57, #45b14b);
+        text-align: center;
+        height: 40px;
+        line-height: 40px;
+        border-radius: 25px;
+        color: #ffffff;
+        font-size: 1.0rem;
+        margin-top: 10px;
+    }
+
+    .bt2 {
+        display: inline-block;
+        width: 90%;
+        background: linear-gradient(to right, #FF6145, #FF3649);
+        text-align: center;
+        height: 40px;
+        line-height: 40px;
+        border-radius: 25px;
+        color: #ffffff;
+        font-size: 1.0rem;
+        margin-top: 10px;
+    }
+
+    .aui-flex-box {
+        -webkit-box-flex: 1;
+        -webkit-flex: 1;
+        flex: 1;
+        min-width: 0;
+        font-size: 14px;
+        color: #333;
+        padding: 0.8rem 0.5rem;
+    }
+
+    .aui-login-line h2 {
+        font-size: 0.85rem;
+        color: #bbb;
+        background: #f9f9f9;
+        width: 90px;
+        margin: 0 auto;
+        z-index: 1002;
+        position: relative;
+    }
+
+    .aui-flex-box h2 {
+        text-align: center;
+        font-size: 1.0rem;
+        color: #333;
+        position: relative;
+        margin: 0 auto;
+        width: 90px;
+        font-weight: initial;
+    }
+
+    .aui-flex-box h2:before {
+        content: '';
+        position: absolute;
+        z-index: 0;
+        top: 10px;
+        right: -50%;
+        width: 40%;
+        background: #333;
+        height: 1px;
+    }
+
+    .aui-flex-box h2:after {
+        content: '';
+        position: absolute;
+        z-index: 0;
+        top: 10px;
+        left: -50%;
+        width: 40%;
+        background: #333;
+        height: 1px;
+    }
+</style>
+
+<body>
+    <!-- Swiper -->
+    <div class="swiper-container">
+        <div class="swiper-wrapper" id="haibao">
+            <!-- <div class="swiper-slide" id="1"><img src="../../image/home/haibao.jpg" alt=""></div>
+            <div class="swiper-slide" id="2"><img src="../../image/home/haibao.jpg" alt=""></div>
+            <div class="swiper-slide" id="3"><img src="../../image/home/haibao.jpg" alt=""></div>
+            <div class="swiper-slide" id="4"><img src="../../image/home/haibao.jpg" alt=""></div> -->
+        </div>
+    </div>
+    <!-- <div class="share">
+        <div class="saveBtn" tapmode onclick="saveHaibao();">保存海报</div>
+        <div class="shareBtn submitColor" tapmode onclick="shareTo();">分享海报</div>
+    </div> -->
+    <div class="footer">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-xs-6 text-center" tapmode onclick="saveHaibao()">
+                    <span class="bt1">保存海报</span>
+                </div>
+                <div class="col-xs-6 text-center" tapmode onclick="shareTo()">
+                    <span class="bt2 down2">分享海报</span>
+                    <a href="" class="down"></a>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="pop pops">
+        <div class="cont" id='cont'>
+            <!-- <div class="tit">------ &nbsp分享至&nbsp ------</div> -->
+            <div class="aui-flex-box">
+                <h2>
+                   <!-- <i class="icon icon-stare"> -->
+                   </i>分享至</h2>
+            </div>
+            <ul>
+                <li class="wx" tapmode onclick="share('session')">
+                    <img src="../../image/goods/share_wx.png" alt="">
+                    <p>微信好友</p>
+                </li>
+                <li class="fd" tapmode onclick="share('timeline')">
+                    <img src="../../image/goods/share_wxzone.png" alt="">
+                    <p>朋友圈</p>
+                </li>
+                <li class="fd" tapmode onclick="share2('QFriend')">
+                    <img src="../../image/goods/share_qq.png" alt="">
+                    <p>QQ</p>
+                </li>
+                <li class="fd" tapmode onclick="share2('QZone')">
+                    <img src="../../image/goods/share_qqzone.png" alt="">
+                    <p>QQ空间</p>
+                </li>
+                <!-- <li class="fd" tapmode onclick="share2('4')">
+                    <img src="../../image/goods/share_wb.png" alt="">
+                    <p>新浪微博</p>
+                </li> -->
+                <li tapmode onclick="saveHaibao()">
+                    <img src="../../image/goods/share_dowimg.png" alt="">
+                    <p>保存图片</p>
+                </li>
+            </ul>
+            <div class="close" tapmode onclick="close1()">取&nbsp消</div>
+        </div>
+    </div>
+    <div class="noWlan">
+        <div class="nowlanItem">
+            <div class="no_net"><img src="../../image/no_net.png" /></div>
+            <p class="no_p">网络竟然崩溃了</p>
+            <p class="load_p">别紧张，试试看刷新页面</p>
+            <div class="loadBtn" tapmode onclick="javascript:location.reload();">点击刷新</div>
+        </div>
+    </div>
+</body>
+<script type="text/javascript" src="../../script/api.js"></script>
+<script type="text/javascript" src="../../script/jquery.js"></script>
+<script type="text/javascript" src="../../script/swiper.min.js"></script>
+<script type="text/javascript" src="../../script/api_common.js"></script>
+<script type="text/javascript" src="../../script/md5.js"></script>
+<script type="text/javascript">
+    var user_id;
+    apiready = function() {
+        if (api.systemType == "ios") {
+            $('.footer').css("height", api.safeArea.bottom + 60); //解决IOS底部被遮挡问题
+            $('#cont').css("padding-bottom", api.safeArea.bottom); //解决IOS底部被遮挡问题
+        }
+        api.showProgress({
+            style: 'default',
+            animationType: 'fade',
+            title: '海报生成中',
+            text: '请稍后...',
+            modal: false
+        });
+        if (!empty($api.getStorage("userInfo"))) {
+            user_id = $api.getStorage("userInfo").user_id;
+        }
+        var obj = {
+            user_id: user_id,
+        };
+        var objArr = sort_ASCII(obj);
+        var timestamp = fntimestamp();
+        var version = '2.0';
+        var arr = apiSecret + timestamp + version + '';
+        for (i in objArr) {
+            arr += objArr[i];
+        }
+        var sign = hex_md5(arr);
+        api.ajax({
+            url: commonUrl + 'soukeAppTttService/service/poster/shareposter',
+            method: 'post',
+            headers: {
+                'Content-Type': 'application/json;charset=utf-8'
+            },
+            data: {
+                body: {
+                    apiKey: apiKey,
+                    timestamp: timestamp,
+                    sign: sign,
+                    user_id: user_id
+                }
+            }
+        }, function(ret, err) {
+            api.hideProgress();
+            if (ret) {
+                $(".noWlan").hide();
+                // console.log(JSON.stringify(ret));
+                var htmlHb = '';
+                for (var i = 0; i < ret.result_data.length; i++) {
+                    htmlHb += '<div class="swiper-slide" id="' + ret.result_data[i].id + '"><img src="' + ret.result_data[i].picture + '" alt=""></div>';
+                }
+                $api.byId('haibao').innerHTML = htmlHb;
+                var swiper = new Swiper('.swiper-container', {
+                    effect: 'coverflow',
+                    grabCursor: true,
+                    centeredSlides: true,
+                    slidesPerView: 'auto',
+                    coverflowEffect: {
+                        rotate: 50,
+                        stretch: 0,
+                        depth: 100,
+                        modifier: 1,
+                        slideShadows: true, //是否显示阴影
+                    },
+                });
+            } else {
+                $(".noWlan").show();
+                // api.alert({ msg: JSON.stringify(err) });
+            }
+        });
+    };
+
+    function saveHaibao() {
+        var resultList = api.hasPermission({
+            list: ['photos']
+        });
+        if (!resultList[0].granted) {
+            //存储未授权
+            api.requestPermission({
+                list: ['photos'],
+                code: 1000
+            }, function(ret, err) {
+                // api.alert({
+                //     msg: JSON.stringify(ret)
+                // });
+                if (!ret.never) {
+                    //禁止权限
+                    return;
+                } else {
+                    saveHaibaoTo();
+                }
+            });
+        } else {
+            saveHaibaoTo();
+        }
+        // api.alert({
+        //     msg: JSON.stringify(resultList)
+        // });
+    }
+
+    function saveHaibao() {
+        var imgPath = $(".swiper-slide-active").find("img").attr("src");
+        var id = $(".swiper-slide-active").attr("id");
+        api.download({
+            url: imgPath,
+            savePath: 'fs://saveHaibao_' + user_id + id + '.png',
+            report: false,
+            cache: true,
+            allowResume: true
+        }, function(ret, err) {
+            // alert(JSON.stringify(ret));
+            if (ret.state == 1) {
+                api.saveMediaToAlbum({
+                    path: 'fs://saveHaibao_' + user_id + id + '.png'
+                }, function(ret, err) {
+                    if (ret) {
+                        api.toast({
+                            msg: '保存成功',
+                            duration: 2000,
+                            location: 'middle'
+                        });
+                    } else {
+                        api.toast({
+                            msg: '保存失败',
+                            duration: 2000,
+                            location: 'middle'
+                        });
+                    }
+                });
+            } else {
+                api.toast({
+                    msg: '保存失败',
+                    duration: 2000,
+                    location: 'middle'
+                });
+
+            }
+        });
+    }
+
+    function shareTo() {
+        $('.pop').css('display', 'block');
+        $('.pop').show();
+    }
+    //分享好友与朋友圈
+    function share(wx_type) {
+        close1();
+        var imgPath = $(".swiper-slide-active").find("img").attr("src");
+        var id = $(".swiper-slide-active").attr("id");
+        var wx = api.require('wx');
+        var sharePath = 'fs://shareHaibao' + id + '.png';
+        api.download({
+            url: imgPath,
+            savePath: sharePath,
+            report: false,
+            cache: true,
+            allowResume: true
+        }, function(ret, err) {
+            // alert(JSON.stringify(ret));
+            if (ret.state == 1) {
+                var savePath = ret.savePath;
+                wx.shareImage({
+                    apiKey: '',
+                    scene: wx_type,
+                    thumb: commonUrl + 'soukeAppTttService/images/logo/logo.jpg',
+                    contentUrl: sharePath
+                }, function(ret, err) {
+                    // alert(JSON.stringify(ret));
+                    if (ret.status) {
+                        removeImg(sharePath);
+                        api.toast({
+                            msg: '分享成功',
+                            duration: 2000,
+                            location: 'middle'
+                        });
+                    } else {
+                        removeImg(sharePath)
+                        api.toast({
+                            msg: '取消分享',
+                            duration: 2000,
+                            location: 'middle'
+                        });
+                    }
+                });
+
+            } else {
+
+            }
+        });
+    };
+
+    function share2(j) {
+        close1();
+        var imgPath = $(".swiper-slide-active").find("img").attr("src");
+        var id = $(".swiper-slide-active").attr("id");
+        var sharedModule = api.require('shareAction');
+        var sharePath = 'fs://shareHaibao' + id + '.png';
+        api.download({
+            url: imgPath,
+            savePath: sharePath,
+            report: false,
+            cache: true,
+            allowResume: true
+        }, function(ret, err) {
+            //  alert(JSON.stringify(ret));
+            if (ret.state == 1) {
+                var savePath = ret.savePath;
+                // sharedModule.share({
+                //     images: arr,
+                //     type: 'image',
+                // });
+                var qq = api.require('QQPlus');
+                qq.shareImage({
+                    type: j,
+                    imgPath: savePath
+                }, function(ret, err) {
+                    if (ret.status) {
+                        // alert("分享成功！");
+                    } else {
+                        // api.alert({
+                        //     msg: JSON.stringify(err)
+                        // });
+                    }
+                });
+            } else {
+
+            }
+        });
+    };
+
+    function removeImg(sharePath) {
+        var fs = api.require('fs');
+        fs.remove({
+            path: sharePath
+        }, function(ret, err) {
+            if (ret.status) {
+                // alert(JSON.stringify(ret));
+                // alert("删除成功");
+            } else {
+                // alert(JSON.stringify(err));
+            }
+        });
+    }
+
+    function close1() {
+        $('.pop').css('display', 'none');
+        $('.pop').hide();
+    };
+</script>
+
+</html>

@@ -1,0 +1,353 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0" />
+    <title>分类头部</title>
+    <link rel="stylesheet" type="text/css" href="../../css/api.css" />
+    <style>
+        body {
+            width: 100%;
+            height: 100%;
+            background-color: #fff;
+            /*overflow: hidden;*/
+            overflow-x: hidden;
+            overflow-y: auto;
+        }
+
+        .wrap {
+            width: 100%;
+            height: calc(100% - 88px);
+            /*background: red;
+      position:fixed;
+      left:0;
+      top:88px;*/
+            margin-top: 88px;
+        }
+
+        .wrap .leftList {
+            width: 5.2rem;
+            height: 100%;
+            float: left;
+            background: #fff;
+            font-size: 14px;
+        }
+
+        .leftList .listItem {
+            width: 100%;
+            height: 100%;
+            overflow-x: hidden;
+            overflow-y: auto;
+        }
+
+        .listItem ul {
+            list-style: none;
+        }
+
+        .listItem ul li {
+            width: 100%;
+            height: 3.0rem;
+            text-align: center;
+            line-height: 3.0rem;
+        }
+
+        .listItem ul li a {
+            color: #333;
+            width: 100%;
+            height: 100%;
+        }
+
+        .listItem ul li.active {
+            color: #FF2521;
+            background: #fff;
+            list-style: inside;
+        }
+
+        .wrap .rightList {
+            width: calc(100% - 5.2rem);
+            height: 100%;
+            background: #f4f4f4;
+            float: right;
+            overflow-x: hidden;
+            overflow-y: auto;
+        }
+
+        .wrap .rightList .rightItem {
+            width: 100%;
+            height: auto;
+            overflow: hidden;
+        }
+
+        .wrap .rightItem ul {
+            list-style: none;
+            height: auto;
+            width: calc(100% - 20px);
+            margin-left: 10px;
+            background: #fff;
+            overflow: hidden;
+            border-radius: 6px;
+        }
+
+        .wrap .rightItem ul li {
+            width: 33.3%;
+            height: 6.0rem;
+            float: left;
+            position: relative;
+        }
+
+        .wrap .rightItem ul li img {
+            width: 50px;
+            height: 50px;
+            position: absolute;
+            top: 35%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+        }
+
+        .wrap .rightItem ul li p {
+            position: absolute;
+            text-align: center;
+            height: 30px;
+            line-height: 30px;
+            width: 100%;
+            left: 0;
+            bottom: 13%;
+            font-size: 12px;
+            color: #333;
+        }
+
+        .wrap .rightItem .right_title {
+            height: 50px;
+            text-align: left;
+            line-height: 50px;
+            width: 100%;
+            padding-left: 15px;
+            font-size: 14px;
+        }
+
+        #menu ul li a.current {
+            color: #FF2521;
+            background: #f4f4f4;
+        }
+        /*.wrap{
+      width: 100%;
+      height: calc(100% - 88px);
+      background: red;
+      position:fixed;
+      left:0;
+      top:88px;
+    }
+    .leftList{
+      width:5.2rem;
+      height: calc(100% - 88px);
+      float:left;
+      background: #F6F6F6;
+      position:fixed;
+      left:0;
+      top:88px;
+    }
+    .leftList .listItem{
+      width: 100%;
+      height: 100%;
+      overflow-x: hidden;
+			overflow-y: auto;
+    }
+    .listItem ul{
+      list-style: none;
+    }
+    .listItem ul li{
+      width:100%;
+      height:3.0rem;
+      text-align: center;
+      line-height: 3.0rem;
+    }
+    .listItem ul li a{
+      color:#333;
+      width:100%;
+      height:100%;
+    }
+    .listItem ul li.active{
+      color:#FF2521;background: #fff;
+      list-style: inside;
+    }
+    .right_div{
+      width:calc(100% - 5.2rem);
+      height: 100%;
+      background: #f4f4f4;
+      float: right;
+      overflow-x: hidden;
+      overflow-y: auto;
+    }
+    .rightList{
+      width:100%;
+      height: 100%;
+      overflow: hidden;
+    }
+    .rightList .rightItem{
+      width:100%;
+      height: 100%;
+    }
+    .rightItem ul{list-style: none;height: calc(100% - 20px);width: calc(100% - 20px);margin-left: 10px;background: #fff;overflow: hidden;border-radius: 6px;}
+    .rightItem ul li{
+      width:33.3%;
+      height: 8.0rem;
+      float: left;
+      position: relative;
+    }
+    .rightItem ul li img{
+      width:80px;
+      height: 80px;
+      position: absolute;
+      top: 35%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+    }
+    .rightItem ul li p{
+      position: absolute;
+      text-align: center;
+      height: 30px;
+      line-height: 30px;
+      width: 100%;
+      left: 0;
+      bottom:13%;
+      font-size: 14px;
+      color: #333;
+    }
+   .rightItem .right_title{
+      height: 50px;
+      text-align: left;
+      line-height: 50px;
+      overflow: hidden;
+      width:100%;
+      padding-left:15px;
+    }
+    #menu ul li a.current{color:#FF2521;background: #fff;}　*/
+
+        header {
+            height: 44px;
+            width: 100%;
+            /*position: fixed;
+      top:0;
+      left: 0;
+      z-index: 9999999;*/
+        }
+
+        .header {
+            height: 44px;
+            width: 100%;
+            overflow: hidden;
+        }
+
+        .submitColor {
+            box-shadow: 0 1px 5px #f1f1f1;
+            background: #fff;
+        }
+
+        .btn {
+            height: 40px;
+            width: 35px;
+            position: absolute;
+            right: 0;
+            bottom: 0;
+        }
+
+        .top-sousuo {
+            margin: 4px;
+            text-align: center;
+        }
+
+        .top_search {
+            width: 80%;
+            background: #f4f4f4;
+            border-radius: 1rem;
+            font-size: 12px;
+            vertical-align: middle;
+            display: inline-block;
+            color: #666;
+        }
+
+        .top_search img {
+            width: 20px;
+            height: 20px;
+            background-size: 100% 100%;
+            margin: 8px 15px;
+            vertical-align: middle;
+        }
+
+        .top_search span {
+            /*margin-top: -56px;*/
+            display: inline-block;
+        }
+
+        .top-sousuo .gwc {
+            width: calc(100% - 91%);
+            height: 30px;
+            float: right;
+        }
+
+        .top-sousuo .gwc img {
+            width: 23px;
+            height: 20px;
+            background-size: 100% 100%;
+            display: inline-block;
+            vertical-align: middle;
+            margin-top: 13px;
+        }
+    </style>
+</head>
+
+<body>
+    <header id="header">
+        <div class="header submitColor">
+            <div class="top-sousuo" id="jkj-sousuo">
+                <div class="top_search" tapmode onclick="openSearchwin();"><img src="../../image/ic_title_bar_edit_glass_gray.png" /><span>搜索商品名或者粘贴淘宝标题</span></div>
+            </div>
+        </div>
+    </header>
+</body>
+<script type="text/javascript" src="../../script/api.js"></script>
+<script type="text/javascript" src="../../script/jquery.js"></script>
+<script type="text/javascript">
+    apiready = function() {
+        api.setStatusBarStyle({
+            style: 'dark' //黑色
+                // style: 'light' //白色
+        });
+        var header = $api.byId('header');
+        $api.fixStatusBar(header);
+        $api.fixIos7Bar(header);
+        var headerH = $api.offset(header).h;
+        api.openFrame({
+            name: 'feilei_frame_frame',
+            url: './feilei_frame_frame.html',
+            rect: {
+                x: 0,
+                y: headerH,
+                w: api.winWidth,
+                h: api.winHeight - headerH - 44 - api.safeArea.bottom
+            },
+            pageParam: {
+                name: 'test'
+            },
+            bounces: false,
+            bgColor: '#fff',
+            vScrollBarEnabled: true,
+            hScrollBarEnabled: true
+        });
+    };
+
+    function openSearchwin() {
+        api.openWin({
+            name: 'search_win',
+            url: '../home/search_win.html',
+            // pageParam: {
+            //     name: 'test'
+            // }
+            allowEdit: true
+        });
+
+    }
+</script>
+
+</html>

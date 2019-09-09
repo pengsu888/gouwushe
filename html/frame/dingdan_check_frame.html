@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0" />
+  <title>title</title>
+  <link rel="stylesheet" type="text/css" href="../../css/api.css" />
+</head>
+<style media="screen">
+  body{
+    width: 100%;
+    height: 100%;
+    background: #f4f4f4;
+    overflow: hidden;
+  }
+  .dingdan_item{
+    width: calc(100% - 45px);
+    height: auto;
+    position: relative;
+    margin: 0 auto;
+  }
+  .dingdan_item img{
+    width: 132px;
+    height: 117px;
+    background-size: 100% 100%;
+    position: absolute;
+    top:30px;
+    left: 50%;
+    margin-left: -66px;
+  }
+  .dingdan_item .search_dd{
+    width: 100%;
+    height: 45px;
+    border-radius: 5px;
+    border: 3px solid #fd5e3f;
+    position: absolute;
+    top: 189px;
+    left: 0;
+  }
+  .dingdan_item .search_dd input{
+    width: calc(100% - 89px);
+    height: 45px;
+    background: #fff;
+    margin-left: 10px;
+    outline: none;
+    border: none;
+  }
+  .dingdan_item .search_dd .search_btn{
+    width: 75px;
+    height: 45px;
+    background: #fd5e3f;
+    line-height: 45px;
+    color: #fff;
+    text-align: center;
+    float: right;
+  }
+</style>
+<body>
+    <div class="dingdan_item">
+      <img src="../../image/home/ddcx_search.png" alt="">
+      <div class="search_dd"><input type="text" placeholder="请输入宝贝订单编号" class="ddh_input yzm_input"/><div class="search_btn" onclick="fnOpenSearchddbh();">搜索</div></div>
+    </div>
+</body>
+  <script type="text/javascript" src="../../script/api.js"></script>
+  <script type="text/javascript" src="../../script/jquery.js"></script>
+  <script type="text/javascript" src="../../script/api_common.js"></script>
+  <script type="text/javascript">
+    apiready = function() {
+    };
+    $(".ddh_input").on('focus',function(){
+      var clipBoard = api.require('clipBoard');
+      clipBoard.get(function(ret, err) {
+          if (ret) {
+            if(!empty(ret.value)){
+              $(".ddh_input").val(ret.value);
+            }
+              // alert(JSON.stringify(ret));
+          } else {
+              // alert(JSON.stringify(err));
+          }
+      });
+    })
+    function fnOpenSearchddbh(){
+      if(empty($(".ddh_input").val())){
+        api.toast({
+            msg: '请输入订单编号',
+            duration: 2000,
+            location: 'middle'
+        });
+      }else{
+        api.openWin({
+            name: 'select_ddbh_win',
+            url: './select_ddbh_win.html',
+            pageParam: {
+                order_id: $(".ddh_input").val()
+            }
+        });
+      }
+    }
+  </script>
+
+</html>

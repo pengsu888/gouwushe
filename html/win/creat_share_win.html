@@ -1,0 +1,1019 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0" />
+    <title>创建商品分享页</title>
+    <link rel="stylesheet" type="text/css" href="../../css/api.css" />
+    <link rel="stylesheet" type="text/css" href="../../css/style.css" />
+</head>
+<style media="screen">
+    html,
+    body {
+        height: 100%;
+        width: 100%;
+        background: #fff;
+    }
+
+    .wrap {
+        height: calc(100% - 130px);
+        width: 100%;
+        background: #fff;
+        overflow-x: hidden;
+        overflow-y: auto;
+    }
+
+    .jiangli {
+        width: 100%;
+        height: 30px;
+        background: #FD5F3E;
+        color: #fff;
+        line-height: 30px;
+        font-size: 12px;
+    }
+
+    .jiangli div {
+        float: left;
+    }
+
+    .jiangli .jiangli_l {
+        float: left;
+        width: auto;
+        margin-left: 17px;
+    }
+
+    .jiangli .jiangli_l img {
+        width: 11px;
+        height: 11px;
+        background-size: 100% 100%;
+        margin-right: 5px;
+        vertical-align: middle;
+    }
+
+    .jiangli .jiangli_r {
+        float: right;
+        width: auto;
+        margin-right: 17px;
+    }
+
+    .jiangli .jiangli_r img {
+        width: 15px;
+        height: 14px;
+        background-size: 100% 100%;
+        vertical-align: middle;
+        margin-left: 5px;
+        margin-top: -2px;
+    }
+
+    .good_title {
+        padding: 10px 14px;
+        line-height: 20px;
+        color: #666;
+        font-size: 15px;
+        height: auto;
+        background: #fff;
+        display: block;
+        margin-bottom: 0rem;
+    }
+
+    .share_text {
+        width: calc(100% - 24px);
+        height: 30px;
+        line-height: 30px;
+        background: #fff;
+        margin: 0 auto;
+        clear: both;
+        font-size: 14px;
+    }
+
+    .fk_area {
+        width: calc(100% - 24px);
+        height: 120px;
+        background: #fff;
+        position: relative;
+        margin: 0 auto;
+    }
+
+    .area_div {
+        width: calc(100% - 24px);
+        height: calc(100% - 50px);
+        padding: 12px;
+        resize: none;
+        outline: none;
+        background: #EEEEEE;
+        margin: 0 auto;
+        border-radius: 4px;
+        overflow-x: hidden;
+        overflow-y: auto;
+        font-size: 12px;
+    }
+
+     ::-webkit-scrollbar {
+        /*隐藏滚轮*/
+        display: none;
+    }
+
+    .fk_area .fk_l {
+        height: 30px;
+        float: left;
+        color: #999;
+        font-size: 14px;
+        line-height: 30px;
+    }
+
+    .fk_area .fk_r {
+        height: 30px;
+        float: right;
+        color: #fd5f3e;
+        font-size: 14px;
+        line-height: 30px;
+    }
+
+    .fk_area .fk_r img {
+        width: 15px;
+        height: 15px;
+        background-size: 100% 100%;
+        margin-right: 5px;
+        vertical-align: middle;
+    }
+
+    .share_text .share_l {
+        float: left;
+    }
+
+    .share_text .share_r {
+        float: right;
+    }
+
+    .share_text .share_r span {
+        color: #fd5f3e;
+        margin: 0 5px;
+    }
+
+    .share_img {
+        width: calc(100% - 24px);
+        height: auto;
+        margin: 10px auto;
+    }
+
+    .share_img .share_imgL {
+        float: left;
+        width: calc(50% - 5px);
+        margin-right: 5px;
+        height: auto;
+        position: relative;
+    }
+
+    .share_img .share_imgL .selectImg {
+        width: 16px;
+        height: 16px;
+        background-size: 100% 100%;
+        position: absolute;
+        right: 2px;
+        top: 2px;
+        z-index: 9999;
+    }
+
+    .share_img .share_imgL img {
+        width: 100%;
+        height: auto;
+        background-size: 100% auto;
+    }
+
+    .share_img .share_imgR {
+        float: right;
+        width: calc(50% - 5px);
+        height: auto;
+    }
+
+    .share_img .share_imgR ul {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+    }
+
+    .share_img .share_imgR ul li {
+        width: calc(50% - 5px);
+        height: 80px;
+        background: #f4f4f4;
+        float: left;
+        margin-bottom: 10px;
+        position: relative;
+    }
+
+    .share_img .share_imgR ul li img.item_imgs {
+        width: 100%;
+        height: 100%;
+        background-size: 100% 100%;
+    }
+
+    .share_img .share_imgR ul li:nth-child(1),
+    .share_img .share_imgR ul li:nth-child(3) {
+        margin-right: 10px;
+    }
+
+    .share_img .share_imgR ul li .selectImg {
+        width: 16px;
+        height: 16px;
+        background-size: 100% 100%;
+        position: absolute;
+        right: 2px;
+        top: 2px;
+        z-index: 9999;
+    }
+
+    .shareArea {
+        width: calc(100% - 20px);
+        margin: 10px;
+        height: 40px;
+        line-height: 40px;
+        text-align: center;
+        color: #fff;
+        position: fixed;
+        bottom: 0px;
+    }
+
+    .shareArea .copyTkl {
+        width: calc(50% - 5px);
+        border-radius: 30px;
+        float: left;
+        background: #EFB75E;
+        margin-right: 5px;
+    }
+
+    .shareArea .shareIcon {
+        width: calc(50% - 5px);
+        border-radius: 30px;
+        float: right;
+        background: #FD5F3E;
+        margin-left: 5px;
+    }
+    /*分享块 css*/
+
+    .shareItem {
+        width: 100%;
+        height: 100%;
+        background: rgba(0, 0, 0, 0.5);
+        position: fixed;
+        left: 0;
+        top: 0;
+        z-index: 99999;
+        display: none;
+    }
+
+    .shareItem .share_list {
+        width: 100%;
+        height: auto;
+        background: #fff;
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        border-top-left-radius: 15px;
+        border-top-right-radius: 15px;
+    }
+
+    .share_list .share_title {
+        width: calc(100% - 52px);
+        height: 30px;
+        line-height: 30px;
+        color: #333;
+        margin: 20px auto;
+        text-align: center;
+    }
+
+    .share_list .share_title .line {
+        height: 1px;
+        width: 50px;
+        background: #333;
+        margin: 5px 10px;
+    }
+
+    .share_list .share_i {
+        width: 100%;
+        height: auto;
+        overflow-x: auto;
+        overflow-y: hidden;
+    }
+
+    .share_list ul {
+        list-style: none;
+        width: 100%;
+        height: auto;
+    }
+
+    .share_list ul li {
+        float: left;
+        width: 25%;
+        height: 100px;
+        /*margin: 0 10px 10px 10px;*/
+        position: relative;
+    }
+
+    .share_list ul li img {
+        width: 50px;
+        height: 50px;
+        background-size: 100%;
+        vertical-align: middle;
+        display: inline-block;
+        position: absolute;
+        left: 50%;
+        margin-left: -25px;
+        top: 0;
+    }
+
+    .share_list ul li p {
+        width: 100%;
+        height: 30px;
+        line-height: 30px;
+        text-align: center;
+        font-size: 12px;
+        position: absolute;
+        left: 0;
+        bottom: 15px;
+    }
+
+    .share_list .cancelBtn {
+        width: 100%;
+        height: 66px;
+        line-height: 66px;
+        text-align: center;
+        color: #999;
+    }
+    /*规则css*/
+
+    .nl_list {
+        position: fixed;
+        width: 333px;
+        height: 210px;
+        left: 50%;
+        top: 50%;
+        margin-left: -166px;
+        margin-top: -105px;
+        border-radius: 13px;
+        z-index: 999;
+        background: #fff;
+        box-sizing: border-box;
+        -webkit-box-sizing: border-box;
+        overflow: hidden;
+    }
+
+    .nl_list .dialog {
+        width: 333px;
+        height: 100%;
+    }
+
+    .nl_list .dialog .dialog_top {
+        width: 100%;
+        height: 44px;
+        line-height: 44px;
+        font-size: 16px;
+        color: #333;
+        text-align: center;
+        background: #f4f4f4;
+    }
+
+    .nl_list .dialog .dialog_middle {
+        width: auto;
+        padding: 30px 40px 0 40px;
+        font-size: 16px;
+        color: #333;
+        text-align: center;
+        height: 90px;
+        line-height: 30px;
+    }
+
+    .nl_list .dialog .dialog_bottom {
+        width: 100%;
+        height: 45px;
+        line-height: 45px;
+        text-align: center;
+        color: #f94529;
+        font-size: 16px;
+        border-top: solid 1px #f4f4f4;
+    }
+</style>
+
+<body>
+    <header id="header">
+        <div class="header-top">
+            <div class="headerItem">
+                <div class="header_back" tapmode onclick="closeWin();">
+                    <img src="../../image/nav_back_black.png" alt="">
+                </div>
+                <div class="header_title" id="header_title">创建分享</div>
+            </div>
+        </div>
+    </header>
+    <div class="wrap">
+        <div class="jiangli">
+            <div class="jiangli_l"><img src="../../image/goods/share_je.png" alt="">奖励佣金预估：￥<span id="tk_fee"></span></div>
+            <div class="jiangli_r" tapmode onclick="openDialog()">规则<img src="../../image/goods/share_ck.png" alt=""></div>
+        </div>
+        <div class="good_title" id="item_title"></div>
+        <div class="share_text">编辑分享文案</div>
+        <div class="fk_area">
+            <!-- <textarea name="name" rows="2" cols="10" maxlength="200" placeholder="">
+
+      </textarea> -->
+            <div class="area_div" id="textarea" contenteditable="true"></div>
+            <div class="fk_l">请不要更改“{}”之间的文字哦~</div>
+            <div class="fk_r" tapmode onclick="copyBtn();"><img src="../../image/goods/share_copy.png" alt="">仅复制文案分享</div>
+        </div>
+        <div class="share_text">
+            <div class="share_l">选择图片</div>
+            <div class="share_r">已选<span id="select_count">0</span>张</div>
+        </div>
+        <div class="share_img">
+            <div class="share_imgL selectList">
+                <!-- <img src="../../image/goods/share_bigImg.png" class="item_imgs" alt="" id="big_img"> -->
+                <img src="" class="item_imgs" alt="" id="big_img">
+                <img src="../../image/home/login_btn_selete_n.png" alt="" class="selectImg">
+            </div>
+            <div class="share_imgR">
+                <ul id="item_imgs">
+                    <!-- <li class="selectList"><img src="../../image/home/login_btn_selete_c.png" alt="" class="selectImg"></li>
+                    <li class="selectList"><img src="../../image/home/login_btn_selete_n.png" alt="" class="selectImg"></li>
+                    <li class="selectList"><img src="../../image/home/login_btn_selete_n.png" alt="" class="selectImg"></li>
+                    <li class="selectList"><img src="../../image/home/login_btn_selete_n.png" alt="" class="selectImg"></li> -->
+                </ul>
+            </div>
+        </div>
+    </div>
+    <div class="shareArea">
+        <div class="copyTkl" tapmode onclick="copyBtn();">复制淘口令</div>
+        <div class="shareIcon" onclick="shareBtn();">分享图片</div>
+        <!-- <div class="shareIcon" onclick="shareBtn2();">分享图片</div> -->
+    </div>
+    <div class="shareItem" id="shareImg">
+        <div class="share_list">
+            <div class="share_title"><span class="line"></span>图文分享到<span class="line"></span></div>
+            <div class="share_i">
+                <ul>
+                    <li tapmode onclick="shareBtn2('0')"><img src="../../image/goods/share_wx.png" alt="">
+                        <p>微信好友</p>
+                    </li>
+                    <li tapmode onclick="shareType('1')"><img src="../../image/goods/share_wxzone.png" alt="">
+                        <p>微信朋友圈</p>
+                    </li>
+                    <li tapmode onclick="shareBtn2('2')"><img src="../../image/goods/share_qq.png" alt="">
+                        <p>QQ好友</p>
+                    </li>
+                    <li tapmode onclick="shareBtn2('3')"><img src="../../image/goods/share_qqzone.png" alt="">
+                        <p>QQ空间</p>
+                    </li>
+                    <!-- <li tapmode onclick="shareBtn2('4')"><img src="../../image/goods/share_wb.png" alt="">
+                        <p>新浪微博</p>
+                    </li> -->
+                    <li tapmode onclick="shareType('5')"><img src="../../image/goods/share_dowimg.png" alt="">
+                        <p>保存图片</p>
+                    </li>
+                </ul>
+            </div>
+            <div class="cancelBtn">取&nbsp消</div>
+        </div>
+    </div>
+    <div class="shareItem" id="guizeItem">
+        <section class='nl_list'>
+            <div class="dialog">
+                <div class="dialog_top" id="dialog_title">奖励佣金预估</div>
+                <div class="dialog_middle" id="dialog_del">
+                    此处显示的佣金为卖家设置的佣金，最终以实际成交价格计算结果为准
+                </div>
+                <div class="dialog_bottom" tapmode onclick="closeDialog();">知道啦</div>
+            </div>
+        </section>
+    </div>
+</body>
+<script type="text/javascript" src="../../script/api.js"></script>
+<script type="text/javascript" src="../../script/jquery.js"></script>
+<script type="text/javascript" src="../../script/api_common.js"></script>
+<script type="text/javascript" src="../../script/md5.js"></script>
+<script type="text/javascript">
+    var isIos, real_price, zk_final_price, jian, pic_url;
+    var fs;
+    apiready = function() {
+        api.setStatusBarStyle({
+            style: 'dark' //黑色
+                // style: 'light' //白色
+        });
+        api.parseTapmode();
+        var header = $api.byId('header');
+        $api.fixStatusBar(header);
+        if (api.systemType == "ios") {
+            isIos = 1;
+            $('.shareArea').css("bottom", 10); //解决IOS底部被遮挡问题
+        } else if (api.systemType == "android") {
+            isIos = 0;
+        }
+        fs = api.require('fs');
+        window.goods_id = api.pageParam.goods_id;
+        window.section_id = api.pageParam.section_id;
+        window.item_title = api.pageParam.item_title;
+        window.url_type = api.pageParam.url_type;
+        window.user_id = api.pageParam.user_id;
+        getData2();
+        getData();
+        // getTextareaData();
+    };
+
+    function closeWin() {
+        api.closeWin({
+            name: 'creat_share_win'
+        });
+    }
+
+    function shareBtn() {
+        $("#shareImg").show();
+    }
+    $(".cancelBtn").click(function() {
+        $("#shareImg").hide();
+    });
+
+    function openDialog() {
+        $("#guizeItem").show();
+    }
+
+    function closeDialog() {
+        $("#guizeItem").hide();
+    }
+
+    function getData() {
+        api.ajax({
+            url: 'https://acs.m.taobao.com/h5/mtop.taobao.detail.getdetail/6.0/?data={"itemNumId":"' + goods_id + '"}',
+            method: 'get',
+            type: 'json',
+            data: {}
+        }, function(ret, err) {
+            // console.log("商品详情wwwwww："+JSON.stringify(ret));
+            if (ret) {
+
+                var html = '';
+                var images = ret.data.item.images;
+                for (var i = 0; i < images.length; i++) {
+                    if (i == 0) {
+                        // $("#big_img").attr("src",'http:'+images[0]);
+                    } else {
+                        html += '<li class="selectList"><img class="item_imgs" src="http:' + images[i] + '"/><img src="../../image/home/login_btn_selete_n.png" alt="" class="selectImg"></li>';
+                    }
+                }
+                // alert('隐藏')
+                $api.byId('item_imgs').innerHTML = html;
+                var count = 1;
+                var selectList = $(".selectImg");
+                selectList.click(function() {
+                    // alert(111);
+                    if (isIos == 1) {
+                        if ($(this).attr("src") == "../../image/home/login_btn_selete_c.png") {
+                            $(this).attr("src", "../../image/home/login_btn_selete_n.png");
+                            count = 0;
+                            $(this).parent(".selectList").find(".item_imgs").removeClass("select_active");
+                            $("#select_count").html(count);
+                        } else {
+                            // alert(222);
+                            $(this).attr("src", "../../image/home/login_btn_selete_c.png");
+                            count = 1;
+                            $(this).parent(".selectList").find(".item_imgs").addClass("select_active");
+                            //  alert($(this).parent(".selectList").find(".item_imgs").attr("src"));
+                            $("#select_count").html(count);
+                        }
+                    } else {
+                        if ($(this).attr("src") == "../../image/home/login_btn_selete_c.png") {
+                          $(this).attr("src", "../../image/home/login_btn_selete_n.png");
+                          count = 0;
+                          $(this).parent(".selectList").find(".item_imgs").removeClass("select_active");
+                          $("#select_count").html(count);
+                        } else {
+                            $(".selectList").find(".item_imgs").removeClass("select_active");
+                            $(".selectList").find(".selectImg").attr("src", "../../image/home/login_btn_selete_n.png");
+                            $(this).attr("src", "../../image/home/login_btn_selete_c.png");
+                            $(this).parent(".selectList").find(".item_imgs").addClass("select_active");
+                            count = 1;
+                            $("#select_count").html(count);
+                        }
+                    }
+                });
+            }
+        });
+    }
+
+    function getData2() {
+        api.ajax({
+            url: 'http://v2.api.haodanku.com/supersearch/apikey/souke/keyword/' + goods_id + '/back/10/min_id/1/tb_p/1/sort/0/is_tmall/0/is_coupon/0/limitrate/0',
+            method: 'get',
+            type: 'json',
+            data: {}
+        }, function(ret, err) {
+            // console.log("sdfdf商品详情wwwwww："+JSON.stringify(ret));
+            if (ret) {
+                console.log(JSON.stringify(ret));
+                $api.byId('item_title').innerHTML = ret.data[0].itemtitle;
+                pic_url = ret.data[0].itempic;
+                real_price = ret.data[0].itemendprice;
+                zk_final_price = ret.data[0].itemprice
+                jian = ret.data[0].couponmoney;
+                api.showProgress({
+                    style: 'default',
+                    animationType: 'fade',
+                    title: '努力加载中...',
+                    text: '',
+                    modal: false
+                });
+
+                getTextareaData();
+            }
+        });
+    }
+
+    function getTextareaData() {
+        var obj = {
+            'user_id': window.user_id,
+            'is_ios': isIos,
+            'item_id': window.goods_id,
+            'section_id': window.section_id,
+            'url_type': window.url_type,
+            'item_title': encodeURIComponent(window.item_title),
+            'pic_url': pic_url,
+            'real_price': real_price,
+            'zk_final_price': zk_final_price,
+            'jian': jian
+        };
+        var objArr = sort_ASCII(obj);
+        var timestamp = fntimestamp();
+        var version = '2.0';
+        var arr = apiSecret + timestamp + version + '';
+        for (i in objArr) {
+            arr += objArr[i];
+        }
+        console.log(arr);
+        var sign = hex_md5(arr);
+        api.ajax({
+            url: commonUrl + 'soukeAppTttService/service/api/switchconnection_ac',
+            method: 'post',
+            headers: {
+                'Content-Type': 'application/json;charset=utf-8'
+            },
+            data: {
+                body: {
+                    'apiKey': apiKey,
+                    'timestamp': timestamp,
+                    'sign': sign,
+                    'user_id': window.user_id,
+                    'is_ios': isIos,
+                    'item_id': window.goods_id,
+                    'section_id': window.section_id,
+                    'url_type': window.url_type,
+                    'item_title': window.item_title,
+                    'pic_url': pic_url,
+                    'real_price': real_price,
+                    'zk_final_price': zk_final_price,
+                    'jian': jian
+                }
+            }
+        }, function(ret, err) {
+            if (ret) {
+                console.log("分享页面：" + JSON.stringify(ret));
+                api.hideProgress();
+                if (ret.result_code == 200) {
+                    $("#big_img").attr("src", ret.single_url);
+                    $api.byId('textarea').innerHTML = ret.result_data;
+                    $("#tk_fee").html(api.pageParam.tk_fee);
+                } else if (ret.result_code == 500) {
+                    fnOpenTishi(1);
+                    return false;
+                } else if (ret.result_code == 501) {
+                    api.openFrame({
+                        name: 'tb_sq_tc',
+                        url: '../frame/tb_sq_tc.html',
+                        rect: {
+                            x: 0,
+                            y: 0,
+                            w: api.winWidth,
+                            h: api.winHeight
+                        },
+                        bgColor: 'rgba(0,0,0,0.6)',
+                        bounces: false
+                    });
+                }
+            } else {
+                serviceErr();
+                // api.alert({
+                //     msg: JSON.stringify(err)
+                // });
+            }
+        });
+    }
+    var reg = /,$/gi;
+
+    function shareType(sname) {
+        var resultList = api.hasPermission({
+            list: ['photos']
+        });
+        if (!resultList[0].granted) {
+            //存储未授权
+            api.requestPermission({
+                list: ['photos'],
+                code: 1000
+            }, function(ret, err) {
+                // api.alert({
+                //     msg: JSON.stringify(ret)
+                // });
+                if (!ret.never) {
+                    //禁止权限
+                    return;
+                } else {
+                    shareTypeTo(sname);
+                }
+            });
+        } else {
+            shareTypeTo(sname);
+        }
+        // api.alert({
+        //     msg: JSON.stringify(resultList)
+        // });
+    }
+
+    function shareTypeTo(sname) {
+        removeImg();
+        fs.createDir({
+            path: 'fs://quanquantui'
+        }, function(ret, err) {
+            if (ret.status) {
+                // alert("创建目录状态：" + JSON.stringify(ret));
+                var downArr = [];
+                var imgPath = '';
+                // var img_count=0;
+                var select_arr = $(".select_active");
+                if (select_arr.length == "") {
+                    alert('请至少选择1张图片进行分享');
+                    $("#shareImg").hide();
+                    return;
+                }
+                for (var i = 0; i < select_arr.length; i++) {
+                    downArr.push('fs://quanquantui/sharegood' + i + '.jpg');
+                    api.download({ //下载图片
+                        url: $(select_arr[i]).attr("src"),
+                        savePath: 'fs://quanquantui/sharegood' + i + '.jpg',
+                        report: false,
+                        cache: true,
+                        allowResume: true
+                    }, function(ret, err) {
+                        // alert("111111"+JSON.stringify(ret));
+                        if (ret.state == 1) {
+                            api.saveMediaToAlbum({ //保存图片和视频到系统相册
+                                path: ret.savePath
+                            }, function(ret, err) {
+                                if (ret && ret.status) {
+                                    // alert('图片保存成功');
+                                } else {
+                                    // alert('保存图片失败');
+                                }
+                            });
+                            for (var j = 0; j < downArr.length; j++) {
+                                imgPath += downArr[j] + ',';
+                            }
+                            imgPath = imgPath.replace(reg, '');
+                        } else {
+                            // alert("444444:" + JSON.stringify(err));
+                        }
+                    });
+                }
+                copyBtn();
+                var dialogBox = api.require('dialogBox');
+                dialogBox.scene({
+                    tapClose: true,
+                    rect: {
+                        w: 280,
+                        h: 320
+                    },
+                    texts: {
+                        title: '朋友圈分享攻略',
+                        okBtnTitle: '打开朋友圈'
+                    },
+                    styles: {
+                        bg: '#fff',
+                        title: {
+                            marginT: 10,
+                            bg: '#fff',
+                            h: 48,
+                            size: 20,
+                            color: '#000'
+                        },
+                        sceneImg: {
+                            h: 100,
+                            path: 'widget://image/ic_dialog_share_wx.png'
+                        },
+                        cell: {
+                            bg: '#fff',
+                            h: 38,
+                            text: {
+                                color: '#636363',
+                                size: 13
+                            },
+                            icon: {
+                                marginL: 12,
+                                marginT: 9,
+                                w: 20,
+                                h: 20,
+                                corner: 2
+                            }
+                        },
+                        ok: {
+                            h: 60,
+                            bg: '#fff',
+                            titleColor: '#FF6145',
+                            titleSize: 18
+                        }
+                    },
+                    optionDatas: [{
+                        icon: 'widget://image/icon_pay_tick_selected.png',
+                        text: '分享文案已自动复制'
+                    }, {
+                        icon: 'widget://image/icon_pay_tick_selected.png',
+                        text: '图片已保存至手机相册'
+                    }, {
+                        icon: 'widget://image/icon_pay_tick_def.png',
+                        text: '打开朋友圈选择相册图片并粘贴文案'
+                    }]
+                }, function(ret, err) {
+                    if (ret) {
+                        var dialogBox = api.require('dialogBox');
+                        dialogBox.close({
+                            dialogName: 'alert'
+                        });
+                        $("#shareImg").hide();
+                        // alert("222222"+JSON.stringify(ret));
+                        window.location.href = 'weixin://'; //打开微信对话栏
+                    } else {
+                        // alert("333333"+JSON.stringify(err));
+                    }
+                });
+
+            }
+        });
+    }
+
+    function removeImg() {
+        // alert(JSON.stringify(downArr));
+        fs.rmdir({
+            path: 'fs://quanquantui'
+        }, function(ret, err) {
+            if (ret.status) {
+                // alert("删除目录："+JSON.stringify(ret));
+            } else {
+                // alert("222:"+JSON.stringify(err));
+            }
+        });
+    }
+
+    function copyBtn() {
+        var textArea = $("#textarea").html();
+        if (textArea.search("<br>") != -1) {
+            $("#textarea").find("br").remove();
+            textArea = $("#textarea").html();
+        }
+        var clipBoard = api.require('clipBoard');
+        clipBoard.set({
+            value: textArea
+        }, function(ret, err) {
+            if (ret) {
+                // alert(JSON.stringify(ret));
+                api.toast({
+                    msg: '复制成功',
+                    duration: 2000,
+                    location: 'middle'
+                });
+
+            } else {
+                // alert(JSON.stringify(err));
+            }
+        });
+    }
+
+    //sharAction
+    function shareBtn2(i) {
+        var resultList = api.hasPermission({
+            list: ['photos']
+        });
+        if (!resultList[0].granted) {
+            //存储未授权
+            api.requestPermission({
+                list: ['photos'],
+                code: 1000
+            }, function(ret, err) {
+                // api.alert({
+                //     msg: JSON.stringify(ret)
+                // });
+                if (!ret.never) {
+                    //禁止权限
+                    return;
+                } else {
+                    shareBtn2To(i);
+                }
+            });
+        } else {
+            shareBtn2To(i);
+        }
+        // api.alert({
+        //     msg: JSON.stringify(resultList)
+        // });
+    }
+
+    function shareBtn2To(j) {
+        removeImg();
+        fs.createDir({
+            path: 'fs://quanquantui'
+        }, function(ret, err) {
+            if (ret.status) {
+                // alert("创建目录："+JSON.stringify(ret));
+                var downArr = [];
+                var imgPath = '';
+                // var img_count=0;
+                var select_arr = $(".select_active");
+                if (select_arr.length == "") {
+                    alert('请至少选择1张图片进行分享');
+                    $("#shareImg").hide();
+                    return;
+                }
+                for (var i = 0; i < select_arr.length; i++) {
+                    // downArr.push('fs://quanquantui/sharegood' + i + '.jpg');
+                    api.download({
+                        url: $(select_arr[i]).attr("src"),
+                        savePath: 'fs://quanquantui/sharegood' + i + '.jpg',
+                        report: true,
+                        cache: true,
+                        allowResume: true
+                    }, function(ret, err) {
+                        // alert(JSON.stringify(ret));
+                        if (ret.state == 1) {
+                            downArr.push(ret.savePath);
+                            if (select_arr.length == downArr.length) {
+                                if (isIos == 1) {
+                                    var sharedModule = api.require('shareAction');
+                                    sharedModule.share({
+                                        type: 'image',
+                                        path: '',
+                                        images: downArr
+                                    });
+                                } else {
+                                    if (j == 0) {
+                                        var wx = api.require('wx');
+                                        wx.shareImage({
+                                            apiKey: '',
+                                            scene: 'session',
+                                            contentUrl: downArr[0]
+                                        }, function(ret, err) {
+                                            if (ret.status) {
+                                                // alert('分享成功');
+                                            } else {
+                                                // alert(err.code);
+                                            }
+                                        });
+                                    } else if (j == 2) {
+                                        //qq
+                                        var qq = api.require('QQPlus');
+                                        qq.shareImage({
+                                            type: 'QFriend',
+                                            imgPath: downArr[0]
+                                        }, function(ret, err) {
+                                            if (ret.status) {
+                                                // alert("分享成功！");
+                                            } else {
+                                                // api.alert({
+                                                //     msg: JSON.stringify(err)
+                                                // });
+                                            }
+                                        });
+                                    } else if (j == 3) {
+                                        //qqzone
+                                        var qq = api.require('QQPlus');
+                                        qq.shareImage({
+                                            type: 'QZone',
+                                            imgPath: downArr[0]
+                                        }, function(ret, err) {
+                                            if (ret.status) {
+                                                // alert("分享成功！");
+                                            } else {
+                                                // api.alert({
+                                                //     msg: JSON.stringify(err)
+                                                // });
+                                            }
+                                        });
+                                    }
+                                }
+                            }
+                            copyBtn();
+                            $("#shareImg").hide();
+                        } else {
+
+                        }
+                    });
+                }
+            } else {
+                // alert("111:"+JSON.stringify(err));
+            }
+        });
+    }
+</script>
+
+</html>

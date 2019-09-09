@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0" />
+    <!-- 解决IOS数字出现蓝色数字问题  -->
+    <meta name="format-detection" content="telephone=no" />
+    <title>消息通知frmae</title>
+    <link rel="stylesheet" type="text/css" href="../../css/api.css" />
+    <link rel="stylesheet" type="text/css" href="../../css/xiaoxi.css" />
+    <style>
+        html {
+            /*比如： 原来12px；换算成rem就等于 0.24rem; 也就是 1rem = 50px;*/
+            font-size: calc(100vw * 100 / 750);
+        }
+
+        body {
+            width: 100%;
+            height: 100%;
+            font-size: 16px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="aui-flexView">
+        <!-- <div class="aui-scrollView">
+            <div class="aui-head-bj">
+                <div class="aui-head-title">
+                    <p>预留banner海报</p>
+                </div>
+            </div> -->
+            <div class="aui-secure-box" id="msgid">
+                <!-- <div class="aui-secure-list">
+                    <div class="aui-flex b-line" tapmode onclick="push_yjtz();">
+                        <div class="aui-flex-user">
+                            <img src="../../image/icon_message_brokerage.png" alt="">
+                        </div>
+                        <div class="aui-flex-box">
+                            <h2>
+                                  佣金通知
+                              </h2>
+                            <p>您在2019-03-16 13:22:12推广订单因【退款】失效</p>
+                        </div>
+                        <div class="aui-flex-arrow"></div>
+                    </div>
+                </div> -->
+            </div>
+        </div>
+    </div>
+</body>
+<script type="text/javascript" src="../../script/api.js"></script>
+<script type="text/javascript" src="../../script/jquery.js"></script>
+<script type="text/javascript" src="../../script/api_common.js"></script>
+<script type="text/javascript" src="../../script/md5.js"></script>
+<script type="text/javascript" src="../../script/swiper.min.js"></script>
+<script type="text/javascript">
+    var user_id;
+    apiready = function() {
+        api.parseTapmode();
+        var header = $api.byId('header');
+        $api.fixStatusBar(header);
+        if (!empty($api.getStorage("userInfo"))) {
+            user_id = $api.getStorage("userInfo").user_id;
+            findPushClass();
+        } else {
+            user_id = '';
+            checkUserLogin();
+        }
+    };
+    // headerH = $api.offset(header).h;
+    // 佣金通知
+    function push_yjtz(class_name) {
+        api.openWin({
+            name: 'push_yjtz_win',
+            url: 'widget://html/win/push_yjtz_win.html',
+            pageParam: {
+                class_name: class_name
+            }
+        });
+    }
+    // 系统通知
+    function push_xttz(class_name) {
+        api.openWin({
+            name: 'push_xttz_win',
+            url: 'widget://html/win/push_xttz_win.html',
+            pageParam: {
+                class_name: class_name
+            }
+        });
+    }
+    // 活动通知One
+    function push_hdtxOne(pushType,class_name) {
+        api.openWin({
+            name: 'push_hdtxOne_win',
+            url: 'widget://html/win/push_hdtxOne_win.html',
+            pageParam: {
+                pushType: pushType,
+                class_name: class_name
+            }
+        });
+    }
+    // 活动通知Two
+    function push_hdtxTwo(pushType,class_name) {
+        api.openWin({
+            name: 'push_hdtxTwo_win',
+            url: 'widget://html/win/push_hdtxTwo_win.html',
+            pageParam: {
+                pushType: pushType,
+                class_name: class_name
+            }
+        });
+    }
+    //查询消息类型
+    function findPushClass() {
+        var obj = {
+          'user_id': user_id
+        };
+        var objArr = sort_ASCII(obj);
+        var timestamp = fntimestamp();
+        var version = '2.0';
+        var arr = apiSecret + timestamp + version + '';
+        for (i in objArr) {
+            arr += objArr[i];
+        }
+        var sign = hex_md5(arr);
+        api.ajax({
+            url: commonUrl + 'soukeAppTttService/service/push/findPushClass',
+            method: 'post',
+            headers: {
+                'Content-Type': 'application/json;charset=utf-8'
+            },
+            data: {
+                body: {
+                    'apiKey': apiKey,
+                    'timestamp': timestamp,
+                    'sign': sign,
+                    'user_id': user_id
+                }
+            }
+        }, function(ret, err) {
+            if (ret) {
+                if (ret.result_code == 200) {
+                    console.log("查询消息类型" + JSON.stringify(ret));
+                    var msgOption = "";
+                    for (var i = 0; i < ret.result_data.length; i++) {
+                        var message = ret.result_data[i];
+                        if (i == 0) {
+                            msgOption += '<div class="aui-secure-list"><div class="aui-flex b-line" tapmode onclick="push_yjtz(\'' + message.class_name + '\');">';
+                        } else if (i == 1) {
+                            msgOption += '<div class="aui-secure-list"><div class="aui-flex b-line" tapmode onclick="push_xttz(\'' + message.class_name + '\');">';
+                        } else {
+                            if (message.pic_type == 0) {
+                                msgOption += '<div class="aui-secure-list"><div class="aui-flex b-line" tapmode onclick="push_hdtxOne(' + message.id + ',\'' + message.class_name + '\');">';
+                            } else {
+                                msgOption += '<div class="aui-secure-list"><div class="aui-flex b-line" tapmode onclick="push_hdtxTwo(' +message.id + ',\'' + message.class_name + '\');">';
+                            }
+                        }
+                        msgOption += '<div class="aui-flex-user"><img src="' + message.pic_url + '" alt=""></div>';
+                        msgOption += '<div class="aui-flex-box"><h2>' + message.class_name + '</h2>';
+                        msgOption += '<p>'+message.lastMessage+'</p></div>';
+                        msgOption += '<div class="aui-flex-arrow"></div></div></div>';
+                    }
+                    $("#msgid").html(msgOption);
+                } else {
+                    api.toast({
+                        msg: ret.result_message,
+                        duration: 2000,
+                        location: 'middle'
+                    });
+
+                }
+
+            } else {
+                api.alert({
+                    msg: JSON.stringify(err)
+                });
+            }
+        });
+    }
+
+
+
+    function closeWin() {
+        api.closeWin({
+            name: 'push_win'
+        });
+    }
+</script>
+
+</html>

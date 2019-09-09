@@ -1,0 +1,1779 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8">
+		<title>商品详情</title>
+		<meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1">
+		<link rel="stylesheet" type="text/css" href="../../css/aui.css" />
+		<link rel="stylesheet" type="text/css" href="../../css/aui-slide.css" />
+		<link rel="stylesheet" href="../../css/iconfont.css">
+		<link rel="stylesheet" type="text/css" href="../../css/swiper.min.css" />
+		<style>
+			html, body {
+				position: relative;
+			}
+			/* 返回顶部样式开始 */
+			.actGotop {
+				position: fixed;
+				_position: absolute;
+				bottom: 3rem;
+				right: 0.5 rem;
+				width: 3.5 rem;
+				height: 3.5 rem;
+				display: none;
+				z-index: 999
+			}
+			.actGotop a, .actGotop a:link {
+				width: 3.5 rem;
+				height: 3.5 rem;
+				display: inline-block;
+				background: url(../../image/ic_back_top.png) no-repeat;
+				background-size: 3.5 rem 3.5 rem;
+				outline: none;
+			}
+			.actGotop a:hover {
+				background: url(../../image/ic_back_top.png) no-repeat;
+				outline: none;
+				background-size: 3.5 rem 3.5 rem;
+			}
+			/* 返回顶部样式开始 */
+			body {
+				background: rgb(243, 242, 242);
+				font-family: Helvetica Neue, Helvetica, Arial, sans-serif, "微软雅黑";
+				font-size: 14px;
+				color: #000;
+				margin: 0;
+				padding: 0;
+				opacity: 0;
+			}
+			.aui-bar-nav {
+				background: transparent;
+			}
+			@media only screen and (min-width: 400px) {
+			}
+			@media only screen and (min-width: 375px) {
+			}
+			@media only screen and (min-width: 425px) {
+			}
+			/*自定义样式开始*/
+			.contener {
+				/*margin-bottom: 2.5rem;*/
+				/*padding-top: 0.6rem;*/
+			}
+			.aui-icon-left, .aui-icon-more {
+				background: rgba(0, 0, 0, 0.4);
+				color: #fff;
+			}
+			.aui-bar-nav .aui-btn .aui-iconfont {
+				text-align: center;
+				line-height: 1.5 rem;
+				width: 1.5 rem;
+				height: 1.5 rem;
+				border-radius: 50%;
+			}
+			.good_title {
+				/*多行文本溢出变为省略号开始*/
+				overflow: hidden;
+				text-overflow: ellipsis;
+				display: -webkit-box;
+				-webkit-line-clamp: 2;
+				-webkit-box-orient: vertical;
+				/*多行文本溢出变为省略号结束*/
+			}
+			.tm_tip, .tb_tip {
+				background: #c40001;
+				padding: 0.15 rem 0.2 rem;
+				color: #fff;
+				font-size: 0.5 rem;
+				border-radius: 0.1 rem;
+				position: relative;
+				top: -0.1 rem;
+			}
+			.tb_tip {
+				background: #ff6a0c;
+			}
+			.tm_price {
+				font-size: 0.5 rem;
+				color: grey;
+				padding-top: 0.3 rem;
+			}
+			.qh_price {
+				position: relative;
+				padding: 0.3 rem 0;
+			}
+			.qh_right {
+				position: absolute;
+				right: 0rem;
+				top: 0.6 rem;
+				font-size: 0.6 rem;
+				color: grey;
+			}
+			.qh_left {
+				color: #fe2321;
+				font-size: 0.9 rem;
+				font-weight: 600;
+			}
+			.qh_middle {
+				margin-left: 1.0 rem;
+				position: absolute;
+				right: 100px;
+				top: 6px;
+				font-size: 0.6 rem;
+			}
+			.qh_middle span {
+				color: #fe2321;
+				font-size: 0.9 rem;
+				font-weight: 800;
+			}
+			.qh_sh {
+				padding: 0.13 rem 0.25 rem;
+				border-radius: 0.1 rem;
+				position: relative;
+				top: -0.2 rem;
+				color: #fff;
+				font-size: 0.5 rem;
+				font-weight: 500;
+				background: -moz-linear-gradient(left, #ff8f03, #fe2c1b);
+				/*Mozilla*/
+				background: -webkit-gradient(linear, 0 50%, 100% 50%, from(#ff8f03), to(#fe2c1b));
+				/*Old gradient for webkit*/
+				background: -webkit-linear-gradient(left, #ff8f03, #fe2c1b);
+				/*new gradient for Webkit*/
+				background: -o-linear-gradient(left, #ff8f03, #fe2c1b);
+				/*Opera11*/
+			}
+			.quan_area {
+				width: 100%;
+				position: relative;
+				cursor: pointer;
+			}
+			.quan_txt {
+				position: absolute;
+				top: 0;
+				left: 0;
+			}
+			.quan_txt p {
+				color: #fff !important;
+				letter-spacing: 1px;
+			}
+			.qixian {
+				font-size: 0.35 rem;
+				letter-spacing: 1px;
+				font-size: 0.45 rem;
+			}
+			.store {
+				margin: 0.3 rem 0;
+				background: #fff;
+			}
+			.fenshu {
+				width: 0.7 rem;
+				display: inline-block;
+				position: relative;
+				top: 0.15 rem;
+				left: 0.1 rem;
+			}
+			.fs_div {
+				text-align: center;
+				font-size: 10px;
+			}
+			.footer_big {
+				width: 100%;
+				height: 55px;
+				background-color: #fff;
+				/*box-shadow: 10px 10px 10px red;
+				 box-shadow: -3px 1px 22px -4px #131111;*/
+				position: fixed;
+				z-index: 99999;
+				bottom: 0;
+				left: 0;
+				text-align: center;
+				padding: 10px 12px;
+			}
+			.footer_l {
+				height: 100%;
+				font-size: 12px;
+			}
+			.footer_c {
+				color: #fff;
+				height: 100%;
+				line-height: 35px;
+				font-size: 14px;
+				background: -moz-linear-gradient(left, #ffe4b5, #ffb075);
+				/*Mozilla*/
+				background: -webkit-gradient(linear, 0 50%, 100% 50%, from(#ffe4b5), to(#ffb075));
+				/*Old gradient for webkit*/
+				background: -webkit-linear-gradient(left, #ffe4b5, #ffb075);
+				/*new gradient for Webkit*/
+				background: -o-linear-gradient(left, #ffe4b5, #ffb075);
+				border-top-left-radius: 22px;
+				border-bottom-left-radius: 22px;
+				/*Opera11*/
+			}
+			.footer_r {
+				color: #fff;
+				height: 100%;
+				font-size: 14px;
+				line-height: 35px;
+				background: -moz-linear-gradient(left, #ff7338, #ff2221);
+				/*Mozilla*/
+				background: -webkit-gradient(linear, 0 50%, 100% 50%, from(#ff7338), to(#ff2221));
+				/*Old gradient for webkit*/
+				background: -webkit-linear-gradient(left, #ff7338, #ff2221);
+				/*new gradient for Webkit*/
+				background: -o-linear-gradient(left, #ff7338, #ff2221);
+				/*Opera11*/
+				border-top-right-radius: 22px;
+				border-bottom-right-radius: 22px;
+			}
+			.footer_r p {
+				color: #fff;
+				font-size: 12px;
+				padding-top: 0.2 rem;
+			}
+			.footer_r span {
+				font-size: 16px;
+			}
+			.good_detail {
+				text-align: center;
+				margin-top: 0.3 rem;
+				background: #fff;
+				padding: 0.45 rem 0;
+			}
+			.img_cont {
+				width: 100%;
+				min-height: 5rem;
+				text-align: center;
+				/*background: url(../../image/loading.d997b79c.svg) no-repeat center;*/
+				background: #fff;
+				background-size: 3rem;
+			}
+			.img_cont img {
+				margin: auto;
+				width: 100%;
+			}
+			.tao_title {
+				width: 100%;
+				height: 1.2 rem;
+				line-height: 1.2 rem;
+				color: #fff;
+				font-size: .7rem;
+				text-align: center;
+				background-color: #ff2e48;
+			}
+			.tao_message {
+				width: 94%;
+				height: 12.2 rem;
+				margin-left: 3%;
+				margin-top: .4rem;
+				font-size: .71rem;
+				padding: .3rem .5rem;
+				border: 2px dashed #f32d05;
+				background-color: #fdebe7;
+				color: #f64c1f;
+				overflow-y: scroll;
+			}
+			.yujifan {
+				margin-left: 3%;
+				margin-top: .5rem;
+			}
+			.pass_buy .buy_copydiv {
+				line-height: 2rem;
+				font-size: .7rem;
+				color: #f64c1f;
+				text-align: right;
+			}
+			.line_copy {
+				width: 94%;
+				margin-left: 3%;
+				height: 1.2 rem;
+			}
+			.yijianfuzhi {
+				width: 3rem;
+				display: inline-block;
+				float: right;
+				color: white;
+				padding: 0;
+				display: inline-block;
+				background: rgb(255, 46, 72);
+			}
+			.newclass {
+				color: red;
+			}
+			.icon-xiashuangjiantou {
+				display: inline-block;
+				vertical-align: middle;
+				margin-left: .2rem;
+			}
+			#swiper_slide {
+				height: 340px;
+				background: #efefef;
+				width: 100%;
+			}
+			/*店铺信息*/
+			.info_item1 {
+				width: 100%;
+				height: 30px;
+				background: #fff;
+				margin-top: 1px;
+				font-size: 14px;
+			}
+			.info_item1 ul {
+				list-style: none;
+				padding: 0;
+				margin: 0;
+			}
+			.info_item1 ul li {
+				width: 33.3%;
+				height: 30px;
+				float: left;
+				text-align: center;
+				font-size: 12px;
+				line-height: 30px;
+			}
+			.info_item1 ul li img {
+				width: 18px;
+				height: 17px;
+				background-size: 100% 100%;
+				margin-right: 5px;
+				vertical-align: middle;
+				display: inline-block;
+			}
+			.info_item2 {
+				width: 100%;
+				height: auto;
+				background: #fff;
+				margin-top: 6px;
+				font-size: 14px;
+				/*display: none;*/
+			}
+			.info_item2 p {
+				padding: 10px 15px;
+				line-height: 20px;
+				color: #666;
+			}
+			.info_item2 p span.tuijian_title {
+				color: #ff4f14;
+			}
+			.info_item3 {
+				width: 100%;
+				height: 60px;
+				background: #fff;
+				margin-top: 1px;
+				/*display: none;*/
+			}
+			.info_item3 ul {
+				list-style: none;
+				width: calc(100% - 20px);
+				height: 40px;
+				padding: 10px;
+				margin: 0;
+			}
+			.info_item3 ul li {
+				float: left;
+			}
+			.info_item3 ul li.dianpu_img {
+				height: 40px;
+				width: 40px;
+				/*background: #FF8A04;*/
+				border-radius: 50%;
+			}
+			.info_item3 ul li.dianpu_img img {
+				width: 100%;
+				height: 100%;
+				background-size: 100% 100%;
+				border-radius: 50%;
+			}
+			.info_item3 ul li.dianpu_name {
+				height: 40px;
+				width: calc(100% - 160px);
+				/*background: #FF3B1A;*/
+				margin-right: 10px;
+				margin-left: 10px;
+			}
+			.info_item3 ul li.dianpu_name .dp_name {
+				width: 100%;
+				height: 20px;
+				line-height: 20px;
+				text-align: left;
+			}
+			.info_item3 ul li.dianpu_name .dp_type_c {
+				width: 132px;
+				height: 24px;
+			}
+			.info_item3 ul li.dianpu_name .dp_type_c img {
+				width: 50%;
+				height: 50%;
+				margin-top: 5px;
+				background-size: 100% 100%;
+			}
+			.info_item3 ul li.dianpu_name .dp_type_b {
+				width: 84px;
+				height: 36px;
+			}
+			.info_item3 ul li.dianpu_name .dp_type_b img {
+				width: 50%;
+				height: 50%;
+				margin-top: 5px;
+				background-size: 100% 100%;
+			}
+			.info_item3 ul li.check_dianpu {
+				width: 100px;
+				color: #999;
+				text-align: right;
+				/*background: #388F68;*/
+				font-size: 12px;
+			}
+			.info_item3 ul li.check_dianpu img {
+				width: 7px;
+				height: 13px;
+				background-size: 100% 100%;
+				margin-left: 10px;
+				vertical-align: middle;
+			}
+			.info_item1 ul li span.good_count {
+				padding: 3px;
+				height: 15px;
+				color: #fff;
+				line-height: 15px;
+				border-radius: 2px;
+				margin-left: 5px;
+			}
+			.high {
+				background: #FF4400;
+			}
+			.ping {
+				background: #FFB900;
+			}
+			.low {
+				background: #2DA800;
+			}
+			/*升级赚及平台补贴css*/
+			/*第一套悬浮的样式 ---begin*/
+			/*.h_item{
+			 height: 36px;
+			 width: 100px;
+			 color: #fff;
+			 }
+			 .h_item p{
+			 width: 60%;
+			 height: 18px;
+			 text-align: center;
+			 float: right;
+			 line-height: 18px;
+			 color: #fff;
+			 font-size: 14px;
+			 }
+			 .pingtai_butie{
+			 background: url('../../image/goods/h1_con_icon_subsidy.png') no-repeat;
+			 background-size: 100% 100%;
+			 position: fixed;
+			 right: 0px;
+			 top: 120px;
+			 z-index: 999;
+			 display: none;
+			 }
+			 .shengji_zhuan{
+			 background: url('../../image/goods/h1_con_icon_commission.png') no-repeat;
+			 background-size: 100% 100%;
+			 position: fixed;
+			 right: 0px;
+			 top: 166px;
+			 z-index: 999;
+			 }
+			 .yuji_zhuan{
+			 background: url('../../image/goods/h1_con_icon_upgrade.png') no-repeat;
+			 background-size: 100% 100%;
+			 position: fixed;
+			 right: 0px;
+			 top: 212px;
+			 z-index: 999;
+			 }*/
+			/*第一套悬浮的样式 ---end*/
+			/*第二套平铺的样式 ---begin*/
+			.h_item {
+				width: 100%;
+				height: 40px;
+				background: #F8F7F7;
+				font-size: 14px;
+				margin: 0 auto;
+				overflow: hidden;
+			}
+			.h_item ul {
+				list-style: none;
+				padding: 0;
+				margin: 0;
+				height: 40px;
+			}
+			.h_item ul li {
+				float: left;
+				height: 40px;
+				line-height: 40px;
+				/*margin: 20px auto;*/
+				font-size: 0.6 rem;
+			}
+			.h_item ul li.sjz_color {
+				color: #333;
+				border: solid 1px #333;
+			}
+			.h_item ul li.yj_color {
+				color: red;
+				border: solid 1px red;
+			}
+			.h_item ul li span {
+				color: red;
+			}
+			/*.h_item ul li:nth-child(1){
+			 width: 60px;
+			 text-align: center;
+			 border-radius: 25px;
+			 }*/
+			.h_item ul li:nth-child(1) {
+				width: calc(100% - 97px);
+				margin: auto 10px;
+			}
+			.h_item ul li:nth-child(2) {
+				width: 70px;
+			}
+			.h_item ul li img {
+				width: 7px;
+				height: 13px;
+				background-size: 100% 100%;
+				display: inline-block;
+				vertical-align: middle;
+				margin-left: 5px;
+				position: relative;
+				top: -2px;
+			}
+			/*第二套平铺的样式 ---end*/
+			/*轮播图*/
+			.swiper-container {
+				width: 100%;
+				height: 100%;
+				margin-left: auto;
+				margin-right: auto;
+			}
+			.swiper-slide {
+				text-align: center;
+				font-size: 18px;
+				background: #f4f4f4;
+				/* Center slide text vertically */
+				display: -webkit-box;
+				display: -ms-flexbox;
+				display: -webkit-flex;
+				display: flex;
+				-webkit-box-pack: center;
+				-ms-flex-pack: center;
+				-webkit-justify-content: center;
+				justify-content: center;
+				-webkit-box-align: center;
+				-ms-flex-align: center;
+				-webkit-align-items: center;
+				align-items: center;
+			}
+			.swiper-slide img {
+				width: 100%;
+				height: 100%;
+				background-size: 100% 100%;
+			}
+			.video_slide {
+				position: relative;
+			}
+			.video_slide .video_play {
+				height: 55px;
+				width: 55px;
+				background: url('../../image/goods/ic_video_play.png') no-repeat;
+				position: absolute;
+				left: 50%;
+				top: 50%;
+				margin-top: -27px;
+				margin-left: -27px;
+				background-size: 100% 100%;
+			}
+		</style>
+	</head>
+	<body>
+		<div class="contener">
+			<!-- 轮播图部分开始 -->
+			<div id="swiper_slide">
+				<!-- <div class="aui-slide-wrap" id="auto_play">
+				<div class="aui-slide-node bg-dark">
+				<img src="../../image/zhanwei.jpg" style="width:100%;" />
+				</div>
+				</div> -->
+			</div>
+			<!-- <div class="pingtai_butie h_item">
+			<p class="p_name">平台补贴</p>
+			<p class="p_count">￥138.60</p>
+			</div>
+			<div class="shengji_zhuan h_item">
+			<p class="p_name" onclick="openLink();">升级赚</p>
+			<p class="p_count" id="shengji_zhuan_p">￥0.00</p>
+			</div>
+			<div class="yuji_zhuan h_item">
+			<p class="p_name">预计赚</p>
+			<p class="p_count" id="yuji_zhuan_p">￥0.00</p>
+			</div> -->
+			<!-- 轮播图部分结束 -->
+			<!-- 商品加上优惠券的介绍开始 -->
+			<div style="padding:0.5rem;background: #fff;">
+				<div class="good_title">
+					<span class="tm_tip">天猫</span>
+					<span class="tb_tip">淘宝</span>
+					<span id="title"></span>
+				</div>
+				<div class="tm_price">
+					<span class="ori_price">天猫价 ￥<span>0.00</span></span>
+					<!-- <div style="display:inline-block;float:right;cursor:pointer;color:red;font-size:0.7rem;line-height:1rem;" id="share">分享赚￥<span id="share_earn"></span>
+					<div style="display:inline-block;float:right;width:1rem;"><img src="../../image/share.png" style="width:100%;" /></div>
+					</div> -->
+				</div>
+				<div class="qh_price">
+					<div class="qh_left">
+						<span class="qh_sh">券后价</span>
+					</div>
+					<div class="qh_middle yuji_zhuan">
+						预计赚：<span>￥</span><span id="yuji_zhuan_p">0.00</span>
+					</div>
+					<div class="qh_right">
+						月销 &nbsp;&nbsp;<span>0.0</span>万
+					</div>
+				</div>
+				<!--<div class="h_item yuji_zhuan">
+				<ul>
+				<li>自购或分享，预估佣金<span>￥<span id="yuji_zhuan_p">0.00</span></span></li>
+				<li tapmode onclick="share();">立即分享<img src="../../image/ic_shop_detail_right_arrow.png" alt=""></li>
+				</ul>
+				</div>-->
+				<div class="h_item shengji_zhuan" style="margin-bottom:10px;">
+					<ul>
+						<!-- <li class="sjz_color">升级赚</li> -->
+						<li>
+							升级赚，最高可得佣金<span>￥<span style="font-size:0.8rem;font-weight: 800;" id="shengji_zhuan_p">0.00</span></span>
+						</li>
+						<li tapmode onclick="openLink();">
+							立即升级<img src="../../image/ic_shop_detail_right_arrow.png" alt="">
+						</li>
+					</ul>
+				</div>
+				<!-- 优惠券开始 -->
+				<div class="quan_area">
+					<img src="../../image/quan_1.png" />
+					<div style="width:63%;display:block;float:left;text-align:center;padding: 0.5rem 0;line-height:1.6rem;" class="quan_txt">
+						<p>
+							<span style="font-size:2rem;font-weight: 800;" id="quan">0</span>&nbsp;&nbsp;元优惠券
+						</p>
+						<p class="qixian">
+							使用期限：00.00.00 —— 00.00.00
+						</p>
+					</div>
+					<div style="width:33%;padding:1.2rem 0;line-height:1.8rem;text-align:center;letter-spacing:2px;color:#fff;font-size:0.7rem;display:block;position:absolute;right:0;top:0;bottom:0;margin:auto;">
+						立即领券
+					</div>
+				</div>
+			</div>
+			<!-- <div class="info_item1">
+			<ul>
+			<li><img src="../../image/goods/page_coupon_detail_flag.png" alt=""/>省钱精选</li>
+			<li><img src="../../image/goods/page_coupon_detail_flag.png" alt=""/>品质保证</li>
+			<li><img src="../../image/goods/page_coupon_detail_flag.png" alt=""/>无忧售后</li>
+			</ul>
+			</div> -->
+			<div class="info_item2">
+				<p>
+					<span class="tuijian_title">小编推荐：</span><span id="tuijianyu"></span>
+				</p>
+			</div>
+			<div class="info_item3">
+				<ul>
+					<li class="dianpu_img"><img src="" id="dianpu_img"/>
+					</li>
+					<li class="dianpu_name">
+						<div class="dp_name" id="dp_name"></div>
+						<div class="dp_type_b" style="display:none;"><img src="" id="dp_loge_b" alt=""/>
+						</div>
+						<div class="dp_type_c" style="display:none;"><img src="" id="dp_loge_c" alt=""/>
+						</div>
+					</li>
+					<li class="check_dianpu">
+						店铺已缴纳保证金<!--<img src="../../image/ic_shop_detail_right_arrow.png" alt="">-->
+					</li>
+				</ul>
+			</div>
+			<div class="info_item1">
+				<ul id="info_bydianpu">
+					<!-- <li>宝贝描述：4.8<span class="good_count high">高</span></li>
+					<li>宝贝描述：4.8<span class="good_count ping">平</span></li>
+					<li>宝贝描述：4.8<span class="good_count low">低</span></li> -->
+				</ul>
+			</div>
+			<!-- 优惠券结束 -->
+		</div>
+		<div class="good_detail">
+			查看宝贝详情 <!-- <i class="icon iconfont icon-xiashuangjiantou"></i> -->
+		</div>
+		<!-- 宝贝详情结束 -->
+		<!-- 宝贝详情隐藏与展示开始 -->
+		<div class="detail_img_area"></div>
+		<!-- 宝贝详情隐藏与展示结束 -->
+		</div>
+		<footer class="footer_big aui-row">
+			<style>
+				.zan {
+					width: 35%;
+					margin: 0rem auto 0.2 rem auto;
+				}
+			</style>
+			<div class="aui-col-xs-2 footer_l">
+				<div class="changezan">
+					<img src="../../image/ic_page_main_act_tab_home.png" class="zan" onclick="goIndex();" />
+				</div>
+				<span class="shouc">首页</span>
+			</div>
+			<div class="aui-col-xs-2 footer_l">
+				<div class="changezan shengji" tapmode onclick="share();">
+					<img src="../../image/goods/page_coupon_detail_btm_share.png" class="zan"/>
+				</div>
+				<span class="shouc shengji">分享</span>
+			</div>
+			<div class="aui-col-xs-4 footer_c" tapmode  onclick="collectBtn();">
+				加入收藏
+			</div>
+			<div class="aui-col-xs-4 footer_r click_quan" style="cursor:pointer;" >
+				<!-- <p>￥<span class="quan_price">00.0</span></p> -->
+				领券购买
+			</div>
+		</footer>
+		<!-- 返回顶部按钮 -->
+		<div class="actGotop">
+			<a href="javascript:;" title="返回顶部"></a>
+		</div>
+		<!-- 淘口令部分开始 -->
+		<style>
+		</style>
+		<div class="aui-popup aui-popup-top" id="bottom" style="display: none;height: 9rem;position: fixed;z-index:99999;width: 94%;left: 3%;top: 20%;margin-left: 0;">
+			<div class="aui-popup-content" style="min-height: 17.5rem;">
+				<header class="tao_title" id="copy_textarea">
+					淘口令购买
+				</header>
+				<textarea class="tao_message">
+
+      </textarea>
+				<div class="line_copy">
+					<!-- <img src="../../image/good/zys_img69.png" class="line_copy_img"> -->
+					<!-- <span style="width: 4rem;font-size: 0.45rem;position: absolute;top: 0.4rem;left:0.2rem;color:white;">预计返  <b style="color:red;">  &nbsp;<span id="jfb">0.40</span>积分</b></span> -->
+					<div style="width:80%;font-size:0.55rem;padding-left:0.4rem;">
+						再点击复制之后,请打开<img class="shop_type" style="position:relative;top:0.1rem;display:inline-block;width:0.6rem;height:0.6rem;" src="../../image/zys_img70.png" />购买
+					</div>
+					<span class="aui-btn aui-btn-block aui-btn-sm yijianfuzhi" style="height: 1.2rem;font-size: 0.6rem;line-height: 1.2rem;text-align: center;">一键复制</span>
+				</div>
+			</div>
+		</div>
+		<input type="hidden" value="" id="lingquan" />
+	</body>
+</html>
+<script type="text/javascript" src="../../script/aui-popup.js"></script>
+<script type="text/javascript" src="../../script/api.js"></script>
+<script type="text/javascript" src="../../script/jquery.js"></script>
+<script type="text/javascript" src="../../script/aui-slide.js"></script>
+<script type="text/javascript" src="../../script/api_common.js"></script>
+<script type="text/javascript" src="../../script/md5.js"></script>
+<script type="text/javascript" src="../../script/swiper.min.js"></script>
+<script>
+	$(document).ready(function() {
+		// 返回顶部
+		$(window).scroll(function() {
+			if ($(window).scrollTop() >= 500) {
+				$('.actGotop').fadeIn("fast");
+			} else {
+				$('.actGotop').fadeOut(300);
+			}
+		});
+		$('.actGotop').click(function() {
+			$('html,body').animate({
+				scrollTop : '0px'
+			}, 300);
+		});
+	});
+	var isIos, url_type, item_title, user_id;
+	var goods_id;
+	var yuji_zhuan;
+	var alibaichuan = null;
+	var user_id;
+	var tkrates, tk_price, coupon_amount;
+	//商品佣金比率；商品原价,券额
+	var collect_statu;
+	var banner_arr = [];
+	var time;
+	apiready = function() {
+
+		getEvent();
+		closePopframe();
+		// api.addEventListener({
+		//       name: 'longpress'
+		//   }, function(ret, err) {
+		//       // alert($api.byId("title").innerHTML);
+		//       fnCopy($api.byId("title").innerHTML);
+		//   });
+		api.addEventListener({
+			name : 'login'
+		}, function(ret, err) {
+			if (ret) {
+				//  alert( JSON.stringify( ret ) );
+				if (ret.value.login) {
+					location.reload();
+				}
+			} else {
+				//  alert( JSON.stringify( err ) );
+			}
+		});
+		if (!empty($api.getStorage("userInfo"))) {
+			user_id = $api.getStorage("userInfo").user_id;
+			getBrowerHis();
+			//浏览历史记录
+			is_collected();
+			//是否收藏过商品
+		} else {
+			user_id = '';
+			// $(".shengji").hide();
+			$(".shengji_zhuan").hide();
+			$(".yuji_zhuan").hide();
+		}
+		if (api.systemType == "ios") {
+			isIos = 1;
+		} else if (api.systemType == "android") {
+			isIos = 0;
+		}
+		alibaichuan = api.require('mAliBaiChuan');
+		goods_id = api.pageParam.goods_id;
+		aliInitTag();
+		api.openFrame({
+			name : 'good_detail_fra',
+			url : 'good_detail_fra.html',
+			bounces : false,
+			rect : {
+				x : 0,
+				y : 0,
+				w : 'auto',
+				h : '60'
+			},
+			bgColor : 'rgba(0,0,0,0)'
+		});
+		api.showProgress({
+			style : 'default',
+			animationType : 'fade',
+			title : '数据加载中',
+			text : '',
+			modal : false
+		});
+		//改变导航颜色
+		var goodDetailTop = $api.dom('.good_detail'), tHeight = api.winHeight / 2, flag = true;
+		window.onscroll = function() {
+			var tScrollTop = document.body.scrollTop, Tscroll = tScrollTop, top = $api.offset(goodDetailTop).t;
+			if (tScrollTop > tHeight) {
+				tScrollTop = tHeight;
+			};
+			api.execScript({
+				name : api.winName,
+				frameName : 'good_detail_fra',
+				script : 'ChangeHeaderColor(' + tScrollTop + ',' + top + ',' + Tscroll + ')',
+			});
+		}
+		// alibaichuan = api.require('mAliBaiChuan');
+		// initSDK();
+		var popup = new auiPopup();
+		function showPopup() {
+			popup.show(document.getElementByClassName("bottom"))
+		}
+
+		//商品描述详情开始
+		// goods_id=api.pageParam.goods_id;
+		var obj = {
+			'num_iid' : api.pageParam.goods_id,
+		};
+		// alert(api.pageParam.goods_id );
+		var objArr = sort_ASCII(obj);
+		var timestamp = fntimestamp();
+		var version = '2.0';
+		var arr = apiSecret + timestamp + version + '';
+		for (i in objArr) {
+			arr += objArr[i];
+		}
+		console.log(arr);
+		var sign = hex_md5(arr);
+		api.ajax({
+			url : commonUrl + 'soukeAppTttService/service/ali/finditemPic_ac',
+			method : 'post',
+			headers : {
+				'Content-Type' : 'application/json;charset=utf-8'
+			},
+			data : {
+				body : {
+					'apiKey' : apiKey,
+					'timestamp' : timestamp,
+					'sign' : sign,
+					'num_iid' : api.pageParam.goods_id,
+				}
+			}
+		}, function(ret, err) {
+			console.log("商品详情图片：" + JSON.stringify(ret));
+			api.hideProgress();
+			if (ret != '' || ret != 'underfined') {
+				var details = ret.result_data.picList;
+				var leng = details.length;
+				var img_details = '';
+				for (var i = 0; i < leng; i++) {
+					if (i == 0) {
+						img_details += "<div class='img_cont'>";
+						img_details += "<img src='" + details[i] + "' />";
+						img_details += "</div>";
+					} else {
+						img_details += "<div class='img_cont'>"
+						img_details += "<img data-url='" + details[i] + "' />";
+						img_details += "</div>";
+					}
+				}
+				$api.html($api.dom(".detail_img_area"), img_details);
+				flag = false;
+			}
+			setTimeout(function() {
+				$('body').css({
+					"opacity" : "1",
+					"transition" : ".5s"
+				})
+			}, 500)
+		});
+		//图片按需加载
+		(function() {
+			//common
+			function tagName(tagName) {
+				return document.getElementsByTagName(tagName);
+			}
+
+			function $(id) {
+				return document.getElementById(id);
+			}
+
+			function addEvent(obj, type, func) {
+				if (obj.addEventListener) {
+					obj.addEventListener(type, func, false);
+				} else if (obj.attachEvent) {
+					obj.attachEvent('on' + type, func);
+				}
+			}
+
+			//这里可以按照需要配置些参数
+			var v = {
+				eleGroup : null,
+				eleTop : null,
+				eleHeight : null,
+				screenHeight : null,
+				visibleHeight : null,
+				scrollHeight : null,
+				scrolloverHeight : null,
+				limitHeight : null
+			}
+			//对数据进行初始化
+			function init(element) {
+				v.eleGroup = tagName(element)
+				screenHeight = document.documentElement.clientHeight;
+				scrolloverHeight = document.body.scrollTop;
+				for (var i = 0, j = v.eleGroup.length; i < j; i++) {
+					if (v.eleGroup[i].offsetTop <= screenHeight && v.eleGroup[i].getAttribute('data-url')) {
+						v.eleGroup[i].setAttribute('src', v.eleGroup[i].getAttribute('data-url'));
+						v.eleGroup[i].removeAttribute('data-url');
+					}
+				}
+			}
+
+			function lazyLoad() {
+				if (document.body.scrollTop == 0) {
+					limitHeight = document.documentElement.scrollTop + document.documentElement.clientHeight;
+				} else {
+					limitHeight = document.body.scrollTop + document.documentElement.clientHeight;
+				}
+				for (var i = 0, j = v.eleGroup.length; i < j; i++) {
+					if (v.eleGroup[i].offsetTop <= limitHeight && v.eleGroup[i].getAttribute('data-url')) {
+						v.eleGroup[i].parentNode.style = "background:#fff;";
+						v.eleGroup[i].src = v.eleGroup[i].getAttribute('data-url');
+						v.eleGroup[i].removeAttribute('data-url');
+					}
+				}
+			}
+
+			init('img')
+			addEvent(window, 'scroll', lazyLoad);
+		})();
+		//商品描述详情结束
+		//商品详情开始
+		// api.ajax({
+		//     url: 'http://huataoapp.cn/index.php/items/add_view_log',
+		//     method: 'post',
+		//     data: {
+		//         values: {
+		//             num_iid: goods_id,
+		//             uid: uid,
+		//             invite_uid: invite_uid,
+		//         },
+		//     }
+		// }, function(ret, err) {
+		// https://acs.m.taobao.com/h5/mtop.taobao.detail.getdetail/6.0/?data=%7B"itemNumId"%3A"10031645140"%7D&qq-pf-to=pcqq.group
+		api.ajax({
+			// url: 'http://v2.api.haodanku.com/item_detail/apikey/souke/itemid/' + goods_id + '',
+			url : 'http://v2.api.haodanku.com/supersearch/apikey/souke/keyword/' + goods_id + '',
+			method : 'get',
+			type : 'json',
+			data : {}
+		}, function(ret, err) {
+			// console.log("商品详情--------："+JSON.stringify(ret));
+			if (ret) {
+				$api.val($api.dom("#lingquan"), ret.data[0].couponmoney);
+				$api.text($api.byId("title"), ret.data[0].itemtitle);
+				item_title = ret.data[0].itemtitle;
+				tkrates = ret.data[0].tkrates;
+				coupon_amount = ret.data[0].couponmoney;
+				tk_price = ret.data[0].itemprice;
+				if (ret.data[0].shoptype == "C") {
+					$api.css($api.dom(".tm_tip"), "display:none;");
+					$api.text($api.dom(".ori_price"), "淘宝价 ￥" + ret.data[0].itemprice);
+				} else if (ret.data[0].shoptype == "B") {
+					$api.css($api.dom(".tb_tip"), "display:none;");
+					$api.text($api.dom(".ori_price"), "天猫价 ￥" + ret.data[0].itemprice);
+				}
+				// $api.text($api.byId("share_earn"), ret.result.share_earn);
+				$api.text($api.dom(".quan_price"), ret.data[0].itemprice);
+				if (ret.data[0].couponmoney !== "0") {
+					$api.html($api.dom(".qh_left"), "<span class='qh_sh'>券后价</span>￥" + ret.data[0].itemendprice);
+				} else if (ret.data[0].couponmoney == "0") {
+					$(".quan_area").hide();
+					$api.html($api.dom(".qh_left"), "<span class='qh_sh'>折扣价</span>￥" + ret.data[0].itemendprice);
+				}
+				$api.text($api.dom(".qh_right"), "月销 " + ret.data[0].itemsale);
+				$api.text($api.dom(".qixian"), ret.data[0].couponendtime);
+				if (ret.data[0].couponmoney !== "0") {
+					$api.text($api.dom(".qixian"), "使用期限：" + timeMM(ret.data[0].couponstarttime * 1000) + " —— " + timeMM(ret.data[0].couponendtime * 1000));
+				} else if (ret.data[0].couponmoney == "0") {
+					$api.text($api.dom(".qixian"), "使用期限：" + "商品优惠券时间解释权归店铺所有");
+				}
+				$api.text($api.byId("quan"), parseInt(ret.data[0].couponmoney));
+				$api.text($api.dom(".quan_price"), ret.data[0].itemprice);
+				// if(!empty(ret.data[0].itemdesc)){
+				//   $("#tuijianyu").html('<span>小编推荐：</span>'+ret.data[0].itemdesc);
+				// }else{
+				//   $(".info_item2").hide();
+				// }
+				if ($api.getStorage("user") != undefined && $api.getStorage("user") != "") {
+					// var taokouling = ret.result.taokouling;
+				} else {
+					var taokouling = " <请登录后查看> ";
+				}
+				$api.text($api.dom(".tao_message"), ret.data[0].itemtitle + "\n" + "【在售价】：" + ret.data[0].itemendprice + "元" + "\n" + "【券后价】：" + ret.data[0].itemprice + "元" + "\n" + "【优惠券】：" + ret.data[0].couponmoney + "元" + "\n" + "【推荐】：" + ret.data[0].itemdesc + "\n" + "【下单链接】：复制这条消息" + +"，打开「手机淘宝」即可查看");
+				queryShare();
+			}
+		});
+		//商品详情结束
+		//商品推荐语开始
+		api.ajax({
+			// url: 'http://v2.api.haodanku.com/item_detail/apikey/souke/itemid/' + goods_id + '',
+			url : 'http://v2.api.haodanku.com/item_detail/apikey/souke/itemid/' + goods_id + '',
+			method : 'get',
+			type : 'json',
+			data : {}
+		}, function(ret, err) {
+			console.log("商品推荐语--------：" + JSON.stringify(ret));
+			if (ret) {
+				if (!empty(ret.data.itemdesc)) {
+					$("#tuijianyu").html(ret.data.itemdesc);
+				} else {
+					$(".info_item2").hide();
+				}
+			}
+		});
+		//商品推荐语结束
+		//店铺信息开始
+		api.ajax({
+			url : 'https://acs.m.taobao.com/h5/mtop.taobao.detail.getdetail/6.0/?data={"itemNumId":"' + goods_id + '"}',
+			method : 'get',
+			type : 'json',
+			data : {}
+		}, function(ret, err) {
+			// console.log("http:"+ret.data.seller.creditLevelIcon);
+			// alert(ret.data.seller.shopType);
+			if (ret) {
+				if (!empty(ret.data.seller.shopIcon)) {
+					$("#dianpu_img").attr("src", "http:" + ret.data.seller.shopIcon);
+				}
+				$api.byId('dp_name').innerHTML = ret.data.seller.shopName;
+				if (ret.data.seller.shopType == "B") {
+					$(".dp_type_b").show();
+					$(".dp_type_c").hide();
+					$("#dp_loge_b").attr("src", "http:" + ret.data.seller.creditLevelIcon);
+				} else {
+					$(".dp_type_c").show();
+					$(".dp_type_b").hide();
+					$("#dp_loge_c").attr("src", "http:" + ret.data.seller.creditLevelIcon);
+				}
+				var eval = ret.data.seller.evaluates;
+				var evalHtml = '';
+				for (var i = 0; i < eval.length; i++) {
+					evalHtml += '<li>' + eval[i].title + '：' + eval[i].score + '<span class="good_count" style="background:' + eval[i].levelBackgroundColor + ';color:' + eval[i].levelTextColor + '">' + eval[i].levelText + '</span></li>';
+				}
+				$api.byId('info_bydianpu').innerHTML = evalHtml;
+			}
+		});
+		// 轮播图开始
+		var flag1 = true;
+		api.ajax({
+			url : 'https://acs.m.taobao.com/h5/mtop.taobao.detail.getdetail/6.0/?data={"itemNumId":"' + goods_id + '"}',
+			method : 'get',
+			type : 'json',
+			data : {}
+		}, function(ret, err) {
+			if (ret) {
+				var htmlLb = '';
+				var details = ret.data.item.images;
+				var leng = details.length;
+				htmlLb += '<div class="swiper-container">';
+				htmlLb += '<div class="swiper-wrapper">';
+				//              if(!empty(api.pageParam.video_id)){
+				//                htmlLb+='<div class="swiper-slide" onclick="fnPlay()"><video width="100%" height="100%" style="width: 100%; height: 100%; object-fit: fill" controls controlslist="nodownload" loop muted src="http://cloud.video.taobao.com/play/u/1/p/1/e/6/t/1/'+api.pageParam.video_id+'.mp4" alt=""></video></div>';
+				//              }
+				if (!empty(api.pageParam.video_id)) {
+					htmlLb += '<div class="swiper-slide video_slide" onclick="fnPlay()"><img src="http://' + details[0] + '" alt=""><div class="video_play"></div><</div>';
+				}
+				for (var i = 0; i < leng; i++) {
+					htmlLb += '<div class="swiper-slide"><img src="http://' + details[i] + '" alt=""></div>';
+				}
+				htmlLb += '</div>';
+				htmlLb += '<div class="swiper-pagination"></div>';
+				htmlLb += '</div>';
+				$api.byId('swiper_slide').innerHTML = htmlLb;
+				var swiper = new Swiper('.swiper-container', {
+					slidesPerView : 1,
+					spaceBetween : 15,
+					loop : false,
+					pagination : {
+						el : '.swiper-pagination',
+						clickable : true,
+					},
+					//  autoplay: {
+					//     delay: 2500,
+					//     disableOnInteraction: false,
+					//   },
+				});
+				// var img_details = '';
+				// for (var i = 0; i < leng; i++) {
+				//     banner_arr.push("http:"+details[i]);
+				// }
+				// var UIScrollPicture = api.require('UIScrollPicture');
+				// UIScrollPicture.open({
+				//     rect: {
+				//         x: 0,
+				//         y: 0,
+				//         w: api.winWidth,
+				//         h: 340
+				//     },
+				//     data: {
+				//         paths: banner_arr,
+				//     },
+				//     styles: {
+				//         indicator: {
+				//            dot:{
+				//              w:10,
+				//              h:4,
+				//              r:2,
+				//              margin:5
+				//           },
+				//             align: 'center',
+				//             color: '#FFFFFF',
+				//             activeColor: '#1abc9c'
+				//         }
+				//     },
+				//     placeholderImg: 'widget://res/bdsh_sjbg_img_711.jpg', //网络未加载完时的占位图
+				//     contentMode: 'scaleToFill',
+				//     interval: 3,
+				//     fixedOn: '', //模块视图添加到指定 frame 的名字
+				//     loop: true,
+				//     fixed: false   //模块是否随所属 window 或 frame 滚动
+				// }, function(ret, err) {
+				//     if (ret) {
+				//
+				//     } else {
+				//     }
+				// });
+			}
+		});
+		// 轮播图结束
+		//复制文本
+		$api.addEvt($api.dom(".yijianfuzhi"), 'click', function() {
+			var clipBoard = api.require('clipBoard');
+			var content = $api.text($api.dom(".tao_message"));
+			clipBoard.set({
+				value : content
+			}, function(ret, err) {
+				if (ret.status == true) {
+					api.toast({
+						msg : '复制成功，打开淘宝粘贴此链接即可',
+						location : 'bottom'
+					});
+				} else {
+					api.toast({
+						msg : '复制失败，请重新复制',
+						location : 'bottom'
+					});
+				}
+			});
+		})
+		$(document).on('click', '.quan_area,.click_quan', function() {
+			if (!empty($api.getStorage("userInfo"))) {
+				alibaichuan.showLogin(function(ret, err) {
+					if (ret) {
+						// alert("登录success:" + JSON.stringify(ret));
+						if (ret) {
+						}
+					} else {
+						// alert("登录error:" + JSON.stringify(err));
+						api.toast({
+							msg : '授权失败',
+							duration : 2000,
+							location : 'bottom'
+						});
+					}
+				});
+				getDataUrl();
+			} else {
+				api.toast({
+					msg : '请先登录',
+					duration : 1000,
+					location : 'bottom'
+				});
+				if ($api.getStorage("control_version") == $api.getStorage("now_version")) {
+					if ($api.getStorage("login") == 0) {
+						api.openWin({
+							name : 'user_login',
+							url : '../login/user_login.html',
+							delay : 1000,
+						});
+					} else {
+						api.openWin({
+							name : 'login',
+							url : '../login/user_login.html',
+							delay : 1000,
+						});
+					}
+				} else {
+					api.openWin({
+						name : 'login',
+						url : '../login/user_login.html',
+						delay : 1000,
+					});
+				}
+			}
+		})
+	}
+	function fnPlay() {
+		var videoPlayer = api.require('videoPlayer');
+		videoPlayer.play({
+			texts : {
+				head : {
+					title : ''
+				}
+			},
+			styles : {
+				head : {
+					bg : 'rgba(0.5,0.5,0.5,0.7)',
+					height : 44,
+					titleSize : 16,
+					titleColor : '#fff',
+					backSize : 20,
+					backImg : 'widget://image/nav_back_black.png',
+					setSize : 20,
+					setImg : 'widget://image/set.png'
+				},
+			},
+			path : 'http://cloud.video.taobao.com/play/u/1/p/1/e/6/t/1/' + api.pageParam.video_id + '.mp4',
+			autoPlay : true
+		}, function(ret, err) {
+			//           alert(JSON.stringify(ret));
+			if (ret) {
+				//              alert(JSON.stringify(ret));
+			} else {
+				//              alert(JSON.stringify(err));
+			}
+		});
+	}
+
+	//获取商品url
+	function getDataUrl() {
+		var is_ios = api.systemType == 'ios' ? 1 : 0;
+		var obj = {
+			'user_id' : user_id,
+			'is_ios' : isIos,
+			'item_id' : goods_id,
+			'url_type' : 0,
+			'section_id': section_id,
+			'item_title' : encodeURIComponent(item_title)
+		};
+		var objArr = sort_ASCII(obj);
+		var timestamp = fntimestamp();
+		var version = '2.0';
+		var arr = apiSecret + timestamp + version + '';
+		for (i in objArr) {
+			arr += objArr[i];
+		}
+		// console.log(arr);
+		var sign = hex_md5(arr);
+		api.ajax({
+			url : commonUrl + 'soukeAppTttService/service/api/switchconnection_ac',
+			method : 'post',
+			headers : {
+				'Content-Type' : 'application/json;charset=utf-8'
+			},
+			data : {
+				body : {
+					'apiKey' : apiKey,
+					'timestamp' : timestamp,
+					'sign' : sign,
+					'user_id' : user_id,
+					'is_ios' : isIos,
+					'item_id' : goods_id,
+					'url_type' : 0,
+					'section_id': section_id,
+					'item_title' : item_title
+				}
+			}
+		}, function(ret, err) {
+			if (ret) {
+				// console.log("分享页面："+JSON.stringify(ret));
+				if (ret.result_code == 200) {
+					// alert(ret.result_data.split("&")[0]);
+					var param = {
+						url : ret.result_data.split("&")[0],
+						mmpid : "mm_00000000_0_0",
+						isvcode : "app",
+						opentype : "native",
+						// adzoneid: '0',
+						tkkey : '0',
+						winObj : 'mAliBaiChuan',
+						fixedOn : 'good_detail.html',
+						fixed : false,
+						rect : {
+							x : 0,
+							y : 0,
+							w : api.frameWidth,
+							h : api.frameHeight
+						}
+					};
+					alibaichuan.showTaokeItemByUrlWeb(param, function(ret, err) {
+						// alert("ret - " + JSON.stringify(ret));
+						if (ret) {
+							// alert("ret - " + JSON.stringify(ret));
+						} else {
+							// alert("err - " + JSON.stringify(err));
+						}
+					});
+				} else {
+					api.toast({
+						msg : ret.result_message,
+						duration : 2000,
+						location : 'bottom'
+					});
+				}
+			} else {
+				// api.alert({ msg: JSON.stringify(err) });
+			}
+		});
+	}
+
+	function initSDK() {
+		var param = {
+			isvcode : "huatao"
+		};
+		var alibaichuan = api.require('mAliBaiChuan');
+		alibaichuan.initTae(param, function(ret, err) {
+			if (ret) {
+				// alert("ret:" + JSON.stringify(ret));
+			} else {
+				// alert("err:" + JSON.stringify(err));
+			}
+		});
+	}
+
+	var good = document.getElementsByClassName("good_detail")[0];
+	function changeIndex(index) {
+		var Top = good.offsetTop;
+		var Index = index;
+		if (Index == 0) {
+			document.body.scrollTop = 0;
+		} else if (Index == 1) {
+			document.body.scrollTop = Top;
+		}
+	}
+
+	/*长按事件----begin*/
+	var longClick = 0;
+	$("#title,#tuijianyu").on({
+		touchstart : function(e) {
+			longClick = 0;
+			//设置初始为0
+			var self = this;
+			timeOutEvent = setTimeout(function() {
+				//此处为长按事件-----在此显示遮罩层及删除按钮
+				longClick = 1;
+				//假如长按，则设置为1
+				// alert($(self).html());
+				fnCopy($(self).html());
+			}, 500);
+		},
+		touchmove : function() {
+			clearTimeout(timeOutEvent);
+			timeOutEvent = 0;
+			// e.preventDefault();
+		},
+		touchend : function(e) {
+			clearTimeout(timeOutEvent);
+			if (timeOutEvent != 0 && longClick == 0) {//点击
+				//此处为点击事件----在此处添加跳转详情页
+			}
+			return false;
+		}
+	});
+	/*长按事件----end*/
+	function closeWin() {
+		api.closeWin();
+	}
+
+	function share() {
+		if (!empty($api.getStorage("userInfo"))) {
+			var goods_id = api.pageParam.goods_id;
+			api.openWin({
+				name : 'creat_share_win',
+				url : '../win/creat_share_win.html',
+				pageParam : {
+					goods_id : goods_id,
+					section_id: section_id,
+					user_id : user_id,
+					url_type : 1,
+					item_title : item_title,
+					tk_fee : yuji_zhuan
+				}
+			});
+		} else {
+			api.toast({
+				msg : '请先登录',
+				duration : 1000,
+				location : 'bottom'
+			});
+			api.openWin({
+				name : 'user_login',
+				url : '../login/user_login.html',
+				delay : 1000,
+			});
+		}
+	}
+
+	function getBrowerHis() {
+		var obj = {
+			'num_iid' : api.pageParam.goods_id,
+			'user_id' : user_id
+		};
+		var objArr = sort_ASCII(obj);
+		var timestamp = fntimestamp();
+		var version = '2.0';
+		var arr = apiSecret + timestamp + version + '';
+		for (i in objArr) {
+			arr += objArr[i];
+		}
+		// console.log(arr);
+		var sign = hex_md5(arr);
+		api.ajax({
+			url : commonUrl + 'soukeAppTttService/service/user/recordbrowsehistory_ac',
+			method : 'post',
+			headers : {
+				'Content-Type' : 'application/json'
+			},
+			data : {
+				body : {
+					'apiKey' : apiKey,
+					'timestamp' : timestamp,
+					'sign' : sign,
+					'num_iid' : api.pageParam.goods_id,
+					'user_id' : user_id
+				}
+			}
+		}, function(ret, err) {
+			if (ret) {
+				if (ret.result_code == 200) {
+					// console.log("历史记录"+JSON.stringify(ret));
+				}
+			} else {
+				// alert(JSON.stringify(err));
+				//   api.toast({
+				//     msg: ret.result_message,
+				//     duration: 2000,
+				//     location: 'middle'
+				// });
+			}
+		});
+	}
+
+	//升级赚接口
+	function queryShare() {
+		var obj = {
+			'user_id' : user_id,
+			'comm_rebate' : tkrates,
+			'zk_price' : tk_price,
+			'coupon_amount' : coupon_amount,
+			'section_id' : -1
+		};
+		var objArr = sort_ASCII(obj);
+		var timestamp = fntimestamp();
+		var version = '2.0';
+		var arr = apiSecret + timestamp + version + '';
+		for (i in objArr) {
+			arr += objArr[i];
+		}
+		// console.log(arr);
+		var sign = hex_md5(arr);
+		api.ajax({
+			url : commonUrl + 'soukeAppTttService/service/singleitem/queryshareprice_ac',
+			method : 'post',
+			headers : {
+				'Content-Type' : 'application/json'
+			},
+			data : {
+				body : {
+					'apiKey' : apiKey,
+					'timestamp' : timestamp,
+					'sign' : sign,
+					'user_id' : user_id,
+					'comm_rebate' : tkrates,
+					'zk_price' : tk_price,
+					'coupon_amount' : coupon_amount,
+					'section_id' : -1
+				}
+			}
+		}, function(ret, err) {
+			if (ret) {
+				if (ret.result_code == 200) {
+					// console.log("升级赚：------"+JSON.stringify(ret));
+					if (empty(ret.result_maxRebate)) {
+						$(".shengji_zhuan").hide();
+					} else {
+						$("#shengji_zhuan_p").html(ret.result_maxRebate);
+					}
+					if (empty(ret.result_data)) {
+						$(".yuji_zhuan").hide();
+						yuji_zhuan = 0.00;
+					} else {
+						$("#yuji_zhuan_p").html(ret.result_data);
+						yuji_zhuan = ret.result_data;
+					}
+				}
+			} else {
+				// alert(JSON.stringify(err));
+				//   api.toast({
+				//     msg: ret.result_message,
+				//     duration: 2000,
+				//     location: 'middle'
+				// });
+			}
+		});
+	}
+
+	//收藏商品，或者取消商品
+	function collectBtn() {
+		if (!empty($api.getStorage("userInfo"))) {
+			var obj = {
+				'user_id' : user_id,
+				'num_iid' : api.pageParam.goods_id,
+				'status' : collect_statu,
+			};
+			var objArr = sort_ASCII(obj);
+			var timestamp = fntimestamp();
+			var version = '2.0';
+			var arr = apiSecret + timestamp + version + '';
+			for (i in objArr) {
+				arr += objArr[i];
+			}
+			// console.log(arr);
+			var sign = hex_md5(arr);
+			api.ajax({
+				url : commonUrl + 'soukeAppTttService/service/user/collecthistory_ac',
+				method : 'post',
+				headers : {
+					'Content-Type' : 'application/json'
+				},
+				data : {
+					body : {
+						'apiKey' : apiKey,
+						'timestamp' : timestamp,
+						'sign' : sign,
+						'user_id' : user_id,
+						'num_iid' : api.pageParam.goods_id,
+						'status' : collect_statu,
+					}
+				}
+			}, function(ret, err) {
+				if (ret) {
+					if (ret.result_code == 200) {
+						// console.log("是否收藏------"+JSON.stringify(ret));
+						api.toast({
+							msg : ret.result_message,
+							duration : 2000,
+							location : 'bottom'
+						});
+						// $(".footer_c").html("取消收藏");
+						if ($(".footer_c").html() == "加入收藏") {
+							$(".footer_c").html("取消收藏");
+						} else {
+							$(".footer_c").html("加入收藏");
+						}
+						is_collected();
+					}
+				} else {
+					// alert(JSON.stringify(err));
+					api.toast({
+						msg : ret.result_message,
+						duration : 2000,
+						location : 'bottom'
+					});
+				}
+			});
+		} else {
+			api.toast({
+				msg : '请先登录',
+				duration : 1000,
+				location : 'bottom'
+			});
+			api.openWin({
+				name : 'user_login',
+				url : '../login/user_login.html',
+				delay : 1000,
+			});
+		}
+	}
+
+	//判断是否收藏过
+	function is_collected() {
+		var obj = {
+			'user_id' : user_id,
+			'num_iid' : api.pageParam.goods_id,
+		};
+		var objArr = sort_ASCII(obj);
+		var timestamp = fntimestamp();
+		var version = '2.0';
+		var arr = apiSecret + timestamp + version + '';
+		for (i in objArr) {
+			arr += objArr[i];
+		}
+		// console.log(arr);
+		var sign = hex_md5(arr);
+		api.ajax({
+			url : commonUrl + 'soukeAppTttService/service/user/findcollecthistoryByUser_ac',
+			method : 'post',
+			headers : {
+				'Content-Type' : 'application/json'
+			},
+			data : {
+				body : {
+					'apiKey' : apiKey,
+					'timestamp' : timestamp,
+					'sign' : sign,
+					'user_id' : user_id,
+					'num_iid' : api.pageParam.goods_id,
+				}
+			}
+		}, function(ret, err) {
+			if (ret) {
+				if (ret.result_code == 200) {
+					// console.log("是否已经收藏------"+JSON.stringify(ret));
+					if (ret.result_data == 0) {
+						collect_statu = 1;
+						$(".footer_c").html("加入收藏");
+					} else {
+						collect_statu = 0;
+						$(".footer_c").html("取消收藏");
+					}
+				}
+			} else {
+				// alert(JSON.stringify(err));
+				//   api.toast({
+				//     msg: ret.result_message,
+				//     duration: 2000,
+				//     location: 'middle'
+				// });
+			}
+		});
+	}
+
+	function openLink() {
+		if (!empty($api.getStorage("userInfo"))) {
+			var obj = {
+				// yqm:$("#yqm").val(),
+			};
+			var objArr = sort_ASCII(obj);
+			var timestamp = fntimestamp();
+			var version = '2.0';
+			var arr = apiSecret + timestamp + version + '';
+			for (i in objArr) {
+				arr += objArr[i];
+			}
+			var sign = hex_md5(arr);
+			api.ajax({
+				url : commonUrl + 'soukeAppTttService/service/brand/findBaseconf',
+				method : 'post',
+				data : {
+					body : {
+						apiKey : apiKey,
+						timestamp : timestamp,
+						sign : sign,
+					}
+				}
+			}, function(ret, err) {
+				if (ret) {
+					// alert( JSON.stringify( ret ) );
+					if (ret.result_code == 200) {
+						if (ret.result_data.baseconf.is_buy == 0) {
+							api.openWin({
+								name : 'shengjizhuan_win',
+								url : '../win/shengjizhuan_win.html',
+								pageParam : {
+									user_id : user_id
+								}
+							});
+						} else if (ret.result_data.baseconf.is_buy == 1) {
+							api.openWin({
+								name : 'open_vip_win',
+								url : '../win/open_vip_win.html',
+							});
+						}
+					}
+				} else {
+					// alert( JSON.stringify( err ) );
+				}
+			});
+		} else {
+			api.toast({
+				msg : '请先登录',
+				duration : 2000,
+				location : 'bottom'
+			});
+			api.openWin({
+				name : 'user_login',
+				url : '../login/user_login.html',
+				delay : 1000,
+			});
+		}
+	}
+
+	function goIndex() {
+		api.closeToWin({
+			name : 'root'
+		});
+		// api.openWin({
+		//     name: 'index',
+		//     url: '../../index.html',
+		//     reload:true
+		// });
+	}
+</script>

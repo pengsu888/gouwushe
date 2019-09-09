@@ -1,0 +1,459 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0" />
+    <meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=no,viewport-fit=cover" />
+    <meta name="format-detection" content="telephone=no">
+    <title>首页</title>
+    <link rel="stylesheet" type="text/css" href="../../css/api.css" />
+    <link rel="stylesheet" type="text/css" href="../../css/style.css" />
+    <link rel="stylesheet" type="text/css" href="../../css/aui-slide.css" />
+    <link rel="stylesheet" type="text/css" href="../../css/swiper.min.css" />
+    <link rel="stylesheet" type="text/css" href="../../css/main.css" />
+    <style>
+    html{
+    /*background: linear-gradient(to right,rgb(0, 255, 28),rgb(232,195,230));*/
+    /*background: rgb(0, 255, 28);*/
+
+}
+        /* 返回顶部样式开始 */
+
+        .actGotop {
+            position: fixed;
+            _position: absolute;
+            bottom: 3rem;
+            right: 0.5rem;
+            width: 3.5rem;
+            height: 3.5rem;
+            display: none;
+            z-index: 999
+        }
+
+        .actGotop a,
+        .actGotop a:link {
+            width: 3.5rem;
+            height: 3.5rem;
+            display: inline-block;
+            background: url(../../image/ic_back_top.png) no-repeat;
+            background-size: 3.5rem 3.5rem;
+            outline: none;
+        }
+
+        .actGotop a:hover {
+            background: url(../../image/ic_back_top.png) no-repeat;
+            outline: none;
+            background-size: 3.5rem 3.5rem;
+        }
+        /* 返回顶部样式开始 */
+    </style>
+</head>
+
+<body id="main_body">
+
+    <!-- 返回顶部按钮 -->
+    <div class="actGotop">
+        <a href="javascript:;" title="返回顶部"></a>
+    </div>
+
+    <div id="main" v-cloak>
+        <div v-for="item in list" class="module">
+            <!--banner：焦点图-->
+            <template v-if="item.type=='banner'" >
+            <div v-if="item.styles.marginTop==1" class="bgll">
+              <div v-bind:style="{backgroundColor:'rgb('+item.styles.margincol+')',height:item.styles.marginhigh+'px'}"></div>
+            </div>
+            <div id="focus" class="bgll" v-bind:style="{height:banner_hight+'px'}"></div>
+          </template>
+            <!--banner：焦点图 end-->
+
+            <!--eye：眼标签-->
+            <template v-if="item.type=='eye'">
+            <div v-if="item.styles.marginTop==1" class="bgll">
+              <div v-bind:style="{backgroundColor:'rgb('+item.styles.margincol+')',height:item.styles.marginhigh+'px'}"></div>
+            </div>
+              <div class="eye bgll" >
+                   <div class="item"  @click="goPage(val.platetype,val.plateid,val.platename,val.platetag,val.tagid,val.tagname,val.name)" v-for="val in item.data":class="{eye4:item.extend_type==4||item.extend_type==8,eye5:item.extend_type==5||item.extend_type==10}">
+                     <img :src="val.img" alt="">
+                     <div v-if="item.styles.marginTop==1" v-bind:style="{color:'rgb('+item.styles.textcol+')'}" class="name">{{val.name}}</div>
+                     <div v-if="item.styles.marginTop==0" class="name">{{val.name}}</div>
+                   </div>
+                   <div class="clear"></div>
+              </div>
+          </template>
+            <!--eye：眼标签 end-->
+
+            <!--scroll:滚动-->
+            <template v-if="item.type=='scroll'">
+            <div v-if="item.styles.marginTop==1" class="bgll">
+              <div v-bind:style="{backgroundColor:'rgb('+item.styles.margincol+')',height:item.styles.marginhigh+'px'}"></div>
+            </div>
+            <div id="scrollBobao" class="bobao">
+                <div class="bobao_img"><img v-bind:src="item.icon.img" /></div>
+                <div class="swiper-container scroll ">
+                  <div class="swiper-wrapper">
+                      <div v-if="item.styles.marginTop==1" class="swiper-slide" v-for="val in item.data" v-bind:style="{color:'rgb('+item.styles.textcol+')'}" @click="goPage(val.platetype,val.plateid,val.platename,val.platetag,val.tagid,val.tagname,val.name)">{{val.des}}</div>
+                      <div v-if="item.styles.marginTop==0" class="swiper-slide" v-for="val in item.data"  @click="goPage(val.platetype,val.plateid,val.platename,val.platetag,val.tagid,val.tagname,val.name)">{{val.des}}</div>
+                  </div>
+                </div>
+            </div>
+          </template>
+            <!--scroll:滚动 end-->
+
+            <!--拼图-->
+            <template v-if="item.type=='pic'">
+          <div class="shangeType bgll">
+            <!-- pic：拼图[左一右二] -->
+             <div v-if="item.extend_type==1" class="shangeItem picItem" id="shangeItem1">
+               <div v-if="item.styles.marginTop==1">
+                 <div v-bind:style="{backgroundColor:'rgb('+item.styles.margincol+')',height:item.styles.marginhigh+'px'}"></div>
+               </div>
+               <div class="shangeLeft pic1" tapmode>
+                   <img v-bind:src="item.data[0].img" @click="goPage(item.data[0].platetype,item.data[0].plateid,item.data[0].platename,item.data[0].platetag,item.data[0].tagid,item.data[0].tagname,item.data[0].name)"/>
+                 </div>
+                 <div class="shangeRight">
+                   <div class="sg_right_top pic2" tapmode><img v-bind:src="item.data[1].img" @click="goPage(item.data[1].platetype,item.data[1].plateid,item.data[1].platename,item.data[1].platetag,item.data[1].tagid,item.data[1].tagname,item.data[1].name)"/></div>
+                   <div class="sg_right_bottom pic3" tapmode><img v-bind:src="item.data[2].img" @click="goPage(item.data[2].platetype,item.data[2].plateid,item.data[2].platename,item.data[2].platetag,item.data[2].tagid,item.data[2].tagname,item.data[2].name)"/></div>
+                 </div>
+             </div>
+             <!--pic：拼图[左一右二] end-->
+
+             <!--pic：拼图[左一右三]-->
+              <div v-if="item.extend_type==7" class="shangeItem picItem bgll" id="shangeItem2">
+                <div v-if="item.styles.marginTop==1">
+                  <div v-bind:style="{backgroundColor:'rgb('+item.styles.margincol+')',height:item.styles.marginhigh+'px'}"></div>
+                </div>
+                <div class="shangeLeft pic1" tapmode><img v-bind:src="item.data[0].img" @click="goPage(item.data[0].platetype,item.data[0].plateid,item.data[0].platename,item.data[0].platetag,item.data[0].tagid,item.data[0].tagname,item.data[0].name)" /></div>
+                   <div class="shangeRight">
+                     <div class="sg_right_top pic2" tapmode><img v-bind:src="item.data[1].img" @click="goPage(item.data[1].platetype,item.data[1].plateid,item.data[1].platename,item.data[1].platetag,item.data[1].tagid,item.data[1].tagname,item.data[1].name)" /></div>
+                     <div class="sg_right_bottom">
+                       <div class="sg_right_bottom_left pic3" tapmode><img v-bind:src="item.data[2].img" @click="goPage(item.data[2].platetype,item.data[2].plateid,item.data[2].platename,item.data[2].platetag,item.data[2].tagid,item.data[2].tagname,item.data[2].name)"  /></div>
+                       <div class="sg_right_bottom_right pic4" tapmode><img v-bind:src="item.data[3].img" @click="goPage(item.data[3].platetype,item.data[3].plateid,item.data[3].platename,item.data[3].platetag,item.data[3].tagid,item.data[3].tagname,item.data[3].name)" /></div>
+                     </div>
+                   </div>
+              </div>
+              <!--pic：拼图[左一右三] end-->
+
+              <!--pic：拼图[上二下二]-->
+               <div v-if="item.extend_type==3" class="shangeItem3 picItem bgll" id="shangeItem3">
+                 <div v-if="item.styles.marginTop==1">
+                   <div v-bind:style="{backgroundColor:'rgb('+item.styles.margincol+')',height:item.styles.marginhigh+'px'}"></div>
+                 </div>
+                 <ul>
+                  <li class="pic1"><img  v-bind:src="item.data[0].img" @click="goPage(item.data[0].platetype,item.data[0].plateid,item.data[0].platename,item.data[0].platetag,item.data[0].tagid,item.data[0].tagname,item.data[0].name)" /></li>
+                  <li class="pic2"><img  v-bind:src="item.data[1].img" @click="goPage(item.data[1].platetype,item.data[1].plateid,item.data[1].platename,item.data[1].platetag,item.data[1].tagid,item.data[1].tagname,item.data[1].name)" /></li>
+                  <li class="pic3"><img  v-bind:src="item.data[2].img" @click="goPage(item.data[2].platetype,item.data[2].plateid,item.data[2].platename,item.data[2].platetag,item.data[2].tagid,item.data[2].tagname,item.data[2].name)" /></li>
+                  <li class="pic4"><img  v-bind:src="item.data[3].img" @click="goPage(item.data[3].platetype,item.data[3].plateid,item.data[3].platename,item.data[3].platetag,item.data[3].tagid,item.data[3].tagname,item.data[3].name)" /></li>
+                </ul>
+               </div>
+               <!--pic：拼图[上二下二] end-->
+
+               <!--pic：拼图[左一右一]-->
+                <div v-if="item.extend_type==4" class="shangeItem4 picItem bgll" id="shangeItem4">
+                  <div v-if="item.styles.marginTop==1">
+                    <div v-bind:style="{backgroundColor:'rgb('+item.styles.margincol+')',height:item.styles.marginhigh+'px'}"></div>
+                  </div>
+                  <ul>
+                   <li class="pic1"><img v-bind:src="item.data[0].img"  @click="goPage(item.data[0].platetype,item.data[0].plateid,item.data[0].platename,item.data[0].platetag,item.data[0].tagid,item.data[0].tagname,item.data[0].name)" /></li>
+                   <li class="pic2"><img v-bind:src="item.data[1].img" @click="goPage(item.data[1].platetype,item.data[1].plateid,item.data[1].platename,item.data[1].platetag,item.data[1].tagid,item.data[1].tagname,item.data[1].name)" /></li>
+                 </ul>
+                 <div class="clear"></div>
+                </div>
+                <!--pic：拼图[左一右一] end-->
+
+                <!--pic：拼图[三列]-->
+                 <div v-if="item.extend_type==5" class="shangeItem5 picItem bgll" id="shangeItem5">
+                   <div v-if="item.styles.marginTop==1">
+                     <div v-bind:style="{backgroundColor:'rgb('+item.styles.margincol+')',height:item.styles.marginhigh+'px'}"></div>
+                   </div>
+                   <ul>
+                    <li class="pic1"><img v-bind:src="item.data[0].img"  @click="goPage(item.data[0].platetype,item.data[0].plateid,item.data[0].platename,item.data[0].platetag,item.data[0].tagid,item.data[0].tagname,item.data[0].name)" /></li>
+                    <li class="pic2"><img v-bind:src="item.data[1].img" @click="goPage(item.data[1].platetype,item.data[1].plateid,item.data[1].platename,item.data[1].platetag,item.data[1].tagid,item.data[1].tagname,item.data[1].name)" /></li>
+                    <li class="pic3"><img v-bind:src="item.data[2].img" @click="goPage(item.data[2].platetype,item.data[2].plateid,item.data[2].platename,item.data[2].platetag,item.data[2].tagid,item.data[2].tagname,item.data[2].name)" /></li>
+                  </ul>
+                  <div class="clear"></div>
+                 </div>
+                 <!--pic：拼图[三列] end-->
+
+                 <!--pic：拼图[四列]-->
+                  <div v-if="item.extend_type==6" class="shangeItem6 picItem bgll" id="shangeItem6">
+                    <div v-if="item.styles.marginTop==1">
+                      <div v-bind:style="{backgroundColor:'rgb('+item.styles.margincol+')',height:item.styles.marginhigh+'px'}"></div>
+                    </div>
+                    <ul>
+                      <li class="pic1"><img  v-bind:src="item.data[0].img" @click="goPage(item.data[0].platetype,item.data[0].plateid,item.data[0].platename,item.data[0].platetag,item.data[0].tagid,item.data[0].tagname,item.data[0].name)" /></li>
+                      <li class="pic2"><img  v-bind:src="item.data[1].img" @click="goPage(item.data[1].platetype,item.data[1].plateid,item.data[1].platename,item.data[1].platetag,item.data[1].tagid,item.data[1].tagname,item.data[1].name)" /></li>
+                      <li class="pic3"><img  v-bind:src="item.data[2].img" @click="goPage(item.data[2].platetype,item.data[2].plateid,item.data[2].platename,item.data[2].platetag,item.data[2].tagid,item.data[2].tagname,item.data[2].name)" /></li>
+                      <li class="pic4"><img  v-bind:src="item.data[3].img" @click="goPage(item.data[3].platetype,item.data[3].plateid,item.data[3].platename,item.data[3].platetag,item.data[3].tagid,item.data[3].tagname,item.data[3].name)" /></li>
+                    </ul>
+                   <div class="clear"></div>
+                  </div>
+                  <!--pic：拼图[四列] end-->
+
+                  <!--pic：拼图[左一右四]-->
+                   <div v-if="item.extend_type==7" class="shangeItem picItem bgll" id="shangeItem7">
+                     <div v-if="item.styles.marginTop==1">
+                       <div v-bind:style="{backgroundColor:'rgb('+item.styles.margincol+')',height:item.styles.marginhigh+'px'}"></div>
+                     </div>
+                     <div class="shangeLeft pic1" tapmode><img v-bind:src="item.data[0].img" @click="goPage(item.data[0].platetype,item.data[0].plateid,item.data[0].platename,item.data[0].platetag,item.data[0].tagid,item.data[0].tagname,item.data[0].name)" /></div>
+                        <div class="shangeRight">
+                          <!-- <div class="sg_right_top pic2" tapmode><img v-bind:src="item.data[1].img" @click="goPage(item.data[1].platetype,item.data[1].plateid,item.data[1].platename,item.data[1].platetag,item.data[1].tagid,item.data[1].tagname,item.data[1].name)" /></div> -->
+                          <div class="sg_right_bottom">
+                            <div class="sg_right_bottom_left pic2" tapmode><img v-bind:src="item.data[1].img" @click="goPage(item.data[1].platetype,item.data[1].plateid,item.data[1].platename,item.data[1].platetag,item.data[1].tagid,item.data[1].tagname,item.data[1].name)"  /></div>
+                            <div class="sg_right_bottom_right pic3" tapmode><img v-bind:src="item.data[2].img" @click="goPage(item.data[2].platetype,item.data[2].plateid,item.data[2].platename,item.data[2].platetag,item.data[2].tagid,item.data[2].tagname,item.data[2].name)" /></div>
+                            <div class="sg_right_bottom_left pic4" tapmode><img v-bind:src="item.data[3].img" @click="goPage(item.data[3].platetype,item.data[3].plateid,item.data[3].platename,item.data[3].platetag,item.data[3].tagid,item.data[3].tagname,item.data[3].name)"  /></div>
+                            <div class="sg_right_bottom_right pic5" tapmode><img v-bind:src="item.data[4].img" @click="goPage(item.data[4].platetype,item.data[4].plateid,item.data[4].platename,item.data[4].platetag,item.data[4].tagid,item.data[4].tagname,item.data[4].name)" /></div>
+                          </div>
+                        </div>
+                   </div>
+                   <!--pic：拼图[左一右四] end-->
+          </div>
+
+          </template>
+            <!--pic：拼图 end-->
+
+            <!--ctivity:活动图-->
+            <template v-if="item.type=='activity'">
+            <div v-if="item.styles.marginTop==1" class="bgll">
+              <div v-bind:style="{backgroundColor:'rgb('+item.styles.margincol+')',height:item.styles.marginhigh+'px'}"></div>
+            </div>
+            <div class="active_img bgll" id="activeimg" tapmode  data-type="3" v-for="val in item.data">
+              <img v-bind:src="val.img" @click="goPage(val.platetype,val.plateid,val.platename,val.platetag,val.tagid,val.tagname,val.name)" />
+            </div>
+          </template>
+            <!--ctivity:活动图 end-->
+
+            <!--hot：热销产品-->
+            <template v-if="item.type=='hot'">
+            <div class="hot">
+              <div v-if="item.styles.marginTop==1">
+                <div v-bind:style="{backgroundColor:'rgb('+item.styles.margincol+')',height:item.styles.marginhigh+'px'}"></div>
+              </div>
+              <div class="hot_s">
+                <!-- <div class="swiper-wrapper">
+                      <li class="swiper-slide" v-for="hot_list in hot_list" @click="openGoodDel(hot_list.num_iid,-1)">
+                          <img v-bind:src="hot_list.itempic_copy" />
+                          <p>热销{{hot_list.volume}}</p>
+                          <p>{{hot_list.guide_article}}</p>
+                          <p>
+                            <span>
+                              <span>¥</span>
+                              <span>{{hot_list.real_price}}</span>
+                              <span>券后</span>
+                            </span>
+                            <span class="s_q">{{hot_list.zk_final_price}}</span>
+                          </p>
+                          <div class="clear"></div>
+                      </li>
+                </div> -->
+                      <li v-for="hot_list in hot_list.slice(0, 3)" @click="openGoodDel(hot_list.num_iid,hot_plateid)">
+                          <img v-bind:src="hot_list.pict_url" />
+                          <p>热销：{{hot_list.volume}}件</p>
+                          <!-- <p>{{hot_list.guide_article}}</p> -->
+                          <p></p>
+                          <p>
+                            <span>
+                              <span>¥</span>
+                              <span>{{hot_list.real_price}}</span>
+                              <span>券后价</span>
+                            </span>
+                            <!-- <span class="s_q">{{hot_list.zk_final_price}}</span> -->
+                          </p>
+                      </li>
+                      <div class="clear"></div>
+              </div>
+            </div>
+          </template>
+            <!--hot：热销产品 end-->
+
+            <!--goods：商品-->
+            <template v-if="item.type=='goods'">
+              <div v-if="item.styles.marginTop==1">
+                <div v-bind:style="{backgroundColor:'rgb('+item.styles.margincol+')',height:item.styles.marginhigh+'px'}"></div>
+              </div>
+              <div id="goods">
+                <!-- 单排显示 -->
+                <div v-if="show_type==1"  >
+                  <div id="list"  style="background:#fff; overflow:hidden;" v-for="list in new_list">
+                    <div class="box_1"   @click="openGoodDel(list.num_iid,plateid);">
+                        <div class="d_card">
+                            <div class="d_card_img">
+                                <img v-bind:src="list.pict_url" alt="">
+                                <div class="d_bottom" v-if="list.tkfee!='' && list.tkfee!=0 && !isNaN(list.tkfee)">预估佣金{{list.tkfee}}</div>
+                            </div>
+                            <div class="d_right">
+                                <div class="right_card">
+                                    <div class="rightA">
+                                        <div class="right_top">
+                                            <div class="top_title">{{list.short_title}}</div>
+                                            <div class="top_title_del">店铺：{{list.seller_nick}}</div>
+                                        </div>
+                                        <div class="right_bottom">
+                                            <div class="right_bottom_1">
+                                                <div class="right_tm" v-if='list.user_type==1'>天猫价  ￥{{list.zk_final_price}}</div>
+                                                <div class="right_tm" v-if='list.user_type==0'>淘宝价  ￥{{list.zk_final_price}}</div>
+                                                <div class="right_yx">月销 {{list.volume}}</div>
+                                            </div>
+
+                                            <div class="right_bottom_2">
+                                                <div class="right_qhj"><img src="../../image/ic_page_sc_gapprice.png" alt="">￥ {{list.real_price}}</div>
+                                                <div class="right_quan">{{list.coupon_jian}}元券</div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                <!-- 双排显示 -->
+                <div v-if="show_type==2 ">
+                <div class="box"  >
+                    <div id="list" class="yh_card" @click="openGoodDel(list.num_iid,plateid);" v-for="list in new_list">
+                    <div class="yh_img_div">
+                      <img v-bind:src="list.pict_url" class="yh_card_img 1"/>
+                      <div class="yh_bottom" v-if="list.tkfee!='' && list.tkfee!=0 && !isNaN(list.tkfee)">预估佣金{{list.tkfee}}</div>
+                    </div>
+                    <div style="background:#fff;padding:0.5rem;">
+                        <div class="good_title" style="-webkit-box-orient: vertical;">
+                          <!-- <img src="../../image/sharepage_taobao.png" alt="" class="tt" v-if="list.user_type==0">
+                          <img src="../../image/sharepage_tianmao.png" alt="" class="tt" v-if="list.user_type==1"> -->
+                          {{list.short_title}}
+                        </div>
+                        <div class="tm_price">
+                          <div class="tm_left" v-if='list.user_type==1'>天猫价  ￥{{list.zk_final_price}}</div>
+                          <div class="tm_left" v-if='list.user_type==0'>淘宝价  ￥{{list.zk_final_price}}</div>
+                          <div class="tm_right">月销 {{list.volume}}</div>
+                        </div>
+                        <div class="qh_price">
+                            <div class="qh_left"><span class="qh_left_quan">券后￥ {{list.real_price}}</span>&nbsp;</div>
+                            <div class="qh_right">{{list.coupon_jian}}元券</div>
+                        </div>
+                    </div>
+              </div>
+              </div>
+                </div>
+              </div>
+            </template>
+            <!--goods：商品 end-->
+            <!--goods：商品-->
+            <template v-if="item.type=='goods'">
+              <div v-if="item.styles.marginTop==1">
+                <div v-bind:style="{backgroundColor:'rgb('+item.styles.margincol+')',height:item.styles.marginhigh+'px'}"></div>
+              </div>
+              <div id="goods">
+                <!-- 单排显示 -->
+                  <div v-if="show_type==3"  >
+                  <div id="list"  style="background:#fff; overflow:hidden;box-shadow: 0 0 2.1333vw 0 rgba(0, 0, 0, .1);" v-for="list in new_list">
+                    <div class="box_3" style="height: 10rem;">
+                        <div class="d_card3" style="">
+                            <div class="d_card_img" @click="openGoodDel(list.num_iid,plateid);">
+                                <img v-bind:src="list.pict_url" alt="">
+                            </div>
+                            <div class="detail" style="padding: 0vw;">
+                             <div class="hot-sell3" style=" margin: 4vw 0 1.3333vw;height: 6.4vw;line-height: 6.4vw;">
+                              <!-- <img src="../../image/hot_sell_icon.png" alt="火焰" class="hot-icon" /> -->
+                              <p class="word" style="color: #f15;">爆款推荐</p>
+                             </div>
+                             <p class="title text-ellipsis fs12">{{list.short_title}}</p>
+                             <div class="fs0" @click="openGoodDel(list.num_iid,plateid);">
+                              <p class="amount fs10" style="background: linear-gradient(to right, rgb(255, 17, 130), rgb(243, 45, 73));"> 券<span class="markpro">{{list.coupon_jian}}</span></p>
+                              <p class="amount fs10" v-if="list.tkfee!='' && list.tkfee!=0 && !isNaN(list.tkfee)" style="background: linear-gradient(to right, rgb(247, 107, 28), rgb(250, 158, 97));"><span class="markpro">返{{list.tkfee}}</span></p>
+                             </div>
+                             <div class="price-wrap flex-space-between flex-middle" @click="openGoodDel(list.num_iid,-1);">
+                              <div  class="hand-price fs10">
+                                到手价
+                               <span>￥</span>
+                               <span class="markpro fs17">{{list.real_price}}</span>
+                              </div>
+                              <div class="original-price fs11" style="right: 24px;font-size: 0.8rem;">
+                                {{list.zk_final_price}}
+                              </div>
+                             </div>
+                             <div class="monthly-sales fs11" style="font-size: 0.8rem;">
+                               月销：{{list.volume}}
+                              <div class="log share-icon" style="position: absolute;right: 24px;" @click="openShare(list.num_iid,user_id,url_type,list.short_title,list.tkfee,plateid);">
+                               <img src="../../image/goods_share_icon.png"/>
+                              </div>
+                             </div>
+                            </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                <!-- 双排显示 -->
+                <div v-if="show_type==4 ">
+                <div class="box" style="background: #fff;" >
+                    <div id="list" class="yh_card" style="box-shadow: 0 0 2.1333vw 0 rgba(0,0,0,.1);" v-for="list in new_list">
+                    <div class="yh_img_div" @click="openGoodDel(list.num_iid,plateid);">
+                      <img v-bind:src="list.pict_url" class="yh_card_img 1"/>
+                    </div>
+                    <div class="detail">
+                     <p class="title text-ellipsis fs12">{{list.short_title}}</p>
+                     <div class="fs0" @click="openGoodDel(list.num_iid,plateid);">
+                      <p class="amount fs10" style="background: linear-gradient(to right, rgb(255, 17, 130), rgb(243, 45, 73));"> 券<span class="markpro">{{list.coupon_jian}}</span></p>
+                      <p class="amount fs10" v-if="list.tkfee!='' && list.tkfee!=0 && !isNaN(list.tkfee)" style="background: linear-gradient(to right, rgb(247, 107, 28), rgb(250, 158, 97));"><span class="markpro">返{{list.tkfee}}</span></p>
+                     </div>
+                     <div class="price-wrap flex-space-between flex-middle" @click="openGoodDel(list.num_iid,-1);">
+                      <div class="hand-price fs10">
+                        到手价
+                       <span>￥</span>
+                       <span class="markpro fs17">{{parseFloat(list.real_price)}}</span>
+                      </div>
+                      <div class="original-price fs11">{{list.zk_final_price}}
+                      </div>
+                     </div>
+                     <div class="monthly-sales fs11">
+                       月销：{{list.volume}}
+                      <div class="log share-icon" @click="openShare(list.num_iid,user_id,url_type,list.short_title,list.tkfee,plateid);">
+                       <img src="../../image/goods_share_icon.png" />
+                      </div>
+                     </div>
+                    </div>
+              </div>
+              </div>
+                </div>
+                  </div>
+                <div id="statu"><img src="../../image/loading.d997b79c.svg" alt="" style="width:1rem;height:1rem;vertical-align:middle;">加载中...</div>
+            </template>
+            <!--goods：商品 end-->
+        </div>
+    </div>
+
+    <!-- 程序未加载完之前显示-->
+    <div class="Placeholder"></div>
+    <!--网络不好的时候重新加载页面-->
+
+    <div class="noWlan">
+        <div class="nowlanItem">
+            <div class="no_net"><img src="../../image/no_net.png" /></div>
+            <p class="no_p">网络竟然崩溃了</p>
+            <p class="load_p">别紧张，试试看刷新页面</p>
+            <div class="loadBtn" onclick="javascript:location.reload();">点击刷新</div>
+        </div>
+    </div>
+
+</body>
+<script type="text/javascript" src="../../script/api.js"></script>
+<script type="text/javascript" src="../../script/jquery.js"></script>
+<script type="text/javascript" src="../../script/api_common.js"></script>
+<script type="text/javascript" src="../../script/md5.js"></script>
+<script type="text/javascript" src="../../script/swiper.min.js"></script>
+<script type="text/javascript" src="../../script/main.js"></script>
+<script type="text/javascript" src="../../script/vue.js"></script>
+<script>
+    $(function() {
+        new Swiper('.hot_s', {
+            direction: 'horizontal',
+            slidesPerView: 'auto',
+            spaceBetween: 30,
+            mousewheel: true,
+            autoplay: false,
+        })
+    })
+
+</script>
+
+</html>

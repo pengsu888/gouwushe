@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1">
+    <!-- <meta http-equiv="X-UA-Compatible" content="ie=edge"> -->
+    <link rel="stylesheet" type="text/css" href="../../css/aui.css" />
+    <title>京东商品详情页头部</title>
+</head>
+<style>
+    body {
+        background: rgba(255, 255, 255, 0);
+        margin-top: 0.3rem;
+    }
+
+    .aui-bar-nav .aui-btn .aui-iconfont {
+        text-align: center;
+        line-height: 1.5rem;
+        width: 1.5rem;
+        height: 1.5rem;
+        border-radius: 50%;
+    }
+
+    button,
+    .aui-btn {
+        background: rgba(0, 0, 0, 0.4);
+        width: 1.5rem;
+        border-radius: 50%;
+        text-align: center;
+        padding: 0;
+        cursor: pointer;
+    }
+
+    .aui-iconfont {
+        background-color: rgba(0, 0, 0, 0);
+        display: inline-block;
+        margin: 0!important;
+    }
+
+    .aui-icon-edit:before,
+    .aui-icon-left:before {
+        color: #fff;
+    }
+    /*.aui-icon-share1:before{
+   color: #000;
+}*/
+
+    header {
+        padding: 0 .6rem;
+        position: relative;
+        overflow: hidden;
+    }
+
+    .deractionbox {
+        position: absolute;
+        width: 60%;
+        left: 0;
+        right: 0;
+        margin: 0 auto;
+        display: flex;
+        display: -webkit-flex;
+        justify-content: space-around;
+        height: 100%;
+    }
+
+    .deraction {
+        width: 50%;
+        color: #333;
+        text-align: center;
+        position: relative;
+        height: 44px;
+    }
+
+    .addunderline:after {
+        content: "";
+        height: 2px;
+        background-color: #ff2600;
+        position: absolute;
+        top: 54%;
+        z-index: 1;
+        left: 30%;
+        right: 30%;
+    }
+</style>
+
+<body>
+    <header>
+        <a class="aui-btn aui-pull-left">
+            <span class="aui-iconfont"><img src="../../image/ic_detail_title_bar_back_white.png"/></span>
+        </a>
+        <ul class="deractionbox">
+            <li class="deraction left addunderline">宝贝</li>
+            <li class="deraction right">详情</li>
+            <!-- <li class="deraction right">推荐</li> -->
+        </ul>
+        <!-- <a class="aui-btn aui-pull-right">
+        <span class="aui-iconfont"><img src="../../image/ic_detail_title_bar_share_white.png" alt=""></span>
+    </a> -->
+    </header>
+</body>
+<script type="text/javascript" src="../../script/api.js"></script>
+<script type="text/javascript" src="../../script/jquery.js"></script>
+<script type="text/javascript">
+    //导航渐变
+    var body = $api.dom('body'),
+        btn = $api.domAll('.aui-btn'),
+        iconfont = $api.domAll('.aui-iconfont'),
+        left = $api.dom('.left'),
+        right = $api.dom('.right'),
+        deraction = document.getElementsByClassName("deraction"),
+        flag = true;
+
+    function ChangeHeaderColor(pScrollTop, top, Pscroll) {
+        var tScrollTop = pScrollTop;
+        var Tscroll = Pscroll;
+        var Top = top;
+        var tHeadderAlpha = tScrollTop / (api.winHeight / 2);
+        var num = .4 - tHeadderAlpha;
+        num <= 0 ? num = 0 : num;
+        body.style.backgroundColor = 'rgba(255,255,255,' + tHeadderAlpha + ')';
+        for (var i = 0; i < btn.length; i++) {
+            btn[i].style.background = 'rgba(0,0,0,' + num + ')';
+        }
+        if (Pscroll >= api.winHeight / 3) {
+            for (var i = 0; i < iconfont.length; i++) {
+                deraction[0].style.display = "block";
+                deraction[1].style.display = "block";
+                //  alert($(iconfont[i]).find("img").attr("src"));
+                //  iconfont[i].classList.add("aui-icon-share1");
+                $(iconfont[0]).find("img").attr("src", "../../image/ic_detail_title_bar_back_gray.png");
+                $(iconfont[1]).find("img").attr("src", "../../image/ic_detail_title_bar_share_gray.png");
+            }
+        } else {
+            for (var i = 0; i < iconfont.length; i++) {
+                deraction[0].style.display = "none";
+                deraction[1].style.display = "none";
+                //  iconfont[i].classList.remove("aui-icon-share1");
+                $(iconfont[0]).find("img").attr("src", "../../image/ic_detail_title_bar_back_white.png");
+                $(iconfont[1]).find("img").attr("src", "../../image/ic_detail_title_bar_share_white.png");
+            }
+        }
+        //变换颜色
+        if (Tscroll >= Top) {
+            left.classList.remove("addunderline");
+            right.classList.add("addunderline");
+        } else {
+            right.classList.remove("addunderline");
+            left.classList.add("addunderline");
+        }
+    }
+
+    apiready = function() {
+        var header = $api.dom('header');
+        api.setStatusBarStyle({
+            style: 'dark',
+            color: "transparent" //背景颜色为透明
+        });
+        var strDM = api.systemType;
+        var iconleft = document.getElementsByClassName("aui-pull-left")[0];
+        $(".deraction").hide();
+        // iconright=document.getElementsByClassName("aui-pull-right")[0];
+        if (strDM == 'ios') {
+            var headerH = $api.fixIos7Bar(header);
+        } else {
+            var headerH = $api.fixStatusBar(header);
+        }
+        //点击事件
+        for (var i = 0; i < deraction.length; i++) {
+            deraction[i].index = i; //为每个li添加对应的索引index
+            deraction[i].onclick = function() { //循环为每个li添加onclick事件
+                for (var i = 0; i < deraction.length; i++) {
+                    deraction[i].classList.remove("addunderline");
+                }
+                deraction[this.index].classList.add("addunderline");
+                changeIndex(this.index);
+            }
+        }
+
+        iconleft.onclick = function() {
+          var fresh = 'fresh()';
+          api.execScript({
+              name: 'collect_win',
+              frameName: 'jd_collect_frame',
+              script: fresh
+            });
+            if ($api.getStorage("list_url") == null) {
+                $api.setStorage("list_url", "");
+            }
+            if ($api.getStorage("list_url") != "") {
+                api.closeWin({
+                    name: 'jump_href_win'
+                });
+                api.openWin({
+                    name: 'jump_href_win',
+                    url: '../win/jump_href_win.html',
+                    pageParam: {
+                        name: $api.getStorage("list_url").name,
+                        url: $api.getStorage("list_url").url,
+                        clear: 1
+                    }
+                });
+            } else {
+                api.closeWin({
+                    name: 'jd_good_detail'
+                });
+            }
+        }
+
+        // iconright.onclick=function(){
+        //   api.execScript({
+        //       name:'good_detail',
+        //       script:'share()',
+        //   });
+        // }
+
+    }
+
+    var fresh=function fresh(){
+      window.location.reload()
+    }
+
+    function changeIndex(index) {
+        api.execScript({
+            name: 'jd_good_detail',
+            script: 'changeIndex(' + index + ')',
+        });
+    }
+</script>
+
+</html>

@@ -1,0 +1,188 @@
+<!DOCTYPE HTML>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0" />
+    <meta name="format-detection" content="telephone=no, email=no, date=no, address=no">
+    <title>网络电话余额</title>
+    <link rel="stylesheet" type="text/css" href="../../css/api.css" />
+    <link rel="stylesheet" href="../../css/swiper.min.css">
+    <style>
+        body {
+            background-color: #f4f4f4;
+            height: 100%;
+            width: 100%;
+            overflow: hidden;
+        }
+
+        .registItem {
+            width: 100%;
+            height: auto;
+            background: #fff;
+            overflow: hidden;
+        }
+
+        .regist_input {
+            /*width: calc(100% - 0px);*/
+            margin-left: 12px;
+            height: 55px;
+        }
+
+        .reg_bottom {
+            margin-top: 10px;
+        }
+
+        .reg_border {
+            border-bottom: solid 1px #ddd;
+        }
+
+        .regist_input label.label_input {
+            /*width: 100px;*/
+            height: 55px;
+            line-height: 55px;
+        }
+
+        .regist_input button.label_btn {
+            width: 120px;
+            height: 55px;
+            line-height: 55px;
+            text-align: center;
+            color: #fd5f3e;
+        }
+
+        .regist_input input.input_phone {
+            /*width: 68%;*/
+            height: 55px;
+            /*float: right;*/
+            text-align: right;
+        }
+
+        .regist_input input.input_yzm {
+            width: calc(100% - 210px);
+            height: 35px;
+            line-height: 35px;
+            outline: none;
+            border-right: solid 1px #ddd;
+        }
+
+        .regist_input .clear_phone {
+            width: 17px;
+            height: 17px;
+            background-size: 100% 100%;
+            margin-top: 5px;
+            display: none;
+        }
+
+        .editBtn {
+            margin-top: 60px;
+        }
+
+        .tip {
+            width: calc(100% - 24px);
+            height: auto;
+            line-height: 28px;
+            margin-left: 12px;
+            color: #999;
+            font-size: 0.8rem;
+            margin-top: 10px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="registItem reg_bottom">
+        <div class="regist_input reg_border">
+            <label class="label_input">我的话费账户:</label>
+            <input type="tel" value="" maxlength="11" class="input_phone" readonly="" id="my_phone" />
+        </div>
+    </div>
+    <div class="registItem reg_bottom">
+        <div class="regist_input reg_bottom reg_border">
+            <label class="label_input">通用话费余额:</label>
+            <input type="text" value="" maxlength="11" class="input_phone" readonly="" id="general_fee" <span>元</span>
+            </>
+        </div>
+        <div class="regist_input">
+            <label class="label_input">活动话费余额:</label>
+            <input type="text" value="" maxlength="11" class="input_phone" readonly="" id="active_fee" <span>元</span>
+            </>
+        </div>
+    </div>
+    <div class="tip">
+        <p style="color:#f00">温馨提示：</p>
+        1. 通用话费余额代表主动充值的余额；活动话费余额代表卡密激活的余额。
+        <p>2. 打电话优先扣除通用话费余额，当通用话费余额不足时自动抵扣活动话费余额。</p>
+    </div>
+</body>
+<script type="text/javascript" src="../../script/api.js"></script>
+<script type="text/javascript" src="../../script/jquery.js"></script>
+<script type="text/javascript" src="../../script/api_common.js"></script>
+<script type="text/javascript" src="../../script/md5.js"></script>
+<script type="text/javascript">
+    var user_id;
+    var phone;
+    apiready = function() {
+        if (!empty($api.getStorage("userInfo"))) {
+            user_id = $api.getStorage("userInfo").user_id;
+        } else {
+            user_id = '';
+            checkUserLogin();
+        }
+        if (!empty($api.getStorage("user_phone"))) {
+            phone = $api.getStorage("user_phone");
+        } else {
+            phone = '';
+        }
+        $api.byId('my_phone').value = phone;
+        var obj = {
+            'user_id': user_id
+        };
+        var objArr = sort_ASCII(obj);
+        var timestamp = fntimestamp();
+        var version = '2.0';
+        var arr = apiSecret + timestamp + version + '';
+        for (i in objArr) {
+            arr += objArr[i];
+        }
+        var sign = hex_md5(arr);
+        api.ajax({
+            url: commonUrl + 'soukeAppTttService/service/telbill/getTelFeeByUserid',
+            method: 'post',
+            headers: {
+                'Content-Type': 'application/json;charset=utf-8'
+            },
+            data: {
+                body: {
+                    'apiKey': apiKey,
+                    'timestamp': timestamp,
+                    'sign': sign,
+                    'user_id': user_id
+                }
+            }
+        }, function(ret, err) {
+            if (ret) {
+                if (ret.result_code == 200) {
+                    console.log("查询话费：" + JSON.stringify(ret));
+                    general_fee = ret.result_data.general_fee;
+                    active_fee = ret.result_data.active_fee;
+                    $api.byId('general_fee').value = general_fee;
+                    $api.byId('active_fee').value = active_fee;
+
+                } else {
+                    api.toast({
+                        msg: ret.result_message,
+                        duration: 2000,
+                        location: 'middle'
+                    });
+
+                }
+            } else {
+                //  api.alert({ msg: JSON.stringify(err) });
+            }
+        });
+
+    }
+</script>
+
+</html>

@@ -1,0 +1,444 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0" />
+  <title>title</title>
+  <link rel="stylesheet" type="text/css" href="../../css/api.css" />
+  <!-- <link rel="stylesheet" type="text/css" href="../../css/style.css" /> -->
+  <style media="screen">
+  body,html{
+    width: 100%;
+    height: 100%;
+  }
+  header{
+    width: 100%;
+    height: 44px;
+    background: #fff;
+    overflow: hidden;
+  }
+  header .header-top{
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: flex;
+    width: 100%;
+    height: 44px;
+    position: relative;
+    background: linear-gradient(to right,#7a45e5 20%,#b23cef 80%);
+  }
+
+  .headerItem{
+    height: 44px;
+    width: calc(100% - 24px);
+    border-bottom:solid 1px #f6f6f6;
+    vertical-align: middle;
+    display: inline-block;
+    position: absolute;
+    top:0;
+    left: 12px;
+  }
+  .headerItem div{
+    float:left;
+  }
+  .headerItem .header_back{
+    width:9px;
+    height: 16px;
+    float:left;
+    margin-top: 12px;
+  }
+  .headerItem .header_back img{
+    width:9px;
+    height: 16px;
+    background-size: 100% 100%;
+    vertical-align: middle;
+  }
+  .headerItem .header_title{
+    width:calc(100% - 108px);
+    line-height: 44px;
+    text-align: center;
+    margin-left: 40px;
+  }
+  .headerItem .header_title .header_down{
+    width: 7px;
+    height: 4px;
+    background-size: 100% 100%;
+    position: relative;
+    top:-4px;
+    right: -5px;
+  }
+  .headerItem .header_title .header_up{
+    -moz-transform:rotate(180deg);
+    -webkit-transform:rotate(180deg);
+     filter:progid:DXImageTransform.Microsoft.BasicImage(rotation=3);
+  }
+  .headerItem .header_right{
+    width: 58px;
+    height: 22px;
+    float: right;
+    margin-top: 8px;
+    font-size: 12px;
+  }
+  .headerItem .header_right img{
+    width: 25px;
+    height: 25px;
+    background-size: 100% 100%;
+    vertical-align: middle;
+    display: inline-block;
+    margin-right: 5px;
+  }
+  .header-bottom{
+    height: 37px;
+    width: 100%;
+  }
+  .header-bottom ul{list-style: none;padding: 0;margin: 0;}
+  .header-bottom ul li{
+    float: left;
+    width: 50%;
+    line-height: 37px;
+    text-align: center;
+  }
+  .header-bottom ul li.li_active{
+    border-bottom: 3px solid #fd5f3e;
+    color:#fd5f3e;
+  }
+  /*导航栏背景图样式开始*/
+  .headerItem.header_title {
+      font-family: Simhei;
+      font-size: 17px;
+      height: 28px;
+      line-height: 28px;
+      color: #fff;
+      text-align: center;
+  }
+  .header_title span {
+      position: relative;
+      cursor: pointer;
+      padding: 6px 22px 6px 15px;
+  }
+  </style>
+</head>
+
+<body>
+    <header id="header">
+      <div class="header-top">
+          <div class="headerItem">
+            <div class="header_back" onclick="closeWin();">
+              <img src="../../image/nav_back_black.png" alt="">
+            </div>
+            <!-- <div class="header_title"><span  id="header_title">实时销量</span></div> -->
+            <div class="header_title"> <span>
+                        <img src="http://cmsstatic.dataoke.com//web/ranking/images/title.svg?v=201812120929">
+                </span></div>
+            <!-- <div class="header_right" ><img src="../../image/home/mine_time.png" alt="" onclick="selectTime();"><span onclick="searchOrder();">搜索</span></div> -->
+          </div>
+      </div>
+    </header>
+    <div class="header-bottom">
+      <ul id="class_list">
+        <li class="li_active" tapmode onclick="fnChange(0);">实时跑单商品</li>
+        <li tapmode onclick="fnChange(1);">爆单榜商品</li>
+      </ul>
+    </div>
+    <div class="noWlan">
+      <div class="nowlanItem">
+        <div class="no_net"><img src="../../image/no_net.png" /></div>
+        <p class="no_p">网络竟然崩溃了</p>
+        <p class="load_p">别紧张，试试看刷新页面</p>
+        <div class="loadBtn" onclick="javascript:location.reload();">点击刷新</div>
+      </div>
+    </div>
+</body>
+  <script type="text/javascript" src="../../script/api.js"></script>
+  <script type="text/javascript" src="../../script/jquery.js"></script>
+  <script type="text/javascript">
+  var headerH;
+  var navigationBar, paodan_id,baodan_id;
+  var paodan_frames = [],baodan_frames = [];
+  var frameNames = ['paodan', 'baodan'];
+  var paodan,baodan;
+  var currentIndex = 0;
+  var pd_itemList=[{
+      title:"全部",
+      bg:"#fff",
+      cid:0
+  }];
+  var bd_itemList=[{
+      title:"全部",
+      bg:"#fff",
+      cid:0
+  }];
+    apiready = function() {
+        api.setStatusBarStyle({
+            style: 'dark' //黑色
+                // style: 'light' //白色
+        });
+        navigationBar = api.require('navigationBar');
+        var header = $api.byId('header');
+        $api.fixStatusBar(header);
+        headerH= $api.offset(header).h+40;
+
+        api.ajax({
+            url: 'http://v2.api.haodanku.com/super_classify/apikey/souke',
+            method: 'get',
+        },function(ret, err){
+            if (ret) {
+                $(".noWlan").hide();
+                // alert( JSON.stringify( ret ) );
+                var dataItem;
+                var menuList=ret.general_classify;
+                for(var i=0;i<menuList.length;i++){
+                  dataItem={
+                    title:menuList[i].main_name,
+                    bg:"#fff",
+                    cid:menuList[i].cid
+                  };
+                  pd_itemList.push(dataItem);
+                  bd_itemList.push(dataItem);
+                }
+                getHome_group();
+
+                // alert(JSON.stringify(itemList));
+            } else {
+              $(".noWlan").show();
+                // alert( JSON.stringify( err ) );
+            }
+        });
+    };
+    function closeWin(){
+      api.closeWin({
+          name: 'realtimesales_win'
+      });
+    }
+
+    function fnNavigationBar(index,isOpen) {
+        if (isOpen) {
+            currentIndex = index;
+            if (typeof window[frameNames[index] + '_id'] == 'undefined') {
+                navigationBar.open({
+                    y: headerH,
+                    w: api.winWidth,
+                    h: 46,
+                    x:0,
+                    selectedLine:{
+                      color : '#FF2420', // 字符串；下划线的颜色
+                      width : 2,     // 数字；下划线的宽度
+                      marginLR : 0,  // 数字；相对于整个item左右边距
+                    },
+                    itemSize: {
+                        w: 60,
+                        h:38
+                    },
+                    items: window[frameNames[index]].item,
+                    font: window[frameNames[index]].font,
+                    selectedIndex: 0
+                }, function(ret, err) {
+                  // alert("--------"+JSON.stringify(ret));
+                    switch (ret.eventType) {
+                        case 'show':
+                            window[frameNames[currentIndex] + '_id'] = ret.id;
+                            break;
+                        case 'click':
+                            api.setFrameGroupIndex({
+                                name: frameNames[currentIndex],
+                                index: ret.index,
+                                scroll: true
+                            });
+                            break;
+                    }
+                });
+            } else {
+                navigationBar.show({
+                    id: window[frameNames[index] + '_id']
+                });
+            }
+        } else {
+            if (typeof window[frameNames[index] + '_id'] != 'undefined') {
+                navigationBar.hide({
+                    id: window[frameNames[index] + '_id']
+                });
+            }
+        }
+    };
+    function getHome_group(){
+        // alert("----"+JSON.stringify(itemList));
+        paodan = {
+            item:pd_itemList,
+            font: {
+                color: '#333',
+                colorSelected: '#FF2420',
+                size: 15,
+                sizeSelected: 15
+            }
+        },
+        baodan = {
+          item:bd_itemList,
+          font: {
+              color: '#333',
+              colorSelected: '#FF2420',
+              size: 15,
+              sizeSelected: 15
+          }
+        };
+      for (var i = 0; i < paodan.item.length; i++) {
+          if(i==0){
+            paodan_frames.push({
+                name: 'shishipaodan_frame0' ,
+                url: '../frame/shishipaodan_frame0.html',
+                vScrollBarEnabled: false,
+                bounces:true,
+                reload:true,
+                pageParam: {
+                    type: paodan.item[i].title,
+                    cid:paodan.item[i].cid,
+                    nav_id:1
+                }
+            });
+          }else{
+            // alert(home_group.item[i].cid);
+            paodan_frames.push({
+                name: 'shishipaodan_frames' + i,
+                url: '../frame/shishipaodan_frames.html',
+                vScrollBarEnabled: false,
+                bounces:true,
+                reload:true,
+                pageParam: {
+                    type: paodan.item[i].title,
+                    cid:paodan.item[i].cid,
+                    nav_id:1
+                }
+            });
+          }
+      };
+      for (var i = 0; i < baodan.item.length; i++) {
+          if(i==0){
+            baodan_frames.push({
+                name: 'baodan_frame0' + i,
+                url: '../frame/baodan_frame0.html',
+                vScrollBarEnabled: false,
+                reload:true,
+                pageParam: {
+                    type: baodan.item[i].title,
+                    cid: baodan.item[i].cid,
+                    nav_id:2
+                }
+            });
+          }else{
+            baodan_frames.push({
+                name: 'baodan_frames' + i,
+                url: '../frame/baodan_frames.html',
+                vScrollBarEnabled: false,
+                reload:true,
+                pageParam: {
+                  type: baodan.item[i].title,
+                  cid: baodan.item[i].cid,
+                  nav_id:2
+                }
+            });
+          }
+      };
+      fnChange(0);
+    }
+    var paodan_count=0;
+    var baodan_count=0;
+    function fnChange(index) {
+        var menus = $("#class_list li");
+        for (var i = 0; i < menus.length; i++) {
+            if (index == i) {
+                $api.addCls(menus[i], 'li_active');
+                if(i==0){
+                  paodan_count++;
+                }else{
+                  baodan_count++;
+                }
+                fnOpenFrameGroup(i, true);
+                fnNavigationBar(i, true);
+            } else {
+                if(i==0){
+                  paodan_count=0;
+                }else{
+                  baodan_count=0;
+                }
+                $api.removeCls(menus[i], 'li_active');
+                fnOpenFrameGroup(i, false);
+                fnNavigationBar(i, false);
+            }
+        }
+    };
+    function fnOpenFrameGroup(index, isOpen) {
+      if(paodan_count>1){
+          navigationBar.config({
+              id: window[frameNames[index] + '_id'],
+              key: 'selectedIndex',
+              value: 0,
+          },function(ret,err){
+              // alert("dayueone"+JSON.stringify(ret));
+          });
+          api.setFrameGroupIndex({
+              name: frameNames[index],
+              index: 0,
+              scroll: true
+          });
+        }else if(baodan_count>1){
+          navigationBar.config({
+              id: window[frameNames[index] + '_id'],
+              key: 'selectedIndex',
+              value: 0,
+          },function(ret,err){
+              // alert("dayueone"+JSON.stringify(ret));
+          });
+          api.setFrameGroupIndex({
+              name: frameNames[index],
+              index: 0,
+              scroll: true
+          });
+        }
+        if (isOpen) {
+            currentIndex = index;
+            api.openFrameGroup({
+                name: frameNames[index],
+                scrollEnabled: true,
+                rect: {
+                    x: 0,
+                    y: headerH+46,
+                    w: 'auto',
+                    h: api.winHeight - headerH-46
+                },
+                index: 0,
+                frames: window[frameNames[index] + '_frames']
+            }, function(ret, err) {
+                if(currentIndex==0){
+                  navigationBar.config({
+                      id: window[frameNames[currentIndex] + '_id'],
+                      key: 'selectedIndex',
+                      value: ret.index
+                  },function(ret,err){
+                      // alert(JSON.stringify(ret));
+
+                  });
+                }
+                if(currentIndex==1){
+                    navigationBar.config({
+                        id: window[frameNames[currentIndex] + '_id'],
+                        key: 'selectedIndex',
+                        value: ret.index
+                    });
+                }
+              if (currentIndex < 2) {
+                  navigationBar.config({
+                      id: window[frameNames[currentIndex] + '_id'],
+                      key: 'selectedIndex',
+                      value: ret.index
+                  });
+              }
+            });
+        } else {
+            api.setFrameGroupAttr({
+                name: frameNames[index],
+                hidden: true
+            });
+        }
+    };
+  </script>
+
+</html>

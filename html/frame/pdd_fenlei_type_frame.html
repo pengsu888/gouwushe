@@ -1,0 +1,849 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0" />
+    <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+    <title>拼多多分类商品列表页</title>
+    <link rel="stylesheet" type="text/css" href="../../css/api.css" />
+    <link rel="stylesheet" type="text/css" href="../../css/style.css" />
+    <link rel="stylesheet" type="text/css" href="../../css/swiper.min.css">
+    <style>
+        /* 返回顶部样式开始 */
+
+        .actGotop {
+            position: fixed;
+            _position: absolute;
+            bottom: 3rem;
+            right: 0.5rem;
+            width: 3.5rem;
+            height: 3.5rem;
+            display: none;
+            z-index: 999
+        }
+
+        .actGotop a,
+        .actGotop a:link {
+            width: 3.5rem;
+            height: 3.5rem;
+            display: inline-block;
+            background: url(../../image/ic_back_top.png) no-repeat;
+            background-size: 3.5rem 3.5rem;
+            outline: none;
+        }
+
+        .actGotop a:hover {
+            background: url(../../image/ic_back_top.png) no-repeat;
+            outline: none;
+            background-size: 3.5rem 3.5rem;
+        }
+        /* 返回顶部样式开始 */
+
+        html,
+        body {
+            background: #F5F5F5;
+            font-size: 14px;
+            margin: 0;
+            padding: 0;
+        }
+
+        .typeItem {
+            width: 100%;
+            height: auto;
+            padding-bottom: 20px;
+            background: #fff;
+        }
+
+        img {
+            background-size: 100% 100%;
+        }
+
+        .typeItem .swiper-container .swiper-slide #typeItem ul {
+            list-style: none;
+            height: 100%;
+            width: 100%;
+            /*overflow-y: scroll;
+        overflow: hidden;*/
+        }
+
+        #typeItem ul li {
+            float: left;
+            width: 25%;
+            height: 6.0rem;
+            position: relative;
+        }
+
+        #typeItem ul li.go_more {
+            background: #FEF4EA;
+            position: relative;
+        }
+
+        #typeItem ul li.go_more img {
+            width: 32px;
+            height: 39px;
+            position: absolute;
+            top: 65%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+        }
+
+        #typeItem ul li.go_more p {
+            position: absolute;
+            text-align: center;
+            width: 100%;
+            left: 0;
+            top: 25%;
+            font-size: 14px;
+            color: #FA5D05;
+        }
+
+        #typeItem ul li img {
+            width: 42px;
+            height: 42px;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+        }
+
+        #typeItem ul li p {
+            position: absolute;
+            text-align: center;
+            width: 100%;
+            left: 0;
+            bottom: 5%;
+            font-size: 12px;
+        }
+
+        .active {
+            color: #fd5f3e;
+        }
+        /*选项卡样式*/
+
+        .fixNav {
+            width: 100%;
+            height: 3rem;
+            padding: 0 0.24rem;
+            box-sizing: border-box;
+            background: #fff;
+        }
+
+        .fixNav ul {
+            width: 100%;
+            height: 3rem;
+        }
+
+        .fixNav ul li {
+            float: left;
+            width: 25%;
+            line-height: 3rem;
+            height: 3rem;
+            position: relative;
+        }
+
+        .fixNav .old {
+            display: block;
+            width: 100%;
+            height: 100%;
+            text-align: center;
+            font-size: 0.8rem;
+            color: #333;
+        }
+
+        .fixNav #test li .current {
+            color: #fd5f3e;
+        }
+
+        .upAttr {
+            position: absolute;
+            width: 0.4em;
+            height: 0.3rem;
+            top: 30%;
+            right: 24%;
+        }
+
+        .upAttr1 {
+            background: url(../../image/huaqian_iicon_uparrow_default.png) no-repeat;
+            background-size: 100% 100%;
+        }
+
+        .upAttr2 {
+            background: url(../../image/huaqian_icon_uparrow_selected.png) no-repeat;
+            background-size: 100% 100%;
+        }
+
+        .DownAttr {
+            position: absolute;
+            width: 0.4em;
+            height: 0.3rem;
+            top: 51%;
+            right: 24%;
+        }
+
+        .DownAttr1 {
+            background: url(../../image/huaqian_icon_downarrow_default.png) no-repeat;
+            background-size: 100% 100%;
+        }
+
+        .DownAttr2 {
+            background: url(../../image/huaqian_icon_downarrow_selected.png) no-repeat;
+            background-size: 100% 100%;
+        }
+
+        .fix_nav {
+            position: fixed;
+            left: 0;
+            top: 0;
+            z-index: 99999;
+        }
+
+        .swiper-container {
+            width: 100%;
+            height: auto;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .swiper-slide {
+            text-align: center;
+            font-size: 18px;
+            background: #fff;
+            height: 6.0rem;
+            position: relative;
+            /* Center slide text vertically */
+            display: -webkit-box;
+            display: -ms-flexbox;
+            display: -webkit-flex;
+            display: flex;
+            -webkit-box-pack: center;
+            -ms-flex-pack: center;
+            -webkit-justify-content: center;
+            justify-content: center;
+            -webkit-box-align: center;
+            -ms-flex-align: center;
+            -webkit-align-items: center;
+            align-items: center;
+        }
+
+        .swiper-slide img {
+            width: 42px;
+            height: 42px;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+        }
+
+        .swiper-slide p {
+            position: absolute;
+            text-align: center;
+            width: 100%;
+            left: 0;
+            bottom: 3%;
+            font-size: 12px;
+        }
+    </style>
+</head>
+
+<body>
+    <!-- 返回顶部按钮 -->
+    <div class="actGotop">
+        <a href="javascript:;" title="返回顶部"></a>
+    </div>
+    <!-- 商品部分开始 -->
+    <!-- <div class="typeItem"> -->
+    <!-- <ul id="typeItem"> -->
+    <!-- <li><img src="../image/home/me_btn_yaoqing.png"/><p>二级分类</p></li>
+      <li></li> -->
+    <div class="swiper-container">
+        <div class="swiper-wrapper" id="typeItem">
+            <!-- <div class="swiper-slide"><img src="../image/home/me_btn_yaoqing.png"/><p>二级分类</p></div>
+          <div class="swiper-slide"><img src="../image/home/me_btn_yaoqing.png"/><p>二级分类</p></div> -->
+        </div>
+        <!-- Add Pagination -->
+        <div class="swiper-pagination"></div>
+    </div>
+    <!-- </ul> -->
+    <!-- </div> -->
+    <!-- <div class="fixNav" id="navHeader">
+        <ul class="clearfix" id="test">
+            <li><a href="javascript:void(0)" class="old current common zonghe" tapmode onclick="dianji(0)">推荐</a></li>
+            <li><a href="javascript:void(0)" class="old common xiaoliang" tapmode onclick="dianji('6')">销量</a></li>
+            <li><a href="javascript:void(0)" class="old differ quane" tapmode onclick="dianji('14')">佣金</a></li>
+            <li><a href="javascript:void(0)" class="old differ jiage" tapmode onclick="dianji('14')">价格</a><span class="upAttr upAttr1"></span><span class="DownAttr DownAttr1"></span></li>
+        </ul>
+    </div> -->
+    <!-- 商品列表部分 begin-->
+    <div class="box" id="box">
+        <!-- <div class="yh_card" style="cursor:pointer;" tapmode >
+      <div class="yh_img_div">
+        <img src="http://img.alicdn.com/imgextra/i4/666412682/TB2WeWtdFmWBuNjSspdXXbugXXa_!!666412682.jpg_400x400" class="yh_card_img 1" />
+        <div class="yh_bottom">爆款商品</div>
+      </div>
+      <div style="background:#fff;padding:0.5rem;">
+          <div class="good_title"><img src="../../image/icon_pdd.png" alt="" class="tt">双飞人爽水喷雾学生提神醒脑驱赶蚊虫便携装喷雾清凉外出旅行60ml</div>
+          <div class="tm_price">
+            <div class="tm_left">天猫价 ￥12</div>
+            <div class="tm_right">月销 9</div>
+          </div>
+          <div class="qh_price">
+              <div class="qh_left"><span class="qh_left_quan">券后￥</span>&nbsp;5.8</div>
+              <div class="qh_right">3元券</div>
+          </div>
+      </div>
+  </div> -->
+    </div>
+    <div id="box_1">
+        <!-- <div class="d_card">
+    <div class="d_card_img">
+      <img src="http://img.alicdn.com/imgextra/i4/666412682/TB2WeWtdFmWBuNjSspdXXbugXXa_!!666412682.jpg_400x400" alt="">
+      <div class="d_bottom">爆款商品</div>
+    </div>
+    <div class="d_right">
+      <div class="right_card">
+          <div class="rightA">
+              <div class="right_top">
+                  <div class="top_title">抖音同款   红石榴防护喷雾  150ml</div>
+                  <div class="top_title_del">30天无理由退换货！</div>
+              </div>
+              <div class="right_bottom">
+                <div class="right_bottom_1">
+                  <div class="right_tm">天猫价  ￥58.8</div>
+                  <div class="right_yx">月销 5.6万</div>
+                </div>
+                <div class="right_bottom_2">
+                  <div class="right_qhj"><img src="../../image/ic_page_sc_gapprice.png" alt="">￥ 13.8</div>
+                  <div class="right_quan">45元券</div>
+                </div>
+              </div>
+          </div>
+      </div>
+    </div>
+  </div> -->
+    </div>
+    <!-- 商品列表部分 end-->
+    <div id="statu" style="font-size:0.8rem;color:#fd5f3e;background-color:#f5f5f5;height:30px;line-height:30px;text-align:center;clear:both;"><img src="../../image/loading.d997b79c.svg" alt="" style="width:1rem;height:1rem;vertical-align:middle;">加载中...</div>
+    <!-- 商品列表部分 end-->
+    <script type="text/javascript" src="../../script/api.js"></script>
+    <script type="text/javascript" src="../../script/jquery.js"></script>
+    <script type="text/javascript" src="../../script/api_common.js"></script>
+    <script type="text/javascript" src="../../script/md5.js"></script>
+    <script src="../../script/swiper.min.js"></script>
+    <script type="text/javascript">
+        $(document).ready(function() {
+            // 返回顶部
+            $(window).scroll(function() {
+                if ($(window).scrollTop() >= 500) {
+                    $('.actGotop').fadeIn("fast");
+                } else {
+                    $('.actGotop').fadeOut(300);
+                }
+            });
+            $('.actGotop').click(function() {
+                $('html,body').animate({
+                    scrollTop: '0px'
+                }, 300);
+            });
+        });
+        var sonName = [];
+        var pageNum = 1;
+        var isOver = false; //默认没有取完数据
+        var user_id;
+        var sort_type, selled_type; //点击筛选状态变化
+        var key_word = '';
+        var statu; //滑到底部状态
+        var preColumn; //用来控制轮播图显示几行
+        var k = 0,
+            s = 0,
+            selled_type, sx = 0;
+        var pdd_min_level_name, pdd_min_share_rebate, pdd_level_name, pdd_max_shop_rebate, pdd_min_shop_rebate, pdd_max_level_name;
+        var pdd_dis_level_id, pdd_shop_rebate, pdd_max_share_rebate, pdd_share_rebate, pdd_share_ratio, pdd_split_rate; //计算佣金比率
+        apiready = function() {
+            getEvent();
+            closePopframe();
+            if (!empty($api.getStorage("userInfo"))) {
+                user_id = $api.getStorage("userInfo").user_id;
+            } else {
+                user_id = '';
+            }
+            Pddjisuan(user_id);
+            statu = $api.byId('statu');
+            var obj = {
+                'class_id': api.pageParam.class_id,
+            };
+            api.addEventListener({
+                name: 'son_name'
+            }, function(ret, err) {
+                if (ret) {
+                    //  alert( JSON.stringify( ret ) );
+                    key_word = ret.value.key_word;
+                } else {
+                    //  alert( JSON.stringify( err ) );
+                }
+            });
+
+            // keyword=api.pageParam.keyword;
+            // alert(keyword);
+            // var objArr = sort_ASCII(obj);
+            // var timestamp = fntimestamp();
+            // var version = '2.0';
+            // var arr = apiSecret + timestamp + version + '';
+            // for (i in objArr) {
+            //     arr += objArr[i];
+            // }
+            // var sign = hex_md5(arr);
+            // api.ajax({
+            //     url: commonUrl + 'soukeAppTttService/service/user/getClassificationOne',
+            //     method: 'post',
+            //     headers: {
+            //         'Content-Type': 'application/json;charset=utf-8'
+            //     },
+            //     data: {
+            //         body: {
+            //             'apiKey': apiKey,
+            //             'timestamp': timestamp,
+            //             'sign': sign,
+            //             'class_id': api.pageParam.class_id
+            //         }
+            //     }
+            // }, function(ret, err) {
+            //     if (ret) {
+            //         console.log("二级分类2：" + JSON.stringify(ret));
+            //         var menuList = ret.general_classify.data;
+            //         getData(menuList);
+            //     } else {
+            //         // alert( JSON.stringify( err ) );
+            //     }
+            // });
+            //加载首页板块
+            loadFresh();
+            loadMyFa(true, key_word);
+            // 商品列表数据
+            // 监听事件apiReady滚动到底部，加载更多功能
+            api.addEventListener({
+                name: 'scrolltobottom',
+                extra: {
+                    threshold: 120 //设置距离底部多少距离时触发，默认值为0，数字类型
+                }
+            }, function(ret, err) {
+
+                loadMyFa(false, key_word);
+            });
+        };
+
+        function getData(menuList) {
+            var nextCont = '';
+            var dataItem;
+            for (var i = 0; i < menuList.length; i++) {
+                console.log(menuList[i].info);
+                if (empty(menuList[i].info)) {
+
+                } else {
+                    for (var n = 0; n < menuList[i].info.length; n++) {
+                        // nextCont+='<li class="son_name"><img src="'+menuList[cid].data[j].info[n].imgurl+'"/><p>'+menuList[cid].data[j].info[n].son_name+'</p></li>';
+                        dataItem = {
+                            imgurl: menuList[i].info[n].imgurl,
+                            son_name: menuList[i].info[n].son_name
+                        }
+                        sonName.push(dataItem);
+                        // alert("hhhhhhh");
+                    }
+                }
+            }
+            if (sonName.length < 5) {
+                preColumn = 1;
+            } else {
+                preColumn = 2
+            }
+            for (var m = 0; m < sonName.length; m++) {
+                nextCont += '<div class="swiper-slide" tapmode name=\'' + sonName[m].son_name + '\'><img src="' + sonName[m].imgurl + '"/><p>' + sonName[m].son_name + '</p></div>';
+            }
+            $api.byId('typeItem').innerHTML = nextCont;
+            var swiper = new Swiper('.swiper-container', {
+                slidesPerView: 5,
+                slidesPerColumn: preColumn,
+                spaceBetween: 10,
+                slidesPerGroup: 5, //控制一次滑多少
+                pagination: {
+                    el: '.swiper-pagination',
+                    clickable: true,
+                },
+            });
+            var son_name = $(".swiper-slide");
+            son_name.click(function() {
+                key_word = $(this).attr("name");
+                api.sendEvent({
+                    name: 'son_name',
+                    extra: {
+                        key_word: key_word,
+                    }
+                });
+
+                $(this).addClass("active").siblings().removeClass("active");
+                loadMyFa(true, key_word);
+            })
+        }
+
+        function loadFresh() {
+            RefreshLoad();
+        }
+        // 导航条定位
+        $(window).scroll(function() {
+                //获得当前已滚动上去的距离
+                var h = $(window).scrollTop();
+                var sliderH = $('.typeItem').height();
+                // var webshopH = $('.rmsp_tj').height();
+                var allH = sliderH;
+                if (h >= allH) {
+                    $(".fixNav").addClass('fix_nav');
+                } else {
+                    $(".fixNav").removeClass('fix_nav');
+                }
+            })
+            //商品信息
+        function loadMyFa(isPull, key_word) {
+
+            if (!isPull && isOver) {
+                return;
+            }
+            //判断如果是下拉刷新，
+            if (isPull) {
+                pageNum = 1;
+                isOver = false;
+            }
+            var size = 10;
+            var obj = {
+                'pdd_class_id': api.pageParam.class_id,
+                'size': size,
+                'page_no': pageNum
+            };
+            var objArr = sort_ASCII(obj);
+            var timestamp = fntimestamp();
+            var version = '2.0';
+            var arr = apiSecret + timestamp + version + '';
+            for (i in objArr) {
+                arr += objArr[i];
+            }
+            console.log("分类：" + arr);
+            var sign = hex_md5(arr);
+            // alert(sign);
+            api.ajax({
+                url: commonUrl + 'soukeAppTttService/service/pdd/findPddSingle',
+                method: 'post',
+                headers: {
+                    'Content-Type': 'application/json;charset=utf-8'
+                },
+                data: {
+                    body: {
+                        'apiKey': apiKey,
+                        'timestamp': timestamp,
+                        'sign': sign,
+                        'pdd_class_id': api.pageParam.class_id,
+                        'size': size,
+                        'page_no': pageNum
+                    }
+                }
+            }, function(ret, err) {
+                if (ret) {
+                    if (ret.result_code == 200) {
+                        api.hideProgress();
+                        $(".noWlan").hide();
+                        console.log("商品信息：" + JSON.stringify(ret));
+                        var data = ret.result_data.goods_search_response.goods_list;
+                        // var size = ret.result_data.goods_search_response.total_count;
+                        if (data != "") {
+                            // $api.css(statu, 'display:block;');
+                            pageNum++;
+                        } else {
+                            statu.innerHTML = "暂无数据";
+                        }
+                        if (data.length < size && data != "") {
+                            statu.innerHTML = "已经到底啦 ~ 别扯了";
+                            isOver = true;
+                        }
+                        // console.log("+++++++++++++++++++++++++++："+JSON.stringify(data));
+                        getTwoData(data, isPull);
+                        // getOneData(data, isPull);
+                    } else {
+                        // alert(JSON.stringify(ret));
+                        api.toast({
+                            msg: ret.result_message,
+                            duration: 2000,
+                            location: 'middle'
+                        });
+
+                    }
+                } else {
+                    // api.alert({ msg: JSON.stringify(err) });
+                }
+            });
+        }
+        //一排2个商品
+        function getTwoData(data, isPull) {
+            var html = '';
+            for (var i = 0; i < data.length; i++) {
+                var real_price = data[i].min_group_price - data[i].coupon_discount;
+                var tk_fee = real_price * data[i].promotion_rate / 100000;
+                var tkfee = "0.00";
+                if (user_id == "") {
+                    tkfee = (tk_fee * pdd_share_ratio * pdd_min_share_rebate) / 10000;
+                } else {
+                    tkfee = (tk_fee * pdd_share_ratio * pdd_share_rebate) / 10000;
+                }
+                html += '<div class="yh_card" style="cursor:pointer;"  tapmode onclick="openGoodDel(' + data[i].goods_id + ');">';
+                html += '<div class="yh_img_div">';
+                html += '<img src="' + data[i].goods_thumbnail_url + '" class="yh_card_img 1" />';
+                if (tkfee != 0 && !isNaN(tkfee)) {
+                    html += '<div class="yh_bottom">预估佣金' + tkfee.toFixed(2) + '</div>';
+                }
+                html += '</div>';
+                html += '<div style="background:#fff;padding:0.5rem;">';
+                html += '<div class="good_title"><img src="../../image/icon_pdd.png" alt="" class="tt">' + data[i].goods_name + '</div>';
+                html += '<div class="tm_price">';
+                html += '<div class="tm_left">多多价 ￥' + data[i].min_group_price / 100 + '</div>';
+                html += '<div class="tm_right">月销：' + data[i].sales_tip + '</div>';
+                html += '</div>';
+
+
+                html += '<div class="qh_price">';
+                html += '<div class="qh_left"><span class="qh_left_quan">券后￥</span>&nbsp;' + real_price / 100 + '</div>';
+                html += '<div class="qh_right">' + data[i].coupon_discount / 100 + '元券</div>';
+                html += '</div>';
+                html += '</div>';
+                html += '</div>';
+            }
+            if (isPull) {
+                $api.byId('box').innerHTML = html;
+            } else {
+                $api.byId('box').innerHTML += html;
+            }
+        }
+
+        //一排一个商品
+        function getOneData(data, isPull) {
+            var cont_1 = '';
+            for (var i = 0; i < data.length; i++) {
+                var real_price = data[i].min_group_price - data[i].coupon_discount;
+                var tk_fee = real_price * data[i].promotion_rate / 100000;
+                var tkfee = "0.00";
+                // alert(pdd_share_ratio);
+                // alert(pdd_min_share_rebate);
+                if (user_id == "") {
+                    tkfee = (tk_fee * pdd_share_ratio * pdd_min_share_rebate) / 10000;
+                } else {
+                    tkfee = (tk_fee * pdd_share_ratio * pdd_share_rebate) / 10000;
+                }
+                cont_1 += '<div class="box_1" tapmode  onclick="openGoodDel(' + data[i].goods_id + ');">';
+                cont_1 += '<div class="d_card">';
+                cont_1 += '<div class="d_card_img">';
+                cont_1 += '<img src="' + data[i].goods_thumbnail_url + '" alt="">';
+                // alert(tkfee);
+                if (tkfee != 0 && !isNaN(tkfee)) {
+                    cont_1 += '<div class="d_bottom">预估佣金' + tkfee.toFixed(2) + '</div>';
+                }
+                cont_1 += '</div>';
+                cont_1 += '<div class="d_right">';
+                cont_1 += '<div class="right_card">';
+                cont_1 += '<div class="rightA">';
+                cont_1 += '<div class="right_top">';
+                cont_1 += '<div class="top_title">' + data[i].goods_name + '</div>';
+                // cont_1+='<div class="top_title_del">'+data[i].short_title+'</div>';
+                cont_1 += '</div>';
+                cont_1 += '<div class="right_bottom">';
+                cont_1 += '<div class="right_bottom_1">';
+                cont_1 += '<div class="right_tm">多多价  ￥' + data[i].min_group_price / 100 + '</div>';
+                cont_1 += '<div class="right_yx">月销：' + data[i].sales_tip + '</div>';
+                cont_1 += '</div>';
+                cont_1 += '<div class="right_bottom_2">';
+                cont_1 += '<div class="right_qhj"><img src="../../image/ic_page_sc_gapprice.png" alt="">￥ ' + real_price / 100 + '</div>';
+                cont_1 += '<div class="right_quan">' + data[i].coupon_discount / 100 + '元券</div>';
+                cont_1 += '</div>';
+                cont_1 += '</div>';
+                cont_1 += '</div>';
+                cont_1 += '</div>';
+                cont_1 += '</div>';
+                cont_1 += '</div>';
+                cont_1 += '</div>';
+            }
+            if (isPull) {
+                $api.byId('box_1').innerHTML = cont_1;
+            } else {
+                $api.byId('box_1').innerHTML += cont_1;
+            }
+        }
+
+        var h = $(window).scrollTop();
+        var sliderH = $('.typeItem').height();
+        // var webshopH = $('.rmsp_tj').height();
+        var allH = sliderH;
+        //点击综合、销量、价格等菜单
+        var n = 0,
+            m = 0;
+
+        function dianji(tname) {
+            $api.setStorage('tname', tname);
+            if (empty($(".active").attr("name"))) {
+                key_word = '';
+            } else {
+                key_word = $(".active").attr("name");
+            }
+            sx = 1;
+            if (tname == 0) {
+                $('.zonghe').addClass('current').parent().siblings().children().removeClass('current').siblings().removeClass('DownAttr2').removeClass('upAttr2 sx_icon2');
+            } else if (tname == "volume") {
+                $('.xiaoliang').addClass('current').parent().siblings().children().removeClass('current').siblings().removeClass('DownAttr2').removeClass('upAttr2 sx_icon2');
+                sort_type = 'DESC';
+            } else if (tname == "real_price") {
+                n++;
+                if (n % 2 == 0) {
+                    $('.jiage').addClass('current').parent().siblings().children().removeClass('current').siblings().removeClass('DownAttr2').removeClass('upAttr2 sx_icon2');
+                    $('.jiage').siblings('span').eq(1).addClass('DownAttr2').parent().siblings().children().siblings().removeClass('DownAttr2');
+                    $('.jiage').siblings('span').eq(0).removeClass('upAttr2');
+                    sort_type = 'DESC';
+                } else {
+                    $('.jiage').addClass('current').parent().siblings().children().removeClass('current').siblings().removeClass('DownAttr2').removeClass('upAttr2 sx_icon2');
+                    $('.jiage').siblings('span').eq(0).addClass('upAttr2').parent().siblings().children().siblings().removeClass('upAttr2');
+                    $('.jiage').siblings('span').eq(1).removeClass('DownAttr2');
+                    sort_type = 'ASC';
+                }
+            } else if (tname == "item_start_time") {
+                $('.quane').addClass('current').parent().siblings().children().removeClass('current').siblings().removeClass('DownAttr2').removeClass('upAttr2 sx_icon2');
+                sort_type = 'DESC';
+                // m++;
+                // if (m % 2 == 0) {
+                //     $('.quane').addClass('current').parent().siblings().children().removeClass('current').siblings().removeClass('DownAttr2').removeClass('upAttr2 sx_icon2');
+                //
+                //     sort_type = 'ASC';
+                //
+                // } else {
+                //     $('.quane').addClass('current').parent().siblings().children().removeClass('current').siblings().removeClass('DownAttr2').removeClass('upAttr2 sx_icon2');
+                //
+                //     sort_type = 'DESC';
+                //
+                // }
+            }
+            $api.setStorage('sort_type', sort_type);
+
+            if (tname == 0) {
+                var pageNum = 1;
+                loadMyFa(true, key_word);
+                // 监听事件apiReady滚动到底部，加载更多功能
+                api.addEventListener({
+                    name: 'scrolltobottom',
+                    extra: {
+                        threshold: 120 //设置距离底部多少距离时触发，默认值为0，数字类型
+                    }
+                }, function(ret, err) {
+
+                    loadMyFa(false, key_word);
+                });
+            } else {
+                afterDianji(true, tname);
+                api.addEventListener({
+                    name: 'scrolltobottom',
+                    extra: {
+                        threshold: 120 //设置距离底部多少距离时触发，默认值为0，数字类型
+                    }
+                }, function(ret, err) {
+                    afterDianji(false, tname);
+                });
+            }
+            // 监听事件apiReady滚动到底部，加载更多功能
+            $("body,html").animate({
+                scrollTop: allH + 10
+            }, 10);
+        }
+
+        function afterDianji(isPull, tname) {
+
+            //如果不是下拉刷新同时数据取完了
+            if (!isPull && isOver) {
+                return;
+            }
+            //判断如果是下拉刷刷，
+            if (isPull) {
+                pageNum = 1;
+                isOver = false;
+            }
+            var size = 10;
+            var obj = {
+                'pdd_class_id': api.pageParam.class_id,
+                'size': size,
+                'page_no': pageNum
+            };
+            var objArr = sort_ASCII(obj);
+            var timestamp = fntimestamp();
+            var version = '2.0';
+            var arr = apiSecret + timestamp + version + '';
+            for (i in objArr) {
+                arr += objArr[i];
+            }
+            console.log("分类：" + arr);
+            var sign = hex_md5(arr);
+            // alert(sign);
+            api.ajax({
+                url: commonUrl + 'soukeAppTttService/service/pdd/findPddSingle',
+                method: 'post',
+                headers: {
+                    'Content-Type': 'application/json;charset=utf-8'
+                },
+                data: {
+                    body: {
+                        'apiKey': apiKey,
+                        'timestamp': timestamp,
+                        'sign': sign,
+                        'pdd_class_id': api.pageParam.class_id,
+                        'sort_type': sort_type,
+                        'size': size,
+                        'page_no': pageNum
+                    }
+                }
+            }, function(ret, err) {
+                if (ret) {
+                    if (ret.result_code == 200) {
+                        api.hideProgress();
+                        $(".noWlan").hide();
+                        console.log("商品信息：" + JSON.stringify(ret));
+                        var data = ret.result_data.goods_search_response.goods_list;
+                        // var size = ret.result_data.goods_search_response.total_count;
+                        if (data != "") {
+                            // $api.css(statu, 'display:block;');
+                            pageNum++;
+                        } else {
+                            statu.innerHTML = "暂无数据";
+                        }
+                        if (data.length < size && data != "") {
+                            statu.innerHTML = "已经到底啦 ~ 别扯了";
+                            isOver = true;
+                        }
+                        // console.log("+++++++++++++++++++++++++++："+JSON.stringify(data));
+                        // getTwoData(data, isPull);
+                        getOneData(data, isPull);
+                    } else {
+                        // alert(JSON.stringify(ret));
+                        api.toast({
+                            msg: ret.result_message,
+                            duration: 2000,
+                            location: 'middle'
+                        });
+
+                    }
+                } else {
+                    // api.alert({ msg: JSON.stringify(err) });
+                }
+            });
+        }
+
+        function openGoodDel(goods_id) {
+            api.openWin({
+                name: 'pdd_good_detail',
+                url: 'widget://html/goods/pdd_good_detail.html',
+                pageParam: {
+                    goods_id: goods_id
+                }
+            });
+        }
+    </script>
+
+</html>

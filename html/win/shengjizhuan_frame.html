@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0" />
+  <title>升级赚</title>
+  <link rel="stylesheet" type="text/css" href="../../css/api.css" />
+  <link rel="stylesheet" type="text/css" href="../../css/style.css" />
+</head>
+<style media="screen">
+</style>
+<body>
+
+</body>
+  <script type="text/javascript" src="../../script/api.js"></script>
+  <script type="text/javascript" src="../../script/jquery.js"></script>
+  <script type="text/javascript" src="../../script/api_common.js"></script>
+  <script type="text/javascript">
+  var user_id;
+    apiready = function() {
+          if (!empty($api.getStorage("userInfo"))) {
+              user_id = $api.getStorage("userInfo").user_id;
+            } else {
+              user_id="";
+              checkUserLogin();
+            }
+      window.location.href= commonUrl + 'h5/vip/vip.html?user_id='+user_id;
+    };
+  </script>
+
+</html>

@@ -1,0 +1,183 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0" />
+    <meta name="format-detection" content="telephone=no, email=no, date=no, address=no">
+    <title>Hello APP</title>
+    <link rel="stylesheet" type="text/css" href="../../css/api.css" />
+    <link rel="stylesheet" href="../../css/swiper.min.css">
+    <style>
+    html,body{
+      background-color: #f4f4f4;
+      height: 100%;
+      width: 100%;
+      position: relative;
+    }
+    .registItem{
+      position: absolute;
+      width: 100%;
+      height: calc(100% - 10px);
+      background: #fff;
+      top: 10px;
+      left: 0;
+    }
+    .regist_input{
+      width: calc(100% - 12px);
+      margin-left: 12px;
+      height: 55px;
+      border-bottom: solid 1px #ddd;
+    }
+    .regist_input input{
+      width: calc(100% - 39px);
+      height: 55px;
+      line-height: 55px;
+      outline: none;
+    }
+    .regist_input .clear_phone{
+      width: 17px;
+      height: 17px;
+      background-size: 100% 100%;
+      margin-top: 5px;
+    }
+    .tip{
+      width: calc(100% - 24px);
+      color: #888;
+      margin: 15px auto;
+    }
+    .editBtn{
+      margin-top: 60px;
+    }
+    </style>
+</head>
+<body>
+    <div class="registItem">
+      <div class="regist_input">
+        <input type="text" id="nickname" value="138****9876"/>
+        <img src="../../image/ic_title_bar_edit_clear.png" alt="" class="clear_phone">
+      </div>
+      <p class="tip">注意：昵称最多可输入12个字符哦~</p>
+      <div class="editBtn submitBtn submitColor" onclick="editNickname();">提交</div>
+    </div>
+</body>
+<script type="text/javascript" src="../../script/api.js"></script>
+<script type="text/javascript" src="../../script/jquery.js"></script>
+<script type="text/javascript" src="../../script/api_common.js"></script>
+<script type="text/javascript" src="../../script/md5.js"></script>
+<script type="text/javascript">
+var user_id,user_token;
+apiready=function (){
+  if(!empty($api.getStorage("userInfo"))){
+    user_id=$api.getStorage("userInfo").user_id;
+    user_token=$api.getStorage("userInfo").user_token;
+    $api.byId('nickname').value=api.pageParam.nickname;
+  }else{
+    api.openWin({
+        name: 'user_login',
+        url: '../login/user_login.html',
+        pageParam: {
+            name: 'test'
+        }
+    });
+
+  }
+}
+$(function(){
+  $("#nickname").bind('input porpertychange',function(){
+    if($("#nickname").val().length>0){
+      $(".clear_phone").show();
+    }else{
+      $(".clear_phone").hide();
+    }
+  });
+  $(".clear_phone").click(function(){
+    $(".clear_phone").hide();
+    $api.byId('nickname').value = '';
+  });
+});
+function editNickname(){
+  if($("#nickname").val().length>12){
+    api.toast({
+        msg: '昵称不能超过12个字符',
+        duration: 2000,
+        location: 'middle'
+    });
+
+  }else{
+    if($("#nickname").val()==""){
+      api.toast({
+          msg: '昵称不能为空',
+          duration: 2000,
+          location: 'middle'
+      });
+
+    }else{
+      var obj={
+        'user_id':user_id,
+        'user_nick':encodeURIComponent($api.byId("nickname").value),
+        'token_text':user_token
+      };
+      var objArr=sort_ASCII(obj);
+      var timestamp=fntimestamp();
+      var version='2.0';
+      var arr=apiSecret+timestamp+version+'';
+      for(i in objArr){
+        arr+=objArr[i];
+      }
+      var sign=hex_md5(arr);
+      api.ajax({
+          url: commonUrl+'soukeAppTttService/service/user/updatenick_ac',
+          method: 'post',
+          headers: {
+              'Content-Type': 'application/json;charset=utf-8'
+          },
+          data: {
+              body: {
+                  'apiKey':apiKey,
+                  'timestamp':timestamp,
+                  'sign':sign,
+                  'user_id':user_id,
+                  'user_nick':$api.byId("nickname").value,
+                  'token_text':user_token
+              }
+          }
+        }, function(ret, err) {
+          if (ret) {
+              if(ret.result_code==200){
+                // console.log("修改用户信息"+JSON.stringify(ret));
+                api.execScript({
+                    name: 'mine_info_win',
+                    frameName: 'mine_info_frame',
+                    script: 'location.reload();'
+                });
+                api.sendEvent({
+                    name: 'edit_nick',
+                    extra: {
+                        edit_nick: true,
+                    }
+                });
+
+                api.execScript({
+                    name: 'edit_nickname_win',
+                    script: 'closeWin();'
+                });
+
+              }else{
+                  api.toast({
+                      msg: ret.result_message,
+                      duration: 2000,
+                      location: 'middle'
+                  });
+
+              }
+          } else {
+              // api.alert({ msg: JSON.stringify(err) });
+          }
+        });
+    }
+  }
+
+}
+</script>
+
+</html>

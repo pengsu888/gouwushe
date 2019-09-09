@@ -1,0 +1,564 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0" />
+  <title>首页收藏</title>
+  <link rel="stylesheet" type="text/css" href="../../css/api.css" />
+  <style>
+    html,body{
+      background-color: #f4f4f4;
+      height: 100%;
+      width: 100%;
+      overflow-x: hidden;
+      overflow-y: auto;
+    }
+    .tz_time{
+      width: 100%;
+      height: 3rem;
+      line-height: 4.0rem;
+      text-align: center;
+      color: #666;
+      font-size: 0.8rem;
+    }
+    .tz_time img{
+      height: 0.4rem;
+      width: 3.7rem;
+      background-size: 100% 100%;
+      margin:auto 1rem;
+    }
+    .wrap{
+      height: calc(100% - 88px);
+      width: 100%;
+      margin-top: 88px;
+    }
+    .no_collect{
+      height: 20rem;
+      width: 100%;
+      /*background: #fff;*/
+      position: relative;
+      display: none;
+    }
+    .no_collect img{
+      width: 200px;
+      height: 104px;
+      background-size: 100% 100%;
+      position: absolute;
+      top:30%;
+      left: 50%;
+      margin-left: -100px;
+    }
+    .no_collect p{
+      width: 100%;
+      height: 2rem;
+      text-align: center;
+      position: absolute;
+      top:70%;
+      left: 0;
+      color:#ccc;
+    }
+    .you_like{
+      width: 100%;
+      height: 3rem;
+      line-height: 3rem;
+      text-align: center;
+      color: #FF442A;
+      font-size: 0.8rem;
+    }
+    .you_like img{
+      height: 0.4rem;
+      width: 3.7rem;
+      background-size: 100% 100%;
+      margin:auto 1rem;
+    }
+    /*商品列表css*/
+    .box{
+      display: flex;
+      flex-direction: row;
+      background: rgb(243, 242, 242);
+      flex-wrap: wrap;
+      justify-content:space-between;
+      align-content: flex-start;
+    }
+    .yh_card{
+      display: inline-block;
+      background: #fff;
+      width:49.5%;
+      height:auto;
+      margin-bottom: 0.3rem;
+    }
+    .yh_img_div{
+      width: 100%;
+      min-height: 8rem;
+      max-height: 11rem;
+      position:relative;
+    }
+    .yh_card_img{
+      width:100%;
+      min-height: 8rem;
+      max-height: 11rem;
+      /*height: 100%;*/
+      background:#ccc;
+      background-size: 100% 100%;
+      /*opacity: 0;*/
+    }
+    .yh_bottom{
+      position: absolute;
+      width:100%;
+      background: linear-gradient(to right, rgba(253,114,57,1), rgb(249, 69, 41));
+      text-align: center;
+      height: 20px;
+      line-height: 20px;
+      font-size: 12px;
+      color:#fff;
+      bottom:0;
+      left: 0;
+      border-radius: 5px 5px 0px 0px;
+    }
+    .good_title{
+      overflow : hidden;
+      text-overflow: ellipsis;
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical;
+      word-break: break-all;
+      height: 2.0rem;
+      text-indent:0.5rem;
+      margin-bottom:.2rem;
+      color:#333;
+      font-size:0.7rem;
+    }
+    .tm_tip{
+      background: #ff5000;
+      padding:0.15rem 0.2rem;
+      color:#fff;
+      font-size: 0.4rem;
+      border-radius: 0.2rem;
+      position:relative;
+      top:-0.15rem;
+    }
+    .tm_price{
+      font-size:.5rem;
+      position: relative;
+      color:grey;
+      /*padding-top:0.3rem;*/
+      height: 25px;
+      line-height: 20px;
+    }
+    .qh_price{
+      position: relative;
+      height: 25px;
+      line-height: 25px;
+    }
+    .qh_price div{
+      float: left;
+    }
+    .tm_right{
+      position:absolute;
+      right:0;
+      top:0.3rem;
+      color:grey;
+    }
+    .tm_left{
+      position:absolute;
+      left:0;
+      top:0.3rem;
+      color:grey;
+    }
+    .qh_qh{
+      font-size: 0.7rem;
+      font-weight: 500;
+    }
+    .qh_left{
+      color:#fe2321;
+      font-size:1.0rem;
+      font-weight: 400;
+      overflow: hidden;
+      text-overflow:ellipsis;
+      white-space: nowrap;
+      max-width:6.5rem;
+    }
+    .qh_left .qh_left_quan{
+      font-size: 0.6rem;
+    }
+    .qh_middle{
+      color:#ccc;
+      font-size:0.6rem;
+      text-decoration: line-through;
+      margin-left: 5px;
+      margin-top:2px;
+    }
+    .qh_right{
+      position: absolute;
+      right:0;
+      top:5px;
+      color:#fff;
+      font-size: 0.6rem;
+      width:54px;
+      height: 19px;
+      line-height: 19px;
+      text-align: center;
+      background: url('../../image/page_coupon_dc_vh.png') center center no-repeat;
+      background-size: 100% 100%;
+    }
+    .tt{
+       width: 26px;
+       height:14px;
+       vertical-align: middle;
+       margin-right: 10px;
+       margin-left: -5px;
+    }
+    .box_title{
+      width:100%;
+      height: 2.0rem;
+      line-height: 2.0rem;
+      background: #ccc;
+      text-align: center;
+      margin-top: 0.5rem;
+    }
+    /*收藏列表css*/
+    .has_collect{
+      width: 100%;
+      height: auto;
+      background: #fff;
+    }
+    .has_collect .collect_list{
+      height: 8rem;
+      width: 100%;
+      border-bottom:solid 1px #f6f6f6;
+
+    }
+    .has_collect .collect_list ul{
+      padding: 1rem;
+      margin: 0;
+      list-style: none;
+      overflow: hidden;
+    }
+    .has_collect .collect_list ul li{
+      float: left;
+      position: relative;
+    }
+    .has_collect .collect_list ul li:nth-child(1){
+      width:6rem;
+      height: 6rem;
+    }
+    .has_collect .collect_list ul li:nth-child(2){
+      width: calc(100% - 7rem);
+      height: 6rem;
+      margin-left: 1rem;
+      position: relative;
+    }
+    img{
+      height: 100%;
+      width: 100%;
+      background-size: 100% 100%;
+
+    }
+    .has_collect .collect_list ul li:nth-child(2) .col_title{
+      width: 100%;
+      height: 1.5rem;
+      overflow : hidden;
+      text-overflow: ellipsis;
+      display: -webkit-box;
+      -webkit-line-clamp: 1;
+      -webkit-box-orient: vertical;
+      word-break: break-all;
+      position: absolute;
+      top:0;
+      left: 0;
+      line-height: 1.5rem;
+      font-size:0.8rem;
+    }
+    .has_collect .collect_list ul li:nth-child(2) .col_outdate{
+      width: 100%;
+      height: 1.5rem;
+      line-height: 1.5rem;
+      color:#fd5e3f;
+      position: absolute;
+      top:1.5rem;
+      left: 0;
+      font-size: 0.8rem;
+    }
+    .has_collect .collect_list ul li .zj_ygq{
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      top: 0;
+      left: 0;
+      z-index: 999;
+      background: rgba(0, 0, 0, 0.3);
+      color:#fff;
+      line-height: 6rem;
+      text-align: center;
+    }
+    .has_collect .collect_list ul li:nth-child(2) .col_price_quan{
+      width: 100%;
+      height: 2rem;
+      position: absolute;
+      bottom:0;
+      left: 0;
+    }
+    .has_collect .collect_list ul li:nth-child(2) .col_price_quan .col_price{
+      width:auto;
+      position: absolute;
+      left: 0;
+      bottom: 0;
+      color: #FF442A;
+    }
+    .has_collect .collect_list ul li:nth-child(2) .col_price_quan .col_price span{
+      color:#ccc;
+      font-size:0.8rem;
+      text-decoration: line-through;
+      margin-left: 5px;
+      margin-top:2px;
+    }
+    .has_collect .collect_list ul li:nth-child(2) .col_price_quan .col_quan{
+      position: absolute;
+      right:0;
+      bottom:0;
+      color:#fff;
+      font-size: 0.6rem;
+      width:54px;
+      height: 19px;
+      line-height: 19px;
+      text-align: center;
+      background: url('../../image/page_coupon_dc_vh.png') center center no-repeat;
+      background-size: 100% 100%;
+    }
+    .has_collect .collect_list ul li .edit_list{
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      top: 0;
+      left: 0;
+      z-index: 999;
+      background: rgba(0, 0, 0, 0.3);
+      color:#fff;
+      line-height: 6rem;
+      text-align: center;
+      display: none;
+    }
+    .has_collect .collect_list ul li .edit_list img{
+      width: 32px;
+      height: 32px;
+      background-size: 100% 100%;
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      margin-left: -16px;
+      margin-top: -16px;
+      z-index: 99999;
+    }
+    header{
+      height: 88px;
+      width: 100%;
+      position: fixed;
+      top:0;
+      left: 0;
+      z-index: 9999;
+    }
+    .header {
+        height: 88px;
+        width: 100%;
+        overflow: hidden;
+        color:#fff;
+        text-align: center;
+        line-height: 108px;
+    }
+  </style>
+</head>
+
+<body>
+  <header id="header">
+    <div class="header submitColor">
+      收藏
+    </div>
+  </header>
+  <!--没有收藏任何内容 -->
+  <div class="wrap">
+    <div class="no_collect">
+        <img src="../../image/ic_page_ali_fav_login_tip.png" alt="">
+        <p>你还没有收藏任何内容</p>
+    </div>
+    <!--有收藏列表 -->
+    <div class="has_collect" id="list">
+      <!-- <div class="collect_list">
+        <ul>
+          <li><img src="../../image/zhanwei.jpg" alt=""></li>
+          <li>
+            <div class="col_title">小心机一字肩上衣高腰连体裤外套</div>
+            <div class="col_outdate">2018.08.31到期</div>
+            <div class="col_price_quan">
+              <div class="col_price">￥148 <span>￥168</span></div>
+              <div class="col_quan">20元券</div>
+            </div>
+          </li>
+        </ul>
+      </div>
+      <div class="collect_list">
+        <ul>
+          <li><img src="../../image/zhanwei.jpg" alt=""></li>
+          <li>
+            <div class="col_title">小心机一字肩上衣高腰连体裤外套</div>
+            <div class="col_outdate">已过期</div>
+            <div class="col_price_quan">
+              <div class="col_price">￥148 <span>￥168</span></div>
+              <div class="col_quan">20元券</div>
+            </div>
+          </li>
+        </ul>
+      </div> -->
+    </div>
+    <!-- 商品列表-->
+    <!-- <div class="you_like"><img src="../../image/page_search_keyword_tag_vh_left.png" alt="">猜你喜欢<img src="../../image/page_search_keyword_tag_vh_right.png" alt=""></div>
+    <div class="box">
+      <div class="yh_card" style="cursor:pointer;" tapmode onclick="openGoodDel();">
+        <div class="yh_img_div">
+          <img src="http://img.alicdn.com/imgextra/i4/666412682/TB2WeWtdFmWBuNjSspdXXbugXXa_!!666412682.jpg_400x400" class="yh_card_img 1" />
+          <div class="yh_bottom">预估佣金：18.59</div>
+        </div>
+        <div style="background:#fff;padding:0.5rem;">
+            <div class="good_title"><img src="../../image/sharepage_tianmao.png" alt="" class="tt">双飞人爽水喷雾学生提神醒脑驱赶蚊虫便携装喷雾清凉外出旅行60ml</div>
+            <div class="tm_price">
+              <div class="tm_left">天猫价 ￥12</div>
+              <div class="tm_right">月销 9</div>
+            </div>
+            <div class="qh_price">
+                <div class="qh_left"><span class="qh_left_quan">券后￥</span>&nbsp;5.8</div>
+                <div class="qh_right">3元券</div>
+            </div>
+        </div>
+      </div>
+      <div class="yh_card" style="cursor:pointer;" tapmode >
+        <div class="yh_img_div">
+          <img src="http://img.alicdn.com/imgextra/i4/666412682/TB2WeWtdFmWBuNjSspdXXbugXXa_!!666412682.jpg_400x400" class="yh_card_img 1" />
+          <div class="yh_bottom">预估佣金：18.59</div>
+        </div>
+        <div style="background:#fff;padding:0.5rem;">
+            <div class="good_title"><img src="../../image/sharepage_tianmao.png" alt="" class="tt">双飞人爽水喷雾学生提神醒脑驱赶蚊虫便携装喷雾清凉外出旅行60ml</div>
+            <div class="tm_price">
+              <div class="tm_left">天猫价 ￥12</div>
+              <div class="tm_right">月销 9</div>
+            </div>
+            <div class="qh_price">
+                <div class="qh_left"><span class="qh_left_quan">券后￥</span>&nbsp;5.8</div>
+                <div class="qh_right">3元券</div>
+            </div>
+        </div>
+      </div>
+    </div>
+  </div> -->
+
+</body>
+  <script type="text/javascript" src="../../script/api.js"></script>
+  <script type="text/javascript" src="../../script/jquery.js"></script>
+  <script type="text/javascript" src="../../script/api_common.js"></script>
+  <script type="text/javascript" src="../../script/md5.js"></script>
+  <script type="text/javascript">
+    var share_rebate1,share_rebate2; //计算佣金比率
+    apiready = function() {
+      if(!empty($api.getStorage("userInfo"))){
+        user_id=$api.getStorage("userInfo").user_id;
+        jisuan(-1,user_id);
+        loadMyFa();
+      }else{
+        $(".no_collect").show();
+        api.openWin({
+            name: 'user_login',
+            url: '../login/user_login.html',
+            pageParam: {
+                name: 'test'
+            }
+        });
+      }
+    };
+    function loadMyFa(){
+      var obj={
+        'user_id':user_id,
+        // 'page':1
+      };
+      var objArr=sort_ASCII(obj);
+      var timestamp=fntimestamp();
+      var version='2.0';
+      var arr=apiSecret+timestamp+version+'';
+      for(i in objArr){
+        arr+=objArr[i];
+      }
+      var sign=hex_md5(arr);
+      // alert(sign);
+      api.ajax({
+          url: commonUrl+'soukeAppTttService/service/user/findcollecthistory_ac',
+          method: 'post',
+          headers: {
+              'Content-Type': 'application/json;charset=utf-8'
+          },
+          data: {
+              body: {
+                  'apiKey':apiKey,
+                  'timestamp':timestamp,
+                  'sign':sign,
+                  'user_id':user_id,
+                  // 'page':1
+              }
+          }
+        }, function(ret, err) {
+          if (ret) {
+              if(ret.result_code==200){
+                $(".noWlan").hide();
+                // console.log("收藏列表："+JSON.stringify(ret));
+                var data=ret.result_data;
+                if(data==""){
+                  $(".no_collect").show();
+                }else{
+                  $(".no_collect").hide();
+                }
+                fnShowData(data);
+              }else{
+
+                  api.toast({
+                      msg: ret.result_message,
+                      duration: 2000,
+                      location: 'middle'
+                  });
+
+              }
+          } else {
+            $(".noWlan").show();
+              // api.alert({ msg: JSON.stringify(err) });
+          }
+        });
+    }
+    function fnShowData(data){
+      var html='';
+      for(var i=0;i<data.length;i++){
+        html+='<div class="tz_time"><img src="../../image/page_search_keyword_tag_vh_left.png" alt="">'+data[i].date+'<img src="../../image/page_search_keyword_tag_vh_right.png" alt=""></div>';
+        for(var j=0;j<data[i].list.length;j++){
+          html+='<div class="collect_list collectItem" id="'+data[i].list[j].num_iid+'"  tapmode onclick="openGoodDel('+data[i].list[j].num_iid+',-1);">';
+            html+='<ul>';
+            html+='<li class="collectItem" id="1"><img src="'+data[i].list[j].pic_url+'" alt="">';
+              if(data[i].list[j].item_status==0){
+                html+='<div class="zj_ygq">已过期</div><div class="edit_list">';
+              }
+              html+='<div class="edit_list"><img src="../../image/home/login_btn_selete_c.png" alt=""></div>';
+              html+='</li>';
+              html+='<li>';
+                html+='<div class="col_title">'+data[i].list[j].item_name+'</div>';
+                var tkfee=(data[i].list[j].rate*data[i].list[j].price*share_rebate1*share_rebate2)/1000000;
+                if(tkfee!=0 && !isNaN(tkfee)){
+                  html+='<div class="col_outdate">预估佣金：'+tkfee.toFixed(2)+'</div>';
+                }
+                html+='<div class="col_price_quan">';
+                  html+='<div class="col_price">￥'+data[i].list[j].price+' <span>￥'+data[i].list[j].zk_final_price+'</span></div>';
+                  html+='<div class="col_quan">'+data[i].list[j].couponmoney+'元券</div>';
+                html+='</div>';
+              html+='</li>';
+            html+='</ul>';
+          html+='</div>';
+        }
+      }
+      $api.byId('list').innerHTML=html;
+    }
+      </script>
+
+      </html>

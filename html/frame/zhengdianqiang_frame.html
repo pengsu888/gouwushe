@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0" />
+  <title>排行榜商品页</title>
+  <link rel="stylesheet" type="text/css" href="../../css/api.css" />
+  <link rel="stylesheet" type="text/css" href="../../css/paodan.css" />
+  <style>
+  /* 返回顶部样式开始 */
+
+  .actGotop {
+      position: fixed;
+      _position: absolute;
+      bottom: 3rem;
+      right: 0.5rem;
+      width: 3.5rem;
+      height: 3.5rem;
+      display: none;
+      z-index:999
+  }
+
+  .actGotop a,
+  .actGotop a:link {
+      width: 3.5rem;
+      height: 3.5rem;
+      display: inline-block;
+      background: url(../../image/ic_back_top.png) no-repeat;
+      background-size: 3.5rem 3.5rem;
+      outline: none;
+  }
+
+  .actGotop a:hover {
+      background: url(../../image/ic_back_top.png) no-repeat;
+      outline: none;
+      background-size: 3.5rem 3.5rem;
+  }
+  /* 返回顶部样式开始 */
+    html,body{
+      height: 100%;
+      width: 100%;
+      background-color: #fff;
+      /*overflow-x: hidden;
+      overflow-y: auto;*/
+    }
+  </style>
+</head>
+
+<body>
+  <!-- 返回顶部按钮 -->
+  <div class="actGotop">
+      <a href="javascript:;" title="返回顶部"></a>
+  </div>
+  <!-- 商品列表部分 begin-->
+  <div class="has_collect" id="list">
+    <!-- <div class="collect_list">
+      <ul>
+        <li><img src="../../image/zhanwei.jpg" alt=""></li>
+        <li>
+          <div class="col_title"><img src="../../image/view_home_guess_like_item_tmall_icon.png" alt="">小心机一字肩上衣高腰连体裤外套衣高腰连体裤外套</div>
+          <div class="col_outdate">品质升级 柔韧无刺激</div>
+          <div class="col_count">已抢85000 <div class="yiqiang_count">已抢85000</div></div>
+          <div class="col_price_quan">
+            <div class="col_price">￥ <span class="quan_price">148</span> <span class="real_price">￥168</span></div>
+            <div class="col_quan">20元券</div>
+          </div>
+        </li>
+      </ul>
+    </div> -->
+  </div>
+  <div id="statu" style="font-size:0.8rem;color:#fd5f3e;background-color:#f5f5f5;height:30px;line-height:30px;text-align:center;clear:both;"><img src="../../image/loading.d997b79c.svg" alt="" style="width:1rem;height:1rem;vertical-align:middle;">加载中...</div>
+  <!-- 商品列表部分 end-->
+</body>
+<script type="text/javascript" src="../../script/api.js"></script>
+<script type="text/javascript" src="../../script/jquery.js"></script>
+<script type="text/javascript" src="../../script/api_common.js"></script>
+<script type="text/javascript" src="../../script/md5.js"></script>
+<script type="text/javascript">
+$(document).ready(function() {
+    // 返回顶部
+    $(window).scroll(function() {
+        if ($(window).scrollTop() >= 500) {
+            $('.actGotop').fadeIn("fast");
+        } else {
+            $('.actGotop').fadeOut(300);
+        }
+    });
+    $('.actGotop').click(function() {
+        $('html,body').animate({
+            scrollTop: '0px'
+        }, 300);
+    });
+});
+    var pageNum = 1;
+    var isOver = false; //默认没有取完数据
+    var statu; //滑到底部状态
+    var share_rebate1,share_rebate2; //计算佣金比率
+    apiready = function() {
+      if(!empty($api.getStorage("userInfo"))){
+        user_id=$api.getStorage("userInfo").user_id;
+        // jisuan(-1,user_id);
+        jisuan_z(-1,user_id);
+      }else{
+        user_id='';
+        // jisuan(-1,user_id);
+        loadMyFa(true);
+      }
+
+      getEvent();
+      closePopframe();
+      // ;
+      statu=$api.byId('statu');
+
+      loadFresh();
+      api.addEventListener({
+          name: 'scrolltobottom',
+          extra: {
+              threshold: 120 //设置距离底部多少距离时触发，默认值为0，数字类型
+          }
+      }, function(ret, err) {
+
+          loadMyFa(false);
+      });
+    };
+    function jisuan_z(plateid,user_id){
+      var obj={
+        'user_id':user_id,
+      };
+      var objArr=sort_ASCII(obj);
+      var timestamp=fntimestamp();
+      var version='2.0';
+      var arr=apiSecret+timestamp+version+'';
+      for(i in objArr){
+        arr+=objArr[i];
+      }
+      var sign=hex_md5(arr);
+      // alert(sign);
+      api.ajax({
+          url: commonUrl+'soukeAppTttService/service/user/finduserShareRebate_ac',
+          method: 'post',
+          headers: {
+              'Content-Type': 'application/json;charset=utf-8'
+          },
+          data: {
+              body: {
+                  'apiKey':apiKey,
+                  'timestamp':timestamp,
+                  'sign':sign,
+                  'user_id':user_id,
+              }
+          }
+        }, function(ret, err) {
+          if (ret) {
+              if(ret.result_code==200){
+                console.log("计算信息"+JSON.stringify(ret));
+                var sectionList=ret.result_data.sectionList
+                 for(var i=0;i<sectionList.length;i++){
+                   if(plateid==sectionList[i].section_id){
+                     share_rebate1=sectionList[i].share_rebate;
+                     share_rebate2=ret.result_data.dislevel.share_rebate;
+                     loadMyFa(true);
+                   }
+                 }
+              }else{
+                api.toast({
+                    msg: ret.result_message,
+                    duration: 2000,
+                    location: 'middle'
+                });
+              }
+          } else {
+              // api.alert({ msg: JSON.stringify(err) });
+          }
+        });
+    }
+    function loadFresh(){
+      RefreshLoad();
+    }
+    function loadMyFa(isPull){
+      if (!isPull && isOver) {
+          return;
+      }
+      //判断如果是下拉刷新，
+      if (isPull) {
+          pageNum = 1;
+          isOver = false;
+      }
+      api.ajax({
+          url: 'http://v2.api.haodanku.com/fastbuy/apikey/souke/hour_type/'+api.pageParam.cateId+'/min_id/'+pageNum+'',
+          method: 'get',
+          data: {
+            body: {}
+          }
+      },function(ret, err){
+          if (ret) {
+            // if(ret.code==1){
+              // console.log( "整点抢："+JSON.stringify( ret ) );
+              var data=ret.data;
+              if (data != "") {
+                  $api.css(statu, 'display:block;');
+                  pageNum=ret.min_id;
+                  // alert("bbbb:"+pageNum);
+              } else {
+                  statu.innerHTML = "暂无更多数据";
+              }
+              if (data.length < 5 && data != "") {
+                  statu.innerHTML = "暂无更多数据";
+                  isOver = true;
+              }
+              getOneData(data,isPull);
+
+          } else {
+              // alert( JSON.stringify( err ) );
+          }
+      });
+    }
+    function getOneData(data,isPull){
+      var html='';
+      for(var i=0;i<data.length;i++){
+        var tkfee=(data[i].itemendprice*data[i].tkrates*share_rebate1*share_rebate2)/1000000;
+        html+='<div class="collect_list" tapmode onclick="openGoodDel('+data[i].itemid+',-1);">';
+        html+='<ul>';
+        html+='<li>';
+        html+='<img src="'+data[i].itempic+'" alt="">';
+        if(tkfee!=0 && !isNaN(tkfee)){
+          html+='<div class="yh_bottom">预估佣金'+tkfee.toFixed(2)+'</div>';
+        }
+        html+='</li>';
+        html+='<li>';
+        if(data[i].shoptype=="B"){
+          html+='<div class="col_title"><img src="../../image/view_home_guess_like_item_tmall_icon.png" alt="">'+data[i].itemshorttitle+'</div>';
+        }else if(data[i].shoptype=="C"){
+          html+='<div class="col_title"><img src="../../image/icon_taobao.png" alt="">'+data[i].itemshorttitle+'</div>';
+        }
+
+        html+='<div class="col_outdate">店铺：'+data[i].sellernick+'</div>';
+        var sale_discount=(data[i].todaysale/data[i].itemsale)*100;
+        if(sale_discount<15){
+          sale_discount=15;
+        }else if(sale_discount>95){
+          sale_discount=95;
+        }
+        html+='<div class="col_count">已抢'+data[i].itemsale+' <div class="yiqiang_count" style="width:'+sale_discount+'%;">已抢'+data[i].itemsale+'</div></div>';
+        html+='<div class="col_price_quan">';
+        html+='<div class="col_price">￥ <span class="quan_price">'+data[i].itemendprice+'</span> <span class="real_price">￥'+data[i].itemprice+'</span></div>';
+        if(!empty(data[i].tkrates)){
+            if(!empty(data[i].couponmoney)){
+              html+='<div class="col_quan">'+data[i].couponmoney+'元券</div>';
+            }
+          }
+        html+='</div>';
+        html+='</li>';
+        html+='</ul>';
+        html+='</div>';
+      }
+
+      if (isPull) {
+          $api.byId('list').innerHTML = html;
+      } else {
+          $api.byId('list').innerHTML += html;
+      }
+      if(api.pageParam.is_status==0){
+        $(".col_count").hide();
+      }
+    }
+  </script>
+
+</html>

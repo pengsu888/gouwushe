@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0" />
+    <title>新增地址win</title>
+    <link rel="stylesheet" type="text/css" href="../../css/api.css" />
+    <link rel="stylesheet" type="text/css" href="../../css/style.css" />
+
+</head>
+
+<body>
+    <header id="header">
+        <div class="header-top">
+            <div class="headerItem">
+                <div class="header_back" onclick="closeWin();">
+                    <img src="../../image/nav_back_black.png" alt="">
+                </div>
+                <div class="header_title" id="header_title">新增地址</div>
+            </div>
+        </div>
+    </header>
+</body>
+<script type="text/javascript" src="../../script/api.js"></script>
+<script type="text/javascript" src="../../script/jquery.js"></script>
+<script type="text/javascript">
+    apiready = function() {
+        api.setStatusBarStyle({
+            style: 'dark' //黑色
+                // style: 'light' //白色
+        });
+        var header = $api.byId('header');
+        $api.fixStatusBar(header);
+        var headerH = $api.offset(header).h;
+        if (api.pageParam.address_flag == 1) {
+            $api.byId('header_title').innerHTML = "新增地址";
+        } else if (api.pageParam.address_flag == 2) {
+            $api.byId('header_title').innerHTML = "修改地址";
+        }
+        api.openFrame({
+            name: 'add_address_frame',
+            url: '../frame/add_address_frame.html',
+            reload: true,
+            rect: {
+                x: 0,
+                y: headerH,
+                w: 'auto',
+                h: 'auto'
+            },
+            pageParam: {
+                address_flag: api.pageParam.address_flag,
+                address_id: api.pageParam.address_id,
+                list_count: api.pageParam.list_count
+            },
+            bounces: false
+        });
+    };
+
+    function closeWin() {
+        api.closeWin({
+            name: 'add_address_win'
+        });
+    }
+</script>
+
+</html>

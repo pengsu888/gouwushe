@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0" />
+    <title>佣金通知</title>
+    <link rel="stylesheet" type="text/css" href="../../css/api.css" />
+    <link rel="stylesheet" type="text/css" href="../../css/aui.css" />
+    <style media="screen">
+        body,
+        html {
+            width: 100%;
+            height: 100%;
+        }
+
+        header {
+            width: 100%;
+            height: 44px;
+            background: #fff;
+            overflow: hidden;
+        }
+
+        header .header-top {
+            display: -webkit-box;
+            display: -webkit-flex;
+            display: flex;
+            width: 100%;
+            height: 43px;
+            position: relative;
+            border-bottom: 0.01rem solid #dedede;
+        }
+
+        .headerItem {
+            height: 44px;
+            width: calc(100% - 24px);
+            border-bottom: solid 1px #f6f6f6;
+            vertical-align: middle;
+            display: inline-block;
+            position: absolute;
+            top: 0;
+            left: 12px;
+        }
+
+        .headerItem div {
+            float: left;
+        }
+
+        .headerItem .header_back {
+            width: 9px;
+            height: 16px;
+            float: left;
+            margin-top: 12px;
+        }
+
+        .headerItem .header_back img {
+            width: 9px;
+            height: 16px;
+            background-size: 100% 100%;
+            vertical-align: middle;
+        }
+
+        .headerItem .header_title {
+            width: calc(100% - 108px);
+            line-height: 44px;
+            text-align: center;
+            margin-left: 40px;
+        }
+
+        .headerItem .header_title .header_down {
+            width: 7px;
+            height: 4px;
+            background-size: 100% 100%;
+            position: relative;
+            top: -4px;
+            right: -5px;
+        }
+
+        .headerItem .header_title .header_up {
+            -moz-transform: rotate(180deg);
+            -webkit-transform: rotate(180deg);
+            filter: progid: DXImageTransform.Microsoft.BasicImage(rotation=3);
+        }
+
+        .headerItem .header_right {
+            width: 58px;
+            height: 22px;
+            float: right;
+            margin-top: 8px;
+            font-size: 12px;
+        }
+
+        .headerItem .header_right img {
+            width: 25px;
+            height: 25px;
+            background-size: 100% 100%;
+            vertical-align: middle;
+            display: inline-block;
+            margin-right: 5px;
+        }
+
+        .header-bottom {
+            height: 40px;
+            width: 100%;
+        }
+
+        .header-bottom ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .header-bottom ul li {
+            float: left;
+            width: 33.333%;
+            line-height: 37px;
+            text-align: center;
+        }
+
+        .header-bottom ul li.li_active {
+            border-bottom: 3px solid #fd5f3e;
+            color: #fd5f3e;
+        }
+
+        .aui-bar-nav.aui-bar-light .aui-iconfont {
+            color: #999999;
+            font-weight: bold;
+        }
+    </style>
+</head>
+
+<body>
+    <header class="aui-bar aui-bar-nav aui-bar-light" id="header">
+        <div class="aui-pull-left aui-btn" tapmode onclick="closeWin();">
+            <span class="aui-iconfont aui-icon-left"></span>
+        </div>
+        <div class="aui-title" id="header_title">佣金通知</div>
+    </header>
+    <div class="header-bottom">
+        <ul id="class_list">
+            <li class="li_active">普通佣金</li>
+            <li>优选佣金</li>
+            <li>售后扣除</li>
+            <!-- <li>活动奖励</li> -->
+        </ul>
+    </div>
+</body>
+<script type="text/javascript" src="../../script/api.js"></script>
+<script type="text/javascript" src="../../script/jquery.js"></script>
+<script type="text/javascript">
+    var headerH;
+    apiready = function() {
+        api.setStatusBarStyle({
+            style: 'dark' //黑色
+                // style: 'light' //白色
+        });
+        var header = $api.byId('header');
+        $api.fixStatusBar(header);
+        headerH = $api.offset(header).h;
+        $("#header_title").html(api.pageParam.class_name);
+        //打开分类页
+        api.openFrameGroup({
+            name: 'classify1',
+            scrollEnabled: true,
+            rect: {
+                x: 0,
+                y: headerH + 40,
+                w: 'auto',
+                h: 'auto'
+            },
+            index: 0,
+            preload: 0,
+            frames: [{
+                name: 'frame/push_ptyj_frame',
+                url: '../frame/push_ptyj_frame.html',
+                bounces: false,
+                vScrollBarEnabled: false,
+                hScrollBarEnabled: false,
+                // pageParam: {
+                // 	user_id:window.userId,
+                // 	rightNum:window.rightNum,
+                // 	flagNumZ:api.pageParam.flagNumZ
+                // }
+            }, {
+                name: 'push_yxyj_frame',
+                url: '../frame/push_yxyj_frame.html',
+                bounces: false,
+                vScrollBarEnabled: false,
+                hScrollBarEnabled: false,
+                // pageParam:{
+                // 	user_id:window.userId,
+                // 	rightNum:window.rightNum,
+                // 	flagNumZ:api.pageParam.flagNumZ
+                // }
+            }, {
+                name: 'push_shyj_frame',
+                url: '../frame/push_shyj_frame.html',
+                bounces: false,
+                vScrollBarEnabled: false,
+                hScrollBarEnabled: false,
+                // pageParam:{
+                // 	user_id:window.userId,
+                // 	rightNum:window.rightNum,
+                // 	flagNumZ:api.pageParam.flagNumZ
+                // }
+                // }, {
+                //     name: 'push_hdyj_frame',
+                //     url: '../frame/push_hdyj_frame.html',
+                //     bounces: false,
+                //     vScrollBarEnabled: false,
+                //     hScrollBarEnabled: false,
+                // pageParam:{
+                // 	user_id:window.userId,
+                // 	rightNum:window.rightNum,
+                // 	flagNumZ:api.pageParam.flagNumZ
+                // }
+            }],
+        }, function(ret, err) {
+            var _index = ret.index;
+            $("#class_list > li").eq(_index).addClass("li_active");
+            $("#class_list > li").eq(_index).siblings().removeClass("li_active");
+        });
+        //点击菜单
+        $("#class_list > li").click(function() {
+            var li_index = $(this).index();
+            $(this).addClass("active").siblings().removeClass("li_active");
+            api.setFrameGroupIndex({
+                name: 'classify1',
+                index: li_index,
+                scroll: true,
+            });
+        });
+    };
+
+    function closeWin() {
+        api.closeWin({
+            name: 'push_yjtz_win'
+        });
+    }
+</script>
+
+</html>

@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+    <title>粉丝规则说明</title>
+    <link rel="stylesheet" type="text/css" href="../css/api.css"/>
+    <link rel="stylesheet" type="text/css" href="../css/style.css" />
+    <style>
+    /*弹出框样式*/
+    	body{
+    		width:100%;
+    		height:100%;
+    		background:none;
+    		font-size:16px;
+        overflow: hidden;
+    	}
+    	.wrapAll{
+    		width:100%;
+    		height:100%;
+    		background:rgba(0,0,0,.5);
+        overflow: hidden;
+    		position:fixed;
+    		top:0;
+    		left:0;
+    		z-index:99;
+    	}
+    	.nl_list {
+    		position: fixed;
+        width: 300px;
+    		height:50%;
+        left: 50%;
+        top:20%;
+        margin-left: -150px;
+    		border-radius: 10px;
+    		z-index: 999;
+    		background: #fff;
+    		box-sizing: border-box;
+    		-webkit-box-sizing: border-box;
+        overflow: hidden;
+    	}
+      .nl_list .gz_title{
+        height: 50px;
+        width: 100%;
+        line-height: 50px;
+        text-align: center;
+        color:#fff;
+        font-size: 20px;
+      }
+      .nl_list .gz_item{
+        height: calc(100% - 70px);
+        width: 100%;
+        background: #fff;
+        overflow-x: hidden;
+  			overflow-y: auto;
+        padding-top: 20px;
+			  border-radius: 0px 0px 10px 10px;
+      }
+			::-webkit-scrollbar {/*隐藏滚轮*/
+				display: none;
+			}
+
+      .nl_list .gz_item .gz_list{
+        padding: 0px 10px;
+      }
+      .nl_list .gz_item .gz_list .list_title{
+        color:#333;
+        height: 25px;
+        line-height: 25px;
+        text-align: left;
+      }
+      .nl_list .gz_item .gz_list .list_title span{
+        height: 100%;
+        width: auto;
+        border-bottom: 3px solid #f94529;
+      }
+      .nl_list .gz_item .gz_list p{
+        margin-top: 10px;
+        color:#666;
+				font-size: 14px;
+      }
+       .close_gz{
+        width: 32px;
+        height: 32px;
+        background: url('../../image/home/video_close.png') no-repeat;
+        background-size: 100% 100%;
+        position: fixed;
+        z-index: 99999;
+        bottom: 20%;
+        left: 50%;
+        margin-left: -13px;
+      }
+      .submitColor{
+        background: -webkit-linear-gradient(left, #fd7239 , #f94529); /* Safari 5.1 - 6.0 */
+        background: -o-linear-gradient(right, #fd7239, #f94529); /* Opera 11.1 - 12.0 */
+        background: -moz-linear-gradient(right, #fd7239, #f94529); /* Firefox 3.6 - 15 */
+        background: linear-gradient(to right, #fd7239, #f94529); /* 标准的语法 */
+      }
+    </style>
+</head>
+<body>
+<!--弹出框-->
+	<section class='wrapAll' id='wrapAll'>
+	</section>
+	<section class='nl_list'>
+      <!-- <div class="guize_div"> -->
+        <div class="gz_title submitColor">粉丝规则说明</div>
+        <div class="gz_item">
+          <div class="gz_list">
+            <div class="list_title"><span>我的</span>团队</div>
+            <p>我的团队人数不包含潜在粉丝人数</p>
+          </div>
+          <div class="gz_list">
+            <div class="list_title"><span>潜在</span>粉丝</div>
+            <p>潜在粉丝是您通过微信分享邀请绑定关系，但好友并未登录使用APP</p>
+          </div>
+          <div class="gz_list">
+            <div class="list_title"><span>直属</span>粉丝</div>
+            <p>直属粉丝是指您直接邀请的好友</p>
+          </div>
+          <div class="gz_list">
+            <div class="list_title"><span>推荐</span>粉丝</div>
+            <p>推荐粉丝是指您直属粉丝邀请的好友</p>
+          </div>
+        </div>
+      <!-- </div> -->
+
+	</section>
+  <div class="close_gz"></div>
+</body>
+<script type="text/javascript" src="../../script/api.js"></script>
+<script type="text/javascript" src="../../script/jquery.js"></script>
+<script type="text/javascript">
+	apiready = function(){
+      window.headerH=api.pageParam.headerH;
+	};
+		//触摸蒙层
+		// document.getElementById('wrapAll').addEventListener('touchstart',function(){
+		// 	closeNLShaixuanLayout();
+		// },false);
+    $(".close_gz").click(function (){
+      closeNLGuizeLayout();
+    })
+		//调用关闭弹出层的方法
+		function closeNLGuizeLayout(){
+			api.execScript({
+				name:'my_fans_win',
+          script:'closeGuizeLayout();'
+        });
+		}
+</script>
+</html>

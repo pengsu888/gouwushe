@@ -1,0 +1,957 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0" />
+    <meta content="telephone=no" name="format-detection" />
+    <title>视频抖券</title>
+    <link rel="stylesheet" href="../../css/common.css">
+    <link rel="stylesheet" href="../../css/libs/iconfont/iconfont.css">
+    <link rel="stylesheet" type="text/css" href="../../css/swiper.min.css">
+    <link rel="stylesheet" type="text/css" href="../../css/api.css" />
+    <style>
+        html,
+        body,
+        #vue-app {
+            width: 100%;
+            height: 100%;
+            background: black;
+        }
+
+        #vue-app {
+            transition: opacity .3s;
+        }
+
+        #vue-app .mask {
+            position: absolute;
+            left: 0;
+            top: 0;
+            right: 0;
+            bottom: 0;
+            z-index: 2;
+            background: black;
+        }
+
+        .head {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 1.1rem;
+            font-size: .34rem;
+            color: white;
+            display: flex;
+            align-items: center;
+            z-index: 999;
+        }
+
+        .head i {
+            margin-left: .2rem;
+            position: relative;
+            z-index: 999;
+            font-size: .36rem;
+        }
+
+        .head span {
+            position: absolute;
+            width: 100%;
+            left: 0;
+            top: 0;
+            line-height: 1.1rem;
+            text-align: center;
+        }
+
+        .swiper-container {
+            width: 100%;
+            height: 100%;
+        }
+
+        .swiper-container .swiper-slide {
+            display: flex;
+            align-items: center;
+        }
+
+        .swiper-container .swiper-slide video {
+            width: 100%;
+        }
+
+        .right-zhuan {
+            position: absolute;
+            right: 0;
+            top: 20%;
+            z-index: 997;
+            font-size: .26rem;
+            color: white;
+        }
+
+        .right-zhuan .zhuan-item {
+            background: rgba(0, 0, 0, 0.4);
+            height: .5rem;
+            border-radius: .5rem 0 0 .5rem;
+            display: flex;
+            align-items: center;
+            margin-bottom: .2rem;
+            width: 1.54rem;
+        }
+
+        .right-zhuan .zhuan-item .icon {
+            width: .4rem;
+            height: .4rem;
+            line-height: .4rem;
+            text-align: center;
+            border-radius: .4rem;
+            margin-left: .06rem;
+        }
+
+        .right-box {
+            position: absolute;
+            right: .2rem;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            z-index: 1000;
+            top: 50%;
+            color: white;
+        }
+
+        .animation1 {
+            animation: animation1 1s linear;
+            -webkit-animation: animation1 1s linear;
+        }
+
+        .right-box .right-item {
+            margin-bottom: .2rem;
+        }
+
+        .right-box .right-item:nth-child(2).collect i {
+            background-image: linear-gradient(-90deg, rgba(255, 69, 58, 1), rgba(255, 138, 113, 1));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .right-box .right-item .shop-icon {
+            width: .8rem;
+            height: .8rem;
+            background-position: center;
+            background-repeat: no-repeat;
+            background-size: cover;
+            border-radius: .9rem;
+            border: .05rem #fff solid;
+            box-sizing: border-box;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+        }
+
+        .right-box .right-item .shop-icon img {
+            width: 100%;
+            height: 100%;
+        }
+
+        .right-box .right-item i {
+            text-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
+            font-size: .6rem;
+            display: block;
+        }
+
+        .right-box .right-item .icon-shiliangzhinengduixiang4 {
+            transform: scaleX(-1)
+        }
+
+        .right-box .right-item p {
+            font-size: .22rem;
+            text-align: center;
+            margin-top: .1rem;
+            text-shadow: 1px 1px 1px #000;
+        }
+
+        .bottom-box {
+            position: absolute;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            z-index: 999;
+            /*color: #666;*/
+            color: #FFF;
+            padding: 0 .44rem 0 .35rem;
+            background: rgba(0, 0, 0, 0.2);
+            /*background: #fff;*/
+            /*border-radius: 0.2rem;*/
+            /*margin: 0.2rem;*/
+        }
+
+        .bottom-box>div {
+            margin: .1rem 0;
+        }
+
+        .bottom-box .shop-name {
+            font-size: .3rem;
+        }
+
+        .bottom-box .shop-name img {
+            height: .28rem;
+            margin-left: .12rem;
+        }
+
+        .bottom-box .shop-name span:last-child {
+            font-size: .22rem;
+            color: #FFB447;
+        }
+
+        .bottom-box .shop-title {
+            font-size: .22rem;
+        }
+
+        .bottom-box .coupon {
+            overflow: hidden;
+        }
+
+        .bottom-box .coupon .coupon-item:first-child {
+            background: url('../../image/icon/coupon_bg1.png') no-repeat center;
+            background-size: 100% 100%;
+        }
+
+        .bottom-box .coupon .coupon-item:last-child {
+            background: url('../../image/icon/coupon_bg2.png') no-repeat center;
+            background-size: 100% 100%;
+        }
+
+        .bottom-box .coupon .coupon-item {
+            float: right;
+            width: 1.47rem;
+            height: 0.42rem;
+            line-height: .42rem;
+            float: left;
+            margin-right: .2rem;
+            font-size: 0.2rem;
+            color: #fff;
+            text-align: center;
+            font-weight: 500;
+            position: relative;
+            border-radius: .03rem;
+        }
+
+        .bottom-box .desc {
+            font-size: .22rem;
+        }
+
+        .oauthBox {
+            position: fixed;
+            top: 0;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: rgba(0, 0, 0, 0.7);
+            z-index: 1001;
+        }
+
+        .oauthBox .update {
+            width: 5.1rem;
+            overflow: hidden;
+            border-radius: 0.2rem;
+            position: relative;
+        }
+
+        .oauthBox .update .bg {
+            width: 100%;
+            float: left;
+        }
+
+        .oauthBox .update .contentBox {
+            width: 100%;
+            float: left;
+            background: #fff;
+            padding: 0 0.4rem 0.4rem;
+            box-sizing: border-box;
+        }
+
+        .oauthBox .update .add {
+            width: 100%;
+        }
+
+        .oauthBox .update .add .t {
+            font-size: 0.36rem;
+            color: #333333;
+        }
+
+        .oauthBox .update .add p {
+            text-align: center;
+            color: #666;
+        }
+
+        .oauthBox .update .add .info {
+            margin-top: 0.2rem;
+            font-size: 0.24rem;
+            color: #333333;
+            text-align: left;
+        }
+
+        .oauthBox .update .update_btn {
+            justify-content: space-around;
+            display: flex;
+            margin-top: 0.4rem;
+        }
+
+        .oauthBox .update .update_btn span {
+            display: inline-block;
+            width: 2rem;
+            height: 0.6rem;
+            border-radius: 0.3rem;
+            text-align: center;
+            background: #E5E5E5;
+            line-height: 0.6rem;
+            font-size: 0.3rem;
+            color: #999;
+        }
+
+        .oauthBox .update .update_btn span:last-of-type {
+            color: #fff;
+            background: linear-gradient(to right, #D456FF, #7468FF);
+        }
+
+        .loading-box-1 {
+            position: absolute;
+            top: 50%;
+            left: calc(50% - 15px);
+            transition: opacity .3s;
+            z-index: 2;
+        }
+
+        .pause-box {
+            position: absolute;
+            left: 50%;
+            margin-left: -0.52rem;
+            z-index: 3;
+            top: 50%;
+        }
+
+        .pause-box img {
+            width: 1.04rem;
+        }
+
+        @keyframes animation1 {
+            0% {
+                right: 0rem;
+            }
+            20% {
+                right: -1.08rem;
+            }
+            80% {
+                right: -1.08rem;
+            }
+            100% {
+                right: 0;
+            }
+        }
+        /*底部样式二*/
+
+        .tab-panel-item.tab-active {
+            position: absolute;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            z-index: 999;
+            background: rgba(0, 0, 0, 0.2);
+            background: #fff;
+        }
+
+        .tab-panel .tab-panel-item {
+            width: 100%;
+            position: absolute;
+            top: 0;
+            -webkit-transform: translateX(-100%);
+            transform: translateX(-100%);
+        }
+
+        .aui-flex-for {
+            background: #fff;
+            border-radius: 5px;
+            /*width: 92%;
+            margin: 0.5rem auto;*/
+        }
+
+        .aui-flex {
+            display: -webkit-box;
+            display: -webkit-flex;
+            display: flex;
+            -webkit-box-align: center;
+            -webkit-align-items: center;
+            align-items: center;
+            /*padding: 10px;*/
+            position: relative;
+            z-index: 999;
+        }
+
+        .aui-img-fov {
+            width: 100px;
+            height: 100px;
+            position: relative;
+            padding-right: 0.1rem;
+        }
+
+        .aui-img-fov span {
+            position: absolute;
+            text-align: center;
+            font-size: 0.25rem;
+            padding: 0.05rem 0.2rem;
+            z-index: 9999;
+            color: #ff2146;
+            background: #ffe9eb;
+            border-radius: 0rem 0.2rem 0.2rem 0rem;
+        }
+
+        img {
+            width: 100%;
+            height: auto;
+            display: block;
+            border: 0;
+        }
+
+        .aui-flex-box {
+            -webkit-box-flex: 1;
+            -webkit-flex: 1;
+            flex: 1;
+            min-width: 0;
+            font-size: 14px;
+            color: #333;
+            /*position: fixed;*/
+            width: 50%;
+            left: 2.2rem;
+        }
+
+        .aui-flex-box h4 {
+            word-wrap: normal;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+            overflow: hidden;
+            text-align: justify;
+            font-weight: normal;
+            color: #212121;
+            font-size: 0.24rem;
+        }
+
+        .aui-flex-box span {
+            background: #ffe9eb;
+            color: #ff2146;
+            font-size: 0.25rem;
+            border-radius: 22px;
+            padding: 0.05rem 0.2rem;
+        }
+
+        .aui-flex-box h6 {
+            color: #ed0127;
+            font-size: 0.35rem;
+        }
+
+        .aui-flex-box h6 i {
+            font-weight: normal;
+            font-style: normal;
+            font-size: 0.3rem;
+        }
+
+        .aui-button-got {
+            border: 1px solid #fe2053;
+            background: linear-gradient(to right, #fd673d, #ff1e0f);
+            color: #f5f5f5;
+            border-radius: 0.05rem;
+            position: absolute;
+            bottom: 0.25rem;
+            right: 1.5rem;
+            padding: 0.04rem;
+            font-size: 0.22rem;
+        }
+
+        button,
+        input,
+        optgroup,
+        select,
+        textarea {
+            margin: 0;
+            font: inherit;
+            color: inherit;
+            outline: none;
+        }
+
+        .aui-platform-list .aui-flexx {
+            padding-top: 0;
+            padding-bottom: 10px;
+        }
+
+        .aui-flexx {
+            display: -webkit-box;
+            display: -webkit-flex;
+            display: flex;
+            -webkit-box-align: center;
+            -webkit-align-items: center;
+            align-items: center;
+            padding: 0.25rem 0;
+            position: relative;
+        }
+
+        .aui-spill-user {
+            overflow: hidden;
+            padding-left: 0.1rem;
+        }
+
+        .aui-spill-user img {
+            width: 20px;
+            height: 20px;
+            float: left;
+            border: 2px solid #fff;
+            margin-left: -5px;
+            border-radius: 100%;
+        }
+
+        .aui-flex-boxx {
+            -webkit-box-flex: 1;
+            -webkit-flex: 1;
+            flex: 1;
+            min-width: 0;
+            font-size: 0.2rem;
+            color: #333;
+        }
+
+        .aui-flex-boxx h4 {
+            color: #666;
+            font-weight: normal;
+            font-size: 0.25rem;
+        }
+
+        .aui-flex-boxx h4 em {
+            font-style: normal;
+            margin-left: 0.1rem;
+        }
+
+        .reght_Bg {
+            width: 22%;
+            /*position: fixed;*/
+            right: 0;
+        }
+
+        .reght_Bg img {}
+
+        .icon {
+            width: 18px;
+            height: 18px;
+            display: block;
+            border: none;
+            float: left;
+            background-size: 20px;
+            padding-right: 0.1rem;
+            background-repeat: no-repeat;
+            border-radius: 0.1rem;
+        }
+
+        .icon-mall {
+            border-radius: 0.1rem;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="vue-app">
+        <div class="head" :style="{marginTop: safeArea.top+'px'}">
+            <i class="iconfont icon-back" @click='onBack'></i>
+            <span>抖券</span>
+        </div>
+        <div class="mask"></div>
+        <swiper :options="swiperOption" ref="mySwiper" v-if="goodsList.length>0">
+            <swiper-slide v-for="(item, index) in goodsList" :key="index" :data-index="index" :data-videoIndex="videoIndex">
+
+            </swiper-slide>
+        </swiper>
+        <div class="right-zhuan" v-if="goodsList[videoIndex]">
+            <!-- <div class="zhuan-item">
+                <div class="icon" style="background:linear-gradient(-90deg,rgba(255,69,58,1),rgba(255,138,113,1));">赚</div>
+                <span>￥{{goodsList[videoIndex].ygfx_tkfee}}</span>
+            </div> -->
+            <!-- <div class="zhuan-item">
+                <div class="icon" style="background:linear-gradient(90deg,rgba(255,210,74,1),rgba(255,151,40,1));">省</div>
+                <span>￥{{goodsList[videoIndex].ygzg_tkfee}}</span>
+            </div> -->
+        </div>
+        <div class="right-box" v-if="goodsList[videoIndex]">
+            <div class="right-item">
+                <!-- <div class="shop-icon"><img :src="goodsList[videoIndex].itempic" alt=""></div> -->
+                <div class="shop-icon"><img src="../../image/icon/video_icon_watch.png" alt=""></div>
+                <p>{{goodsList[videoIndex].dy_video_like_count}}W</p>
+            </div>
+            <div class="right-item" :class="{'collect':goodsList[videoIndex].collectStatus==1}" @click='doCollect'>
+                <div><i class="iconfont icon-likefill"></i></div>
+                <p>收藏</p>
+            </div>
+            <div class="right-item" @click="toShare">
+                <div><i class="iconfont icon-shiliangzhinengduixiang4"></i></div>
+                <p>分享</p>
+            </div>
+        </div>
+        <!-- <div class="bottom-box" :style="{paddingBottom: safeArea.bottom+'px'}" v-if="goodsList[videoIndex]" @click="toDetail">
+            <div class="shop-name"><span>@{{goodsList[videoIndex].shopname}}</span><img src="../../image/icon/mofabang.png"><span class="has-buy">{{goodsList[videoIndex].itemsale}}人已购</span></div>
+            <div class="shop-title text-overflow_1-xzh">{{goodsList[videoIndex].itemtitle}}</div>
+            <div class="coupon">
+                <div class="coupon-item">券后￥{{goodsList[videoIndex].itemendprice}}</div>
+                <div class="coupon-item">{{goodsList[videoIndex].couponmoney}}元券</div>
+            </div>
+            <div class="desc text-overflow_2-xzh">{{goodsList[videoIndex].itemdesc}}</div>
+        </div> -->
+        <div class="tab-panel-item tab-active" v-if="goodsList[videoIndex]">
+            <div class="aui-flex aui-flex-for">
+                <div class="aui-img-fov">
+                    <span>{{goodsList[videoIndex].couponmoney}}元券</span>
+                    <img :src="goodsList[videoIndex].itempic" alt="">
+                </div>
+                <div class="aui-flex-box">
+                    <h4>
+                      <i class="icon icon-mall"><img src="../../image/ic_goods_taobao.png" alt=""></i>
+                      <!-- <i class="icon icon-mall" v-if="{{goodsList[videoIndex].shoptype==C}}"><img src="../../image/ic_goods_taobao.png" alt=""></i>
+                      <i class="icon icon-mall" v-if="{{goodsList[videoIndex].shoptype==B}}"><img src="../../image/ic_goods_tmall.png" alt=""></i> -->
+                      {{goodsList[videoIndex].itemtitle}}</h4>
+                    <!-- <span>5元券</span> -->
+                    <div class="aui-flexx">
+                        <div class="aui-spill-user">
+                            <img src="../../image/shouye_taobao_icon_cjhx.png" alt="">
+                            <img src="../../image/shouye_taobao_icon_sqg.png" alt="">
+                            <img src="../../image/shouye_taobao_icon_zxyhq.png" alt="">
+                        </div>
+                        <div class="aui-flex-boxx">
+                            <h4>{{goodsList[videoIndex].itemsale}}<em>人购买</em></h4>
+                        </div>
+                    </div>
+
+                    <h6><i>￥</i>{{goodsList[videoIndex].itemendprice}}</h6>
+                    <button class="aui-button-got">预估佣金￥{{goodsList[videoIndex].ygzg_tkfee}}</button>
+                </div>
+                <div class="reght_Bg" @click="toDetail"><img src="../../image/video_shop_button.png" alt=""></div>
+            </div>
+        </div>
+        <!-- <div class="oauthBox" v-if="showToast1">
+        <div class="update">
+          <img src="../image/oauth.png" alt="" class="bg">
+          <div class="contentBox">
+            <div class="add">
+              <p class="t" >淘宝渠道认证</p>
+              <div class="info" >由于淘宝需要对渠道加强精细化管理，邀请您进行淘宝身份认证操作，届时没有进行身份认证得，将可能无法分享推广淘宝商品功能，请您提前认证。</div>
+            </div>
+            <div class="update_btn" ><span @click="showToast1 = false" >稍后再说</span><span @click="oauth">马上认证</span></div>
+          </div>
+        </div>
+    </div> -->
+        <div class="loading-box-1" :style="{opacity: showLoading?1:0}">
+            <div class="container google-animation-2">
+                <div class="shape shape-1"></div>
+                <div class="shape shape-2"></div>
+                <div class="shape shape-3"></div>
+                <div class="shape shape-4"></div>
+            </div>
+        </div>
+        <div class="pause-box" v-if='isStop' @click="changVideoStatus"><img src="../../image/icon/video_icon_pause.png"></div>
+    </div>
+</body>
+<script src="../../script/api.js"></script>
+<script type="text/javascript" src="../../script/jquery.js"></script>
+<script type="text/javascript" src="../../script/api_common.js"></script>
+<script type="text/javascript" src="../../script/md5.js"></script>
+<!-- <script src="../../script/libs/vue.js" charset="utf-8"></script> -->
+<script src="../../script/swiper.min.js" charset="utf-8"></script>
+<script src="../../script/libs/vue_awesome_swiper.js" charset="utf-8"></script>
+<script src="../../script/libs/vue_min.js" charset="utf-8"></script>
+<script type="text/javascript">
+    var min_level_name, min_share_rebate, level_name, max_shop_rebate, min_shop_rebate, max_level_name; //计算佣金比率
+    var dis_level_id, shop_rebate, max_share_rebate, share_rebate, my_share_rebate, my_shop_rebate; //计算佣金比率
+    Vue.use(window.VueAwesomeSwiper)
+    var vueObj;
+    var user_id;
+    apiready = function() {
+        vueObj = new Vue({
+            el: '#vue-app',
+            data: {
+                safeArea: api.safeArea,
+                showToast1: false,
+                showLoading: true,
+                isStop: false,
+                videoIndex: 0,
+                swiperOption: {
+                    direction: 'vertical',
+                    loop: true,
+                    on: {
+                        slideChangeTransitionStart: function() {
+                            document.getElementsByClassName('right-zhuan')[0].classList.add("animation1");
+                            setTimeout(function() {
+                                document.getElementsByClassName('right-zhuan')[0].classList.remove("animation1");
+                            }, 1000)
+                            vueObj.showLoading = true;
+                            vueObj.isStop = false;
+                        },
+                        slideChangeTransitionEnd: function() {
+                            var swiperObj = this;
+                            document.querySelector('.mask').style.display = 'block';
+                            var realIndex = this.realIndex; // 真实下标
+                            var activeIndex = this.activeIndex; // 显示的dom元素下标
+                            var videoObj = document.getElementsByTagName('video')[0];
+                            console.log(JSON.stringify(videoObj));
+                            if (!videoObj) {
+                                videoObj = document.createElement('video');
+                                videoObj.onclick = vueObj.changVideoStatus
+                                videoObj.setAttribute('playsinline', true)
+                                videoObj.setAttribute('webkit-playsinline', true)
+                                videoObj.autoplay = 'autoplay';
+                                videoObj.loop = 'loop';
+                                videoObj.onplaying = function() {
+                                    vueObj.showLoading = false
+                                    document.querySelector('.mask').style.display = 'none';
+                                    videoObj.play();
+                                };
+                                videoObj.onerror = function() {
+                                    // 当视频不存在会导致 加载失败
+                                    vueObj.goodsList.splice(swiperObj.realIndex, 1); // 删除失效视频
+                                    videoObj.src = vueObj.goodsList[swiperObj.realIndex].dy_video_url; // 重新加载新的视频地址
+                                };
+                            }
+                            // alert(this.realIndex);
+                            document.getElementsByClassName('swiper-slide')[activeIndex].appendChild(videoObj); // 给当前展示的slide添加video
+                            videoObj.src = vueObj.goodsList[this.realIndex].dy_video_url;
+                            vueObj.videoIndex = this.realIndex;
+                            vueObj.getDetail()
+                            return false
+                        }
+                    }
+                },
+                goodsList: [],
+                goodsDetail: {}
+            },
+            mounted: function() {
+                if (!empty($api.getStorage("userInfo"))) {
+                    user_id = $api.getStorage("userInfo").user_id;
+                } else {
+                    user_id = '';
+                }
+                jisuan(-1, user_id);
+                this.getList();
+                api.addEventListener({
+                    name: 'keyback'
+                }, this.onBack);
+            },
+            methods: {
+                changVideoStatus: function() {
+                    if (this.isStop) {
+                        this.isStop = false;
+                        document.getElementsByTagName('video')[0].play();
+                    } else {
+                        this.isStop = true;
+                        document.getElementsByTagName('video')[0].pause();
+                    }
+                },
+                toShare: function() {
+                    checkUserLogin();
+                    this.openShare();
+                },
+                openShare: function() {
+                    var item = this.goodsList[this.videoIndex];
+                    user_id;
+                    var goods_id = item.itemid;
+                    var item_title = item.itemtitle;
+                    // var yuji_zhuan = item.ygfx_tkfee;
+                    //阿里百川授权登陆
+                    var alibaichuan = api.require('mAliBaiChuan');
+                    alibaichuan.showLogin(function(ret, err) {
+                        if (ret) {
+                            // alert("登录success:" + JSON.stringify(ret));
+                            if (ret.isLogin == "true") {
+                                api.openWin({
+                                    name: 'creat_share_win',
+                                    url: 'widget://html/win/creat_share_win.html',
+                                    pageParam: {
+                                        goods_id: goods_id,
+                                        section_id: -1,
+                                        user_id: user_id,
+                                        url_type: 1,
+                                        item_title: item_title,
+                                        tk_fee: yuji_zhuan
+                                    }
+                                });
+                            }
+                        } else {
+                            // alert("登录error:" + JSON.stringify(err));
+                        }
+                    });
+                },
+                onBack: function(ret, err) {
+                    api.closeWin();
+                },
+                toDetail: function() {
+                    var item = this.goodsList[this.videoIndex];
+                    var goods_id = item.itemid;
+                    openGoodDel(goods_id, -1);
+                },
+                getList: function() {
+                    var that = this;
+                    api.ajax({
+                        url: 'http://v2.api.haodanku.com/get_trill_data/apikey/souke/back/100/min_id/1',
+                        method: 'get',
+                        data: {
+                            body: {}
+                        }
+                    }, function(ret, err) {
+                        if (ret) {
+                            // console.log("抖货商品："+ JSON.stringify( ret ) );
+                            that.goodsList = ret.data;
+                            that.getDetail();
+                        } else {
+                            // alert( JSON.stringify( err ) );
+                        }
+                    });
+                },
+                doCollect: function() {
+                    var that = this;
+                    checkUserLogin();
+                    var item = this.goodsList[this.videoIndex];
+                    var collect_statu;
+                    if (item.collectStatus == 1) {
+                        collect_statu = 0;
+                    } else {
+                        collect_statu = 1;
+                    }
+                    var obj = {
+                        'user_id': user_id,
+                        'num_iid': item.itemid,
+                        'status': collect_statu,
+                    };
+                    var objArr = sort_ASCII(obj);
+                    var timestamp = fntimestamp();
+                    var version = '2.0';
+                    var arr = apiSecret + timestamp + version + '';
+                    for (i in objArr) {
+                        arr += objArr[i];
+                    }
+                    // console.log(arr);
+                    var sign = hex_md5(arr);
+                    api.ajax({
+                        url: commonUrl + 'soukeAppTttService/service/user/collecthistory_ac',
+                        method: 'post',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        data: {
+                            body: {
+                                'apiKey': apiKey,
+                                'timestamp': timestamp,
+                                'sign': sign,
+                                'user_id': user_id,
+                                'num_iid': item.itemid,
+                                'status': collect_statu,
+                            }
+                        }
+                    }, function(ret, err) {
+                        if (ret) {
+                            if (ret.result_code == 200) {
+                                // console.log("是否收藏------"+JSON.stringify(ret));
+                                // openinstall上报收藏淘宝商品数据
+                                if (openinstaus == 1) {
+                                    var openinstall = api.require('openinstall');
+                                    openinstall.reportEffectPoint({
+                                        effectId: 'TbSc',
+                                        effectValue: 1
+                                    });
+                                }
+                                that.$set(item, 'collectStatus', collect_statu);
+                                if (collect_statu == 1) {
+                                    api.toast({
+                                        msg: '收藏成功'
+                                    });
+                                } else {
+                                    api.toast({
+                                        msg: '已取消收藏'
+                                    });
+                                }
+                            }
+                        } else {
+                            // alert(JSON.stringify(err));
+                            api.toast({
+                                msg: ret.result_message,
+                                duration: 2000,
+                                location: 'middle'
+                            });
+                        }
+                    });
+                },
+                getCollect: function() {
+                    var that = this;
+                    var item = that.goodsList[this.videoIndex]
+                    var obj = {
+                        'user_id': user_id,
+                        'num_iid': item.itemid,
+                    };
+                    var objArr = sort_ASCII(obj);
+                    var timestamp = fntimestamp();
+                    var version = '2.0';
+                    var arr = apiSecret + timestamp + version + '';
+                    for (i in objArr) {
+                        arr += objArr[i];
+                    }
+                    // console.log(arr);
+                    var sign = hex_md5(arr);
+                    api.ajax({
+                        url: commonUrl + 'soukeAppTttService/service/user/findcollecthistoryByUser_ac',
+                        method: 'post',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        data: {
+                            body: {
+                                'apiKey': apiKey,
+                                'timestamp': timestamp,
+                                'sign': sign,
+                                'user_id': user_id,
+                                'num_iid': item.itemid,
+                            }
+                        }
+                    }, function(ret, err) {
+                        if (ret) {
+                            if (ret.result_code == 200) {
+                                // console.log("是否已经收藏------"+JSON.stringify(ret));
+                                that.$set(item, 'collectStatus', ret.result_data);
+                            }
+                        } else {
+                            // alert(JSON.stringify(err));
+                            //   api.toast({
+                            //     msg: ret.result_message,
+                            //     duration: 2000,
+                            //     location: 'middle'
+                            // });
+                        }
+                    });
+
+                },
+                getDetail: function() {
+                    var that = this;
+                    var goods = this.goodsList[this.videoIndex];
+                    var tkmoney = this.goodsList[this.videoIndex].tkmoney;
+                    var ygzg_tkfee = "";
+                    // var ygfx_tkfee = "";
+                    if (user_id == "") {
+                        // ygfx_tkfee = (tkmoney * my_share_rebate * min_share_rebate) / 10000;
+                        // ygfx_tkfee = Math.floor(ygfx_tkfee * 100) / 100;
+                        ygzg_tkfee = (tkmoney * my_shop_rebate * min_shop_rebate) / 10000;
+                        ygzg_tkfee = Math.floor(ygzg_tkfee * 100) / 100;
+                    } else {
+                        // ygfx_tkfee = (tkmoney * my_share_rebate * share_rebate) / 10000;
+                        // ygfx_tkfee = Math.floor(ygfx_tkfee * 100) / 100;
+                        ygzg_tkfee = (tkmoney * my_shop_rebate * shop_rebate) / 10000;
+                        ygzg_tkfee = Math.floor(ygzg_tkfee * 100) / 100;
+                    }
+                    // this.goodsList[this.videoIndex].ygfx_tkfee = ygfx_tkfee;
+                    this.goodsList[this.videoIndex].ygzg_tkfee = ygzg_tkfee;
+                    that.getCollect();
+                }
+            }
+        })
+    };
+</script>
+
+</html>
+l>

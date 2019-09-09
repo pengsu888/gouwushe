@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0" />
+  <title>title</title>
+  <link rel="stylesheet" type="text/css" href="../../css/api.css" />
+  <!-- <link rel="stylesheet" type="text/css" href="../../css/style.css" /> -->
+  <style>
+  header{
+    width: 100%;
+    height: 44px;
+    overflow: hidden;
+  }
+  header .header-top{
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: flex;
+    width: 100%;
+    height: 44px;
+    position: relative;
+  }
+
+  .headerItem{
+    height: 44px;
+    width: 100%;
+    border-bottom:solid 1px #f6f6f6;
+    vertical-align: middle;
+    display: inline-block;
+    position: absolute;
+    top:0;
+    left: 0;
+  }
+  .headerItem div{
+    float:left;
+  }
+  .headerItem .header_back{
+    width:2.5rem;
+    height: 2.5rem;
+    float:left;
+    /*margin-left:12px;*/
+  }
+  .headerItem .header_back img{
+    width:2.5rem;
+    height: 2.5rem;
+    background-size: 100% 100%;
+    vertical-align: middle;
+  }
+  .headerItem .header_title{
+    width:calc(100% - 6rem);
+    line-height: 44px;
+    text-align: center;
+  }
+  .headerItem .header_search{
+    width: 1.5rem;
+    height: 100%;
+    float:right;
+    margin-right: 1.0rem;
+    vertical-align: middle;
+    display: inline-block;
+  }
+  .headerItem .header_search img{
+    width: 1.5rem;
+    height: 1.5rem;
+    background-size: 100% 100%;
+    vertical-align: middle;
+    display: inline-block;
+  }
+  </style>
+</head>
+
+<body>
+    <header id="header">
+      <div class="header-top">
+          <div class="headerItem">
+            <div class="header_back" onclick="closeWin();">
+              <img src="../../image/ic_detail_title_bar_back_gray.png" alt="">
+            </div>
+            <!-- <div class="header_title" id="header_title">裤装</div> -->
+            <div class="header_search"><img src="../../image/ic_title_bar_share.png" alt=""></div>
+          </div>
+      </div>
+    </header>
+</body>
+  <script type="text/javascript" src="../../script/api.js"></script>
+  <script type="text/javascript" src="../../script/jquery.js"></script>
+  <script type="text/javascript">
+    apiready = function() {
+        var header = $api.byId('header');
+        $api.fixStatusBar(header);
+        var headerH = $api.offset(header).h;
+        api.openFrame({
+            name: 'jkj_frame',
+            url: './jkj_frame.html',
+            rect: {
+                x: 0,
+                y: headerH,
+                w: 'auto',
+                h: 'auto'
+            },
+            // pageParam: {
+            //     dis_power: dis_power
+            // },
+            bounces: false
+        });
+    };
+    function closeWin(){
+      api.closeWin({
+          name: 'jkj_win'
+      });
+    }
+  </script>
+
+</html>

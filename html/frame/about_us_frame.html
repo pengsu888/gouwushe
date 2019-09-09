@@ -1,0 +1,161 @@
+<!DOCTYPE HTML>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0" />
+    <meta name="format-detection" content="telephone=no, email=no, date=no, address=no">
+    <title>关于我们</title>
+    <link rel="stylesheet" type="text/css" href="../../css/api.css" />
+    <style>
+        html,
+        body {
+            background-color: #f4f4f4;
+            height: 100%;
+            width: 100%;
+        }
+
+        .zfb_icon {
+            width: 100%;
+            height: 180px;
+            background: #f4f4f4;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .zfb_icon img {
+            width: 100px;
+            height: 100px;
+            background-size: 100% 100%;
+            position: absolute;
+            top: 30px;
+            left: 50%;
+            margin-left: -50px;
+        }
+
+        .zfb_icon p {
+            position: absolute;
+            width: 100%;
+            height: 40px;
+            top: 140px;
+            left: 0;
+            text-align: center;
+            line-height: 40px;
+            color: #999;
+        }
+
+        .set_user {
+            width: calc(100%- 12px);
+            height: 110px;
+            background: #fff;
+            margin-left: 12px;
+        }
+
+        .set_area {
+            width: 100%;
+            height: auto;
+            background: #fff;
+            overflow: hidden;
+        }
+
+        .set_item {
+            width: calc(100% - 24px);
+            height: 55px;
+            background: #fff;
+            margin-left: 12px;
+            position: relative;
+        }
+
+        .set_right {
+            width: 25px;
+            height: 25px;
+            float: right;
+        }
+
+        img {
+            width: 100%;
+            height: 100%;
+            background-size: 100% 100%;
+        }
+
+        .set_border {
+            border-bottom: solid 1px #dddddd;
+        }
+
+        .set_middle {
+            width: auto;
+            height: 55px;
+            float: left;
+            line-height: 55px;
+        }
+
+        .forward_top {
+            margin-top: 16px;
+        }
+
+        .set_top {
+            margin-top: 10px;
+        }
+
+        .about_us {
+            width: calc(100% - 24px);
+            margin: 30px 12px;
+            height: auto;
+            color: #888;
+            line-height: 30px;
+        }
+
+        .copyright {
+            margin-top: 100px;
+            font-size: 0.8rem;
+            text-align: center;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="zfb_icon"><img src="../../image/zhanwei.jpg" id="pic" style="border-radius: 10%;">
+        <p class="appname"></p>
+    </div>
+    <div class="about_us">
+        <p class="guanyu_info"></p>
+        <p class="copyright">copyright @ <span class="gongsi"></span> </p>
+    </div>
+</body>
+<script type="text/javascript" src="../../script/api.js"></script>
+<script type="text/javascript" src="../../script/jquery.js"></script>
+<script type="text/javascript" src="../../script/api_common.js"></script>
+<script type="text/javascript">
+    apiready = function() {
+        api.ajax({
+            url: commonUrl + 'soukeAppTttService/service/h5/user/h5FindCompany',
+            method: 'post',
+            headers: {
+                'Content-Type': 'application/json;charset=utf-8'
+            },
+            dataTpye: 'json',
+        }, function(ret, err) {
+            if (ret) {
+                // console.log("打印数据"+JSON.stringify(ret));
+                var data = ret.result_data;
+                var appname = data.app_name;
+                var guanyu_info = data.guanyu_info;
+                var gongsi = data.company_name;
+                var pic = data.logo_url;
+                $api.dom(".appname").innerHTML = appname;
+                $api.dom(".guanyu_info").innerHTML = guanyu_info;
+                $api.dom(".gongsi").innerHTML = gongsi;
+                $api.attr($api.byId('pic'), 'src', pic);
+            } else {
+                api.toast({
+                    msg: '唉！网络不见了，请检查网络连接',
+                    duration: 2000,
+                    location: 'middle'
+                });
+            }
+        });
+
+    };
+</script>
+
+</html>

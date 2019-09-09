@@ -1,0 +1,361 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0" />
+  <title>title</title>
+  <link rel="stylesheet" type="text/css" href="../../css/api.css" />
+  <!-- <link rel="stylesheet" type="text/css" href="../../css/style.css" /> -->
+  <style>
+    html,body{
+      height: auto;
+      background: #F4F4F4;
+      width: 100%;
+      overflow: hidden;
+    }
+    .label_item{
+      width:calc(100% - 12px);
+      height: auto;
+      margin-left: 12px;
+    }
+    .label_list{
+      padding:15px auto;
+      width: 100%;
+      height: auto;
+      margin: 10px auto;
+    }
+    .set_border{
+      border-bottom: solid 1px #dddddd;
+    }
+    .label_title{
+      width: 100%;
+      height: 30px;
+    }
+    .label_title .label_sex{
+      height: 30px;
+      width: calc(100% - 20px);
+      float: left;
+      line-height: 30px;
+    }
+    .label_title .label_sex span{
+      color: #888;
+    }
+    .label_title .label_img{
+      width: 10px;
+      height: 10px;
+      float: left;
+      margin-top:5px;
+      margin-right: 5px;
+    }
+    img{
+      width: 100%;
+      height: 100%;
+      background-size: 100% 100%;
+    }
+    .label_list ul{list-style: none;padding: 10px auto;margin: 10px auto;width: 100%;height: auto;overflow: hidden;}
+    .label_list ul li{
+      float: left;
+      width: 17%;
+      height: 30px;
+      border-radius: 20px;
+      border: solid 1px #ddd;
+      text-align: center;
+      line-height: 30px;
+      margin-right: 2%;
+      margin-bottom: 10px;
+      font-size: 12px;
+    }
+    .label_list ul li:nth-child(5n){
+      margin-right: 0;
+    }
+    .label_active{
+      background: #F34A4D;
+      color:#fff;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="label_item">
+    <!-- 性别-->
+    <div class="label_list set_border oneItem">
+      <div class="label_title"><div class="label_img"><img src="../../image/home/home_radios_gray.png" alt=""></div><div class="label_sex">性别</div></div>
+      <ul>
+        <li class="sex" sex="0">女</li>
+        <li class="sex" sex="1">男</li>
+      </ul>
+    </div>
+    <!-- 婚育-->
+    <div class="label_list set_border oneItem">
+      <div class="label_title"><div class="label_img"><img src="../../image/home/home_radios_gray.png" alt=""></div><div class="label_sex">婚育</div></div>
+      <ul>
+        <li class="marriage"  marriage="1">单身</li>
+        <li class="marriage"  marriage="2">恋爱</li>
+        <li class="marriage"  marriage="3">已婚</li>
+        <li class="marriage"  marriage="4">已育</li>
+      </ul>
+    </div>
+    <!-- 年龄-->
+    <div class="label_list set_border oneItem">
+      <div class="label_title"><div class="label_img"><img src="../../image/home/home_radios_gray.png" alt=""></div><div class="label_sex">年龄</div></div>
+      <ul>
+        <li class="aage" aage="1">90后</li>
+        <li class="aage" aage="2">80后</li>
+        <li class="aage" aage="3">70后</li>
+        <li class="aage" aage="4">其他</li>
+      </ul>
+    </div>
+    <!-- 职业-->
+    <div class="label_list set_border oneItem">
+      <div class="label_title"><div class="label_img"><img src="../../image/home/home_radios_gray.png" alt=""></div><div class="label_sex">职业</div></div>
+      <ul>
+        <li class="work" work="1">学生</li>
+        <li class="work" work="2">上班</li>
+        <li class="work" work="0">辣妈</li>
+        <li class="work" work="4">自由职业</li>
+      </ul>
+    </div>
+    <!-- 喜好类目-->
+    <div class="label_list moreItem">
+      <div class="label_title"><div class="label_img"><img src="../../image/home/home_radios_gray.png" alt=""></div><div class="label_sex">喜好类目 <span>请选择四项以上</span></div></div>
+      <ul id="goodsType">
+        <!-- <li>美妆</li>
+        <li>服饰</li>
+        <li>家居</li>
+        <li>母婴</li>
+        <li>美食</li>
+        <li>美妆</li>
+        <li>服饰</li>
+        <li>家居</li>
+        <li>母婴</li>
+        <li>美食</li>
+        <li>美妆</li>
+        <li>服饰</li>
+        <li>家居</li> -->
+      </ul>
+    </div>
+  </div>
+  <div class="submitBtn submitColor" onclick="saveLabel();">保存</div>
+</body>
+  <script type="text/javascript" src="../../script/api.js"></script>
+  <script type="text/javascript" src="../../script/jquery.js"></script>
+  <script type="text/javascript" src="../../script/api_common.js"></script>
+  <script type="text/javascript" src="../../script/md5.js"></script>
+  <script type="text/javascript">
+    var user_id;
+    apiready = function() {
+      user_id=$api.getStorage("userInfo").user_id;
+      getLabelList();
+      getGoodsType();
+    }
+    var oneList=$(".oneItem ul li");
+    oneList.click(function(){
+      $(this).addClass("label_active").siblings().removeClass("label_active");
+    });
+
+    var sex=$(".sex");
+    var marriage=$(".marriage");
+    var aage=$(".aage");
+    var work=$(".work");
+    function getLabelList(){
+      var obj={
+        'user_id':user_id
+      };
+      var objArr=sort_ASCII(obj);
+      var timestamp=fntimestamp();
+      var version='2.0';
+      var arr=apiSecret+timestamp+version+'';
+      for(i in objArr){
+        arr+=objArr[i];
+      }
+      var sign=hex_md5(arr);
+      api.ajax({
+          url: commonUrl+'soukeAppTttService/service/user/getLabel_ac',
+          method: 'post',
+          headers: {
+              'Content-Type': 'application/json;charset=utf-8'
+          },
+          data: {
+              body: {
+                  'apiKey':apiKey,
+                  'timestamp':timestamp,
+                  'sign':sign,
+                  'user_id':user_id,
+              }
+          }
+        }, function(ret, err) {
+          if (ret) {
+              if(ret.result_code==200){
+                console.log("用户标签"+JSON.stringify(ret));
+
+                    for(var s=0;s<sex.length;s++){
+                      if($(sex[s]).attr("sex")==ret.result_data.sex){
+                        $(sex[s]).addClass("label_active");
+                      }
+                    }
+                    for(var m=0;m<marriage.length;m++){
+                      if(ret.result_data.marriage==0){
+                        $(marriage[0]).addClass("label_active");
+                      }else{
+                        if($(marriage[m]).attr("marriage")==ret.result_data.marriage){
+                          $(marriage[m]).addClass("label_active");
+                        }
+                      }
+                    }
+                    for(var w=0;w<work.length;w++){
+                      if(ret.result_data.work==0){
+                        $(work[0]).addClass("label_active");
+                      }else{
+                        if($(work[w]).attr("work")==ret.result_data.work){
+                          $(work[w]).addClass("label_active");
+                        }
+                      }
+                    }
+                    for(var a=0;a<aage.length;a++){
+                      if(ret.result_data.age==0){
+                        $(aage[0]).addClass("label_active");
+                      }else{
+                        if($(aage[a]).attr("aage")==ret.result_data.age){
+                          $(aage[a]).addClass("label_active");
+                        }
+                      }
+                    }
+              }else{
+                  api.toast({
+                      msg: ret.result_message,
+                      duration: 2000,
+                      location: 'middle'
+                  });
+
+              }
+          } else {
+              // api.alert({ msg: "222222:"+JSON.stringify(err) });
+          }
+        });
+    }
+    //获取喜好类目
+    function getGoodsType(){
+      var obj={
+        // 'user_id':user_id
+      };
+      var objArr=sort_ASCII(obj);
+      var timestamp=fntimestamp();
+      var version='2.0';
+      var arr=apiSecret+timestamp+version+'';
+      for(i in objArr){
+        arr+=objArr[i];
+      }
+      var sign=hex_md5(arr);
+      api.ajax({
+          url: commonUrl+'soukeAppTttService/service/user/goodstype_ac',
+          method: 'post',
+          headers: {
+              'Content-Type': 'application/json;charset=utf-8'
+          },
+          data: {
+              body: {
+                  'apiKey':apiKey,
+                  'timestamp':timestamp,
+                  'sign':sign
+              }
+          }
+        }, function(ret, err) {
+          if (ret) {
+              if(ret.result_code==200){
+                console.log("用户喜好类目标签"+JSON.stringify(ret));
+                var htmlGtype='';
+                for(var i=0;i<ret.result_data.length;i++){
+                  htmlGtype+='<li id="'+ret.result_data[i].id+'">'+ret.result_data[i].class_cn+'</li>'
+                }
+                $api.byId('goodsType').innerHTML=htmlGtype;
+                var moreList=$(".moreItem ul li");
+                moreList.click(function(){
+                  if ($(this).hasClass("label_active")) {
+                    $(this).removeClass("label_active");
+                  } else {
+                    $(this).addClass("label_active");
+                  }
+                });
+              }else{
+              }
+          } else {
+              // api.alert({ msg: "222:"+JSON.stringify(err) });
+          }
+        });
+    }
+    var s_age,s_marriage,s_work,s_sex,s_like_type;
+    function saveLabel(){
+        // alert(0000);
+      for(var a=0;a<aage.length;a++){
+        if($(aage[a]).hasClass("label_active")){
+          s_age=$(aage[a]).attr("aage");
+        }
+      }
+      for(var m=0;m<marriage.length;m++){
+        if($(marriage[m]).hasClass("label_active")){
+          s_marriage=$(marriage[m]).attr("marriage");
+        }
+      }
+      for(var w=0;w<work.length;a++){
+        if($(work[w]).hasClass("label_active")){
+          s_work=$(work[w]).attr("work");
+        }
+      }
+      for(var s=0;s<sex.length;s++){
+        if($(sex[s]).hasClass("label_active")){
+          s_sex=$(sex[s]).attr("sex");
+        }
+      }
+      // alert(s_age+"---"+"--"+s_work+"==="+s_marriage+"---"+s_sex);
+      // return;
+      var obj={
+        'user_id':user_id,
+        'marriage':s_marriage,
+        'age':s_age,
+        'work':s_work,
+        'like_type':s_like_type,
+        'sex':s_sex
+      };
+      var objArr=sort_ASCII(obj);
+      var timestamp=fntimestamp();
+      var version='2.0';
+      var arr=apiSecret+timestamp+version+'';
+      for(i in objArr){
+        arr+=objArr[i];
+      }
+      var sign=hex_md5(arr);
+      api.ajax({
+          url: commonUrl+'soukeAppTttService/service/user/saveLabel_ac',
+          method: 'post',
+          headers: {
+              'Content-Type': 'application/json;charset=utf-8'
+          },
+          data: {
+              body: {
+                  'apiKey':apiKey,
+                  'timestamp':timestamp,
+                  'sign':sign,
+                  'user_id':user_id,
+                  'marriage':marriage,
+                  'age':age,
+                  'work':work,
+                  'like_type':like_type,
+                  'sex':sex
+              }
+          }
+        }, function(ret, err) {
+          if (ret) {
+              if(ret.result_code==200){
+                // console.log("baocun"+JSON.stringify(ret));
+
+              }else{
+              }
+          } else {
+              // api.alert({ msg: "222:"+JSON.stringify(err) });
+          }
+        });
+    }
+  </script>
+
+</html>

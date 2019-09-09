@@ -1,0 +1,465 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0" />
+    <title>邀请好友</title>
+    <link rel="stylesheet" type="text/css" href="../../css/api.css" />
+    <link rel="stylesheet" type="text/css" href="../../css/style.css" />
+</head>
+<style media="screen">
+    html,
+    body {
+        height: 100%;
+        width: 100%;
+    }
+
+    .invite_item {
+        width: 100%;
+        height: 100%;
+        /*background: red;*/
+        overflow-x: hidden;
+        overflow-y: auto;
+        background-size: 100% 100%;
+    }
+
+    .invite_item .invite_gz {
+        width: calc(100% - 48px);
+        margin: 0 auto;
+        height: auto;
+        color: #fff;
+        overflow: hidden;
+    }
+
+    .invite_item .invite_gz .gz_title {
+        height: 40px;
+        width: 100%;
+        line-height: 40px;
+        text-align: center;
+        font-size: 18px;
+    }
+
+    .invite_item .invite_gz p {
+        width: 100%;
+        line-height: 25px;
+        font-size: 14px;
+        text-align: left;
+    }
+
+    .invite_item .invite_yqm {
+        height: 110px;
+        width: calc(100% - 24px);
+        margin: 10px auto;
+        background: #fff;
+        border-radius: 5px;
+    }
+
+    .user_codeItem {
+        width: 100%;
+        height: 100%;
+        position: absolute;
+        top: 0;
+        left: 0;
+        z-index: 999;
+    }
+
+    .invite_item .invite_yqm .yqm {
+        width: 100%;
+        height: 55px;
+        line-height: 55px;
+        font-size: 30px;
+        color: #f94529;
+        text-align: center;
+        letter-spacing: 8px;
+    }
+
+    .invite_item .invite_yqm .copy_yqm {
+        width: 180px;
+        height: 28px;
+        text-align: center;
+        line-height: 28px;
+        font-size: 14px;
+        margin: 0 auto;
+        border-radius: 15px;
+        color: #fff;
+    }
+
+    .invite_item .invite_haibao {
+        width: calc(100% - 24px);
+        height: 90px;
+        background: #fff;
+        border-radius: 5px;
+        overflow: hidden;
+        margin: 10px auto 10px auto;
+        position: relative;
+    }
+
+    .invite_haibao img {
+        width: 100%;
+        height: 100%;
+        background-size: 100% 100%;
+        position: absolute;
+        top: 0;
+        left: 0;
+    }
+</style>
+
+<body>
+    <div class="invite_item">
+        <div class="invite_gz">
+            <div class="gz_title">邀请规则</div>
+            <p>1. 可直接复制邀请码给好友下载APP注册填写;</p>
+            <p>2. 可以面对面生成二维码好友直接扫码注册;</p>
+            <p>3. 专属海报中的二维码和邀请链接已经包含您的邀请信息;
+            </p>
+            <p>4. Ta将永久成为您的下级会员，未来Ta产生的订单佣金您都有奖励，会自动计入您的账户中。</p>
+        </div>
+        <div class="invite_yqm invite_haibao">
+            <img src="../../image/Placeholder.jpg" alt="" id="pic2">
+            <div class="user_codeItem">
+                <div class="yqm" id="user_code"></div>
+                <div class="copy_yqm submitColor" tapmode>复制邀请码</div>
+            </div>
+        </div>
+        <div class="invite_haibao" tapmode onclick="fnOpenYaoqingLayout();">
+            <img src="../../image/Placeholder.jpg" alt="" id="pic3">
+        </div>
+        <div class="invite_haibao" tapmode onclick="fnOpenShareHaibao();">
+            <img src="../../image/Placeholder.jpg" alt="" id="pic4">
+        </div>
+        <div class="invite_haibao" tapmode onclick="actionMenu();">
+            <img src="../../image/Placeholder.jpg" alt="" id="pic5">
+        </div>
+    </div>
+</body>
+<script type="text/javascript" src="../../script/api.js"></script>
+<script type="text/javascript" src="../../script/jquery.js"></script>
+<script type="text/javascript" src="../../script/api_common.js"></script>
+<script type="text/javascript" src="../../script/md5.js"></script>
+<script type="text/javascript">
+    var user_id, user_code;
+    var dialogBox;
+    apiready = function() {
+        if (!empty($api.getStorage("userInfo"))) {
+            user_id = $api.getStorage("userInfo").user_id;
+            dialogBox = api.require('dialogBox');
+        }
+        if (empty(user_id)) {} else {
+            getUserInfo(); //获取用户信息
+            getData();
+        }
+        $(".copy_yqm").click(function() {
+            var clipBoard = api.require('clipBoard');
+            clipBoard.set({
+                value: user_code
+            }, function(ret, err) {
+                if (ret) {
+                    // alert(JSON.stringify(ret));
+                    api.toast({
+                        msg: '复制成功',
+                        duration: 2000,
+                        location: 'middle'
+                    });
+
+                } else {
+                    // alert(JSON.stringify(err));
+                }
+            });
+        })
+
+    };
+
+    //获取用户信息
+    function getUserInfo() {
+        var obj = {
+            'user_id': user_id
+        };
+        var objArr = sort_ASCII(obj);
+        var timestamp = fntimestamp();
+        var version = '2.0';
+        var arr = apiSecret + timestamp + version + '';
+        for (i in objArr) {
+            arr += objArr[i];
+        }
+        var sign = hex_md5(arr);
+        api.ajax({
+            url: commonUrl + 'soukeAppTttService/service/user/message_ac',
+            method: 'post',
+            headers: {
+                'Content-Type': 'application/json;charset=utf-8'
+            },
+            data: {
+                body: {
+                    'apiKey': apiKey,
+                    'timestamp': timestamp,
+                    'sign': sign,
+                    'user_id': user_id,
+                }
+            }
+        }, function(ret, err) {
+            if (ret) {
+                if (ret.result_code == 200) {
+                    console.log("用户信息" + JSON.stringify(ret));
+                    user_code = ret.result_user.invitation_code;
+
+                    $api.byId('user_code').innerHTML = ret.result_user.invitation_code;
+                    // alert(JSON.stringify(ret.result_user.invitation_code));
+                    // var user_code=ret.result_user.invitation_code;
+                } else {
+                    api.toast({
+                        msg: ret.result_message,
+                        duration: 2000,
+                        location: 'middle'
+                    });
+
+                }
+            } else {
+                // api.alert({ msg: JSON.stringify(err) });
+            }
+        });
+    }
+    //弹出蒙版  设置开关
+    //打开筛选页-------begin
+    window.showFlag = false;
+
+    function fnOpenYaoqingLayout() {
+        var resultList = api.hasPermission({
+            list: ['photos']
+        });
+        if (!resultList[0].granted) {
+            //存储未授权
+            api.requestPermission({
+                list: ['photos'],
+                code: 1000
+            }, function(ret, err) {
+                // api.alert({
+                //     msg: JSON.stringify(ret)
+                // });
+                if (!ret.never) {
+                    //禁止权限
+                    return;
+                } else {
+                    fnOpenYaoqingLayoutTo();
+                }
+            });
+        } else {
+            fnOpenYaoqingLayoutTo();
+        }
+        // api.alert({
+        //     msg: JSON.stringify(resultList)
+        // });
+    }
+
+    function fnOpenYaoqingLayoutTo() {
+        if (window.showFlag == false) {
+            api.openFrame({
+                name: 'yaoqing_layout',
+                url: 'yaoqing_layout.html',
+                rect: {
+                    x: 0,
+                    y: 0,
+                    w: 'auto',
+                    h: api.appParam.body_h
+                },
+                pageParam: {
+                    user_code: user_code
+                },
+                bounces: false,
+                bgColor: 'rgba(0,0,0,0)',
+                vScrollBarEnabled: true,
+                hScrollBarEnabled: true
+            });
+            window.showFlag = true;
+        } else {
+            closeYaoqingLayout();
+        }
+    }
+
+    function closeYaoqingLayout() {
+        api.closeFrame({
+            name: 'yaoqing_layout'
+        });
+        window.showFlag = false;
+    }
+    //打开面对面邀请页-------end
+    //打开分享海报页面
+    function fnOpenShareHaibao() {
+        api.openWin({
+            name: 'share_haibao_win',
+            url: '../win/share_haibao_win.html',
+            pageParam: {
+                name: 'test'
+            }
+        });
+    }
+
+    function getData() {
+        var obj = {
+            // 'section_id':'66',
+        };
+        var objArr = sort_ASCII(obj);
+        var timestamp = fntimestamp();
+        var version = '2.0';
+        var arr = apiSecret + timestamp + version + '';
+        for (i in objArr) {
+            arr += objArr[i];
+        }
+        var sign = hex_md5(arr);
+        api.ajax({
+            url: commonUrl + 'soukeAppTttService/service/invite/findinvite_ac',
+            method: 'post',
+            headers: {
+                'Content-Type': 'application/json;charset=utf-8'
+            },
+            data: {
+                body: {
+                    'apiKey': apiKey,
+                    'timestamp': timestamp,
+                    'sign': sign,
+                }
+            }
+        }, function(ret, err) {
+            if (ret) {
+                if (ret.result_code == 200) {
+                    // console.log("邀请："+JSON.stringify(ret));
+                    $(".invite_item").css("background", "url('" + ret.result_data.pic1 + "')");
+                    $("#pic2").attr("src", ret.result_data.pic2);
+                    $("#pic3").attr("src", ret.result_data.pic3);
+                    $("#pic4").attr("src", ret.result_data.pic4);
+                    $("#pic5").attr("src", ret.result_data.pic5);
+                } else {
+
+                }
+            } else {
+                // api.alert({ msg: JSON.stringify(err) });
+            }
+        });
+    }
+
+    function actionMenu() {
+        dialogBox.actionMenu({
+            rect: {
+                h: 150
+            },
+            texts: {
+                cancel: '取消'
+            },
+            tapClose: true,
+            items: [{
+                text: '微信好友',
+                icon: 'widget://image/goods/share_wx.png'
+            }, {
+                text: '朋友圈',
+                icon: 'widget://image/goods/share_wxzone.png'
+            }, {
+                text: 'QQ',
+                icon: 'widget://image/goods/share_qq.png'
+            }, {
+                text: '微信收藏',
+                icon: 'widget://image/goods/share_creat.png'
+            }, {
+                text: 'QQ空间',
+                icon: 'widget://image/goods/share_qqzone.png'
+                    // }, {
+                    //     text: '微博',
+                    //     icon: 'widget://image/goods/share_wb.png'
+            }],
+            styles: {
+                bg: '#FFF',
+                column: 4,
+                itemText: {
+                    color: '#000',
+                    size: 12,
+                    marginT: 4,
+                },
+                itemIcon: {
+                    size: 40
+                },
+                cancel: {
+                    bg: 'fs://icon.png',
+                    color: '#000',
+                    h: 44,
+                    size: 14
+                }
+            }
+        }, function(ret) {
+            // alert(JSON.stringify(ret));
+            if (ret.eventType == "cancel") {
+                closeDialog();
+            } else if (ret.index == 0) {
+                closeDialog();
+                shareOne('session');
+            } else if (ret.index == 1) {
+                closeDialog();
+                shareOne('timeline');
+            } else if (ret.index == 2) {
+                closeDialog();
+                shareTwo('QFriend');
+            } else if (ret.index == 3) {
+                closeDialog();
+                shareOne('favorite');
+            } else if (ret.index == 4) {
+                closeDialog();
+                shareTwo('QZone');
+            } else if (ret.index == 5) {
+                closeDialog();
+                shareTwo('xinLang');
+            }
+        });
+    }
+
+    function closeDialog() {
+        dialogBox.close({
+            dialogName: 'actionMenu'
+        });
+    }
+
+    function shareOne(type) {
+        var wx = api.require('wx');
+        wx.shareWebpage({
+            apiKey: '',
+            scene: type,
+            title: '分享来自券券推',
+            description: '全网搜索隐藏优惠券,券券推为您提供更多优惠信息。',
+            thumb: commonUrl + 'soukeAppTttService/images/logo/logo.jpg',
+            contentUrl: commonUrl + 'h5/qqt/index.html?yqm=' + user_code + ''
+        }, function(ret, err) {
+            // alert(err.code);
+            console.log("分享返回结果：" + JSON.stringify(err.code));
+            if (ret.status) {
+                // alert('分享成功');
+            } else {
+                // alert(err.code);
+            }
+        });
+
+    }
+
+    function shareTwo(type) {
+        // var sharedModule = api.require('shareAction');
+        // sharedModule.share({
+        //     text: commonUrl + 'h5/qqt/index.html?yqm=' + user_code + '',
+        //     type: 'text',
+        // });
+        var qq = api.require('QQPlus');
+        qq.shareNews({
+            type: type,
+            url: commonUrl + 'h5/qqt/index.html?yqm=' + user_code + '',
+            title: '分享来自券券推',
+            description: '全网搜索隐藏优惠券,券券推为您提供更多优惠信息。',
+            imgUrl: commonUrl + 'soukeAppTttService/images/logo/logo.jpg'
+        }, function(ret, err) {
+            if (ret.status) {
+                // alert("分享成功！");
+            } else {
+                // api.alert({
+                //     msg: JSON.stringify(err)
+                // });
+            }
+        });
+        // alert(text);
+    }
+</script>
+
+</html>

@@ -1,0 +1,1220 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0" />
+    <!-- 解决IOS数字出现蓝色数字问题  -->
+    <meta name="format-detection" content="telephone=no" />
+    <title>我的</title>
+    <link rel="stylesheet" type="text/css" href="../../css/api.css" />
+    <link rel="stylesheet" type="text/css" href="../../css/swiper.min.css" />
+    <style>
+        html,
+        body {
+            width: 100%;
+            height: 100%;
+            background: #f4f4f4;
+            font-size: 14px;
+            background-color: #fff;
+            /*overflow-x: hidden;
+      overflow-y: auto;*/
+        }
+
+        #my_frame {
+            width: 100%;
+            height: auto;
+            background: #f4f4f4;
+            font-size: 14px;
+            overflow-x: hidden;
+            overflow-y: auto;
+        }
+
+        .my_frame {
+            width: 100%;
+            height: 150px;
+            background: #f4f4f4;
+            position: relative;
+        }
+
+        .my_head {
+            width: 100%;
+            height: 175px;
+            background: #fff;
+        }
+
+        .home_info {
+            position: absolute;
+            width: 24px;
+            height: 24px;
+            top: 32px;
+            left: 12px;
+        }
+
+        .set_info {
+            position: absolute;
+            width: 24px;
+            height: 24px;
+            top: 32px;
+            right: 12px;
+        }
+
+        img {
+            width: 100%;
+            height: 100%;
+            background-size: 100% 100%;
+            border-radius: 10px;
+        }
+
+        .head_info {
+            width: calc(100% - 42px);
+            height: 70px;
+            position: absolute;
+            left: 21px;
+            top: 76px;
+        }
+
+        .head_info ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .head_info ul li {
+            float: left;
+            color: #fff;
+        }
+
+        .head_info ul li.head_icon {
+            height: 60px;
+            width: 60px;
+            border: 5px solid #FFE1D0;
+            border-radius: 50%;
+        }
+
+        .head_info ul li.head_icon img {
+            border-radius: 50%;
+        }
+
+        .head_info ul li.user_info {
+            height: 60px;
+            width: calc(100% - 80px);
+            margin-left: 6px;
+        }
+
+        .head_info ul li.user_info .user_name {
+            width: 100%;
+            height: 25px;
+            line-height: 21px;
+            /*background: green;*/
+            margin-top: 11px;
+        }
+
+        .head_info ul li.user_info .user_name .cjhy {
+            width: auto;
+            height: 12px;
+            margin-left: 5px;
+            font-size: 12px;
+            background: #353535;
+            line-height: 12px;
+            text-align: center;
+            border-radius: 2px;
+            padding: 3px;
+            color: #DABC96;
+            position: absolute;
+        }
+
+        .head_info ul li.user_info .user_name .my_name {
+            max-width: calc(100% - 110px);
+            font-size: 14px;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+            -webkit-box-orient: vertical;
+            -webkit-line-clamp: 1;
+            overflow: hidden;
+        }
+
+        .head_info ul li.user_info .user_yqm {
+            width: 100%;
+            height: 30px;
+            line-height: 30px;
+        }
+
+        .copy_btn{
+          font-size: 12px
+        }
+
+        .head_info ul li.user_info .user_yqm .copy_btn {
+            width: 45px;
+            height: 18px;
+            /*background: #FD8A6F;*/
+            border: solid 1px #fff;
+            line-height: 20px;
+            /*padding: 2px 6px;*/
+            border-radius: 15px;
+            margin-left: 5px;
+            text-align: center;
+        }
+
+        .user_qd {
+            width: calc(100% - 24px);
+            position: relative;
+            /* top: 155px; */
+            /* left: 12px; */
+            height: 50px;
+            background: #fff;
+            border-radius: 10px;
+            color: #333;
+            /* display: none; */
+            margin: 10px auto auto auto;
+        }
+
+        .user_qd ul {
+            list-style: none;
+            margin: 0;
+            padding: 0;
+        }
+
+        .user_qd ul li {
+            float: left;
+            width: 33.3%;
+            height: 50px;
+            line-height: 50px;
+        }
+
+        .user_qd ul li span.qd_title {
+            height: 27px;
+            position: relative;
+            top: 2px;
+        }
+
+        .user_qd ul li img {
+            width: 22px;
+            height: 22px;
+            vertical-align: middle;
+            display: inline-block;
+            margin-left: 26px;
+            margin-right: 5px;
+            background-size: 100% 100%;
+        }
+
+        .my_money {
+            width: calc(100% - 24px);
+            height: 150px;
+            background: #fff;
+            border-radius: 10px;
+            margin: 10px auto auto auto;
+        }
+
+        .money_top {
+            width: 100%;
+            height: 70px;
+            border-bottom: solid 1px #ddd;
+        }
+
+        .money_top .vip_data {
+            width: calc(100% - 24px);
+            height: 30px;
+            line-height: 30px;
+            color: #DABC96;
+            margin: 0 auto;
+            /*background: red;*/
+        }
+
+        .money_top .vip_data .vip_tq {
+            float: right;
+        }
+
+        .money_top .vip_data .vip_left {
+            float: left;
+        }
+
+        .money_top div.money_left {
+            float: left;
+            margin-left: 12px;
+            width: auto;
+        }
+
+        .money_top div.money_left .money_cont {
+            margin-top: 10px;
+            margin-bottom: 5px;
+            color: #333;
+        }
+
+        .money_top div.money_left .money_cont .tx_je {
+            font-size: 18px;
+            color: #FA4D2D;
+        }
+
+        .money_top div.money_left .money_month {
+            color: #999;
+            font-size: 12px;
+        }
+
+        .tixian_btn {
+            width: 60px;
+            height: 14px;
+            color: #666;
+            border: solid 1px #666;
+            line-height: 14px;
+            text-align: center;
+            float: right;
+            margin-right: 12px;
+            padding: 5px 12px;
+            border-radius: 15px;
+            margin-top: 22px;
+        }
+
+        .money_bottom {
+            height: 78px;
+            width: 100%;
+        }
+
+        .money_bottom ul {
+            list-style: none;
+            margin: 0;
+            padding: 0;
+        }
+
+        .money_bottom ul li {
+            float: left;
+            width: 33%;
+            height: 50px;
+            text-align: center;
+            color: #FA4D2D;
+            line-height: 25px;
+            margin-top: 12px;
+        }
+
+        .money_bottom ul li:nth-child(1),
+        .money_bottom ul li:nth-child(2) {
+            border-right: solid 1px #ddd;
+        }
+
+        .money_bottom ul li p {
+            color: #666;
+            font-size: 12px;
+        }
+
+        .meitu {
+            width: calc(100% - 24px);
+            height: auto;
+            margin: 10px auto;
+            border-radius: 10px;
+        }
+
+        .my_gj_bog {
+            border-radius: 10px;
+            height: auto;
+            width: calc(100% - 24px);
+            margin: 10px auto;
+            background: #fff;
+            border-radius: 10px;
+            overflow: hidden;
+        }
+
+        .my_gj_bog ul {
+            list-style: none;
+            margin: 0;
+            padding: 0;
+        }
+
+        .my_gj_bog ul li {
+            float: left;
+            width: 25%;
+            height: 88px;
+            text-align: center;
+        }
+
+        .my_gj_bog ul li img {
+            margin-top: 10px;
+            width: 40px;
+            height: 40px;
+            background-size: 100% 100%;
+        }
+
+        .my_gj1 {
+            width: calc(100% - 24px);
+            margin: 10px auto;
+            background: #fff;
+            height: auto;
+            overflow: hidden;
+            border-radius: 10px;
+        }
+
+        .my_gj1 .gj_title {
+            width: 100%;
+            height: 37px;
+            line-height: 37px;
+            border-bottom: solid 1px #eee;
+        }
+
+        .my_gj1 .gj_title {
+            padding-left: 15px;
+        }
+
+        .my_gj1 ul {
+            list-style: none;
+            margin: 0;
+            padding: 0;
+        }
+
+        .my_gj1 ul li {
+            float: left;
+            width: 25%;
+            height: 88px;
+            text-align: center;
+        }
+
+        .my_gj1 ul li img {
+            margin-top: 10px;
+            width: 40px;
+            height: 40px;
+            background-size: 100% 100%;
+        }
+        /*工具类型单列样式 开始*/
+
+        .my_gj2 {
+            width: calc(100% - 24px);
+            margin: 10px auto;
+            background: #fff;
+            height: auto;
+            overflow: hidden;
+            border-radius: 10px;
+        }
+
+        .my_gj2 .gj_title {
+            width: 100%;
+            height: 37px;
+            line-height: 37px;
+            border-bottom: solid 1px #eee;
+        }
+
+        .my_gj2 .gj_title {
+            padding-left: 15px;
+        }
+
+        .my_gj2 ul {
+            list-style: none;
+            margin: 0;
+            padding: 0;
+        }
+
+        .my_gj2 ul li {
+            width: calc(100% - 12px);
+            height: 55px;
+            background: #fff;
+            margin-left: 12px;
+            position: relative;
+            border-bottom: solid 1px #dddddd;
+        }
+
+        .my_gj2 ul li img {
+            height: 40px;
+            width: 40px;
+            float: left;
+            background-size: 100% 100%;
+            margin-top: 8px;
+            margin-right: 10px;
+        }
+
+        .my_gj2 ul li p {
+            width: auto;
+            height: 55px;
+            float: left;
+            line-height: 55px;
+            font-size: 1rem;
+        }
+
+        .right_forward {
+            width: 32px;
+            height: 32px;
+            float: right;
+            margin-top: 2px;
+        }
+
+        .right_forward .set_right {
+            width: 100%;
+            height: 100%;
+            background-size: 100% 100%;
+        }
+        /*工具类型单列样式 结束*/
+        /*轮播图*/
+
+        .swiper-container {
+            width: 100%;
+            height: 100%;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .swiper-slide {
+            text-align: center;
+            font-size: 18px;
+            background: #f4f4f4;
+            /* Center slide text vertically */
+            display: -webkit-box;
+            display: -ms-flexbox;
+            display: -webkit-flex;
+            display: flex;
+            -webkit-box-pack: center;
+            -ms-flex-pack: center;
+            -webkit-justify-content: center;
+            justify-content: center;
+            -webkit-box-align: center;
+            -ms-flex-align: center;
+            -webkit-align-items: center;
+            align-items: center;
+        }
+
+        .swiper-slide img {
+            width: 100%;
+            height: 100%;
+            background-size: 100% 100%;
+        }
+
+        .my_frame_head {
+            width: 100%;
+            height: 62px;
+            background: linear-gradient(to right, #fd7239, #f94529);
+            display: none;
+        }
+
+        .fix_nav {
+            position: fixed;
+            left: 0;
+            top: 0;
+            z-index: 99999;
+        }
+
+        .head_user_name {
+            width: calc(100% - 92px);
+            height: 30px;
+            position: absolute;
+            top: 32px;
+            left: 46px;
+            text-align: center;
+            line-height: 30px;
+            color: #fff;
+            font-size: 16px;
+        }
+
+        #rankName {
+            display: none;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="my_frame_head">
+        <div class="home_info" tapmode onclick="fnOpenFunction('push_win');"><img src="../../image/home/home_info.png" alt=""></div>
+        <div class="head_user_name">还木有昵称哦~</div>
+        <div class="set_info" tapmode onclick="fnOpenFunction('set_win');"><img src="../../image/home/mine_set.png" alt=""></div>
+    </div>
+    <div id="my_frame">
+        <!--我的头部 -->
+        <div class="my_frame">
+            <div class="my_head">
+                <div class="home_info" tapmode onclick="fnOpenFunction('push_win');"><img src="../../image/home/home_info.png" alt=""></div>
+                <div class="set_info" tapmode onclick="fnOpenFunction('set_win');"><img src="../../image/home/mine_set.png" alt=""></div>
+                <div class="head_info">
+                    <ul>
+                        <li class="head_icon" tapmode onclick="fnOpenFunction('mine_info_win');"><img src="../../image/home/v2_ic_avatar.png" alt="" id="user_headImg"></li>
+                        <li class="user_info">
+                            <div class="user_name"><span class="my_name" id="nickname">还木有昵称哦~</span><span class="cjhy" id="rankName"></div>
+                            <div class="user_yqm">邀请码：<span id="copy"></span> <span class="copy_btn" id="">复制</span></div>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="user_qd">
+            <ul>
+                <li tapmode onclick="fnOpenFunction('jd_section_win');"><img src="../../image/home/bqd.png" alt=""><span class="qd_title">明细</span></li>
+                <li tapmode onclick="fnOpenFunction('collect_win');"><img src="../../image/home/bsc.png" alt=""><span class="qd_title">收藏</span></li>
+                <!-- <li tapmode onclick="fnOpenFunction('jd_my_order_win');"><img src="../../image/home/bsc.png" alt=""><span class="qd_title">收藏</span></li> -->
+                <li tapmode onclick="fnOpenFunction('zuji_win');"><img src="../../image/home/bzj.png" alt=""><span class="qd_title">足迹</span></li>
+            </ul>
+        </div>
+        <div class="my_money">
+            <div class="money_top">
+                <!-- <div class="vip_data"><div class="vip_left">您已获得VIP升级资格</div> <div class="vip_tq" tapmode onclick="fnOpenFunction('open_vip_win');">查看特权></div></div> -->
+                <div class="money_left">
+                    <div class="money_cont">可提现金额 <span class="tx_je">￥0.00</span></div>
+                    <div class="money_month" id="money_month"></div>
+                </div>
+                <div tapmode class="tixian_btn" tapmode onclick="fnOpenFunction('tixian_win');">立即提现</div>
+            </div>
+            <div class="money_bottom">
+                <ul>
+                    <li tapmode onclick="fnOpenFunction('my_lucre_win');"><span id="by_fk">0.00</span>
+                        <p>本月预估</p>
+                    </li>
+                    <li tapmode onclick="fnOpenFunction('my_lucre_win');"><span id="sy_fk">0.00</span>
+                        <p>上月预估</p>
+                    </li>
+                    <li tapmode onclick="fnOpenFunction('my_lucre_win');"><span id="sy_js">0.00</span>
+                        <p>上月结算</p>
+                    </li>
+                </ul>
+            </div>
+        </div>
+        <div class="meitu" id="my_banner">
+            <div class="swiper-container">
+                <div class="swiper-wrapper">
+                    <div class="swiper-slide"><img src="../../image/home/huaqian_bdsh_img_tip.gif" alt=""></div>
+                    <div class="swiper-slide"><img src="../../image/home/huaqian_bdsh_img_tip.gif" alt=""></div>
+                    <div class="swiper-slide"><img src="../../image/home/huaqian_bdsh_img_tip.gif" alt=""></div>
+                </div>
+            </div>
+        </div>
+        <div class="my_gj my_gj_bog">
+            <ul>
+                <li tapmode onclick="fnOpenFunction('my_lucre_win');"><img src="../../image/home/me_btn_shouyi.png" alt="">
+                    <p>收益</p>
+                </li>
+                <li tapmode onclick="fnOpenFunction('my_order_win');"><img src="../../image/home/me_btn_dingdan.png" alt="">
+                    <p>订单</p>
+                </li>
+                <li tapmode onclick="fnOpenFunction('my_fans_win');"><img src="../../image/home/me_btn_fensi.png" alt="">
+                    <p>粉丝</p>
+                </li>
+                <li tapmode onclick="fnOpenFunction('yaoqinghaoyou_win');"><img src="../../image/home/me_btn_yaoqing.png" alt="">
+                    <p>邀请</p>
+                </li>
+            </ul>
+        </div>
+        <div class="my_gj1" id="my_gj1">
+            <!-- <div class="gj_title"><span>我的工具</span></div>
+      <div class="my_gj">
+        <ul>
+          <li tapmode onclick="fnOpenFunction('xinshouzhidao_win');"><img src="../../image/home/me_btn_xinshou.png" alt=""><p>新手指导</p></li>
+          <li tapmode onclick="fnOpenFunction('guanfanggg_win');"><img src="../../image/home/me_btn_gonggao.png" alt=""><p>官方公告</p></li>
+          <li tapmode onclick="fnOpenFunction('help_win');"><img src="../../image/home/me_btn_changjianwenti.png" alt=""><p>常见问题</p></li>
+          <li tapmode onclick="fnOpenFunction('zhuanshukefu_win');"><img src="../../image/home/me_btn_kefu.png" alt=""><p>专属客服</p></li>
+          <li tapmode onclick="fnOpenFunction('yijianfankui_win');"><img src="../../image/home/me_btn_fankui.png" alt=""><p>意见反馈</p></li>
+          <li tapmode onclick="fnOpenFunction('about_us_win');"><img src="../../image/home/me_guanyu.png" alt=""><p>关于我们</p></li>
+          <li tapmode onclick="fnOpenFunction('gexing_kouling_win');"><img src="../../image/home/me_btn_zidingyi.png" alt=""><p>个性口令</p></li>
+          <li tapmode onclick="fnOpenFunction('vip_order_win');"><img src="../../image/home/me_btn_xinshou.png" alt=""><p>自营订单</p></li>
+        </ul>
+      </div> -->
+        </div>
+        <div class="my_gj2" id="my_gj2">
+            <!-- <div class="gj_title"><span>我的工具</span></div>
+      <div class="my_gj">
+        <ul>
+          <li tapmode onclick="fnOpenFunction('xinshouzhidao_win');"><img src="../../image/home/me_btn_xinshou.png" alt=""><p>新手指导</p><div class="right_forward">
+          <img src="../../image/home/mine_forward.png" alt="" class="set_right">
+        </div></li>
+          <li tapmode onclick="fnOpenFunction('guanfanggg_win');"><img src="../../image/home/me_btn_gonggao.png" alt=""><p>官方公告</p><div class="right_forward">
+          <img src="../../image/home/mine_forward.png" alt="" class="set_right">
+        </div></li>
+          <li tapmode onclick="fnOpenFunction('help_win');"><img src="../../image/home/me_btn_changjianwenti.png" alt=""><p>常见问题</p><div class="right_forward">
+          <img src="../../image/home/mine_forward.png" alt="" class="set_right">
+        </div></li>
+          <li tapmode onclick="fnOpenFunction('zhuanshukefu_win');"><img src="../../image/home/me_btn_kefu.png" alt=""><p>专属客服</p><div class="right_forward">
+          <img src="../../image/home/mine_forward.png" alt="" class="set_right">
+        </div></li>
+          <li tapmode onclick="fnOpenFunction('yijianfankui_win');"><img src="../../image/home/me_btn_fankui.png" alt=""><p>意见反馈</p><div class="right_forward">
+          <img src="../../image/home/mine_forward.png" alt="" class="set_right">
+        </div></li>
+          <li tapmode onclick="fnOpenFunction('about_us_win');"><img src="../../image/home/me_guanyu.png" alt=""><p>关于我们</p><div class="right_forward">
+          <img src="../../image/home/mine_forward.png" alt="" class="set_right">
+        </div></li>
+          <li tapmode onclick="fnOpenFunction('gexing_kouling_win');"><img src="../../image/home/me_btn_zidingyi.png" alt=""><p>个性口令</p><div class="right_forward">
+          <img src="../../image/home/mine_forward.png" alt="" class="set_right">
+        </div></li>
+          <li tapmode onclick="fnOpenFunction('vip_order_win');"><img src="../../image/home/me_btn_xinshou.png" alt=""><p>自营订单</p><div class="right_forward">
+          <img src="../../image/home/mine_forward.png" alt="" class="set_right">
+        </div></li>
+        </ul>
+      </div>
+    </div> -->
+        </div>
+        <div class="noWlan">
+            <div class="nowlanItem">
+                <div class="no_net"><img src="../../image/no_net.png" /></div>
+                <p class="no_p">网络竟然崩溃了</p>
+                <p class="load_p">别紧张，试试看刷新页面</p>
+                <div class="loadBtn" tapmode onclick="javascript:location.reload();">点击刷新</div>
+            </div>
+        </div>
+</body>
+<script type="text/javascript" src="../../script/api.js"></script>
+<script type="text/javascript" src="../../script/jquery.js"></script>
+<script type="text/javascript" src="../../script/api_common.js"></script>
+<script type="text/javascript" src="../../script/md5.js"></script>
+<script type="text/javascript" src="../../script/swiper.min.js"></script>
+<script type="text/javascript">
+    var user_id, user_code;
+    var is_operator; //用来区分是否是运营商
+    var is_accredit; //用来判断用户是否绑定支付宝
+    var is_phone;
+    $(window).scroll(function() {
+        //获得当前已滚动上去的距离
+        var h = $(window).scrollTop();
+        // console.log(h)
+        var sliderH = $('.my_frame_head').height();
+        // var webshopH = $('.rmsp_tj').height();
+        var allH = sliderH;
+        if (h >= allH) {
+            $(".my_frame_head").show();
+            $(".my_frame_head").addClass('fix_nav');
+        } else {
+            $(".my_frame_head").hide();
+            $(".my_frame_head").removeClass('fix_nav');
+        }
+    });
+    apiready = function() {
+        //解决IOS顶部被遮挡问题
+        $('.home_info').css("top", api.safeArea.top);
+        $('.head_user_name').css("top", api.safeArea.top);
+        $('.set_info').css("top", api.safeArea.top);
+        api.setTabLayoutAttr({ //隐藏头部
+            hideNavigationBar: true
+        });
+        // api.setStatusBarStyle({
+        //     style: 'dark',
+        //     color:"transparent" //背景颜色为透明
+        // });
+        fnGetGerenzhongxin(); //获取工具栏信息
+        if (!empty($api.getStorage("userInfo"))) {
+            user_id = $api.getStorage("userInfo").user_id;
+        }
+        api.addEventListener({
+            name: 'login'
+        }, function(ret, err) {
+            if (ret) {
+                //  alert( JSON.stringify( ret ) );
+                if (ret.value.login) {
+                    location.reload();
+                    // 播放本地音频
+                    api.startPlay({
+                        path: 'widget://res/money.mp3'
+                    }, function(ret, err) {
+                        if (ret) {
+                            // alert('播放完成');
+                        } else {
+                            // alert(JSON.stringify(err));
+                        }
+                    });
+                }
+            } else {
+                //  alert( JSON.stringify( err ) );
+            }
+        });
+        if (empty(user_id)) {
+            api.openWin({
+                name: 'user_login',
+                url: 'widget://html/login/user_login.html',
+                reload: true,
+                bounces: false
+            });
+        } else {
+            getUserInfo(); //获取用户信息
+            getData(); //获取用户预估金额
+        }
+        api.addEventListener({
+            name: 'edit_nick'
+        }, function(ret, err) {
+            if (ret) {
+                //  alert( JSON.stringify( ret ) );
+                if (ret.value.edit_nick) {
+                    location.reload();
+                }
+            } else {
+                //  alert( JSON.stringify( err ) );
+            }
+        });
+
+    };
+
+    function fnGetGerenzhongxin() {
+        var obj = {
+            // yqm:'YJ8SRV',
+        };
+        var objArr = sort_ASCII(obj);
+        var timestamp = fntimestamp();
+        var version = '2.0';
+        var arr = apiSecret + timestamp + version + '';
+        for (i in objArr) {
+            arr += objArr[i];
+        }
+        var sign = hex_md5(arr);
+        // alert(sign);
+        api.ajax({
+            url: commonUrl + 'soukeAppTttService/service/newapp/gerenzhongxin',
+            method: 'post',
+            headers: {
+                'Content-Type': 'application/json;charset=utf-8'
+            },
+            data: {
+                body: {
+                    apiKey: apiKey,
+                    timestamp: timestamp,
+                    sign: sign,
+                    // 'yqm':'YJ8SRV'
+                }
+            }
+        }, function(ret, err) {
+            if (ret) {
+                // api.alert({ msg: JSON.stringify(ret) });
+                console.log(JSON.stringify(ret));
+                if (ret.result_code == 200) {
+                    $(".noWlan").hide();
+                    var htmlStr = '';
+                    //头部内容----begin
+                    if (ret.result_data.info == 1) {
+                        $(".home_info").show();
+                    } else {
+                        $(".home_info").hide();
+                    }
+                    if (ret.result_data.shezhi == 1) {
+                        $(".set_info").show();
+                    } else {
+                        $(".set_info").hide();
+                    }
+                    if (ret.result_data.lv == 1) {
+                        $(".cjhy").show();
+                    } else {
+                        $(".cjhy").hide();
+                    }
+                    if (ret.result_data.yqm == 1) {
+                        $(".user_yqm").show();
+                    } else {
+                        $(".user_yqm").hide();
+                    }
+                    if (ret.result_data.qd == 1) {
+                        $(".user_qd").show();
+                    } else {
+                        $(".user_qd").hide();
+                        $(".my_frame").css("height", 175);
+                        // $(".my_head").css("height",150);
+                    }
+                    //头部内容----end；
+                    //收益报表----begin
+                    if (ret.result_data.sybb == 1) {
+                        $(".my_money").show();
+                    } else {
+                        $(".my_money").hide();
+                    }
+                    //收益报表----end
+                    //轮播图-----begin
+                    if (ret.result_data.lunbo == 1) {
+                        getLunbo();
+                        $(".meitu").show();
+                    } else {
+                        $(".meitu").hide();
+                    }
+                    //轮播图----end
+                    //菜单----begin
+                    if (ret.result_data.menu == 1) {
+                        $(".my_gj_bog").show();
+                    } else {
+                        $(".my_gj_bog").hide();
+                    }
+                    //菜单----end
+                    //我的工具-----begin
+                    if (ret.result_data.discenter == 1 && ret.result_data.plate_order == 1) {
+                        htmlStr += '<div class="gj_title"><span>' + ret.result_data.tool_name + '</span></div>';
+                        htmlStr += '<div class="my_gj">';
+                        htmlStr += '<ul>';
+                        for (var n = 0; n < ret.result_data.tool.length; n++) {
+                            var pageurl = ret.result_data.tool[n].pageurl;
+                            var index = pageurl.lastIndexOf("\/");
+                            var pagename = pageurl.substring(index + 1, pageurl.length);
+                            htmlStr += '<li tapmode onclick="fnOpenMyFunction(\'' + pagename + '\',\'' + pageurl + '\');"><img src="' + commonUrl + ret.result_data.tool[n].img + '" alt=""><p>' + ret.result_data.tool[n].name + '</p></li>';
+                        }
+                        htmlStr += '</ul>';
+                        htmlStr += '</div>';
+                    }
+                    //我的工具-----end
+                    if (ret.result_data.plate_order == 1) {
+                        $api.byId('my_gj1').innerHTML = htmlStr;
+                    } else if (ret.result_data.discenter == 1 && ret.result_data.plate_order == 0) {
+                        htmlStr += '<div class="gj_title"><span>' + ret.result_data.tool_name + '</span></div>';
+                        htmlStr += '<div class="my_gj">';
+                        htmlStr += '<ul>';
+                        for (var n = 0; n < ret.result_data.tool.length; n++) {
+                            var pageurl = ret.result_data.tool[n].pageurl;
+                            var index = pageurl.lastIndexOf("\/");
+                            var pagename = pageurl.substring(index + 1, pageurl.length);
+                            htmlStr += '<li tapmode onclick="fnOpenMyFunction(\'' + pagename + '\',\'' + pageurl + '\');"><img src="' + commonUrl + ret.result_data.tool[n].img + '" alt=""><p>' + ret.result_data.tool[n].name + '</p></li>';
+                        }
+                        htmlStr += '</ul>';
+                        htmlStr += '</div>';
+                    }
+                    if (ret.result_data.plate_order == 0) {
+                        $api.byId('my_gj2').innerHTML = htmlStr;
+                    }
+                    if (ret.result_data.bg == "back_img") {
+                        $(".my_head").css("height", "215px");
+                        $(".my_head").css("background", 'url("' + ret.result_data.headbg.img + '")');
+                        $(".my_frame_head").css("background", 'url("' + ret.result_data.headbg.img + '")');
+                    } else {
+                        $(".my_head").css("height", "175px");
+                        $(".my_head").css("background", 'linear-gradient(to right, rgb(' + ret.result_data.col1 + ') , rgb(' + ret.result_data.col2 + '))');
+                        $(".my_frame_head").css("background", 'linear-gradient(to right, rgb(' + ret.result_data.col1 + ') , rgb(' + ret.result_data.col2 + '))');
+                    }
+                }
+            } else {
+                $(".noWlan").show();
+                // api.alert({ msg: JSON.stringify(err) });
+            }
+        });
+    }
+    //打开相关页面；
+    function fnOpenFunction(winName) {
+        if (!empty($api.getStorage("userInfo"))) {
+            if (winName == "tixian_win") {
+                if (is_phone == 0) {
+                    api.openWin({
+                        name: 'bind_phone_win',
+                        url: 'widget://html/win/bind_phone_win.html',
+                        pageParam: {
+                            user_code: user_code,
+                            is_operator: is_operator
+                        }
+                    });
+                } else if (is_accredit == 0) {
+                    api.openWin({
+                        name: 'bind_zfb_win',
+                        url: 'widget://html/win/bind_zfb_win.html',
+                        pageParam: {
+                            user_code: user_code,
+                            is_operator: is_operator
+                        }
+                    });
+                } else if (is_phone == 1 && is_accredit == 1) {
+                    api.openWin({
+                        name: winName,
+                        url: 'widget://html/win/' + winName + '.html',
+                        pageParam: {
+                            user_code: user_code,
+                            is_operator: is_operator
+                        }
+                    });
+                }
+            } else {
+                api.openWin({
+                    name: winName,
+                    url: 'widget://html/win/' + winName + '.html',
+                    pageParam: {
+                        user_code: user_code,
+                        is_operator: is_operator
+                    }
+                });
+            }
+        } else {
+            api.toast({
+                msg: '请先登录',
+                duration: 2000,
+                location: 'middle'
+            });
+            api.openWin({
+                name: 'user_login',
+                url: 'widget://html/login/user_login.html',
+            });
+        }
+    }
+    //腰部轮播图
+    function getLunbo() {
+        var obj = {
+            'type_id': 3,
+            'plate_id': 2
+        };
+        var objArr = sort_ASCII(obj);
+        var timestamp = fntimestamp();
+        var version = '2.0';
+        var arr = apiSecret + timestamp + version + '';
+        for (i in objArr) {
+            arr += objArr[i];
+        }
+        var sign = hex_md5(arr);
+        api.ajax({
+            url: commonUrl + 'soukeAppTttService/service/advert/ad_ac',
+            method: 'post',
+            headers: {
+                'Content-Type': 'application/json;charset=utf-8'
+            },
+            data: {
+                body: {
+                    'apiKey': apiKey,
+                    'timestamp': timestamp,
+                    'sign': sign,
+                    'type_id': 3,
+                    'plate_id': 2
+                }
+            }
+        }, function(ret, err) {
+            if (ret) {
+                if (ret.result_code == 200) {
+                    var htmlLb = '';
+                    console.log("个人中心腰部广告" + JSON.stringify(ret));
+                    htmlLb += '<div class="swiper-container">';
+                    htmlLb += '<div class="swiper-wrapper">';
+                    var adlist = ret.result_data.adlist;
+                    for (var i = 0; i < adlist.length; i++) {
+                        htmlLb += '<div class="swiper-slide" adv_name="' + adlist[i].adv_name + '" link_url="' + adlist[i].link_url + '" id="' + adlist[i].link_type_id + '"><img src="' + adlist[i].img_url + '" alt=""></div>';
+                    }
+                    htmlLb += '</div>';
+                    htmlLb += '</div>';
+                    $api.byId('my_banner').innerHTML = htmlLb;
+                    var swiper = new Swiper('.swiper-container', {
+                        loop: true, //无休止播放
+                        autoHeight: true, //enable auto height   自动高度。设置为true时，wrapper和container会随着当前slide的高度而发生变化。
+                        spaceBetween: 20, //在slide之间设置距离（单位px）。
+                        pagination: { //使用分页器导航。分页器可使用小圆点样式（默认）、分式样式或进度条样式。
+                            el: '.swiper-pagination',
+                            clickable: true,
+                            renderProgressbar: function(progressbarFillClass) {
+                                return '<span class="' + progressbarFillClass + '"></span>';
+                            }
+                        },
+                        autoplay: {
+                            delay: 2500,
+                            disableOnInteraction: false,
+                        },
+                    });
+                    $(".swiper-slide").click(function() {
+                        var platetype = $(this).attr("id");
+                        if (platetype == 1) { //自定义链接
+                            var adv_name = $(this).attr("adv_name");
+                            openWebUrl($(this).attr("link_url"), adv_name);
+                        } else if (platetype == 2) { //淘宝板块
+                            var adv_name = $(this).attr("adv_name");
+                            var section_id = $(this).attr("link_url");
+                            openSectionFrame(section_id, adv_name);
+                        } else if (platetype == 3) { //淘宝商品ID
+                            openGoodDel($(this).attr("link_url"), -1);
+                        } else if (platetype == 4) { //跳转淘宝分类
+                            var adv_name = $(this).attr("adv_name");
+                            openFenlei_type($(this).attr("link_url"), adv_name);
+                        } else if (platetype == 5) { //拼多多板块
+                            var adv_name = $(this).attr("adv_name");
+                            openPddSectionFrame($(this).attr("link_url"), adv_name);
+                        } else if (platetype == 6) { //拼多多淘宝商品ID
+                            openPddGoodDel($(this).attr("link_url"));
+                        } else if (platetype == 7) { //拼多多分类
+                            var adv_name = $(this).attr("adv_name");
+                            openPddFenlei_type($(this).attr("link_url"), adv_name);
+                        } else if (platetype == 8) { //不跳转
+                        }
+                    })
+                } else {}
+            } else {
+                // api.alert({ msg: JSON.stringify(err) });
+            }
+        });
+    }
+    //获取用户信息
+    function getUserInfo() {
+        var obj = {
+            'user_id': user_id
+        };
+        var objArr = sort_ASCII(obj);
+        var timestamp = fntimestamp();
+        var version = '2.0';
+        var arr = apiSecret + timestamp + version + '';
+        for (i in objArr) {
+            arr += objArr[i];
+        }
+        var sign = hex_md5(arr);
+        api.ajax({
+            url: commonUrl + 'soukeAppTttService/service/user/message_ac',
+            method: 'post',
+            headers: {
+                'Content-Type': 'application/json;charset=utf-8'
+            },
+            data: {
+                body: {
+                    'apiKey': apiKey,
+                    'timestamp': timestamp,
+                    'sign': sign,
+                    'user_id': user_id,
+                }
+            }
+        }, function(ret, err) {
+            if (ret) {
+                if (ret.result_code == 200) {
+                    console.log("用户信息" + JSON.stringify(ret));
+                    // var user_phone = {
+                    //     'phone':
+                    // };
+                    $api.setStorage('user_phone', ret.result_user.phone);
+                    $api.getStorage('user_phone');
+
+                    $("#user_headImg").attr("src", ret.result_user.head);
+                    var nickname = ret.result_user.nickname;
+                    if (nickname.length > 12) {
+                        nickname = nickname.substring(0, 11) + "..."
+                    } else {
+                        nickname = nickname;
+                    }
+                    $api.byId('nickname').innerHTML = nickname;
+                    is_accredit = ret.result_user.is_accredit;
+                    if (empty(ret.result_user.phone)) {
+                        is_phone = 0;
+                    } else {
+                        is_phone = 1;
+                    }
+                    $(".head_user_name").html(nickname);
+                    $("#rankName").show();
+                    $api.byId('rankName').innerHTML = ret.result_user.rankName;
+                    $api.byId('copy').innerHTML = ret.result_user.invitation_code;
+                    // if(empty(ret.validity)){
+                    //   $(".vip_data").html('<div class="vip_left">您已获得升级VIP资格 </div> <div class="vip_tq" tapmode onclick="fnOpenVIP();">立即升级></div>');
+                    // }else{
+                    // $(".vip_data").html('<div class="vip_left">'+ret.validity+' </div> <div class="vip_tq" tapmode onclick="fnOpenVIP();">查看特权></div>');
+                    // }
+                    $(".copy_btn").attr("id", ret.result_user.invitation_code);
+                    user_code = ret.result_user.invitation_code;
+                    is_operator = ret.result_user.is_operator;
+                    $(".tx_je").html(ret.result_user.balance);
+                    $(".copy_btn").click(function() {
+                        var clipBoard = api.require('clipBoard');
+                        clipBoard.set({
+                            value: $(this).attr("id")
+                        }, function(ret, err) {
+                            if (ret) {
+                                // alert(JSON.stringify(ret));
+                                api.toast({
+                                    msg: '复制成功',
+                                    duration: 2000,
+                                    location: 'middle'
+                                });
+
+                            } else {
+                                // alert(JSON.stringify(err));
+                            }
+                        });
+                    })
+                } else {
+                    api.toast({
+                        msg: ret.result_message,
+                        duration: 2000,
+                        location: 'middle'
+                    });
+
+                }
+            } else {
+                // api.alert({ msg: JSON.stringify(err) });
+            }
+        });
+    }
+
+    function getData() {
+        var obj = {
+            'user_id': user_id,
+        };
+        var objArr = sort_ASCII(obj);
+        var timestamp = fntimestamp();
+        var version = '2.0';
+        var arr = apiSecret + timestamp + version + '';
+        for (i in objArr) {
+            arr += objArr[i];
+        }
+        var sign = hex_md5(arr);
+        api.ajax({
+            url: commonUrl + 'soukeAppTttService/service/disRelated/MyIncome_ac',
+            method: 'post',
+            headers: {
+                'Content-Type': 'application/json;charset=utf-8'
+            },
+            data: {
+                body: {
+                    'apiKey': apiKey,
+                    'timestamp': timestamp,
+                    'sign': sign,
+                    'user_id': user_id
+                }
+            }
+        }, function(ret, err) {
+            if (ret) {
+                // console.log("我的收益"+JSON.stringify( ret ) );
+                $("#money_month").html(ret.result_data.settlmet_hint);
+                $("#sy_js").html('￥' + ret.result_data.historyTotal);
+                $("#by_fk").html('￥' + ret.result_data.currTotal);
+                $("#sy_fk").html('￥' + ret.result_data.lastTotal);
+            } else {
+                // alert( JSON.stringify( err ) );
+            }
+        });
+    }
+
+    function fnOpenQiandao() {
+        api.openWin({
+            name: 'my_settlement_win',
+            url: 'widget://html/win/my_settlement_win.html',
+        });
+    }
+    // function fnOpenQiandao(){
+    //   api.toast({
+    //       msg: '攻城狮正在开发中...',
+    //       duration: 2000,
+    //       location: 'middle'
+    //   });
+    //
+    // }
+    function fnOpenVIP() {
+        if (!empty($api.getStorage("userInfo"))) {
+            var obj = {
+                // yqm:$("#yqm").val(),
+            };
+            var objArr = sort_ASCII(obj);
+            var timestamp = fntimestamp();
+            var version = '2.0';
+            var arr = apiSecret + timestamp + version + '';
+            for (i in objArr) {
+                arr += objArr[i];
+            }
+            var sign = hex_md5(arr);
+            api.ajax({
+                url: commonUrl + 'soukeAppTttService/service/brand/findBaseconf',
+                method: 'post',
+                data: {
+                    body: {
+                        apiKey: apiKey,
+                        timestamp: timestamp,
+                        sign: sign,
+                    }
+                }
+            }, function(ret, err) {
+                if (ret) {
+                    // alert( JSON.stringify( ret ) );
+                    if (ret.result_code == 200) {
+                        if (ret.result_data.baseconf.is_buy == 0) {
+                            api.openWin({
+                                name: 'shengjizhuan_win',
+                                url: 'widget://html/win/shengjizhuan_win.html',
+                                pageParam: {
+                                    user_id: user_id
+                                }
+                            });
+                        } else if (ret.result_data.baseconf.is_buy == 1) {
+                            api.openWin({
+                                name: 'open_vip_win',
+                                url: 'widget://html/win/open_vip_win.html',
+                            });
+                        }
+                    }
+                } else {
+                    // alert( JSON.stringify( err ) );
+                }
+            });
+        } else {
+            api.toast({
+                msg: '请先登录',
+                duration: 2000,
+                location: 'middle'
+            });
+            api.openWin({
+                name: 'user_login',
+                url: 'widget://html/login/user_login.html',
+                delay: 1000,
+            });
+        }
+    }
+</script>
+
+</html>

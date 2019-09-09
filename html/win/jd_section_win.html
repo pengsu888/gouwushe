@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0" />
+    <title>京东</title>
+    <link rel="stylesheet" type="text/css" href="../../css/api.css" />
+    <link rel="stylesheet" type="text/css" href="../../css/style.css" />
+    <link rel="stylesheet" type="text/css" href="../../css/swiper.min.css" />
+    <style>
+        html,
+        body {
+            width: 100%;
+            height: 100%;
+            background-color: #fff;
+            overflow-x: hidden;
+            overflow-y: auto;
+        }
+
+        header {
+            height: 5.0rem;
+            width: 100%;
+            position: fixed;
+            top: 0;
+            left: 0;
+            z-index: 9999;
+        }
+
+        .jkj_name {
+            width: 100%;
+            height: 2.4rem;
+            line-height: 2.4rem;
+            text-align: center;
+            color: #333;
+        }
+
+        #topNav {
+            height: 2.4rem;
+            width: 100%;
+            overflow: hidden;
+            font: 16px/32px hiragino sans gb, microsoft yahei, simsun;
+            /*border-bottom: 1px solid #f8f8f8;*/
+        }
+
+        #topNav .swiper-slide {
+            padding: 0 0.8rem;
+            letter-spacing: 0.2rem;
+            height: 2.4rem;
+            width: auto;
+            line-height: 2.4rem;
+            text-align: center;
+        }
+
+        #topNav .swiper-slide span {
+            display: block;
+            font-size: 0.8rem;
+        }
+
+        #topNav .swiper-slide.active span {
+            height: 80%;
+            width: 100%;
+            transform: scale(1.1);
+            color: #FF2D2D;
+            border-bottom: 2px solid #FF2D2D;
+        }
+    </style>
+</head>
+
+<body>
+    <header id="header">
+        <div class="header-top">
+            <div class="headerItem">
+                <div class="header_back" onclick="closeWin();">
+                    <img src="../../image/nav_back_black.png" alt="">
+                </div>
+                <div class="header_title" id="header_title">京东</div>
+            </div>
+        </div>
+        <div id="topNav" class="swiper-container">
+            <div class="swiper-wrapper" id="type">
+                <!-- <div class="swiper-slide active"><span>精选</span></div>
+            <div class="swiper-slide"><span>日用百货</span></div>
+            <div class="swiper-slide"><span>美妆个护</span></div>
+            <div class="swiper-slide"><span>食品</span></div>
+            <div class="swiper-slide"><span>鞋包配饰</span></div>
+            <div class="swiper-slide"><span>内衣袜子</span></div>
+            <div class="swiper-slide"><span>女装</span></div>
+            <div class="swiper-slide"><span>数码周边</span></div> -->
+            </div>
+        </div>
+    </header>
+    <div class="noWlan">
+        <div class="nowlanItem">
+            <div class="no_net"><img src="../../image/no_net.png" /></div>
+            <p class="no_p">网络竟然崩溃了</p>
+            <p class="load_p">别紧张，试试看刷新页面</p>
+            <div class="loadBtn" onclick="javascript:location.reload();">点击刷新</div>
+        </div>
+    </div>
+</body>
+<script type="text/javascript" src="../../script/api.js"></script>
+<script type="text/javascript" src="../../script/jquery.js"></script>
+<script type="text/javascript" src="../../script/swiper.min.js"></script>
+<script type="text/javascript" src="../../script/api_common.js"></script>
+<script type="text/javascript" src="../../script/md5.js"></script>
+<script type="text/javascript">
+    var headerHeight;
+    var jd_frameGroup = [];
+    var frameGroup;
+    apiready = function() {
+        api.setStatusBarStyle({
+            style: 'dark' //黑色
+                // style: 'light' //白色
+        });
+        var header = $api.byId('header');
+        $api.fixStatusBar(header);
+        headerHeight = $api.offset(header).h;
+        $("#header_title").html(api.pageParam.activity_name);
+        sectionSet();
+        // getjkjMenu();
+    };
+    //查询板块设置
+    function sectionSet() {
+        var obj = {
+            jd_sec_id: 1,
+        };
+        var objArr = sort_ASCII(obj);
+        var timestamp = fntimestamp();
+        var version = '2.0';
+        var arr = apiSecret + timestamp + version + '';
+        for (i in objArr) {
+            arr += objArr[i];
+        }
+        var sign = hex_md5(arr);
+        api.ajax({
+            url: commonUrl + 'soukeAppTttService/service/jd/findsecbyid',
+            method: 'post',
+            headers: {
+                'Content-Type': 'application/json;charset=utf-8'
+            },
+            data: {
+                body: {
+                    apiKey: apiKey,
+                    timestamp: timestamp,
+                    sign: sign,
+                    jd_sec_id: 1,
+                }
+            }
+        }, function(ret, err) {
+            // console.log(JSON.stringify(ret));
+            if (ret) {
+                var sec_show_type = ret.result_data.sec_show_type;
+                // alert(sec_show_type);
+                var data = ret.result_data.clist;
+                var html = '<div class="swiper-slide" id="-1"><span>精选</span></div>';
+                for (var i = 0; i < data.length; i++) {
+                    html += '<div class="swiper-slide" id="' + data[i].c_id + '"><span>' + data[i].c_name + '</span></div>';
+                }
+                $api.byId('type').innerHTML = html;
+                //分类菜单左右滑动
+                var mySwiper = new Swiper('#topNav', {
+                    freeMode: true,
+                    freeModeMomentumRatio: 0.5,
+                    slidesPerView: 'auto',
+                });
+                frameGroup = $(".swiper-slide");
+                // alert(api.pageParam.section_id);
+                for (var i = 0; i < frameGroup.length; i++) {
+                    jd_frameGroup.push({
+                        name: 'jd_section_frame' + i,
+                        url: 'widget://html/frame/jd_section_frame.html',
+                        vScrollBarEnabled: false,
+                        hScrollBarEnabled: false,
+                        bounces: true,
+                        pageParam: {
+                            type: sec_show_type,
+                            section_id: 1,
+                            cate_collection_id: $(frameGroup[i]).attr("id")
+                        }
+                    });
+                    // }
+                }
+                frameGroup.click(function() {
+                    var li_index = $(this).index();
+                    $(this).addClass("active").siblings().removeClass("active");
+                    api.setFrameGroupIndex({
+                        name: 'jd_section_frame',
+                        index: li_index,
+                        scroll: true,
+                    });
+                });
+                api.openFrameGroup({
+                    name: 'jd_section_frame',
+                    scrollEnabled: true, //frame 组是否能够左右滚动
+                    rect: {
+                        x: 0,
+                        y: headerHeight,
+                        w: 'auto',
+                        h: api.winHeight - headerHeight
+                    },
+                    index: 0,
+                    preload: 0,
+                    frames: window['jd_frameGroup']
+                }, function(ret, err) {
+                    var _index = ret.index;
+                    // alert(JSON.stringify(ret));
+                    frameGroup.eq(_index).addClass("active");
+                    frameGroup.eq(_index).siblings().removeClass("active");
+                    mySwiper.slideTo(_index - 2); //控制水平导航条滑动的位置，根据页面滑动而滑动
+                });
+            } else {
+                api.alert({
+                    msg: JSON.stringify(err)
+                });
+            }
+        });
+    }
+
+    function closeWin() {
+        api.closeWin({
+            name: 'jd_section_win'
+        });
+    }
+</script>
+
+</html>

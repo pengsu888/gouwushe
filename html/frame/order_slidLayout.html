@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+    <title>title</title>
+    <link rel="stylesheet" type="text/css" href="../css/api.css"/>
+    <link rel="stylesheet" type="text/css" href="../css/style.css" />
+    <style>
+    /*弹出框样式*/
+    	body{
+    		width:100%;
+    		height:100%;
+    		background:none;
+    		font-size:16px;
+        overflow: hidden;
+    	}
+    	.wrapAll{
+    		width:100%;
+    		height:100%;
+    		background:rgba(0,0,0,.5);
+        overflow: hidden;
+    		position:fixed;
+    		top:0;
+    		left:0;
+    		z-index:99;
+    	}
+    	.nl_list {
+    		position: fixed;
+    		top: 0;
+    		left:0;
+    		width: 100%;
+    		height:109px;
+    		border-bottom-left-radius: 15px;
+        border-bottom-right-radius: 15px;
+    		z-index: 999;
+    		background: #fff;
+    		box-sizing: border-box;
+    		-webkit-box-sizing: border-box;
+    	}
+      .nl_list .orderList{
+        width: 100%;
+        height: 100%;
+      }
+      .nl_list .orderList ul{list-style: none;padding: 0;margin: 0 auto;width: calc(100% - 12px);}
+      .nl_list .orderList ul li{
+        float: left;
+        width:calc(32.5% - 12px);
+        height: 30px;
+        line-height: 30px;
+        border-radius: 16px;
+        border: solid 1px #999;
+        margin:15px 6px 0 6px;
+        color:#999;
+        text-align: center;
+      }
+      .nl_list .orderList ul li.li_active{
+        border: solid 1px #fd5f3e;
+        color:#fd5f3e;
+      }
+    </style>
+</head>
+<body>
+<!--弹出框-->
+	<section class='wrapAll' id='wrapAll'>
+	</section>
+	<section class='nl_list'>
+		<div class="orderList">
+		  <ul>
+		    <li>全部订单</li>
+        <li>淘宝订单</li>
+        <li>京东订单</li>
+        <li>拼多多订单</li>
+        <li>线下订单</li>
+		  </ul>
+		</div>
+	</section>
+</body>
+<script type="text/javascript" src="../../script/api.js"></script>
+<script type="text/javascript" src="../../script/jquery.js"></script>
+<script type="text/javascript">
+	apiready = function(){
+	};
+		//触摸蒙层
+		document.getElementById('wrapAll').addEventListener('touchstart',function(){
+			closeNLOrderSlidLayout();
+		},false);
+
+		//调用关闭弹出层的方法
+		function closeNLOrderSlidLayout(){
+			api.execScript({
+				name:'my_order_win',
+          script:'openOrderSlidLayout();'
+        });
+		}
+    var orderList=$(".orderList ul li");
+    orderList.click(function () {
+      $(this).addClass("li_active").siblings().removeClass("li_active");
+      api.sendEvent({
+          name: 'order_title',
+          extra: {
+              order_title: $(this).html()
+          }
+      });
+
+      // closeNLOrderSlidLayout();
+    })
+</script>
+</html>

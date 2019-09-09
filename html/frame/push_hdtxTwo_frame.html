@@ -1,0 +1,343 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0" />
+    <!-- 解决IOS数字出现蓝色数字问题  -->
+    <meta name="format-detection" content="telephone=no" />
+    <title>活动通知</title>
+    <link rel="stylesheet" type="text/css" href="../../css/api.css" />
+    <!-- <link rel="stylesheet" type="text/css" href="../../css/style.css" /> -->
+    <style media="screen">
+        html {
+            /*比如： 原来12px；换算成rem就等于 0.24rem; 也就是 1rem = 50px;*/
+            font-size: calc(100vw * 100 / 750);
+            background: #f4f4f4;
+        }
+
+        body {
+            font-size: 16px;
+            background: #f4f4f4;
+        }
+
+        .wrap_tz {
+            width: 100%;
+            height: auto;
+        }
+
+        .tz_time {
+            width: 100%;
+            height: 1rem;
+            line-height: 1.0rem;
+            text-align: center;
+            color: #666;
+            font-size: 0.3rem;
+        }
+
+        .tz_time img {
+            /*height: 0.4rem;*/
+            width: 1.7rem;
+            background-size: 100% 100%;
+            margin: auto 0.3rem;
+        }
+
+        .tz_del {
+            width: calc(100% - 24px);
+            margin: 0 auto;
+            height: 119px;
+            background: #fff;
+            border-radius: 0.1rem;
+            height: auto;
+            overflow: hidden;
+            border: solid 1px #f2f2f2;
+        }
+
+        .tz_del .tz_title {
+            width: calc(100% - 30px);
+            height: 0.4rem;
+            line-height: 0.4rem;
+            font-size: 0.32rem;
+            color: #333;
+            font-weight: 700;
+            margin: 0.2rem 0.3rem;
+            display: -webkit-box;
+            -webkit-box-orient: vertical;
+            -webkit-line-clamp: 1;
+            overflow: hidden;
+        }
+
+        .tz_del .tz_info {
+            width: calc(100% - 30px);
+            height: auto;
+            margin: 0.2rem 0.3rem;
+            line-height: 0.4rem;
+            font-size: 0.28rem;
+            color: #666;
+            display: -webkit-box;
+            -webkit-box-orient: vertical;
+            -webkit-line-clamp: 2;
+            overflow: hidden;
+        }
+
+        .tz_del .tz_xq {
+            height: 0.4rem;
+            padding: 0.2rem 0.3rem;
+            line-height: 0.4rem;
+            color: #FF2220;
+            border-top: 1px solid #e2e2e2;
+        }
+
+        .tz_del .tz_xq img {
+            width: 0.5rem;
+            height: 0.5rem;
+            background-size: 100% 100%;
+            vertical-align: middle;
+            display: inline-block;
+            float: right;
+        }
+
+        .tz_del .tz_img {
+            width: 100%;
+            height: auto;
+            /*background: #e2e2e2;*/
+            border-top-left-radius: 0.1rem;
+            border-top-right-radius: 0.1rem;
+        }
+
+        .tz_del .tz_img img {
+            width: 100%;
+            height: 100%;
+        }
+        /*缺省页 start*/
+
+        .aui-take-content-col {
+            /*background-color: #fff;*/
+            width: 100%;
+            /*height: 186px;*/
+            padding-top: 2.0rem;
+            display: none;
+        }
+
+        .aui-img-logo {
+            width: 2.52rem;
+            height: auto;
+            margin: 0 auto;
+        }
+
+        .aui-img-logo img {
+            width: 100%;
+            height: 100%;
+            display: block;
+            border: none;
+            border-radius: 100%;
+        }
+
+        .aui-img-text {
+            text-align: center;
+            padding-top: 0.28rem;
+        }
+
+        .aui-img-text p {
+            font-size: 0.3rem;
+            color: #979797;
+        }
+        /*缺省页 end*/
+    </style>
+</head>
+
+<body>
+    <div class="wrap_tz" id="push_hdtxTwo">
+        <!-- <div class="tz_time"><img src="../../image/page_search_keyword_tag_vh_left.png" alt="">2017-11-12 12:39<img src="../../image/page_search_keyword_tag_vh_right.png" alt=""></div>
+        <div class="tz_del">
+            <div class="tz_img"><img src="../../image/zt2.jpg" alt=""></div>
+            <div class="tz_title">邀请成功！</div>
+            <div class="tz_info">恭喜你成功邀请到淡定从容加入[APP名称]大家族，快带小伙伴开启APP名称创业之旅吧！快带小伙伴开启APP名称创业之旅吧！</div>
+            <div class="tz_xq">查看详情<img src="../../image/home/mine_forward.png" alt=""></div>
+        </div> -->
+    </div>
+    <div id="statu" style="font-size:0.3rem;color:#fd5f3e;background-color:#f4f4f4;height:1.0rem;line-height:1.0rem;text-align:center;clear:both;"></div>
+    <!-- 缺省页 start -->
+    <div class="aui-take-content-col">
+        <div class="aui-img-logo">
+            <img src="../../image/img_sc_massagenull.png" alt="" />
+        </div>
+        <div class="aui-img-text">
+            <p>还没有任何消息~</p>
+        </div>
+    </div>
+    <!-- 缺省页 end -->
+</body>
+<script type="text/javascript" src="../../script/api.js"></script>
+<script type="text/javascript" src="../../script/jquery.js"></script>
+<script type="text/javascript" src="../../script/api_common.js"></script>
+<script type="text/javascript" src="../../script/md5.js"></script>
+<script type="text/javascript" src="../../script/swiper.min.js"></script>
+<script type="text/javascript">
+    var pageNum = 1;
+    var isOver = false; //默认没有取完数据
+    var statu; //滑到底部状态
+    var user_id;
+    var pushType;
+    apiready = function() {
+        api.parseTapmode();
+        pushType = api.pageParam.pushType;
+        if (!empty($api.getStorage("userInfo"))) {
+            user_id = $api.getStorage("userInfo").user_id;
+            LoadingOne();
+            statu = $api.byId('statu');
+            loadFresh();
+            setTimeout(function() { //延时1000毫秒
+                loadMyFa(true);
+            }, 1000)
+        } else {
+            user_id = '';
+            checkUserLogin();
+        }
+        getEvent();
+        closePopframe();
+        // 监听事件apiReady滚动到底部，加载更多功能
+        api.addEventListener({
+            name: 'scrolltobottom',
+            extra: {
+                threshold: 120 //设置距离底部多少距离时触发，默认值为0，数字类型
+            }
+        }, function(ret, err) {
+
+            loadMyFa(false);
+        });
+
+        function loadFresh() {
+            RefreshLoad();
+        }
+    };
+    //获取活动通知Two列表
+    function loadMyFa(isEdit) {
+        if (!isEdit && isOver) {
+            return;
+        }
+        //判断如果是下拉刷新，
+        if (isEdit) {
+            pageNum = 1;
+            isOver = false;
+        }
+        var obj = {
+            'user_id': user_id,
+            'pushclass': pushType,
+            'pageNo': pageNum,
+            'size': 10
+        };
+        var objArr = sort_ASCII(obj);
+        var timestamp = fntimestamp();
+        var version = '2.0';
+        var arr = apiSecret + timestamp + version + '';
+        for (i in objArr) {
+            arr += objArr[i];
+        }
+        var sign = hex_md5(arr);
+        // alert(sign);
+        api.ajax({
+            url: commonUrl + 'soukeAppTttService/service/push/findPushMsgByClass',
+            method: 'post',
+            headers: {
+                'Content-Type': 'application/json;charset=utf-8'
+            },
+            data: {
+                body: {
+                    'apiKey': apiKey,
+                    'timestamp': timestamp,
+                    'sign': sign,
+                    'user_id': user_id,
+                    'pushclass': pushType,
+                    'pageNo': pageNum,
+                    'size': 10
+                }
+            }
+        }, function(ret, err) {
+            api.hideProgress();
+            if (ret) {
+                if (ret.result_code == 200) {
+                    $(".noWlan").hide();
+                    console.log("活动通知Two列表：" + JSON.stringify(ret));
+                    var data = ret.result_data.items;
+                    if (data != "") {
+                        pageNum++;
+                    } else {
+                        $(".aui-take-content-col").show();
+                        // statu.innerHTML = "暂无数据";
+                    }
+                    if (data.length < 10 && data != "") {
+                        statu.innerHTML = "已经到底啦 ~ 别扯了";
+                        isOver = true;
+                    }
+                    fnShowData(data, isEdit);
+                } else {
+                    api.toast({
+                        msg: ret.result_message,
+                        duration: 2000,
+                        location: 'middle'
+                    });
+
+                }
+            } else {
+                $(".noWlan").show();
+                // api.alert({ msg: JSON.stringify(err) });
+            }
+        });
+    }
+
+    function fnShowData(data, isEdit) {
+        var html = '';
+        for (var i = 0; i < data.length; i++) {
+            var message = data[i];
+            html += '<div class="tz_time"><img src="../../image/page_search_keyword_tag_vh_left.png" alt="">' + message.push_time +
+                '<img src="../../image/page_search_keyword_tag_vh_right.png" alt=""></div>';
+            html += '<div class="tz_del" tapmode onclick="fnJump(\'' + message.dataType + '\',\'' + message.dataValue + '\',\'' + message.dataName + '\');"><div class="tz_img"><img src="' + message.pic_url + '" alt=""></div>';
+            html += ' <div class="tz_title" tapmode onclick="fnJump(\'' + message.dataType + '\',\'' + message.dataValue + '\',\'' + message.dataName + '\');">' + message.informtitle + '</div><div class="tz_info">' + message.informdetails + '</div>';
+            html += '<div class="tz_xq" tapmode onclick="fnJump(\'' + message.dataType + '\',\'' + message.dataValue + '\',\'' + message.dataName + '\');">查看详情<img src="../../image/home/mine_forward.png" alt=""></div></div>';
+        }
+        if (isEdit) {
+            $api.byId('push_hdtxTwo').innerHTML = html;
+        } else {
+            $api.byId('push_hdtxTwo').innerHTML += html;
+        }
+    }
+    // 跳转
+    function fnJump(platetype, plateid, platename) {
+        if (platetype == 1) { //商品板块
+            openSectionFrame(plateid, platename, true);
+        }
+        if (platetype == 2) { //APP板块
+            fnOpenFunction(plateid, platetype, platename);
+        }
+        if (platetype == 3) { //商品详情页
+            openGoodDel(plateid, -1)
+        }
+        if (platetype == 4) { //外链
+            //  window.location.href = plateid;
+            api.openWin({
+                name: 'jump_href_win',
+                url: 'widget://html/win/jump_href_win.html',
+                pageParam: {
+                    url: plateid,
+                    name: platename,
+                },
+
+            });
+        }
+        if (platetype == 5) { //官方板块
+                open_Gf_bankuai(plateid, platename, true);
+            } else if (platetype == 6) { //淘宝分类
+                openFenlei_type(plateid, platename)
+            } else if (platetype == 7) { //拼多多
+                openPddSectionFrame(plateid, platename, true)
+            } else if (platetype == 8) { //拼多多分类
+                openPddFenlei_type(plateid, platename, true)
+            }
+            if (platetype == 9) { //拼多多商品
+                openPddGoodDel(plateid, platename, true)
+            }
+        }
+</script>
+
+</html>

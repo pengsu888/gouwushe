@@ -1,0 +1,492 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0" />
+    <title>已结算订单-京东</title>
+    <link rel="stylesheet" type="text/css" href="../../css/api.css" />
+</head>
+<style media="screen">
+    body {
+        width: 100%;
+        height: 100%;
+        background: #f4f4f4;
+        font-size: 14px;
+    }
+
+    .orderItem {
+        height: 212px;
+        width: 100%;
+        background: #fff;
+        margin-bottom: 10px;
+    }
+
+    .orderItem .goods_del {
+        height: 92px;
+        width: calc(100% - 24px);
+        margin: 0 auto;
+    }
+
+    .orderItem .goods_money {
+        height: 70px;
+        width: calc(100% - 24px);
+        margin: 0 auto;
+    }
+
+    .orderItem .goods_order {
+        width: 100%;
+        height: 50px;
+        color: #777;
+        width: calc(100% - 24px);
+        margin: 0 auto;
+        font-size: 12px;
+    }
+
+    .goods_del .goods_img {
+        width: 71px;
+        height: 71px;
+        float: left;
+        margin-top: 20px;
+    }
+
+    img {
+        width: 100%;
+        height: 100%;
+        background-size: 100% 100%;
+    }
+
+    .goods_del .goods_info {
+        height: 71px;
+        width: calc(100% - 78px);
+        float: right;
+        margin-top: 20px;
+    }
+
+    .goods_del .goods_info .goods_title {
+        width: 100%;
+        height: 20px;
+        font-size: 14px;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        margin-bottom: 5px;
+    }
+
+    .goods_del .goods_info .goods_title img {
+        width: 20px;
+        height: 20px;
+        background-size: 100% 100%;
+        vertical-align: middle;
+        display: inline-block;
+        margin-right: 5px;
+    }
+
+    .goods_del .goods_info .goods_dianpu {
+        width: 100%;
+        color: #888;
+        font-size: 12px;
+        margin-bottom: 10px;
+    }
+
+    .goods_del .goods_info .goods_dis {
+        width: 100%;
+        font-size: 14px;
+    }
+
+    .goods_del .goods_info .goods_dis .goods_type_left {
+        padding: 0 3px;
+        text-align: center;
+        float: left;
+        height: 18px;
+        line-height: 18px;
+        margin-right: 10px;
+        color: #fff;
+        line-height: 18px;
+        font-size: 12px;
+    }
+
+    .goods_del .goods_info .goods_dis .goods_type_right {
+        width: 50px;
+        text-align: center;
+        float: left;
+        height: 18px;
+        line-height: 18px;
+        margin-right: 10px;
+        color: #fff;
+        line-height: 18px;
+        font-size: 12px;
+    }
+
+    .gwj_color {
+        background: #666;
+        border-radius: 4px;
+    }
+
+    .djs_color {
+        background: #FD5F3E;
+        border-radius: 15px;
+    }
+
+    .yjs_color {
+        background: #22AC38;
+        border-radius: 15px;
+    }
+
+    .ysx_color {
+        background: #999999;
+        border-radius: 15px;
+    }
+
+    .goods_money ul {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+    }
+
+    .goods_money ul li {
+        width: 33.3%;
+        float: left;
+        height: 40px;
+        text-align: left;
+        color: #888;
+        font-size: 12px;
+        margin-top: 15px;
+    }
+
+    .goods_money ul li p {
+        font-size: 18px;
+        font-weight: 700;
+        color: #444;
+        margin-top: 6px;
+    }
+
+    .goods_order .goods_cjtime {
+        width: 50%;
+        float: left;
+        height: 15px;
+        line-height: 15px;
+        text-align: left;
+        margin-top: 8px;
+    }
+
+    .goods_order .goods_jstime {
+        width: 50%;
+        float: right;
+        height: 15px;
+        line-height: 15px;
+        text-align: right;
+        margin-top: 8px;
+    }
+
+    .goods_order .goods_ddh {
+        width: 100%;
+        float: left;
+        height: 15px;
+        line-height: 15px;
+        text-align: left;
+        margin-top: 3px;
+    }
+
+    .goods_order .goods_ddh span.copy_btn {
+        height: 13px;
+        line-height: 15px;
+        padding: 0 8px;
+        border: solid 1px #777;
+        border-radius: 12px;
+        margin-left: 10px;
+    }
+    /*缺省页 start*/
+    .aui-take-content-col {
+        background-color: #fff;
+        width: 100%;
+        /*height: 186px;*/
+        padding-top: 150px;
+    }
+    .aui-img-logo {
+        width: 126px;
+        height: 100px;
+        margin: 0 auto;
+    }
+    .aui-img-logo img {
+        width: 100%;
+        height: 100%;
+        display: block;
+        border: none;
+        border-radius: 100%;
+    }
+    .aui-img-text {
+        text-align: center;
+        padding-top: 14px;
+    }
+    .aui-img-text p {
+        font-size: 0.8rem;
+        color: #979797;
+    }
+    /*缺省页 end*/
+</style>
+
+<body>
+    <div id="list">
+        <!-- <div class="orderItem">
+        <div class="goods_del">
+          <div class="goods_img">
+            <img src="http://img.alicdn.com/imgextra/i4/666412682/TB2WeWtdFmWBuNjSspdXXbugXXa_!!666412682.jpg_400x400" alt="">
+          </div>
+          <div class="goods_info">
+            <div class="goods_title"><img src="../../image/home/ic_tb_order.png" alt="" class="goods_type">蕉下晴雨伞超级防紫外线折叠伞轻巧方便的晴雨伞哦</div>
+            <div class="goods_dianpu">所属店铺：蕉下雨伞旗舰店</div>
+            <div class="goods_dis">
+              <div class="goods_type_left gwj_color">购物奖</div>
+              <div class="goods_type_right yjs_color">已结算</div>
+            </div>
+          </div>
+        </div>
+        <div class="goods_money">
+            <ul>
+              <li>
+                付款金额(元)
+                <p>238.88</p>
+              </li>
+              <li>
+                结算预估收入(元)
+                <p>238.88</p>
+              </li>
+              <li>
+                奖励比率(%)
+                <p>238.88</p>
+              </li>
+            </ul>
+        </div>
+        <div class="goods_order">
+            <div class="goods_cjtime">2017-10-30 09:12:42 创建</div>
+            <div class="goods_jstime">2017-10-30 09:12:42 结算</div>
+            <div class="goods_ddh">订单号：<span class="ddh_num">194667491688146523</span><span class="copy_btn">复制</span></div>
+        </div>
+      </div> -->
+    </div>
+    <!-- <div id="statu" style="font-size:0.8rem;color:#fd5f3e;background-color:#f5f5f5;height:30px;line-height:30px;text-align:center;clear:both;">
+        <img src="../../image/loading.d997b79c.svg" alt="" style="width:1rem;height:1rem;vertical-align:middle;" />加载中...
+    </div> -->
+    <!-- 缺省页 start -->
+    <div class="aui-take-content-col">
+        <div class="aui-img-logo">
+            <img src="../../image/kong.png" alt="" />
+        </div>
+        <div class="aui-img-text">
+            <p>暂无相关数据~</p>
+        </div>
+    </div>
+    <!-- 缺省页 end -->
+</body>
+<script type="text/javascript" src="../../script/api.js"></script>
+<script type="text/javascript" src="../../script/jquery.js"></script>
+<script type="text/javascript" src="../../script/api_common.js"></script>
+<script type="text/javascript" src="../../script/md5.js"></script>
+<script type="text/javascript">
+    var user_id;
+    var pageNum = 1;
+    var isOver = false; //默认没有取完数据
+    var statu; //滑到底部状态
+    apiready = function() {
+        if (!empty($api.getStorage("userInfo"))) {
+            user_id = $api.getStorage("userInfo").user_id;
+        }
+        statu = $api.byId('statu');
+        LoadingTwo();
+        getEvent();
+        closePopframe();
+        //加载首页板块
+        loadFresh();
+        loadMyFa(true);
+        // 商品列表数据
+        // 监听事件apiReady滚动到底部，加载更多功能
+        api.addEventListener({
+            name: 'scrolltobottom',
+            extra: {
+                threshold: 120 //设置距离底部多少距离时触发，默认值为0，数字类型
+            }
+        }, function(ret, err) {
+
+            loadMyFa(false);
+        });
+    };
+
+    function loadFresh() {
+        RefreshLoad();
+    }
+
+    function loadMyFa(isPull) {
+        if (!isPull && isOver) {
+            return;
+        }
+        //判断如果是下拉刷新，
+        if (isPull) {
+            pageNum = 1;
+            isOver = false;
+        }
+        var obj = {
+            'user_id': user_id,
+            // 'order_type': 1,
+            'order_status': api.pageParam.order_status,
+            'page': pageNum,
+            'size': 10
+        };
+        alert(api.pageParam.order_status)
+        var objArr = sort_ASCII(obj);
+        var timestamp = fntimestamp();
+        var version = '2.0';
+        var arr = apiSecret + timestamp + version + '';
+        for (i in objArr) {
+            arr += objArr[i];
+        }
+        var sign = hex_md5(arr);
+        api.ajax({
+            url: commonUrl + 'soukeAppTttService/service/jd/getJdOrder',
+            method: 'post',
+            headers: {
+                'Content-Type': 'application/json;charset=utf-8'
+            },
+            data: {
+                body: {
+                    'apiKey': apiKey,
+                    'timestamp': timestamp,
+                    'sign': sign,
+                    'user_id': user_id,
+                    // 'order_type': 1,
+                    'order_status': api.pageParam.order_status,
+                    'page': pageNum,
+                    'size': 10
+                }
+            }
+        }, function(ret, err) {
+            api.hideProgress();
+            if (ret) {
+                console.log("我的已结算订单" + JSON.stringify(ret));
+                if (ret.result_code == 200) {
+                    var data = ret.result_data.items;
+                    var manage_award = ret.baseconf.manage_award;
+                    var share_award = ret.baseconf.share_award;
+                    var pearl_award = ret.baseconf.pearl_award;
+                    var pay_award = ret.baseconf.pay_award;
+                    var size = ret.result_data.size;
+                    if (data != "") {
+                        $(".aui-take-content-col").hide();
+                        // $api.css(statu, 'display:block;');
+                        pageNum++;
+                    } else {
+                        $(".aui-take-content-col").show();
+                        // statu.innerHTML = "暂无数据";
+                    }
+                    if (data.length < size && data != "") {
+                        statu.innerHTML = "已经到底啦 ~ 别扯了";
+                        isOver = true;
+                    }
+
+                    fnShowData(data, isPull, pay_award, share_award, manage_award, pearl_award);
+                } else {
+                    api.toast({
+                        msg: ret.result_message,
+                        duration: 2000,
+                        location: 'middle'
+                    });
+
+                }
+            } else {
+                alert(JSON.stringify(err));
+            }
+        });
+    }
+
+    function fnShowData(data, isPull, pay_award, share_award, manage_award, pearl_award) {
+        var html = "";
+        for (var i = 0; i < data.length; i++) {
+            var goods_id = data[i].goods_id;
+            html += '<div class="orderItem">';
+            html += '<div class="goods_del"  onclick="openGoodDel(' + goods_id + ',-1)">';
+            html += '<div class="goods_img">';
+            html += '<img src="' + data[i].goods_thumbnail_url + '" alt="">';
+            html += '</div>';
+            html += '<div class="goods_info">';
+            html += '<div class="goods_title"><img src="../../image/icon_jd.png" alt="" class="goods_type">' + data[i].goods_name + '</div>';
+            // html += '<div class="goods_dianpu">所属店铺：' + data[i].shop_name + '</div>';
+            html += '<div class="goods_dis">';
+            if (data[i].settlement_type == 0) {
+                html += '<div class="goods_type_left gwj_color">' + pay_award + '</div>';
+            } else if (data[i].settlement_type == 1) {
+                html += '<div class="goods_type_left gwj_color">' + share_award + '</div>';
+            } else if (data[i].settlement_type == 2) {
+                html += '<div class="goods_type_left gwj_color">' + manage_award + '</div>';
+            } else if (data[i].settlement_type == 3) {
+                html += '<div class="goods_type_left gwj_color">' + pearl_award + '</div>';
+            }
+            if (data[i].is_pay == 0) {
+                html += '<div class="goods_type_right djs_color">未结算</div>';
+            } else if (data[i].is_pay == 1) {
+                html += '<div class="goods_type_right yjs_color">已结算</div>';
+            } else if (data[i].is_pay == 2) {
+                html += '<div class="goods_type_right ysx_color">已失效</div>';
+            }
+            html += '</div>';
+            html += '</div>';
+            html += '</div>';
+            html += '<div class="goods_money">';
+            html += '<ul>';
+            html += '<li>';
+            html += '付款金额(元)';
+            html += '<p>' + Math.floor(data[i].order_amount * 100) / 100; + '</p>';
+            html += '</li>';
+            html += '<li>';
+            html += '结算预估收入(元)';
+            html += '<p>' + Math.floor(data[i].comm_money * 100) / 100; + '</p>';
+            html += '</li>';
+            html += '<li>';
+            html += '奖励比率(%)';
+            html += '<p>' + Math.floor(data[i].comm_rate * 100) / 100; + '</p>';
+            html += '</li>';
+            html += '</ul>';
+            html += '</div>';
+            html += '<div class="goods_order">';
+            html += '<div class="goods_cjtime">' + data[i].creat_time + ' 创建</div>';
+            html += '<div class="goods_ddh">订单号：<span class="ddh_num">' + data[i].order_sn + '</span><span class="copy_btn" id="' + data[i].order_sn + '">复制</span></div>';
+            html += '</div>';
+            html += '</div>';
+        }
+        if (isPull) {
+            $api.byId('list').innerHTML = html;
+        } else {
+            $api.byId('list').innerHTML += html;
+        }
+        $(".copy_btn").click(function() {
+            var clipBoard = api.require('clipBoard');
+            clipBoard.set({
+                value: $(this).attr("id")
+            }, function(ret, err) {
+                if (ret) {
+                    // alert(JSON.stringify(ret));
+                    api.toast({
+                        msg: '复制成功',
+                        duration: 2000,
+                        location: 'middle'
+                    });
+
+                } else {
+                    // alert(JSON.stringify(err));
+                }
+            });
+        })
+    }
+
+    function openGoodDel(goods_id, section_id) {
+        api.openWin({
+            name: 'jd_good_detail',
+            url: '../goods/jd_good_detail.html',
+            pageParam: {
+                goods_id: goods_id,
+                // section_id: section_id
+            }
+        });
+    }
+</script>
+
+</html>

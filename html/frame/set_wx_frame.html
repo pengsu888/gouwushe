@@ -1,0 +1,409 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0" />
+    <meta name="format-detection" content="telephone=no, email=no, date=no, address=no">
+    <title>Hello APP</title>
+    <link rel="stylesheet" type="text/css" href="../../css/api.css" />
+    <link rel="stylesheet" type="text/css" href="../../css/aui.css" />
+    <style>
+    html,body{
+      background-color: #f4f4f4;
+      height: 100%;
+      width: 100%;
+      position: relative;
+      -webkit-user-select:all
+    }
+    .registItem{
+      position: absolute;
+      width: 100%;
+      height: calc(100% - 10px);
+      background: #fff;
+      top: 10px;
+      left: 0;
+    }
+    .regist_input{
+      width: calc(100% - 12px);
+      margin-left: 12px;
+      height: 55px;
+
+      position: relative;
+    }
+    .reg_bottom{
+      border-bottom: solid 1px #ddd;
+    }
+    .regist_input label.label_input{
+      width: 60px;
+      height: 55px;
+      line-height: 55px;
+      position: absolute;
+      left: 0;
+      top: 0;
+    }
+    .regist_input input.input_phone{
+      width: calc(100% - 99px);
+      height: 55px;
+      line-height: 55px;
+      outline: none;
+      position: absolute;
+      left: 60px;
+      top: 0;
+    }
+    .regist_input .clear_phone{
+      width: 17px;
+      height: 17px;
+      background-size: 100% 100%;
+      position: absolute;
+      top:15px;
+      right: 12px;
+    }
+    .editBtn{
+      margin-top: 60px;
+    }
+    .aui-switch:checked {
+        border-color: #4DD865;
+        background-color: #4DD865;
+    }
+    .aui-switch {
+        float: right;
+        margin-top: 15px;
+        margin-right: 12px;
+        width: 2.3rem;
+        height: 1.2rem;
+        position: relative;
+        vertical-align: top;
+        border: 1px solid #dddddd;
+        background-color: #fff;
+        border-radius: 0.6rem;
+        background-clip: content-box;
+        display: inline-block;
+        outline: none;
+        -webkit-appearance: none;
+        appearance: none;
+        -webkit-user-select: none;
+        user-select: none;
+        -webkit-box-sizing: border-box;
+        box-sizing: border-box;
+        -webkit-background-clip: padding-box;
+        background-clip: padding-box;
+        -webkit-transition: all 0.2s linear;
+        transition: all 0.2s linear;
+    }
+    .yunxu{
+      height: 55px;
+      line-height: 55px;
+      color: #888;
+    }
+    #wxItem,#qqItem{
+      display: none;
+    }
+    </style>
+</head>
+<body>
+    <div class="registItem" id="wxItem">
+      <div class="regist_input reg_bottom">
+        <label class="label_input">微信号</label>
+        <input type="text" id="wx_number" class="input_phone"/>
+        <img src="../../image/ic_title_bar_edit_clear.png" alt="" class="clear_phone" id="clear_wxNumber">
+      </div>
+      <div class="regist_input">
+        <label class="yunxu">允许团队查看我的微信号</label>
+        <input class="aui-switch" type="checkbox" id="wx_checked" name="demo2" checked="">
+      </div>
+      <div class="editBtn submitBtn submitColor" tapmode onclick="saveWx();">保存</div>
+    </div>
+    <div class="registItem" id="qqItem">
+      <div class="regist_input reg_bottom">
+        <label class="label_input">QQ号</label>
+        <input type="tel" id="qq_number" maxlength="10" minlength="5" class="input_phone phone_input"/>
+        <img src="../../image/ic_title_bar_edit_clear.png" alt="" class="clear_phone" id="clear_qqNumber">
+      </div>
+      <div class="regist_input">
+        <label class="yunxu">允许团队查看我的QQ号</label>
+        <input class="aui-switch" type="checkbox" id="qq_checked" name="demo2" checked="">
+      </div>
+      <div class="editBtn submitBtn submitColor" tapmode onclick="saveQQ();">保存</div>
+    </div>
+</body>
+<script type="text/javascript" src="../../script/api.js"></script>
+<script type="text/javascript" src="../../script/jquery.js"></script>
+<script type="text/javascript" src="../../script/aui-dialog.js" ></script>
+<script type="text/javascript" src="../../script/api_common.js"></script>
+<script type="text/javascript" src="../../script/md5.js"></script>
+<script type="text/javascript">
+var user_id;
+$(function(){
+  //监听微信输入框事件
+  $("#wx_number").bind('input porpertychange',function(){
+    if($("#wx_number").val().length>0){
+      $("#clear_wxNumber").show();
+    }else{
+      $("#clear_wxNumber").hide();
+    }
+  });
+  $("#clear_wxNumber").click(function(){
+    $("#clear_wxNumber").hide();
+    $api.byId('wx_number').value = '';
+  });
+  //监听QQ输入框事件
+  $("#qq_number").bind('input porpertychange',function(){
+    if($("#qq_number").val().length>0){
+      $("#clear_qqNumber").show();
+    }else{
+      $("#clear_qqNumber").hide();
+    }
+  });
+  $("#clear_qqNumber").click(function(){
+    $("#clear_qqNumber").hide();
+    $api.byId('qq_number').value = '';
+  });
+  //监听QQ输入框输入的是否是大于0的正整数；
+  $("#qq_number").on("keyup",function(){
+      $(this).val($(this).val().replace(/[^0-9]+/,''));
+  });
+  $("#wx_number").on("keyup",function(){
+      $(this).val($(this).val().replace(/[\u4E00-\u9FA5]/g,''));
+  });
+});
+apiready=function(){
+  if(!empty($api.getStorage("userInfo"))){
+    user_id=$api.getStorage("userInfo").user_id;
+  }else{
+    api.openWin({
+        name: 'user_login',
+        url: '../login/user_login.html',
+        pageParam: {
+            name: 'test'
+        }
+    });
+  }
+  if(api.pageParam.set_sign==0){
+    $("#wxItem").show();
+  }else if(api.pageParam.set_sign==1){
+    $("#qqItem").show();
+  }
+  checkSet();
+};
+
+  function saveWx(){
+    var weixin_flag;
+    var wx_number=$api.byId("wx_number").value;
+    if($("#wx_checked").attr("checked")=="checked"){
+      weixin_flag=1;
+    }else{
+      weixin_flag=0;
+    }
+    if(!empty(wx_number)){
+      var obj={
+        'user_id':user_id,
+        'weixin_num':wx_number,
+        'weixin_flag':weixin_flag
+      };
+      var objArr=sort_ASCII(obj);
+      var timestamp=fntimestamp();
+      var version='2.0';
+      var arr=apiSecret+timestamp+version+'';
+      for(i in objArr){
+        arr+=objArr[i];
+      }
+      var sign=hex_md5(arr);
+      // alert(sign);
+      api.ajax({
+          url: commonUrl+'soukeAppTttService/service/user/UpdateweixinNum_ac',
+          method: 'post',
+          headers: {
+              'Content-Type': 'application/json;charset=utf-8'
+          },
+          data: {
+              body: {
+                  'apiKey':apiKey,
+                  'timestamp':timestamp,
+                  'sign':sign,
+                  'user_id':user_id,
+                  'weixin_num':wx_number,
+                  'weixin_flag':weixin_flag
+              }
+          }
+        }, function(ret, err) {
+          if (ret) {
+              if(ret.result_code==200){
+                api.toast({
+                    msg: '设置成功',
+                    duration: 2000,
+                    location: 'middle'
+                });
+                api.execScript({
+                    name: 'zhanghuanquan_win',
+                    frameName: 'zhanghuanquan_frame',
+                    script: 'location.reload();'
+                });
+                api.execScript({
+                    name: 'set_wx_win',
+                    script: 'closeWin();'
+                });
+
+              }else{
+                  api.toast({
+                      msg: ret.result_message,
+                      duration: 2000,
+                      location: 'middle'
+                  });
+
+              }
+          } else {
+              $(".noWlan").show();
+              // api.alert({ msg: JSON.stringify(err) });
+          }
+        });
+    }else{
+      api.toast({
+          msg: '微信号不能为空',
+          duration: 2000,
+          location: 'middle'
+      });
+
+    }
+  }
+  function saveQQ(){
+    var qq_flag;
+    var qq_number=$api.byId("qq_number").value;
+    if($("#qq_checked").attr("checked")=="checked"){
+      qq_flag=1;
+    }else{
+      qq_flag=0;
+    }
+    if(!empty(qq_number)){
+      var obj={
+        'user_id':user_id,
+        'qq_num':qq_number,
+        'qq_flag':qq_flag
+      };
+      var objArr=sort_ASCII(obj);
+      var timestamp=fntimestamp();
+      var version='2.0';
+      var arr=apiSecret+timestamp+version+'';
+      for(i in objArr){
+        arr+=objArr[i];
+      }
+      var sign=hex_md5(arr);
+      // alert(sign);
+      api.ajax({
+          url: commonUrl+'soukeAppTttService/service/user/UpdateQqNum_ac',
+          method: 'post',
+          headers: {
+              'Content-Type': 'application/json;charset=utf-8'
+          },
+          data: {
+              body: {
+                  'apiKey':apiKey,
+                  'timestamp':timestamp,
+                  'sign':sign,
+                  'user_id':user_id,
+                  'qq_num':qq_number,
+                  'qq_flag':qq_flag
+              }
+          }
+        }, function(ret, err) {
+          if (ret) {
+              if(ret.result_code==200){
+                api.toast({
+                    msg: '设置成功',
+                    duration: 2000,
+                    location: 'middle'
+                });
+                api.execScript({
+                    name: 'zhanghuanquan_win',
+                    frameName: 'zhanghuanquan_frame',
+                    script: 'location.reload();'
+                });
+                api.execScript({
+                    name: 'set_wx_win',
+                    script: 'closeWin();'
+                });
+
+              }else{
+                  api.toast({
+                      msg: ret.result_message,
+                      duration: 2000,
+                      location: 'middle'
+                  });
+
+              }
+          } else {
+              $(".noWlan").show();
+              // api.alert({ msg: JSON.stringify(err) });
+          }
+        });
+    }else{
+      api.toast({
+          msg: 'QQ号不能为空',
+          duration: 2000,
+          location: 'middle'
+      });
+
+    }
+  }
+  //查询用户是否设置了
+  function checkSet(){
+    var obj={
+      'user_id':user_id,
+    };
+    var objArr=sort_ASCII(obj);
+    var timestamp=fntimestamp();
+    var version='2.0';
+    var arr=apiSecret+timestamp+version+'';
+    for(i in objArr){
+      arr+=objArr[i];
+    }
+    var sign=hex_md5(arr);
+    // alert(sign);
+    api.ajax({
+        url: commonUrl+'soukeAppTttService/service/user/findweixinNum_ac',
+        method: 'post',
+        headers: {
+            'Content-Type': 'application/json;charset=utf-8'
+        },
+        data: {
+            body: {
+                'apiKey':apiKey,
+                'timestamp':timestamp,
+                'sign':sign,
+                'user_id':user_id,
+            }
+        }
+      }, function(ret, err) {
+        if (ret) {
+            if(ret.result_code==200){
+              // console.log("查询微信设置："+JSON.stringify(ret));
+              if(empty(ret.result_data.weixin_num)){
+                $api.byId('wx_number').value='';
+              }else{
+                $api.byId('wx_number').value=ret.result_data.weixin_num;
+              }
+              if(empty(ret.result_data.qq_num)){
+                $api.byId('qq_number').value='';
+              }else{
+                $api.byId('qq_number').value=ret.result_data.qq_num;
+              }
+
+              if(ret.result_data.weixin_flag==0){
+                $("#wx_checked").attr("checked",false);
+              }else {
+                $("#wx_checked").attr("checked",true);
+              }
+              if(ret.result_data.qq_flag==0){
+                $("#qq_checked").attr("checked",false);
+              }else {
+                $("#qq_checked").attr("checked",true);
+              }
+            }else{
+            }
+        } else {
+            // api.alert({ msg: JSON.stringify(err) });
+        }
+      });
+  }
+</script>
+
+</html>

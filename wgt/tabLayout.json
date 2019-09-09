@@ -1,0 +1,48 @@
+{
+    "name": "root",
+    "bgColor": "#fff",
+    "navigationBar": {
+        
+    },
+    "tabBar": {
+        "animated": true,
+        "list": [
+            {
+                "text": "微信",
+                "iconPath": "widget://image/nav_tab_1.png",
+                "selectedIconPath": "widget://image/nav_tab_1_on.png"
+            }, {
+                "text": "通讯录",
+                "iconPath": "widget://image/nav_tab_2.png",
+                "selectedIconPath": "widget://image/nav_tab_2_on.png"
+            }, {
+                "text": "发现",
+                "iconPath": "widget://image/nav_tab_3.png",
+                "selectedIconPath": "widget://image/nav_tab_3_on.png"
+            }, {
+                "text": "我",
+                "iconPath": "widget://image/nav_tab_4.png",
+                "selectedIconPath": "widget://image/nav_tab_4_on.png"
+            }
+        ],
+        "frames": [
+            {
+                "title": "微信",
+                "name": "tab_frm_1",
+                "url": "widget://html/tab_content_1.html"
+            }, {
+                "title": "通讯录",
+                "name": "tab_frm_2",
+                "url": "widget://html/tab_content_2.html"
+            }, {
+                "title": "发现",
+                "name": "tab_frm_3",
+                "url": "widget://html/tab_content_3.html"
+            }, {
+                "title": "我",
+                "name": "tab_frm_4",
+                "url": "widget://html/tab_content_4.html"
+            }
+        ]
+    }
+}

@@ -1,0 +1,328 @@
+<!DOCTYPE HTML>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0" />
+    <meta name="format-detection" content="telephone=no, email=no, date=no, address=no">
+    <title>网络电话卡密充值</title>
+    <link rel="stylesheet" type="text/css" href="../../css/api.css" />
+    <link rel="stylesheet" href="../../css/swiper.min.css">
+    <style>
+        body {
+            background-color: #f4f4f4;
+            height: 100%;
+            width: 100%;
+            overflow: hidden;
+        }
+
+        .registItem {
+            width: 100%;
+            height: auto;
+            background: #fff;
+            overflow: hidden;
+        }
+
+        .regist_input {
+            width: calc(100% - 12px);
+            margin-left: 12px;
+            height: 55px;
+        }
+
+        .reg_bottom {
+            margin-top: 10px;
+        }
+
+        .reg_border {
+            border-bottom: solid 1px #ddd;
+        }
+
+        .regist_input label.label_input {
+            width: 80px;
+            height: 55px;
+            line-height: 55px;
+        }
+
+        .regist_input button.label_btn {
+            width: 120px;
+            height: 55px;
+            line-height: 55px;
+            text-align: center;
+            color: #fd5f3e;
+        }
+
+        .regist_input input.input_phone {
+            width: calc(100% - 119px);
+            height: 55px;
+            line-height: 55px;
+            outline: none;
+        }
+
+        .regist_input input.input_yzm {
+            width: calc(100% - 210px);
+            height: 35px;
+            line-height: 35px;
+            outline: none;
+            border-right: solid 1px #ddd;
+        }
+
+        .regist_input .clear_phone {
+            width: 17px;
+            height: 17px;
+            background-size: 100% 100%;
+            margin-top: 5px;
+            display: none;
+        }
+
+        .editBtn {
+            margin-top: 60px;
+        }
+
+        .tip {
+            width: calc(100% - 24px);
+            height: 40px;
+            line-height: 40px;
+            margin-left: 12px;
+            color: #999;
+            font-size: 0.8rem;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="registItem reg_bottom">
+        <div class="regist_input reg_border">
+            <label class="label_input">手机号</label>
+            <input type="tel" value="" maxlength="11" class="input_phone" readonly="" id="my_phone" />
+        </div>
+    </div>
+    <div class="registItem reg_bottom">
+        <div class="regist_input reg_bottom reg_border">
+            <label class="label_input">卡号</label>
+            <input type="tel" id="login_newpwd" placeholder="请输入充值卡卡号" class="input_phone pwd_input" />
+            <img src="../../image/ic_title_bar_edit_clear.png" alt="" class="clear_phone" id="clear_newpwd">
+        </div>
+        <div class="regist_input">
+            <label class="label_input">卡密</label>
+            <input type="tel" id="login_surepwd" placeholder="请输入充值卡密码" class="input_phone pwd_input" />
+            <img src="../../image/ic_title_bar_edit_clear.png" alt="" class="clear_phone" id="clear_surepwd">
+        </div>
+    </div>
+    <div class="tip">仅支持充值卡进行充值,请输入正确的卡号和卡密。可从平台或商户获得</div>
+    <div class="editBtn submitBtn submitColor" onclick="suerBtn();">充值</div>
+</body>
+<script type="text/javascript" src="../../script/api.js"></script>
+<script type="text/javascript" src="../../script/jquery.js"></script>
+<script type="text/javascript" src="../../script/api_common.js"></script>
+<script type="text/javascript" src="../../script/md5.js"></script>
+<script type="text/javascript">
+    var user_id;
+    var phone;
+    apiready = function() {
+        if (!empty($api.getStorage("userInfo"))) {
+            user_id = $api.getStorage("userInfo").user_id;
+        } else {
+            user_id = '';
+            checkUserLogin();
+        }
+        if (!empty($api.getStorage("user_phone"))) {
+            phone = $api.getStorage("user_phone");
+        } else {
+            phone = '';
+        }
+        $api.byId('my_phone').value = phone;
+    }
+    $(function() {
+        //监听输入卡号事件
+        $("#login_newpwd").bind('input porpertychange', function() {
+            if ($("#login_newpwd").val().length > 0) {
+                $("#clear_newpwd").show();
+            } else {
+                $("#clear_newpwd").hide();
+            }
+        });
+        //清除输入卡号事件
+        $("#clear_newpwd").click(function() {
+            $("#clear_newpwd").hide();
+            $api.byId('login_newpwd').value = '';
+        });
+        //监听输入卡密事件
+        $("#login_surepwd").bind('input porpertychange', function() {
+            if ($("#login_surepwd").val().length > 0) {
+                $("#clear_surepwd").show();
+            } else {
+                $("#clear_surepwd").hide();
+            }
+        });
+        //清除输入卡密事件
+        $("#clear_surepwd").click(function() {
+            $("#clear_surepwd").hide();
+            $api.byId('login_surepwd').value = '';
+        });
+    });
+
+    function suerBtn() {
+        if (empty($("#login_newpwd").val())) {
+            api.toast({
+                msg: '卡号不能为空',
+                duration: 2000,
+                location: 'middle'
+            });
+            return;
+        }
+        if (empty($("#login_surepwd").val())) {
+            api.toast({
+                msg: '卡密不能为空',
+                duration: 2000,
+                location: 'middle'
+            });
+            return;
+        }
+        if ($("#login_newpwd").val().length != 12) {
+            api.toast({
+                msg: '卡号长度必须是12位数字',
+                duration: 2000,
+                location: 'middle'
+            });
+            return;
+        }
+        if ($("#login_surepwd").val().length != 6) {
+            api.toast({
+                msg: '卡密长度必须是6位数字',
+                duration: 2000,
+                location: 'middle'
+            });
+            return;
+        }
+        var obj = {
+            'user_id': user_id,
+            'cam': $api.byId("login_newpwd").value,
+            'cam_pwd': $api.byId("login_surepwd").value
+        };
+        var objArr = sort_ASCII(obj);
+        var timestamp = fntimestamp();
+        var version = '2.0';
+        var arr = apiSecret + timestamp + version + '';
+        for (i in objArr) {
+            arr += objArr[i];
+        }
+        var sign = hex_md5(arr);
+        api.ajax({
+            url: commonUrl + 'soukeAppTttService/service/telbill/telFeeActivation',
+            method: 'post',
+            headers: {
+                'Content-Type': 'application/json;charset=utf-8'
+            },
+            data: {
+                body: {
+                    'apiKey': apiKey,
+                    'timestamp': timestamp,
+                    'sign': sign,
+                    'user_id': user_id,
+                    'cam': $api.byId("login_newpwd").value,
+                    'cam_pwd': $api.byId("login_surepwd").value
+                }
+            }
+        }, function(ret, err) {
+            if (ret) {
+                if (ret.result_code == 200) {
+                    console.log("话费卡充值成功：" + JSON.stringify(ret));
+                    var dialogBox = api.require('dialogBox');
+                    dialogBox.raffle({
+                        tapClose: true,
+                        texts: {
+                            title: '提醒',
+                            mainText: '话费卡充值成功',
+                            subText: phone,
+                            leftTitle: '查看余额',
+                            rightTitle: '继续充值'
+                        },
+                        styles: {
+                            bg: '#fff',
+                            w: 240,
+                            corner: 5,
+                            title: {
+                                marginT: 20,
+                                size: 16,
+                                color: '#000'
+                            },
+                            icon: {
+                                marginT: 20,
+                                w: 40,
+                                h: 40,
+                                iconPath: 'widget://image/icon_pay_tick_selected.png'
+                            },
+                            main: {
+                                marginT: 20,
+                                color: '#636363',
+                                size: 16
+                            },
+                            sub: {
+                                marginT: 20,
+                                color: '#999999',
+                                size: 12
+                            },
+                            left: {
+                                marginT: 20,
+                                marginB: 7,
+                                marginL: 30,
+                                w: 80,
+                                h: 25,
+                                corner: 2,
+                                bg: '#f94529',
+                                color: '#FFF',
+                                size: 12
+                            },
+                            right: {
+                                marginT: 20,
+                                marginB: 7,
+                                marginL: 18,
+                                w: 80,
+                                h: 25,
+                                corner: 2,
+                                bg: '#f94529',
+                                color: '#FFF',
+                                size: 12
+                            }
+                        }
+                    }, function(ret, err) {
+                        if (ret) {
+                            // alert(JSON.stringify(ret));
+                            if (ret.eventType == 'left') {
+                                api.openWin({
+                                    name: 'net_yue_win',
+                                    url: '../win/net_yue_win.html',
+                                });
+                            }
+                            var dialogBox = api.require('dialogBox');
+                            dialogBox.close({
+                                dialogName: 'raffle'
+                            });
+                            //清除输入卡号事件
+                            $("#clear_newpwd").hide();
+                            $api.byId('login_newpwd').value = '';
+                            //清除输入卡密事件
+                            $("#clear_surepwd").hide();
+                            $api.byId('login_surepwd').value = '';
+                        } else {
+                            alert(JSON.stringify(err));
+                        }
+                    });
+
+                } else {
+                    console.log("话费卡使用失败,请检查卡号密码：" + JSON.stringify(ret));
+                    api.toast({
+                        msg: ret.result_message,
+                        duration: 3000,
+                        location: 'middle'
+                    });
+                }
+            } else {
+                //  api.alert({ msg: JSON.stringify(err) });
+            }
+        });
+
+    }
+</script>
+
+</html>

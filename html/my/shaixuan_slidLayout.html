@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+    <title>title</title>
+    <link rel="stylesheet" type="text/css" href="../css/api.css"/>
+    <link rel="stylesheet" type="text/css" href="../css/style.css" />
+    <style>
+    /*弹出框样式*/
+    	body{
+    		width:100%;
+    		height:100%;
+    		background:none;
+    		font-size:16px;
+        overflow: hidden;
+    	}
+    	.wrapAll{
+    		width:100%;
+    		height:100%;
+    		background:rgba(0,0,0,.5);
+        overflow: hidden;
+    		position:fixed;
+    		top:0;
+    		left:0;
+    		z-index:99;
+    	}
+    	.nl_list {
+    		position: fixed;
+    		top: 251px;
+    		right:36px;
+    		width: 123px;
+    		height:auto;
+    		border-radius: 5px;
+    		z-index: 999;
+    		background: #fff;
+    		box-sizing: border-box;
+    		-webkit-box-sizing: border-box;
+    	}
+      .nl_list .orderList{
+        width: 123px;
+        height: auto;
+        overflow: hidden;
+      }
+      .nl_list .orderList ul{list-style: none;padding: 0;margin: 0 auto;}
+      .nl_list .orderList ul li{
+        width:100%;
+        height: 40px;
+        line-height: 40px;
+        color:#999;
+        text-align: center;
+      }
+      .nl_list .orderList ul li.li_active{
+        color:#fd5f3e;
+      }
+      .aui-popup-arrow {
+        position: absolute;
+        right: 20px;
+        top: -10px;
+        width:0;
+        height:0;
+        border-width:0 10px 10px;
+        border-style:solid;
+        border-color:transparent transparent #fff;/*透明 透明  灰*/
+      }
+    </style>
+</head>
+<body>
+<!--弹出框-->
+	<section class='wrapAll' id='wrapAll'>
+	</section>
+	<section class='nl_list'>
+    <div class="aui-popup-arrow"></div>
+		<div class="orderList">
+		  <ul>
+		    <li>全部</li>
+        <li>普通会员</li>
+        <li>超级会员</li>
+        <li>销售经理</li>
+        <li>合伙人</li>
+		  </ul>
+		</div>
+	</section>
+</body>
+<script type="text/javascript" src="../../script/api.js"></script>
+<script type="text/javascript" src="../../script/jquery.js"></script>
+<script type="text/javascript">
+	apiready = function(){
+      window.headerH=api.pageParam.headerH;
+	};
+		//触摸蒙层
+		document.getElementById('wrapAll').addEventListener('touchstart',function(){
+			closeNLShaixuanLayout();
+		},false);
+
+		//调用关闭弹出层的方法
+		function closeNLShaixuanLayout(){
+			api.execScript({
+				name:'my_fans_win',
+          script:'closeShaixuanLayout();'
+        });
+		}
+    var orderList=$(".orderList ul li");
+    orderList.click(function () {
+      $(this).addClass("li_active").siblings().removeClass("li_active");
+      if($($(this)).html()=="全部"){
+        $(this).removeClass("li_active");
+      }
+      // api.sendEvent({
+      //     name: 'order_title',
+      //     extra: {
+      //         order_title: $(this).html()
+      //     }
+      // });
+
+      // closeNLOrderSlidLayout();
+    })
+</script>
+</html>

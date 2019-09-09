@@ -1,0 +1,462 @@
+<!DOCTYPE HTML>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0" />
+    <meta name="format-detection" content="telephone=no, email=no, date=no, address=no">
+    <title>手机号码注册</title>
+    <link rel="stylesheet" type="text/css" href="../../css/api.css" />
+    <link rel="stylesheet" href="../../css/aui.css">
+
+    <style>
+        html,
+        body {
+            background-color: #fff;
+            height: 100%;
+            width: 100%;
+            position: relative;
+        }
+
+        .closeIcon {
+            height: 0.9rem;
+            width: 0.9rem;
+            position: absolute;
+            top: 2.0rem;
+            left: 1.0rem;
+        }
+
+        img {
+            width: 100%;
+            height: 100%;
+            background-size: 100% 100%;
+        }
+
+        .registItem {
+            width: 80%;
+            height: 10rem;
+            margin: 5rem auto;
+            position: absolute;
+            left: 10%;
+            top: 3%;
+        }
+
+        .regist_title {
+            font-size: 1.5rem;
+            color: #757575;
+            /*margin-left: -1rem;*/
+        }
+
+        .regist_input {
+            width: 100%;
+            height: 2.0rem;
+            border-bottom: solid 1px #ccc;
+            margin-top: 1rem;
+            position: relative;
+        }
+
+        .scannerImg {
+            height: 0.85rem;
+            width: 0.85rem;
+            background-size: 100% 100%;
+            position: absolute;
+            right: 0;
+            bottom: 0.7rem;
+        }
+
+        .clear_phone {
+            height: 0.85rem;
+            width: 0.85rem;
+            background-size: 100% 100%;
+            display: none;
+            position: absolute;
+            right: 0;
+            bottom: 0.7rem;
+        }
+
+        .regist_input input {
+            width: calc(100% - 2rem);
+            height: 2rem;
+            outline: none;
+            border: none;
+            caret-color: #FF2220;
+        }
+
+        .registBtn,
+        .phone_registBtn,
+        .login_registBtn {
+            width: 100%;
+            height: 2rem;
+            text-align: center;
+            color: #fff;
+            background: #CCCCCC;
+            border-radius: 5rem;
+            line-height: 2rem;
+            margin-top: 2rem;
+        }
+
+        .registBtn_active,
+        .phone_registBtn_active,
+        .login_registBtn_active {
+            width: 100%;
+            height: 2rem;
+            text-align: center;
+            color: #fff;
+            background: #FF2220;
+            border-radius: 5rem;
+            line-height: 2rem;
+            margin-top: 1rem;
+            display: none;
+        }
+
+        .china {
+            color: #757575;
+            line-height: 2.0rem;
+        }
+
+        .black_color {
+            color: #333;
+        }
+
+        .regist_tip {
+            height: 3.0rem;
+            line-height: 3.0rem;
+            color: #ccc;
+        }
+        /*#loginByPhone{
+      display: none;
+    }
+    #dx_yzm{
+      display: none;
+    }*/
+
+        .yzm_input {
+            width: 100%;
+            height: 2.0rem;
+            margin-top: 1.5rem;
+        }
+
+        .trade-password {
+            display: flex;
+            justify-content: center;
+            position: relative;
+            margin-top: 0.6rem;
+            width: 100%;
+        }
+
+        .trade-password-input {
+            position: absolute;
+            width: 5.7rem;
+            height: 1.5rem;
+            top: -0.3rem;
+            opacity: 0;
+            font-size: 0.01rem;
+            outline: none;
+            -webkit-appearance: none;
+            -moz-appearance: none;
+            -ms-appearance: none;
+            resize: none;
+            outline: none;
+            z-index: 1;
+        }
+
+        .trade-password .input-juli {
+            float: left;
+            width: 20%;
+            height: 1.88rem;
+            line-height: 1.88rem;
+            flex: none;
+            margin-right: 5%;
+            border-bottom: 1px solid #d6d6d6;
+            text-align: center;
+            -webkit-appearance: none;
+            -moz-appearance: none;
+            -ms-appearance: none;
+            resize: none;
+            outline: none;
+        }
+
+        .fasong {
+            height: 1.5rem;
+            font-size: 0.7rem;
+            width: 100%;
+            color: #ccc;
+            line-height: 1.5rem;
+        }
+
+        .xieyi {
+            height: 5.0rem;
+            width: 100%;
+            line-height: 5.0rem;
+            text-align: center;
+            color: #ccc;
+            font-size: 0.7rem;
+        }
+
+        .xieyi span {
+            color: #FF2220;
+        }
+        /*修改aui中dialog样式*/
+
+        .aui-dialog-btn {
+            position: relative;
+            display: block;
+            width: 100%;
+            padding: 0 0.25rem;
+            height: 2.2rem;
+            font-size: 0.8rem;
+            line-height: 2.2rem;
+            text-align: center;
+            color: #888888;
+            border-right: 1px solid #dddddd;
+            white-space: nowrap;
+            text-overflow: ellipsis;
+            overflow: hidden;
+            -webkit-box-sizing: border-box;
+            box-sizing: border-box;
+            -webkit-box-flex: 1;
+            box-flex: 1;
+        }
+
+        .aui-dialog-btn:last-child {
+            border-right: none;
+            color: #FF2220;
+        }
+
+        .aui-dialog-body {
+            padding: 1.5rem;
+            overflow: hidden;
+            font-size: 0.875em;
+            color: #333;
+        }
+        /*改变input光标颜色*/
+
+        input {
+            caret-color: #FF2220;
+        }
+
+        .tjr {
+            width: 100%;
+            height: 4.4rem;
+            margin: 1rem auto;
+            display: none;
+        }
+
+        .tjr ul {
+            list-style: none;
+            padding: 0.5rem;
+            margin: 0;
+            height: 100%;
+            border: solid 1px #ccc;
+            border-radius: 0.5rem;
+        }
+
+        .tjr ul li {
+            float: left;
+            height: 100%;
+        }
+
+        .tjr ul li:nth-child(1) {
+            width: 25%;
+        }
+
+        .tjr ul li img {
+            width: 100%;
+            height: 100%;
+            background-size: 100% 100%;
+            /*border-radius: 50px*/
+        }
+
+        .tjr ul li:nth-child(2) {
+            width: 75%;
+            position: relative;
+        }
+
+        .tjr ul li div.tjr_name {
+            position: absolute;
+            left: 0.5rem;
+            top: 0;
+        }
+
+        .tjr ul li div.tjr_app {
+            position: absolute;
+            left: 0.5rem;
+            bottom: 0;
+            color: #ccc;
+            font-size: 0.6rem;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="closeIcon" tapmode onclick="closeWin();"><img src="../../image/nav_back.png" alt=""></div>
+
+    <!-- 短信验证码登录 begin-->
+    <div class="registItem" id="loginByPhone">
+        <div class="regist_title black_color">请输入手机号码</div>
+        <div class="regist_input china">
+            中国(+86)
+        </div>
+        <div class="regist_input">
+            <input type="tel" id="login_phone" class="phone_input" placeholder="请输入手机号" maxlength="11" style="caret-color:#FF2220;">
+            <img src="../../image/ic_title_bar_edit_clear.png" alt="" class="clear_phone">
+        </div>
+        <div class="phone_registBtn">下一步</div>
+        <div class="phone_registBtn_active" tapmode onclick="fnGoNext();">下一步</div>
+        <div class="xieyi">注册代表您已同意<span tapmode onclick="fnOpenYonghuxieyi();">《券券推APP用户协议》</span></div>
+    </div>
+    <!-- 短信验证码登录 end-->
+</body>
+<script type="text/javascript" src="../../script/api.js"></script>
+<script type="text/javascript" src="../../script/jquery.js"></script>
+<script type="text/javascript" src="../../script/aui-dialog.js"></script>
+<script type="text/javascript" src="../../script/api_common.js"></script>
+<script type="text/javascript" src="../../script/md5.js"></script>
+<script type="text/javascript">
+    var signLog;
+    var user_nick, user_head, user_sex, return_value;
+    apiready = function() {
+        // if(api.pageParam.ret_status){
+        //   $("#p_regist").hide();
+        //   $("#bywx_regist").show();
+        //   var wx_login=$api.getStorage("wx_login");
+        //   user_nick=wx_login.user_nick;
+        //   user_head=wx_login.user_head;
+        //   user_sex=wx_login.user_sex;
+        //   return_value=wx_login.return_value;
+        // }else{
+        //   $("#p_regist").show();
+        //   $("#bywx_regist").hide();
+        // }
+
+    }
+    $(function() {
+        //监听输入框中的值，当输入框中有值的时候，显示x号
+        $("#login_phone").bind('input porpertychange', function() {
+            if ($("#login_phone").val().length > 0) {
+                $(".clear_phone").show();
+            } else {
+                $(".clear_phone").hide();
+            }
+            //当输入框中的值等于手机号的时候，按钮可点
+            if ($("#login_phone").val().length == 11) {
+                if (fncheckPhone($("#login_phone").val())) {
+                    finduserbyphone();
+                } else {
+                    api.toast({
+                        msg: '请输入正确的手机号',
+                        duration: 2000,
+                        location: 'middle'
+                    });
+
+                }
+            } else {
+                $(".phone_registBtn_active").hide();
+                $(".phone_registBtn").show();
+            }
+        });
+        //x号清除输入框中的值
+        $(".clear_phone").click(function() {
+            $(".clear_phone").hide();
+            $(".phone_registBtn_active").hide();
+            $(".phone_registBtn").show();
+            $api.byId('login_phone').value = '';
+        });
+    });
+    //点击输入手机号后的下一步
+    function fnGoNext() {
+        api.openWin({
+            name: 'regist_code',
+            url: './regist_code.html',
+            pageParam: {
+                ret_status: api.pageParam.ret_status,
+                invitation_code: api.pageParam.invitation_code,
+                user_phone: $api.byId('login_phone').value,
+            }
+        });
+        // $api.byId('get_phone').innerHTML=$api.byId('login_phone').value;
+        // $("#loginByPhone").hide();
+        // $("#dx_yzm").show();
+        // time();
+        // getYzm();
+    }
+    //打开用户协议
+    function fnOpenYonghuxieyi() {
+        api.openWin({
+            name: 'yonghuxieyi_win',
+            url: '../my/yonghuxieyi_win.html',
+            pageParam: {
+                name: 'test'
+            }
+        });
+    }
+
+    function closeWin() {
+        api.closeWin({
+            name: 'regist_phone'
+        });
+    }
+
+    function finduserbyphone() {
+        var obj = {
+            'phone': $api.byId('login_phone').value,
+        };
+        var objArr = sort_ASCII(obj);
+        var timestamp = fntimestamp();
+        var version = '2.0';
+        var arr = apiSecret + timestamp + version + '';
+        for (i in objArr) {
+            arr += objArr[i];
+        }
+        var sign = hex_md5(arr);
+        api.ajax({
+            url: commonUrl + 'soukeAppTttService/service/user/finduserbyphone_ac',
+            method: 'post',
+            headers: {
+                'Content-Type': 'application/json;charset=utf-8'
+            },
+            data: {
+                body: {
+                    'apiKey': apiKey,
+                    'timestamp': timestamp,
+                    'sign': sign,
+                    'phone': $api.byId('login_phone').value
+                }
+            }
+        }, function(ret, err) {
+            if (ret) {
+                console.log("手机号查用户" + JSON.stringify(ret));
+                if (ret.result_code == 200) {
+                    $(".phone_registBtn_active").show();
+                    $(".phone_registBtn").hide();
+                } else {
+                    //当手机号已经给注册时调用此弹框
+                    api.toast({
+                        msg: ret.result_message,
+                        duration: 2000,
+                        location: 'middle'
+                    });
+                    var dialog = new auiDialog();
+                    dialog.alert({
+                        title: "",
+                        msg: '该手机号已注册',
+                        buttons: ['取消', '去登录']
+                    }, function(ret) {
+                        if (ret.buttonIndex == 2) {
+                            api.openWin({
+                                name: 'login',
+                                url: './login.html',
+                                bounces: false,
+                                reload: true
+                            });
+                        }
+                    });
+                }
+            } else {
+                // api.alert({ msg: JSON.stringify(err) });
+            }
+        });
+    }
+</script>
+
+</html>

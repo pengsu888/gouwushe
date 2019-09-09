@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0" />
+  <title>title</title>
+  <link rel="stylesheet" type="text/css" href="../../css/api.css" />
+  <link rel="stylesheet" type="text/css" href="../../css/index.css" />
+  <link rel="stylesheet" type="text/css" href="../../css/LCalendar.css" />
+  <style media="screen">
+    html,body{
+      height: 100%;
+      width: 100%;
+      background: #fff;
+      overflow: hidden;
+      font-size: 14px;
+    }
+    .start-end{
+      width: calc(100% - 24px);
+      margin:30px auto;
+      height: 40px;
+    }
+    .start-end div{
+      float:left;
+    }
+    .start-end div input{
+      width:100%;
+      height: 30px;
+      line-height: 30px;
+      outline: none;
+      text-align: center;
+
+    }
+    .ri_bottom{
+      border-bottom: solid 1px #888;
+      color:#888;
+    }
+    .ri_l{
+      width: 45%;
+      height: 30px;
+      line-height: 30px;
+    }
+    .ri_m{
+      width: 10%;
+      text-align: center;
+      line-height: 30px;
+    }
+    .ri_r{
+      width: 45%;
+      height: 30px;
+      line-height: 30px;
+      text-align: center;
+    }
+    .ri_active{
+      border-bottom: solid 1px #fd5e3f;
+      color:#fd5e3f;
+    }
+    .yue_area{
+      width: 100%;
+      margin:10px auto;
+      height: 40px;
+    }
+    .yue_active{
+      width:100%;
+      height: 30px;
+      line-height: 30px;
+      outline: none;
+      text-align: center;
+
+    }
+    .delete_area{
+      width:100%;
+      height: 30px;
+      border-bottom: solid 1px #ddd;
+    }
+    .delete_area img{
+      width: 20px;
+      height: 20px;
+      background-size: 100% 100%;
+      float: right;
+      margin-right: 12px;
+    }
+
+  </style>
+</head>
+
+<body>
+
+  <div class="start-end" id="day_date">
+    <div class="ri_l"><input  type="text" name="start_date" id="start_date" placeholder="开始日期" class="ri_bottom ri_active"  readonly="readonly" /></div>
+    <div class="ri_m">至</div>
+    <div class="ri_r"><input type="text" name="end_date" id="end_date" class="ri_bottom" placeholder="结束日期"  readonly="readonly" /></div>
+  </div>
+  <div class="delete_area" onclick="deleteDate();">
+    <img src="../../image/home/search_delet.png" alt="">
+  </div>
+</body>
+  <script type="text/javascript" src="../../script/api.js"></script>
+  <script type="text/javascript" src="../../script/jquery.js"></script>
+  <script type="text/javascript" src="../../script/LCalendar.js">
+
+  </script>
+  <script type="text/javascript">
+    apiready = function() {
+    };
+    $("#start_date").click();
+    var calendar = new LCalendar();
+		calendar.init({
+			'trigger': '#start_date', //标签id
+			'type': 'date', //date 调出日期选择 datetime 调出日期时间选择 time 调出时间选择 ym 调出年月选择,
+			'minDate': (new Date().getFullYear()-3) + '-' + 1 + '-' + 1, //最小日期
+			'maxDate': (new Date().getFullYear()) + '-' + 12 + '-' + 31 //最大日期
+		});
+		var calendar = new LCalendar();
+		calendar.init({
+			'trigger': '#end_date', //标签id
+			'type': 'date', //date 调出日期选择 datetime 调出日期时间选择 time 调出时间选择 ym 调出年月选择,
+			'minDate': (new Date().getFullYear()-3) + '-' + 1 + '-' + 1, //最小日期
+			'maxDate': (new Date().getFullYear()) + '-' + 12 + '-' + 31 //最大日期
+		});
+
+  var dataItem=$(".ri_bottom");
+  dataItem.click(function(){
+    $(".ri_bottom").removeClass("ri_active");
+    $(this).addClass("ri_active");
+  });
+  function deleteDate(){
+    $(".gearDate").hide();
+    $(".ri_bottom").removeClass("ri_active");
+    $api.byId('start_date').value='';
+    $api.byId('end_date').value='';
+  }
+  function getTime(){
+    var star_time=$api.byId("start_date").value;
+    var end_time=$api.byId("end_date").value;
+    api.sendEvent({
+        name: 'select_time_byDay2',
+        extra: {
+            star_time: star_time,
+            end_time: end_time
+        }
+    });
+  }
+  </script>
+
+</html>

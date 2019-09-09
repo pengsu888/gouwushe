@@ -1,0 +1,497 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0" />
+    <title>提现</title>
+    <link rel="stylesheet" type="text/css" href="../../css/api.css" />
+    <!-- <link rel="stylesheet" type="text/css" href="../../css/style.css" /> -->
+</head>
+<style media="screen">
+    html,
+    body {
+        height: 100%;
+        width: 100%;
+        background: #f4f4f4;
+        overflow: hidden;
+    }
+
+    .wrap_tx {
+        height: 120px;
+        width: 100%;
+        background: #fff;
+        overflow: hidden;
+        position: relative;
+    }
+
+    .wrap_tx img {
+        width: 120px;
+        height: 120px;
+        background-size: 100% 100%;
+        position: absolute;
+        left: 37%;
+        float: left;
+    }
+
+    .wrap_del {
+        width: 100%;
+        height: calc(100% - 130px);
+        margin-top: 6px;
+        background: #fff;
+    }
+
+    .wrap_del div.zfb_zh,
+    .wrap_del div.tx_je {
+        width: calc(100% - 12px);
+        height: 55px;
+        line-height: 55px;
+        margin-left: 12px;
+        border-bottom: solid 1px #f4f4f4;
+    }
+
+    label {
+        width: 80px;
+    }
+
+    input {
+        width: calc(100% - 90px);
+        outline: none;
+    }
+
+    .zfb_zh input {
+        color: #888;
+    }
+
+    .tx_tip {
+        height: 30px;
+        line-height: 30px;
+        font-size: 12px;
+        color: #888;
+    }
+
+    .keyong_ye {
+        width: 100%;
+        padding-left: 12px;
+        text-align: left;
+        background: #fff;
+        margin: 5px 0 0 0;
+    }
+
+    .zuidi_je {
+        width: calc(50% - 12px);
+        float: right;
+        text-align: right;
+        padding-right: 24px;
+    }
+
+    .submitBtn {
+        width: calc(100% - 24px);
+        height: 40px;
+        line-height: 40px;
+        text-align: center;
+        color: #fff;
+        margin-top: 50px;
+        background: #999;
+    }
+
+    .submitBtn_active {
+        width: calc(100% - 24px);
+        height: 40px;
+        line-height: 40px;
+        text-align: center;
+        color: #fff;
+        margin-top: 50px;
+        display: none;
+        margin-left: 12px;
+        border-radius: 25px;
+    }
+
+    .wrap_tip {
+        width: calc(100% - 24px);
+        height: 30px;
+        line-height: 30px;
+        text-align: center;
+        color: red;
+        margin: 0 auto;
+        font-size: 12px;
+    }
+
+    .regist_input {
+        width: calc(100% - 12px);
+        margin-left: 12px;
+        height: 55px;
+        border-bottom: solid 1px #ddd;
+    }
+
+    .regist_input input.input_yzm {
+        width: calc(100% - 190px);
+        height: 35px;
+        line-height: 35px;
+        outline: none;
+        border-right: solid 1px #ddd;
+    }
+
+    .regist_input label.label_input {
+        width: 60px;
+        height: 55px;
+        line-height: 55px;
+    }
+
+    .regist_input button.label_btn {
+        width: 120px;
+        height: 55px;
+        line-height: 55px;
+        text-align: center;
+        color: #fd5f3e;
+        outline: none;
+    }
+</style>
+
+<body>
+    <div class="wrap_tx">
+        <img src="../../image/home/ic_alipay.png" alt="">
+        <!-- <img src="../../image/appicon_108.png" alt=""> -->
+    </div>
+    <div class="keyong_ye tx_tip">可用余额：<span id="balance">0.00</span>元
+        <div class="zuidi_je tx_tip">最低提现金额为<span id="minimum_money">0.00</span>元</div>
+    </div>
+
+    <div class="wrap_del">
+        <div class="zfb_zh"><label>支付宝</label><input type="text" id="alipaynum" readonly="readonly"></div>
+        <div class="tx_je"><label>提现金额</label>
+            <input type="number" id="input_val" name="" value="" placeholder="请输入提现金额"></div>
+        <div class="regist_input">
+            <label class="label_input">验证码</label>
+            <input type="tel" placeholder="请输入验证码" maxlength="6" class="input_yzm" id="input_yzm" />
+            <button class="label_btn getCode">获取验证码</button>
+        </div>
+        <div class="submitBtn">提交申请</div>
+        <div class="submitBtn_active submitColor" onclick="tixianBtn();">提交申请</div>
+        <div class="wrap_tip" id="money_month"></div>
+    </div>
+
+</body>
+<script type="text/javascript" src="../../script/api.js"></script>
+<script type="text/javascript" src="../../script/jquery.js"></script>
+<script type="text/javascript" src="../../script/api_common.js"></script>
+<script type="text/javascript" src="../../script/md5.js"></script>
+<script type="text/javascript">
+    //监听输入框输入的是否是大于0的正整数；
+    $(function() {
+        $("#input_val").on("keyup", function() {
+            $(this).val($(this).val().replace(/[^0-9]+/, ''));
+            if ($(this).val().length == 1) {
+                $(this).val() == '0' ? $(this).val('') : $(this).val();
+            }
+        });
+        $("#input_val").bind('input porpertychange', function() {
+            if ($("#input_val").val() > 0 && $("#input_val").val() <= balance) {
+                $(".submitBtn_active").show();
+                $(".submitBtn").hide();
+            } else {
+                $(".submitBtn_active").hide();
+                $(".submitBtn").show();
+            }
+        });
+    });
+    var user_id, user_phone;
+    var balance;
+    apiready = function() {
+        if (!empty($api.getStorage("userInfo"))) {
+            user_id = $api.getStorage("userInfo").user_id;
+            getUserInfo();
+            tixianRules();
+            getData();
+        } else {
+            api.openWin({
+                name: 'user_login',
+                url: '../login/user_login.html',
+                reload: true,
+                bounces: false
+            });
+        }
+
+    };
+    //获取用户信息
+    function getUserInfo() {
+        var obj = {
+            'user_id': user_id
+        };
+        var objArr = sort_ASCII(obj);
+        var timestamp = fntimestamp();
+        var version = '2.0';
+        var arr = apiSecret + timestamp + version + '';
+        for (i in objArr) {
+            arr += objArr[i];
+        }
+        var sign = hex_md5(arr);
+        api.ajax({
+            url: commonUrl + 'soukeAppTttService/service/user/message_ac',
+            method: 'post',
+            headers: {
+                'Content-Type': 'application/json;charset=utf-8'
+            },
+            data: {
+                body: {
+                    'apiKey': apiKey,
+                    'timestamp': timestamp,
+                    'sign': sign,
+                    'user_id': user_id,
+                }
+            }
+        }, function(ret, err) {
+            if (ret) {
+                if (ret.result_code == 200) {
+                    console.log("用户信息" + JSON.stringify(ret));
+                    $api.byId('alipaynum').value = ret.result_user.alipaynum;
+                    user_phone = ret.result_user.phone;
+                    if (empty(ret.result_user.phone)) {
+                        api.openWin({
+                            name: 'bind_phone_win',
+                            url: '../win/bind_phone_win.html',
+                        });
+                    } else if (ret.result_user.is_accredit == 0) {
+                        api.openWin({
+                            name: 'bind_zfb_win',
+                            url: '../win/bind_zfb_win.html',
+                        });
+                    }
+                    balance = ret.result_user.balance;
+                    $api.byId("balance").innerHTML = ret.result_user.balance;
+                } else {
+                    api.toast({
+                        msg: ret.result_message,
+                        duration: 2000,
+                        location: 'middle'
+                    });
+
+                }
+            } else {
+                // api.alert({ msg: JSON.stringify(err) });
+            }
+        });
+    }
+    // 用户提现规则
+    function tixianRules() {
+        var obj = {};
+        var objArr = sort_ASCII(obj);
+        var timestamp = fntimestamp();
+        var version = '2.0';
+        var arr = apiSecret + timestamp + version + '';
+        for (i in objArr) {
+            arr += objArr[i];
+        }
+        var sign = hex_md5(arr);
+        api.ajax({
+            url: commonUrl + 'soukeAppTttService/service/user/cashwithdrawalrules_ac',
+            method: 'post',
+            headers: {
+                'Content-Type': 'application/json;charset=utf-8'
+            },
+            data: {
+                body: {
+                    'apiKey': apiKey,
+                    'timestamp': timestamp,
+                    'sign': sign
+                }
+            }
+        }, function(ret, err) {
+            if (ret) {
+                if (ret.result_code == 200) {
+                    console.log("用户提现规则" + JSON.stringify(ret));
+                    $api.byId("minimum_money").innerHTML = ret.result_data.minimum_money;
+                } else {
+                    api.toast({
+                        msg: ret.result_message,
+                        duration: 2000,
+                        location: 'middle'
+                    });
+
+                }
+            } else {
+                // api.alert({ msg: JSON.stringify(err) });
+            }
+        });
+    }
+
+    function getData() {
+        var obj = {
+            'user_id': user_id,
+        };
+        var objArr = sort_ASCII(obj);
+        var timestamp = fntimestamp();
+        var version = '2.0';
+        var arr = apiSecret + timestamp + version + '';
+        for (i in objArr) {
+            arr += objArr[i];
+        }
+        var sign = hex_md5(arr);
+        api.ajax({
+            url: commonUrl + 'soukeAppTttService/service/disRelated/MyIncome_ac',
+            method: 'post',
+            headers: {
+                'Content-Type': 'application/json;charset=utf-8'
+            },
+            data: {
+                body: {
+                    'apiKey': apiKey,
+                    'timestamp': timestamp,
+                    'sign': sign,
+                    'user_id': user_id
+                }
+            }
+        }, function(ret, err) {
+            if (ret) {
+                console.log("我的收益" + JSON.stringify(ret));
+                $("#money_month").html(ret.result_data.settlmet_hint);
+            } else {
+                // alert( JSON.stringify( err ) );
+            }
+        });
+    }
+    /*
+     * 获取验证码
+     *
+     */
+    var wait = 60;
+
+    function time(o) {
+        if (wait == 0) {
+            o.removeAttribute("disabled");
+            o.innerHTML = "获取验证码";
+            wait = 60;
+        } else {
+            o.setAttribute("disabled", true);
+            o.innerHTML = "还剩" + wait + "秒";
+            o.style.color = '#ccc';
+            wait--;
+            setTimeout(function() {
+                time(o)
+            }, 1000)
+        }
+    };
+
+    $(".getCode").click(function() {
+        var t = this;
+        var obj = {
+            'user_phone': user_phone,
+        };
+        var objArr = sort_ASCII(obj);
+        var timestamp = fntimestamp();
+        var version = '2.0';
+        var arr = apiSecret + timestamp + version + '';
+        for (i in objArr) {
+            arr += objArr[i];
+        }
+        var sign = hex_md5(arr);
+        api.ajax({
+            url: commonUrl + 'soukeAppTttService/service/user/sendwithmessage_ac',
+            method: 'post',
+            headers: {
+                'Content-Type': 'application/json;charset=utf-8'
+            },
+            data: {
+                body: {
+                    'apiKey': apiKey,
+                    'timestamp': timestamp,
+                    'sign': sign,
+                    'user_phone': user_phone,
+                }
+            }
+        }, function(ret, err) {
+            if (ret) {
+                if (ret.result_code == 200) {
+                    console.log("提现验证码：" + JSON.stringify(ret));
+                    time(t);
+                    api.toast({
+                        msg: '发送成功',
+                        duration: 2000,
+                        location: 'middle'
+                    });
+
+                } else {
+                    console.log("发送失败：" + JSON.stringify(ret));
+                    api.toast({
+                        msg: '发送失败',
+                        duration: 2000,
+                        location: 'middle'
+                    });
+
+                }
+            } else {
+                // api.alert({ msg: JSON.stringify(err) });
+            }
+        });
+    });
+
+    function tixianBtn() {
+        if (empty($api.byId("input_yzm").value)) {
+            api.toast({
+                msg: '验证码不能为空',
+                duration: 2000,
+                location: 'middle'
+            });
+        } else {
+            $(".submitBtn_active").hide();
+            $(".submitBtn").show();
+            var obj = {
+                'user_id': user_id,
+                'user_price': $api.byId("input_val").value,
+                'user_code': $api.byId("input_yzm").value
+            };
+            var objArr = sort_ASCII(obj);
+            var timestamp = fntimestamp();
+            var version = '2.0';
+            var arr = apiSecret + timestamp + version + '';
+            for (i in objArr) {
+                arr += objArr[i];
+            }
+            var sign = hex_md5(arr);
+            api.ajax({
+                url: commonUrl + 'soukeAppTttService/service/user/withdrawal_ac',
+                method: 'post',
+                headers: {
+                    'Content-Type': 'application/json;charset=utf-8'
+                },
+                data: {
+                    body: {
+                        'apiKey': apiKey,
+                        'timestamp': timestamp,
+                        'sign': sign,
+                        'user_id': user_id,
+                        'user_price': $api.byId("input_val").value,
+                        'user_code': $api.byId("input_yzm").value
+                    }
+                }
+            }, function(ret, err) {
+                if (ret) {
+                    if (ret.result_code == 200) {
+                        console.log("用户提现" + JSON.stringify(ret));
+                        api.sendEvent({
+                            name: 'login',
+                            extra: {
+                                login: true,
+                            }
+                        });
+                        api.execScript({
+                            name: 'tixian_win',
+                            script: 'closeWin();'
+                        });
+                    } else {
+                        api.toast({
+                            msg: ret.result_message,
+                            duration: 2000,
+                            location: 'middle'
+                        });
+
+                    }
+                } else {
+                    // api.alert({ msg: JSON.stringify(err) });
+                }
+            });
+        }
+    }
+</script>
+
+</html>

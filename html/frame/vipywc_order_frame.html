@@ -1,0 +1,300 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0" />
+  <title>title</title>
+  <link rel="stylesheet" type="text/css" href="../../css/api.css" />
+  <link rel="stylesheet" type="text/css" href="../../css/style.css" />
+</head>
+<style type="text/css">
+  html,body{
+    height: 100%;
+    width: 100%;
+    background: #f4f4f4;
+  }
+  .order_item{
+    width: calc(100% - 24px);
+    height: 180px;
+    background: #fff;
+    margin:10px auto auto auto;
+  }
+  .order_time{
+    color:#999;
+    height: 30px;
+    line-height: 30px;
+    font-size: 12px;
+    margin-left: 12px;
+  }
+  .goods_del{
+    width: 100%;
+    height: auto;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    background: #fff;
+  }
+  .goods_del ul{
+    list-style: none;
+    width: calc(100% - 24px);
+    height: 80px;
+    padding: 0;
+    margin: 0 auto;
+  }
+  .goods_del ul li{
+    float: left;
+    height: 80px;
+  }
+  .goods_del ul li:nth-child(1){
+    width: 80px;
+    margin-right: 5px;
+  }
+  .goods_del ul li:nth-child(1) img{
+    width: 100%;
+    height: 100%;
+    background-size: 100% 100%;
+  }
+  .goods_del ul li:nth-child(2){
+    width: calc(100% - 85px);
+  }
+  .goods_title{
+    font-size: 12px;
+    color: #333;
+    line-height: 20px;
+    width:100%;
+    height: auto;
+  }
+  .vip_del{
+    width: calc(100% - 70px);
+    height: 20px;
+    line-height: 20px;
+    color:#999;
+    margin-top: 10px;
+    font-size: 10px;
+    float: left;
+  }
+  .vip_del span{
+    font-size: 14px;
+    color:red;
+    margin-right: 3px;
+  }
+  /*.vip_del .vip_level{
+    width: 14px;
+    height: 14px;
+    margin-right: 5px;
+  }
+  .vip_level img{
+    width:100%;
+    height: 100%;
+    background-size: 100% 100%;
+    vertical-align: middle;
+  }*/
+  .order_status{
+    height: 30px;
+    width: auto;
+    line-height:30px;
+    text-align: center;
+    padding: 0 15px;
+    float: right;
+    margin-right: 20px;
+    background: #f4f4f4;
+    border-radius: 2px;
+    margin-top: 10px;
+    font-size: 14px;
+  }
+  .order_price{
+    float: right;
+    width: 60px;
+    height: 40px;
+    margin-top: 10px;
+  }
+  .price{
+    width: 100%;
+    height: 20px;
+    text-align: right;
+    line-height: 20px;
+    font-size: 14px;
+  }
+  .count{
+    color: #999;
+    font-size: 12px;
+  }
+</style>
+<body>
+  <div id="list">
+    <!-- <div class="order_item">
+      <div class="order_time">下单时间：2018-03-30 19:25:36</div>
+      <div class="goods_del">
+        <ul>
+          <li><img src="../../image/zhanwei.jpg" alt=""></li>
+          <li>
+            <div class="goods_title">【注册VIP赠品】门神蜂毒调理膏 环节疼痛疏通筋络 50G/瓶 2瓶装</div>
+            <div class="vip_del">赠：<span>10</span>推推币</div>
+            <div class="order_price">
+              <div class="price">￥328</div>
+              <div class="price count">x1</div>
+            </div>
+          </li>
+        </ul>
+      </div>
+      <div class="order_status">交易关闭</div>
+    </div> -->
+  </div>
+  <div id="statu" style="font-size:0.8rem;color:#fd5f3e;background-color:#f5f5f5;height:30px;line-height:30px;text-align:center;clear:both;"><img src="../../image/loading.d997b79c.svg" alt="" style="width:1rem;height:1rem;vertical-align:middle;">加载中...</div>
+  <!-- 商品列表部分 end-->
+  <div class="noWlan">
+    <div class="nowlanItem">
+      <div class="no_net"><img src="../../image/no_net.png" /></div>
+      <p class="no_p">网络竟然崩溃了</p>
+      <p class="load_p">别紧张，试试看刷新页面</p>
+      <div class="loadBtn" onclick="javascript:location.reload();">点击刷新</div>
+    </div>
+  </div>
+</body>
+  <script type="text/javascript" src="../../script/api.js"></script>
+  <script type="text/javascript" src="../../script/jquery.js"></script>
+  <script type="text/javascript" src="../../script/api_common.js"></script>
+  <script type="text/javascript" src="../../script/md5.js"></script>
+  <script type="text/javascript">
+  var pageNum = 1;
+  var isOver = false; //默认没有取完数据
+  var statu;//滑到底部状态
+  var user_id;
+  var rebate_name;
+    apiready = function() {
+      if(!empty($api.getStorage("userInfo"))){
+        user_id=$api.getStorage("userInfo").user_id;
+      }else{
+        api.openWin({
+            name: 'user_login',
+            url: './../login/user_login.html',
+        });
+      }
+      statu=$api.byId('statu');
+      loadFresh();
+      loadMyFa(true);
+      // 商品列表数据
+      // 监听事件apiReady滚动到底部，加载更多功能
+      api.addEventListener({
+          name: 'scrolltobottom',
+          extra: {
+              threshold: 120 //设置距离底部多少距离时触发，默认值为0，数字类型
+          }
+      }, function(ret, err) {
+
+          loadMyFa(false);
+      });
+    };
+    function loadFresh(){
+      RefreshLoad();
+    }
+    function loadMyFa(isPull){
+      if (!isPull && isOver) {
+          return;
+      }
+      //判断如果是下拉刷新，
+      if (isPull) {
+          pageNum = 1;
+          isOver = false;
+      }
+        var obj={
+          'size':10,
+          'pageNo':pageNum,
+          'user_id':user_id,
+          'order_type':2
+        };
+        var objArr=sort_ASCII(obj);
+        var timestamp=fntimestamp();
+        var version='2.0';
+        var arr=apiSecret+timestamp+version+'';
+        for(i in objArr){
+          arr+=objArr[i];
+        }
+        var sign=hex_md5(arr);
+        // alert(sign);
+        api.ajax({
+            url: commonUrl+'soukeAppTttService/service/querySelfOrder_ac',
+            method: 'post',
+            headers: {
+                'Content-Type': 'application/json;charset=utf-8'
+            },
+            data: {
+                body: {
+                    'apiKey':apiKey,
+                    'timestamp':timestamp,
+                    'sign':sign,
+                    'size':10,
+                    'pageNo':pageNum,
+                    'user_id':user_id,
+                    'order_type':2
+                }
+            }
+          }, function(ret, err) {
+            if (ret) {
+                if(ret.result_code==200){
+                  $(".noWlan").hide();
+                  console.log("订单列表-----："+JSON.stringify(ret));
+                  var data=ret.result_data;
+                  rebate_name=ret.result_integer.unit+ret.result_integer.name;
+                  if (data != "") {
+                      $api.css(statu, 'display:block;');
+                      pageNum++;
+                  } else {
+                      statu.innerHTML = "暂无数据";
+                  }
+                  if (data.length < 10 && data != "") {
+                      statu.innerHTML = "已经到底啦 ~ 别扯了";
+                      isOver = true;
+                  }
+
+                  fnShowData(data, isPull);
+                }else{
+                    api.toast({
+                        msg: ret.result_message,
+                        duration: 2000,
+                        location: 'middle'
+                    });
+
+                }
+            } else {
+              $(".noWlan").show();
+                // api.alert({ msg: JSON.stringify(err) });
+            }
+          });
+    }
+    function fnShowData(data, isPull){
+      var html="";
+      for(var i=0;i<data.length;i++){
+        html+='<div class="order_item">';
+        html+='<div class="order_time">下单时间：'+data[i].pay_time+'</div>';
+        html+='<div class="goods_del">';
+        html+='<ul>';
+        html+='<li><img src="'+data[i].sing_img+'" alt=""></li>';
+        html+='<li>';
+        html+='<div class="goods_title">'+data[i].sing_title+'</div>';
+        html+='<div class="vip_del">赠：<span>'+data[i].sing_integral+'</span>'+rebate_name+'</div>';
+        html+='<div class="order_price">';
+        html+='<div class="price">￥'+data[i].sing_price+'</div>';
+        html+='<div class="price count">x1</div>';
+        html+='</div>';
+        html+='</li>';
+        html+='</ul>';
+        html+='</div>';
+        if(data[i].status==0){
+          html+='<div class="order_status">订单失效</div>';
+        }else if(data[i].status==1){
+          html+='<div class="order_status">已付款</div>';
+        }else if(data[i].status==2){
+          html+='<div class="order_status">已完成</div>';
+        }
+        html+='</div>';
+      }
+      if (isPull) {
+          $api.byId('list').innerHTML = html;
+      } else {
+          $api.byId('list').innerHTML += html;
+      }
+    }
+  </script>
+
+</html>

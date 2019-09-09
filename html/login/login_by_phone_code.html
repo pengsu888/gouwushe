@@ -1,0 +1,516 @@
+<!DOCTYPE HTML>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0" />
+    <meta name="format-detection" content="telephone=no, email=no, date=no, address=no">
+    <title>短信验证码</title>
+    <link rel="stylesheet" type="text/css" href="../../css/api.css" />
+    <link rel="stylesheet" href="../../css/aui.css">
+
+    <style>
+        html,
+        body {
+            background-color: #fff;
+            height: 100%;
+            width: 100%;
+            position: relative;
+        }
+
+        .closeIcon {
+            height: 0.9rem;
+            width: 0.9rem;
+            position: absolute;
+            top: 2.0rem;
+            left: 1.0rem;
+        }
+
+        img {
+            width: 100%;
+            height: 100%;
+            background-size: 100% 100%;
+        }
+
+        .registItem {
+            width: 80%;
+            height: 10rem;
+            margin: 5rem auto;
+            position: absolute;
+            left: 10%;
+            top: 3%;
+        }
+
+        .regist_title {
+            font-size: 1.5rem;
+            color: #757575;
+            /*margin-left: -1rem;*/
+        }
+
+        .regist_input {
+            width: 100%;
+            height: 2.0rem;
+            border-bottom: solid 1px #ccc;
+            margin-top: 1rem;
+            position: relative;
+        }
+
+        .clear_phone {
+            height: 0.85rem;
+            width: 0.85rem;
+            background-size: 100% 100%;
+            display: none;
+            position: absolute;
+            right: 0;
+            bottom: 0.7rem;
+        }
+
+        .regist_input input {
+            width: calc(100% - 2rem);
+            height: 2rem;
+            outline: none;
+            border: none;
+            caret-color: #FF2220;
+        }
+
+        .phone_registBtn,
+        .login_registBtn {
+            width: 100%;
+            height: 2rem;
+            text-align: center;
+            color: #fff;
+            background: #CCCCCC;
+            border-radius: 5rem;
+            line-height: 2rem;
+            margin-top: 2rem;
+        }
+
+        .phone_registBtn_active,
+        .login_registBtn_active {
+            width: 100%;
+            height: 2rem;
+            text-align: center;
+            color: #fff;
+            background: #FF2220;
+            border-radius: 5rem;
+            line-height: 2rem;
+            margin-top: 1rem;
+            display: none;
+        }
+
+        .china {
+            color: #757575;
+            line-height: 2.0rem;
+        }
+
+        .black_color {
+            color: #333;
+        }
+
+        .regist_tip {
+            height: 3.0rem;
+            line-height: 3.0rem;
+            color: #ccc;
+        }
+        /*#dx_yzm{
+      display: none;
+    }*/
+
+        .yzm_input {
+            width: 100%;
+            height: 2.0rem;
+            margin-top: 1.5rem;
+        }
+
+        .trade-password {
+            display: flex;
+            justify-content: center;
+            position: relative;
+            margin-top: 0.6rem;
+            width: 100%;
+        }
+
+        .trade-password-input {
+            position: absolute;
+            width: 5.7rem;
+            height: 1.5rem;
+            top: -0.3rem;
+            opacity: 0;
+            font-size: 0.01rem;
+            outline: none;
+            -webkit-appearance: none;
+            -moz-appearance: none;
+            -ms-appearance: none;
+            resize: none;
+            outline: none;
+            z-index: 1;
+        }
+
+        .trade-password .input-juli {
+            float: left;
+            width: 20%;
+            height: 1.88rem;
+            line-height: 1.88rem;
+            flex: none;
+            margin-right: 5%;
+            border-bottom: 1px solid #d6d6d6;
+            text-align: center;
+            -webkit-appearance: none;
+            -moz-appearance: none;
+            -ms-appearance: none;
+            resize: none;
+            outline: none;
+        }
+
+        .fasong {
+            height: 1.5rem;
+            font-size: 0.7rem;
+            width: 100%;
+            color: #ccc;
+            line-height: 1.5rem;
+        }
+        /*改变input光标颜色*/
+
+        input {
+            caret-color: #FF2220;
+        }
+        /*修改aui中dialog样式*/
+
+        .aui-dialog-btn {
+            position: relative;
+            display: block;
+            width: 100%;
+            padding: 0 0.25rem;
+            height: 2.2rem;
+            font-size: 0.8rem;
+            line-height: 2.2rem;
+            text-align: center;
+            color: #888888;
+            border-right: 1px solid #dddddd;
+            white-space: nowrap;
+            text-overflow: ellipsis;
+            overflow: hidden;
+            -webkit-box-sizing: border-box;
+            box-sizing: border-box;
+            -webkit-box-flex: 1;
+            box-flex: 1;
+        }
+
+        .aui-dialog-btn:last-child {
+            border-right: none;
+            color: #FF2220;
+        }
+
+        .aui-dialog-body {
+            padding: 1.5rem;
+            overflow: hidden;
+            font-size: 0.875em;
+            color: #333;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="closeIcon" tapmode onclick="closeWin();"><img src="../../image/nav_back.png" alt=""></div>
+    <!-- 获取短信验证码 begin-->
+    <div class="registItem" id="dx_yzm">
+        <div class="regist_title black_color">输入短信验证码</div>
+        <div class="regist_tip">验证码已发送至<span id="get_phone"></span></div>
+        <div class="yzm_input">
+            <div class="trade-password" id="yqmItem">
+                <input type="tel" maxlength="1" class="input-juli yzm_input" id='Yzm1'>
+                <input type="tel" maxlength="1" class="input-juli yzm_input" id='Yzm2'>
+                <input type="tel" maxlength="1" class="input-juli yzm_input" id='Yzm3'>
+                <input type="tel" maxlength="1" class="input-juli yzm_input" id='Yzm4'>
+            </div>
+        </div>
+        <div class="fasong">60秒后重新发送</div>
+        <div class="login_registBtn">登录</div>
+        <div class="login_registBtn_active" tapmode onclick="fnLogin();">登录</div>
+    </div>
+    <!-- 获取短信验证码 end-->
+</body>
+<script type="text/javascript" src="../../script/api.js"></script>
+<script type="text/javascript" src="../../script/jquery.js"></script>
+<script type="text/javascript" src="../../script/aui-dialog.js"></script>
+<script type="text/javascript" src="../../script/api_common.js"></script>
+<script type="text/javascript" src="../../script/md5.js"></script>
+<script type="text/javascript">
+    var user_id;
+    apiready = function() {
+        $api.byId('get_phone').innerHTML = api.pageParam.user_phone;
+        $(".login_registBtn").show();
+        $(".login_registBtn_active").hide();
+        clipBoard();
+        time();
+        getYzm();
+    }
+
+    function clipBoard() {
+        var clipBoard = api.require('clipBoard');
+        clipBoard.setListener(function(ret, err) {
+            if (ret) {
+                // alert(JSON.stringify(ret));
+                // var yqmItem = ret.value;
+                var reg = new RegExp("^[0-9]{4}$");
+                var i = ret.value;
+                if (reg.test(i)) {
+                    $("#Yzm1").val(i.substring(0, 1));
+                    $("#Yzm2").val(i.substring(1, 2));
+                    $("#Yzm3").val(i.substring(2, 3));
+                    $("#Yzm4").val(i.substring(3, 4));
+                    $(".login_registBtn").hide();
+                    $(".login_registBtn_active").show();
+                } else {
+                    $(".login_registBtn").show();
+                    $(".login_registBtn_active").hide();
+                }
+            } else {
+                // alert(JSON.stringify(err));
+            }
+        });
+    }
+
+    function fnLogin() {
+        var phone_input = $(".input-juli");
+        var yzm = "";
+        for (var i = 0; i < phone_input.length; i++) {
+            yzm += $(phone_input[i]).val() + '';
+        }
+        if (yzm == '') {
+            alert("验证码不能为空！");
+            return;
+        }
+        var obj = {
+            'user_phone': api.pageParam.user_phone,
+            'user_dynamic_code': yzm,
+            'device_id': '',
+            'invitation_code': ''
+        };
+        var objArr = sort_ASCII(obj);
+        var timestamp = fntimestamp();
+        var version = '2.0';
+        var arr = apiSecret + timestamp + version + '';
+        for (i in objArr) {
+            arr += objArr[i];
+        }
+        var sign = hex_md5(arr);
+        api.ajax({
+            url: commonUrl + 'soukeAppTttService/service/user/quicklogin_ac',
+            method: 'post',
+            headers: {
+                'Content-Type': 'application/json;charset=utf-8'
+            },
+            data: {
+                body: {
+                    'apiKey': apiKey,
+                    'timestamp': timestamp,
+                    'sign': sign,
+                    'user_phone': api.pageParam.user_phone,
+                    'user_dynamic_code': yzm,
+                    'device_id': '',
+                    'invitation_code': ''
+                }
+            }
+        }, function(ret, err) {
+            if (ret) {
+                console.log("登录：" + JSON.stringify(ret));
+                if (ret.result_code == 200) {
+                    // openinstall上报登录数据
+                    if (openinstaus == 1) {
+                    var openinstall = api.require('openinstall');
+                    openinstall.reportEffectPoint({
+                        effectId: 'login',
+                        effectValue: 1
+                    });
+                  }
+                    api.toast({
+                        msg: '登录成功',
+                        duration: 2000,
+                        location: 'middle'
+                    });
+                    // 获取极光推送ID
+                    var ajpush = api.require('ajpush');
+                    ajpush.getRegistrationId(function(ret) {
+                        if (ret.id != '' || ret.id != 'undefined') {
+                            var registrationId = ret.id;
+                            SaveRegistration(registrationId);
+                            // alert(registrationId);
+                        }
+                    });
+                    user_id = ret.result_user_id;
+                    var userInfo = {
+                        'user_id': ret.result_user_id,
+                        'user_token': ret.result_token
+                    };
+                    $api.setStorage('userInfo', userInfo);
+                    api.sendEvent({
+                        name: 'login',
+                        extra: {
+                            login: true,
+                        }
+                    });
+                    api.closeToWin({
+                        name: 'root'
+                    });
+                } else {
+                    api.toast({
+                        msg: ret.result_message,
+                        duration: 2000,
+                        location: 'middle'
+                    });
+
+                }
+            } else {
+                // api.alert({ msg: JSON.stringify(err) });
+            }
+        });
+    }
+    //监听输入框的值，当值不等于空的时候跳转到下一个输入框
+    $('.input-juli').on('keyup', function(event) {
+        if ($(this).val() != '') {
+            if ($(this).index() < 6) {
+                $(this).next('input').focus();
+            }
+            if ($(this).index() == 3) {
+                $(".login_registBtn").hide();
+                $(".login_registBtn_active").show();
+            } else {
+                $(".login_registBtn").show();
+                $(".login_registBtn_active").hide();
+            }
+        }
+    });
+    //发送验证码
+    var wait = 60;
+    function time() {
+        if (wait == 0) {;
+            $(".fasong").html("获取验证码");
+            $(".fasong").css("color", "#f94529");
+            $(".fasong").click(function() {
+                fnGoNext();
+                getYzm();
+            })
+            wait = 60;
+        } else {
+            fnGoNext();
+        }
+    };
+    function fnGoNext() {
+        $(".fasong").css("color", "#ccc");
+        $(".fasong").html(wait + "秒后重新获取");
+        wait--;
+        setTimeout(function() {
+            time();
+        }, 1000)
+    }
+    //获取验证码
+    function getYzm() {
+        var obj = {
+            'user_phone': api.pageParam.user_phone,
+        };
+        var objArr = sort_ASCII(obj);
+        var timestamp = fntimestamp();
+        var version = '2.0';
+        var arr = apiSecret + timestamp + version + '';
+        for (i in objArr) {
+            arr += objArr[i];
+        }
+        var sign = hex_md5(arr);
+        api.ajax({
+            url: commonUrl + 'soukeAppTttService/service/user/quicklogincode_ac',
+            method: 'post',
+            headers: {
+                'Content-Type': 'application/json;charset=utf-8'
+            },
+            data: {
+                body: {
+                    'apiKey': apiKey,
+                    'timestamp': timestamp,
+                    'sign': sign,
+                    'user_phone': api.pageParam.user_phone
+                }
+            }
+        }, function(ret, err) {
+            if (ret) {
+                if (ret.result_code == 200) {
+                    console.log(JSON.stringify(ret));
+                    api.toast({
+                        msg: '发送成功',
+                        duration: 2000,
+                        location: 'middle'
+                    });
+
+                } else {
+                    console.log("发送失败：" + JSON.stringify(ret));
+                    api.toast({
+                        msg: '发送失败',
+                        duration: 2000,
+                        location: 'middle'
+                    });
+
+                }
+            } else {
+                // api.alert({ msg: JSON.stringify(err) });
+            }
+        });
+    }
+    //监听输入框按下的时候，当输入框为空的时候删除下一个
+    $('.input-juli').on('keydown', function(event) {
+        var evt = event || window.event;
+        if ($(this).val() == '' && evt.keyCode == 8) {
+            // 如果为空且按下退回键
+            $(this).prev('input').focus();
+        }
+    });
+
+    function closeWin() {
+        api.closeWin({
+            name: 'login_by_phone_code'
+        });
+
+    }
+    // 保存或修改推送ID
+    function SaveRegistration(registrationId) {
+        var obj = {
+            'user_id': user_id,
+            'registration_id': registrationId
+        };
+        var objArr = sort_ASCII(obj);
+        var timestamp = fntimestamp();
+        var version = '2.0';
+        var arr = apiSecret + timestamp + version + '';
+        for (i in objArr) {
+            arr += objArr[i];
+        }
+        console.log(arr);
+        var sign = hex_md5(arr);
+        api.ajax({
+            url: commonUrl + 'soukeAppTttService/service/push/updateOrSaveRegistration',
+            method: 'post',
+            headers: {
+                'Content-Type': 'application/json;charset=utf-8'
+            },
+            data: {
+                body: {
+                    'apiKey': apiKey,
+                    'timestamp': timestamp,
+                    'sign': sign,
+                    'user_id': user_id,
+                    'registration_id': registrationId
+                }
+            }
+        }, function(ret, err) {
+            if (ret) {
+                console.log("保存或修改推送ID:" + JSON.stringify(ret));
+                if (ret.result_code == 200) {} else {
+                    serviceErr();
+                }
+            } else {
+                serviceErr();
+            }
+        });
+    }
+</script>
+
+</html>

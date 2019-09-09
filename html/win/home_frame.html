@@ -1,0 +1,1056 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0" />
+    <meta name="format-detection" content="telephone=no">
+    <title>首页teb分类商品</title>
+    <link rel="stylesheet" type="text/css" href="../../css/api.css" />
+    <link rel="stylesheet" type="text/css" href="../../css/style.css" />
+    <link rel="stylesheet" type="text/css" href="../../css/swiper.min.css" />
+    <style>
+        /* 返回顶部样式开始 */
+
+        .actGotop {
+            position: fixed;
+            _position: absolute;
+            bottom: 3rem;
+            right: 0.5rem;
+            width: 3.5rem;
+            height: 3.5rem;
+            display: none;
+            z-index: 999
+        }
+
+        .actGotop a,
+        .actGotop a:link {
+            width: 3.5rem;
+            height: 3.5rem;
+            display: inline-block;
+            background: url(../../image/ic_back_top.png) no-repeat;
+            background-size: 3.5rem 3.5rem;
+            outline: none;
+        }
+
+        .actGotop a:hover {
+            background: url(../../image/ic_back_top.png) no-repeat;
+            outline: none;
+            background-size: 3.5rem 3.5rem;
+        }
+        /* 返回顶部样式开始 */
+
+        html,
+        body {
+            background: #F5F5F5;
+        }
+
+        .typeItem {
+            width: 100%;
+            height: auto;
+            padding-bottom: 20px;
+            background: #fff;
+        }
+
+        img {
+            background-size: 100% 100%;
+        }
+
+        .typeItem ul {
+            list-style: none;
+            height: 100%;
+            overflow-y: scroll;
+            overflow: hidden;
+        }
+
+        .typeItem ul li {
+            float: left;
+            width: 25%;
+            height: 6.0rem;
+            position: relative;
+        }
+
+        .typeItem ul li.go_more {
+            background: #FEF4EA;
+            position: relative;
+        }
+
+        .typeItem ul li.go_more img {
+            width: 32px;
+            height: 39px;
+            position: absolute;
+            top: 65%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+        }
+
+        .typeItem ul li.go_more p {
+            position: absolute;
+            text-align: center;
+            width: 100%;
+            left: 0;
+            top: 25%;
+            font-size: 14px;
+            color: #FA5D05;
+        }
+
+        .typeItem ul li img {
+            width: 42px;
+            height: 42px;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+        }
+
+        .typeItem ul li p {
+            position: absolute;
+            text-align: center;
+            width: 100%;
+            left: 0;
+            bottom: 5%;
+            font-size: 12px;
+            color: #666;
+        }
+
+        .typeItem ul li p.active {
+            color: #FF2C23;
+        }
+
+        .allType {
+            width: 100%;
+            height: 40px;
+            background: #fff;
+            display: inline-block;
+            vertical-align: middle;
+            text-align: center;
+            line-height: 40px;
+            position: fixed;
+            left: 0;
+            top: 0;
+            z-index: 99999;
+        }
+
+        .allType img {
+            float: right;
+            width: 13px;
+            height: 12px;
+            margin-top: 14px;
+            margin-right: 10px;
+        }
+
+        .rmsp_tj {
+            width: 100%;
+            height: 12rem;
+            background: #fff;
+        }
+
+        .rmsp_tj .rmsp_img {
+            height: 2.5rem;
+            width: 100%;
+        }
+
+        .rmsp_tj .rmsp_img img {
+            width: 100%;
+            height: 100%;
+            background-size: 100% 100%;
+        }
+
+        .rmsp_tj .rmsp_list {
+            height: calc(100% - 4.0rem);
+            margin: 0 1.5%;
+        }
+
+        .rmsp_tj .rmsp_list ul li {
+            float: left;
+            width: 30%;
+            height: 100%;
+            margin: 3% 1.5%;
+        }
+
+        .rmsp_tj .rmsp_list ul li .rmsp_del_img {
+            width: 100%;
+            max-height: 11rem;
+            min-height: 6.5rem;
+            background-size: 100% 100%;
+            background: #F58999;
+            border-radius: 0.3rem;
+            position: relative;
+        }
+
+        .rmsp_tj .rmsp_list ul li .rmsp_del_img .rmsp_quan {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 3rem;
+            height: 1.5rem;
+            background: #fff;
+            border-radius: 0.3rem;
+            line-height: 1.5rem;
+            font-size: 0.7rem;
+            text-align: center;
+            color: #FF3024;
+            border: solid 1px #FF3024;
+            padding: 0 0.3rem;
+        }
+
+        .rmsp_tj .rmsp_list ul li .rmsp_del {
+            width: 100%;
+            font-size: 0.8rem;
+            text-align: center;
+        }
+
+        .rmsp_tj .rmsp_list ul li .rmsp_del .rmsp_title {
+            color: #8E8E8E;
+            margin-top: 0.5rem;
+        }
+
+        .rmsp_tj .rmsp_list ul li .rmsp_del .rmsp_price {
+            color: #FF3024;
+            margin-top: 0.3rem;
+        }
+
+        .rmsp_tj .rmsp_list ul li .rmsp_del .rmsp_price span {
+            text-decoration: line-through;
+            color: #ccc;
+            font-size: 0.7rem;
+        }
+        /*选项卡样式*/
+
+        .fixNav {
+            width: 100%;
+            height: 3rem;
+            padding: 0 0.24rem;
+            box-sizing: border-box;
+            background: #fff;
+        }
+
+        .fixNav ul {
+            width: 100%;
+            height: 3rem;
+        }
+
+        .fixNav ul li {
+            float: left;
+            width: 29%;
+            line-height: 3rem;
+            height: 3rem;
+            position: relative;
+        }
+
+        .fixNav .old {
+            display: block;
+            width: 100%;
+            height: 100%;
+            text-align: center;
+            font-size: 0.8rem;
+            color: #333;
+        }
+
+        .fixNav #test li .current {
+            color: #fd5f3e;
+        }
+
+        .upAttr {
+            position: absolute;
+            width: 0.4em;
+            height: 0.3rem;
+            top: 30%;
+            right: 24%;
+        }
+
+        .upAttr1 {
+            background: url(../../image/huaqian_iicon_uparrow_default.png) no-repeat;
+            background-size: 100% 100%;
+        }
+
+        .upAttr2 {
+            background: url(../../image/huaqian_icon_uparrow_selected.png) no-repeat;
+            background-size: 100% 100%;
+        }
+
+        .DownAttr {
+            position: absolute;
+            width: 0.4em;
+            height: 0.3rem;
+            top: 51%;
+            right: 24%;
+        }
+
+        .DownAttr1 {
+            background: url(../../image/huaqian_icon_downarrow_default.png) no-repeat;
+            background-size: 100% 100%;
+        }
+
+        .DownAttr2 {
+            background: url(../../image/huaqian_icon_downarrow_selected.png) no-repeat;
+            background-size: 100% 100%;
+        }
+
+        .fix_nav {
+            position: fixed;
+            left: 0;
+            top: 0;
+            z-index: 99999;
+        }
+        /*轮播图*/
+
+        .swiper-container {
+            width: 100%;
+            height: 100%;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .swiper-slide {
+            text-align: center;
+            font-size: 18px;
+            background: #f4f4f4;
+            /* Center slide text vertically */
+            display: -webkit-box;
+            display: -ms-flexbox;
+            display: -webkit-flex;
+            display: flex;
+            -webkit-box-pack: center;
+            -ms-flex-pack: center;
+            -webkit-justify-content: center;
+            justify-content: center;
+            -webkit-box-align: center;
+            -ms-flex-align: center;
+            -webkit-align-items: center;
+            align-items: center;
+        }
+
+        .swiper-slide img {
+            width: 100%;
+            height: 100%;
+            background-size: 100% 100%;
+        }
+        /*2019-05-02新增商品样式切换*/
+
+        .fixNav ul li.listS {
+            width: 13%;
+        }
+
+        .fixNav ul li.style_1 {
+            width: 1.8rem;
+            height: 1.6rem;
+            margin-top: 0.5rem;
+            background: url("../../image/ic_page_search_index_switch_dc.png") center center no-repeat;
+            background-size: 100% 100%;
+        }
+
+        .fixNav ul li.style_2 {
+            width: 1.8rem;
+            height: 1.6rem;
+            background: url("../../image/ic_page_search_index_switch_sc.png") center center no-repeat;
+            margin-top: 0.5rem;
+            background-size: 100% 100%;
+        }
+
+        #box_1 {
+            display: none;
+        }
+    </style>
+</head>
+
+<body>
+    <!-- 返回顶部按钮 -->
+    <div class="actGotop">
+        <a href="javascript:;" title="返回顶部"></a>
+    </div>
+    <!-- <div id="main" v-cloak>
+      <div v-for="item in list" class="module">
+          // banner：焦点图
+          <template v-if="item.type=='banner'">
+          <div v-if="item.styles.marginTop==1">
+            <div v-bind:style="{backgroundColor:'rgb('+item.styles.margincol+')',height:item.styles.marginhigh+'px'}"></div>
+          </div>
+          <div id="focus"></div>
+        </template>
+          // banner：焦点图 end
+      </div>
+  </div> -->
+    <!-- <div class="meitu" id="my_banner">
+    <div class="swiper-container">
+      <div class="swiper-wrapper">
+        <div class="swiper-slide"><img src="../../image/home/huaqian_bdsh_img_tip.gif" alt=""></div>
+        <div class="swiper-slide"><img src="../../image/home/huaqian_bdsh_img_tip.gif" alt=""></div>
+        <div class="swiper-slide"><img src="../../image/home/huaqian_bdsh_img_tip.gif" alt=""></div>
+      </div>
+    </div>
+  </div> -->
+    <!-- 商品部分开始 -->
+    <div class="typeItem">
+        <ul id="typeItem">
+            <!-- <li><img src="../image/home/me_btn_yaoqing.png"/><p>二级分类</p></li> -->
+        </ul>
+    </div>
+    <!-- <div class="rmsp_tj">
+    <div class="rmsp_list">
+      <ul>
+        <li>
+          <div class="rmsp_del_img">
+            <div class="rmsp_quan">35元券</div>
+          </div>
+          <div class="rmsp_del">
+            <div class="rmsp_title">抖音同款 红石榴防</div>
+            <div class="rmsp_price">￥24.9 <span>￥59.9</span></div>
+          </div>
+        </li>
+        <li>
+          <div class="rmsp_del_img">
+            <div class="rmsp_quan">35元券</div>
+          </div>
+          <div class="rmsp_del">
+            <div class="rmsp_title">抖音同款 红石榴防</div>
+            <div class="rmsp_price">￥24.9 <span>￥59.9</span></div>
+          </div>
+        </li>
+        <li>
+          <div class="rmsp_del_img">
+            <div class="rmsp_quan">35元券</div>
+          </div>
+          <div class="rmsp_del">
+            <div class="rmsp_title">抖音同款 红石榴防</div>
+            <div class="rmsp_price">￥24.9 <span>￥59.9</span></div>
+          </div>
+        </li>
+      </ul>
+    </div>
+  </div> -->
+    <!--选项卡 -->
+    <div class="fixNav" id="navHeader">
+        <ul class="clearfix" id="test">
+            <li><a href="javascript:void(0)" class="old current common zonghe" tapmode onclick="dianji(0)">推荐</a></li>
+            <li><a href="javascript:void(0)" class="old common xiaoliang" tapmode onclick="dianji('volume')">销量</a></li>
+            <!-- <li><a href="javascript:void(0)" class="old differ quane" tapmode onclick="dianji('item_start_time')">最新</a></li> -->
+            <li><a href="javascript:void(0)" class="old differ jiage" tapmode onclick="dianji('real_price')">价格</a><span class="upAttr upAttr1"></span><span class="DownAttr DownAttr1"></span></li>
+            <li class="listS style_1" id="listS"></li>
+        </ul>
+    </div>
+    <!--商品列表 -->
+    <!-- <div  id="list" style="background-color:#fff;overflow:hidden;"> -->
+    <!-- 商品列表部分 begin-->
+    <div class="box" id="box">
+    </div>
+    <div id="box_1">
+    </div>
+
+    </div>
+    <div id="statu" style="font-size:0.8rem;color:#fd5f3e;background-color:#f5f5f5;height:30px;line-height:30px;text-align:center;clear:both;"><img src="../../image/loading.d997b79c.svg" alt="" style="width:1rem;height:1rem;vertical-align:middle;">加载中...</div>
+    <!-- 商品列表部分 end-->
+    <div class="noWlan">
+        <div class="nowlanItem">
+            <div class="no_net"><img src="../../image/no_net.png" /></div>
+            <p class="no_p">网络竟然崩溃了</p>
+            <p class="load_p">别紧张，试试看刷新页面</p>
+            <div class="loadBtn" onclick="javascript:location.reload();">点击刷新</div>
+        </div>
+    </div>
+</body>
+<script type="text/javascript" src="../../script/api.js"></script>
+<script type="text/javascript" src="../../script/jquery.js"></script>
+<script type="text/javascript" src="../../script/api_common.js"></script>
+<script type="text/javascript" src="../../script/md5.js"></script>
+<script type="text/javascript" src="../../script/swiper.min.js"></script>
+<script type="text/javascript">
+    $(document).ready(function() {
+        // 返回顶部
+        $(window).scroll(function() {
+            if ($(window).scrollTop() >= 500) {
+                $('.actGotop').fadeIn("fast");
+            } else {
+                $('.actGotop').fadeOut(300);
+            }
+        });
+        $('.actGotop').click(function() {
+            $('html,body').animate({
+                scrollTop: '0px'
+            }, 300);
+        });
+    });
+    var cid; //一级分类id
+    var sonName = [];
+    var pageNum = 1;
+    var isOver = false; //默认没有取完数据
+    var user_id;
+    var sort_order, selled_type; //点击筛选状态变化
+    var statu; //滑到底部状态
+    var k = 0,
+        s = 0,
+        selled_type, sx = 0;
+    var min_level_name, min_share_rebate, level_name, max_shop_rebate, min_shop_rebate, max_level_name; //计算佣金比率
+    var dis_level_id, shop_rebate, max_share_rebate, share_rebate, my_share_rebate, my_shop_rebate; //计算佣金比率
+    apiready = function() {
+        if (!empty($api.getStorage("userInfo"))) {
+            user_id = $api.getStorage("userInfo").user_id;
+        } else {
+            user_id = '';
+        }
+        // getLunbo();
+        jisuan(-1, user_id);
+        statu = $api.byId('statu');
+        // window.status = api.pageParam.status;
+        cid = api.pageParam.cid - 1;
+        var status;
+        var obj = {};
+        var objArr = sort_ASCII(obj);
+        var timestamp = fntimestamp();
+        var version = '2.0';
+        var arr = apiSecret + timestamp + version + '';
+        for (i in objArr) {
+            arr += objArr[i];
+        }
+        var sign = hex_md5(arr);
+        api.ajax({
+            url: commonUrl + 'soukeAppTttService/service/user/getClassification',
+            method: 'post',
+            headers: {
+                'Content-Type': 'application/json;charset=utf-8'
+            },
+            data: {
+                body: {
+                    'apiKey': apiKey,
+                    'timestamp': timestamp,
+                    'sign': sign,
+                }
+            }
+        }, function(ret, err) {
+            if (ret) {
+                // console.log("商品分类：" + JSON.stringify(ret));
+                status = ret.status;
+                var menuList = [];
+                if (status == 1) {
+                    //官方
+                    menuList = ret.resultStr.general_classify;
+                } else {
+                    menuList = ret.general_classify;
+                }
+                getData(menuList);
+            }
+        });
+        // }
+
+        //轮播图
+        // function getLunbo(){
+        //   var obj={
+        //     'section_id':'66',
+        //   };
+        //   var objArr=sort_ASCII(obj);
+        //   var timestamp=fntimestamp();
+        //   var version='2.0';
+        //   var arr=apiSecret+timestamp+version+'';
+        //   for(i in objArr){
+        //     arr+=objArr[i];
+        //   }
+        //   var sign=hex_md5(arr);
+        //   api.ajax({
+        //       url: commonUrl+'soukeAppTttService/service/advert/all_ac',
+        //       method: 'post',
+        //       headers: {
+        //           'Content-Type': 'application/json;charset=utf-8'
+        //       },
+        //       data: {
+        //           body: {
+        //               'apiKey':apiKey,
+        //               'timestamp':timestamp,
+        //               'sign':sign,
+        //               'section_id':'66',
+        //           }
+        //       }
+        //     }, function(ret, err) {
+        //       if (ret) {
+        //           if(ret.result_code==200){
+        //             var htmlLb='';
+        //             console.log("我的轮播图"+JSON.stringify(ret));
+        //             htmlLb+='<div class="swiper-container">';
+        //             htmlLb+='<div class="swiper-wrapper">';
+        //               for(var i=0;i<ret.result_data.advert_banner.length;i++){
+        //                 htmlLb+='<div class="swiper-slide" adv_name="'+ret.result_data.advert_banner[i].adv_name+'" link_url="'+ret.result_data.advert_banner[i].link_url+'" id="'+ret.result_data.advert_banner[i].link_type_id+'"><img src="'+ret.result_data.advert_banner[i].img_url+'" alt=""></div>';
+        //               }
+        //             htmlLb+='</div>';
+        //             htmlLb+='</div>';
+        //             $api.byId('my_banner').innerHTML=htmlLb;
+        //             var swiper = new Swiper('.swiper-container', {
+        //              slidesPerView: 1,
+        //              spaceBetween: 15,
+        //              loop: true,
+        //              autoplay: {
+        //                 delay: 2500,
+        //                 disableOnInteraction: false,
+        //               },
+        //            });
+        //            $(".swiper-slide").click(function (){
+        //              var platetype=$(this).attr("id");
+        //              if(platetype==1){ //链接
+        //                window.location.href=$(this).attr("link_url");
+        //              }else if(platetype==2){ //板块
+        //                var adv_name=$(this).attr("adv_name");
+        //                openBankuaiFrame(1,adv_name,false);
+        //               }else if(platetype==3){  //商品链接
+        //                 if($(this).attr("link_url").search("http")==-1){
+        //                   openGoodDel($(this).attr("link_url"),-1);
+        //                 }else{
+        //                   window.location.href=$(this).attr("link_url");
+        //                 }
+        //
+        //               }
+        //            })
+        //           }else{
+        //
+        //           }
+        //       } else {
+        //           // api.alert({ msg: JSON.stringify(err) });
+        //       }
+        //     });
+        // }
+
+
+        //加载首页板块
+        loadFresh();
+        loadMyFa(true);
+        // 商品列表数据
+        // 监听事件apiReady滚动到底部，加载更多功能
+        api.addEventListener({
+            name: 'scrolltobottom',
+            extra: {
+                threshold: 120 //设置距离底部多少距离时触发，默认值为0，数字类型
+            }
+        }, function(ret, err) {
+
+            loadMyFa(false);
+        });
+    };
+
+    function loadFresh() {
+        RefreshLoad();
+    }
+
+    function getData(menuList) {
+        var nextCont = '';
+        var dataItem;
+        for (var i = 0; i < menuList.length; i++) {
+            if (i == cid) {
+                for (var j = 0; j < menuList[cid].data.length; j++) {
+                    for (var n = 0; n < menuList[cid].data[j].info.length; n++) {
+                        // nextCont+='<li class="son_name"><img src="'+menuList[cid].data[j].info[n].imgurl+'"/><p>'+menuList[cid].data[j].info[n].son_name+'</p></li>';
+                        var key;
+                        if (api.pageParam.status==1) {
+                          key = menuList[cid].data[j].info[n].son_name;
+                        }else {
+                          key = menuList[cid].data[j].info[n].key_word;
+                        }
+                        dataItem = {
+                            imgurl: menuList[cid].data[j].info[n].imgurl,
+                            son_name: menuList[cid].data[j].info[n].son_name,
+                            key_word: key
+                        }
+                        sonName.push(dataItem);
+                    }
+                }
+            }
+        }
+        for (var m = 0; m < sonName.length; m++) {
+            if (m < 11) {
+                nextCont += '<li class="son_name" tapmode onclick="fnOpenFenlei(\'' + sonName[m].son_name + '\',\'' + sonName[m].key_word + '\');"><img src="' + sonName[m].imgurl + '"/><p>' + sonName[m].son_name + '</p></li>';
+            } else if (m == 11) {
+                nextCont += '<li class="go_more" tapmode onclick="fngoMore(' + cid + ');"><p>更多分类</p><img src="../../image/ic_page_new_login_right_arrow.png"/></li>';
+            }
+        }
+        $api.byId('typeItem').innerHTML = nextCont;
+    }
+    // 导航条定位
+    $(window).scroll(function() {
+        //获得当前已滚动上去的距离
+        var h = $(window).scrollTop();
+        var sliderH = $('.typeItem').height();
+        // var webshopH = $('.rmsp_tj').height();
+        var allH = sliderH;
+        if (h >= allH) {
+            $(".fixNav").addClass('fix_nav');
+        } else {
+            $(".fixNav").removeClass('fix_nav');
+        }
+    })
+
+    function fngoMore(cid) {
+        api.openFrame({
+            name: 'home_type_frame',
+            url: './home_type_frame.html',
+            rect: {
+                x: 0,
+                y: api.safeArea.top + 44,
+                w: api.winWidth,
+                h: api.winHeight
+            },
+            pageParam: {
+                cid: cid,
+                status: api.pageParam.status
+            },
+            bounces: false,
+            bgColor: 'rgba(0,0,0,0.5)',
+            vScrollBarEnabled: true,
+            hScrollBarEnabled: true,
+            animation: {
+                type: "movein",
+                subType: "from_top",
+                duration: 500
+            }
+        });
+    }
+
+    function fnOpenFenlei(header_title, keyword) {
+        api.openWin({
+            name: 'fenlei_win',
+            url: '../fenlei/fenlei_win.html',
+            pageParam: {
+                headerTitle: header_title,
+                keyword: keyword
+            }
+        });
+
+    }
+
+    function loadMyFa(isPull) {
+        if (!isPull && isOver) {
+            return;
+        }
+        //判断如果是下拉刷新，
+        if (isPull) {
+            pageNum = 1;
+            isOver = false;
+        }
+        var obj = {
+            'user_id': user_id,
+            'size': 10,
+            'device_id': '',
+            'page': pageNum,
+            // 'section_id':'',
+            'class_id': api.pageParam.cid,
+            'selled_type': '',
+
+
+        };
+        var objArr = sort_ASCII(obj);
+        var timestamp = fntimestamp();
+        var version = '2.0';
+        var arr = apiSecret + timestamp + version + '';
+        for (i in objArr) {
+            arr += objArr[i];
+        }
+        var sign = hex_md5(arr);
+        // alert(sign);
+        api.ajax({
+            url: commonUrl + 'soukeAppTttService/service/class/item_ac',
+            method: 'post',
+            headers: {
+                'Content-Type': 'application/json;charset=utf-8'
+            },
+            data: {
+                body: {
+                    'apiKey': apiKey,
+                    'timestamp': timestamp,
+                    'sign': sign,
+                    'user_id': user_id,
+                    'size': 10,
+                    'device_id': '',
+                    'page': pageNum,
+                    //'section_id':'',
+                    'class_id': api.pageParam.cid,
+                }
+            }
+        }, function(ret, err) {
+            if (ret) {
+                if (ret.result_code == 200) {
+                    // console.log("商品信息-----："+JSON.stringify(ret));
+                    var data = ret.result_data.items;
+                    var size = ret.result_data.size;
+                    if (data != "") {
+                        $api.css(statu, 'display:block;');
+                        pageNum++;
+                    } else {
+                        statu.innerHTML = "暂无数据";
+                    }
+                    if (data.length < size && data != "") {
+                        statu.innerHTML = "已经到底啦 ~ 别扯了";
+                        isOver = true;
+                    }
+                    getTwoData(data, isPull);
+                    getOneData(data, isPull);
+                } else {
+                    api.toast({
+                        msg: ret.result_message,
+                        duration: 2000,
+                        location: 'middle'
+                    });
+
+                }
+            } else {
+                // api.alert({ msg: JSON.stringify(err) });
+            }
+        });
+    }
+    //一排2个商品
+    function getTwoData(data, isPull) {
+        var html = '';
+        for (var i = 0; i < data.length; i++) {
+            var tkfee = (data[i].zk_final_price - data[i].coupon_jian) * data[i].commission_rate / 100;
+            html += '<div class="yh_card" style="cursor:pointer;"  tapmode onclick="openGoodDel(' + data[i].num_iid + ',-1);">';
+            html += '<div class="yh_img_div">';
+            html += '<img src="' + data[i].pict_url + '" class="yh_card_img 1" />';
+            var yg_tkfee = "";
+            if (user_id == "") {
+                yg_tkfee = (tkfee * my_share_rebate * min_share_rebate) / 10000;
+                html += '<div class="yh_bottom">预估佣金' + yg_tkfee.toFixed(2) + '</div>';
+            } else {
+                yg_tkfee = (tkfee * my_share_rebate * share_rebate) / 10000;
+                html += '<div class="yh_bottom">预估佣金' + yg_tkfee.toFixed(2) + '</div>';
+            }
+            html += '</div>';
+            html += '<div style="background:#fff;padding:0.5rem;">';
+            if (data[i].user_type == "1") {
+                html += '<div class="good_title"><img src="../../image/sharepage_tianmao.png" alt="" class="tt">' + data[i].short_title + '</div>';
+                html += '<div class="tm_price">';
+                html += '<div class="tm_left">天猫价 ￥' + data[i].zk_final_price + '</div>';
+                html += '<div class="tm_right">月销 ' + data[i].volume + '</div>';
+                html += '</div>';
+            } else if (data[i].user_type == "0") {
+                html += '<div class="good_title"><img src="../../image/sharepage_taobao.png" alt="" class="tt">' + data[i].short_title + '</div>';
+                html += '<div class="tm_price">';
+                html += '<div class="tm_left">淘宝价 ￥' + data[i].zk_final_price + '</div>';
+                html += '<div class="tm_right">月销 ' + data[i].volume + '</div>';
+                html += '</div>';
+            }
+
+            html += '<div class="qh_price">';
+            html += '<div class="qh_left"><span class="qh_left_quan">券后￥</span>&nbsp;' + data[i].real_price + '</div>';
+            html += '<div class="qh_right">' + data[i].coupon_jian + '元券</div>';
+            html += '</div>';
+            html += '</div>';
+            html += '</div>';
+        }
+        if (isPull) {
+            $api.byId('box').innerHTML = html;
+        } else {
+            $api.byId('box').innerHTML += html;
+        }
+    }
+
+    //一排一个商品
+    function getOneData(data, isPull) {
+        var cont_1 = '';
+        for (var i = 0; i < data.length; i++) {
+            var tkfee = (data[i].zk_final_price - data[i].coupon_jian) * data[i].commission_rate / 100;
+            // alert(tkfee);
+            cont_1 += '<div class="box_1" tapmode  onclick="openGoodDel(' + data[i].num_iid + ',-1);">';
+            cont_1 += '<div class="d_card">';
+            cont_1 += '<div class="d_card_img">';
+            cont_1 += '<img src="' + data[i].pict_url + '" alt="">';
+            var yg_tkfee = "";
+            if (user_id == "") {
+                yg_tkfee = (tkfee * my_share_rebate * min_share_rebate) / 10000;
+                cont_1 += '<div class="d_bottom">预估佣金' + Math.floor(yg_tkfee * 100) / 100 + '</div>';
+            } else {
+                yg_tkfee = (tkfee * my_share_rebate * share_rebate) / 10000;
+                cont_1 += '<div class="d_bottom">预估佣金' + Math.floor(yg_tkfee * 100) / 100 + '</div>';
+            }
+            cont_1 += '</div>';
+            cont_1 += '<div class="d_right">';
+            cont_1 += '<div class="right_card">';
+            cont_1 += '<div class="rightA">';
+            cont_1 += '<div class="right_top">';
+            cont_1 += '<div class="top_title">' + data[i].short_title + '</div>';
+            // cont_1+='<div class="top_title_del">'+data[i].short_title+'</div>';
+            cont_1 += '</div>';
+            cont_1 += '<div class="right_bottom">';
+            cont_1 += '<div class="right_bottom_1">';
+            if (data[i].user_type == "1") {
+                cont_1 += '<div class="right_tm">天猫价  ￥' + data[i].zk_final_price + '</div>';
+            } else if (data[i].user_type == "0") {
+                cont_1 += '<div class="right_tm">淘宝价  ￥' + data[i].zk_final_price + '</div>';
+            }
+            cont_1 += '<div class="right_yx">月销 ' + data[i].volume + '</div>';
+            cont_1 += '</div>';
+            cont_1 += '<div class="right_bottom_2">';
+            cont_1 += '<div class="right_qhj"><img src="../../image/ic_page_sc_gapprice.png" alt="">￥ ' + data[i].real_price + '</div>';
+            cont_1 += '<div class="right_quan">' + data[i].coupon_jian + '元券</div>';
+            cont_1 += '</div>';
+            cont_1 += '</div>';
+            cont_1 += '</div>';
+            cont_1 += '</div>';
+            cont_1 += '</div>';
+            cont_1 += '</div>';
+            cont_1 += '</div>';
+        }
+        if (isPull) {
+            $api.byId('box_1').innerHTML = cont_1;
+        } else {
+            $api.byId('box_1').innerHTML += cont_1;
+        }
+    }
+    var h = $(window).scrollTop();
+    var sliderH = $('.typeItem').height();
+    // var webshopH = $('.rmsp_tj').height();
+    var allH = sliderH;
+    //点击综合、销量、价格等菜单
+    var n = 0,
+        m = 0;
+
+    function dianji(tname) {
+        $api.setStorage('tname', tname);
+        sx = 1;
+        if (tname == 0) {
+            $('.zonghe').addClass('current').parent().siblings().children().removeClass('current').siblings().removeClass('DownAttr2').removeClass('upAttr2 sx_icon2');
+        } else if (tname == "volume") {
+            $('.xiaoliang').addClass('current').parent().siblings().children().removeClass('current').siblings().removeClass('DownAttr2').removeClass('upAttr2 sx_icon2');
+            sort_order = 'DESC';
+        } else if (tname == "real_price") {
+            n++;
+            if (n % 2 == 0) {
+                $('.jiage').addClass('current').parent().siblings().children().removeClass('current').siblings().removeClass('DownAttr2').removeClass('upAttr2 sx_icon2');
+                $('.jiage').siblings('span').eq(1).addClass('DownAttr2').parent().siblings().children().siblings().removeClass('DownAttr2');
+                $('.jiage').siblings('span').eq(0).removeClass('upAttr2');
+                sort_order = 'DESC';
+            } else {
+                $('.jiage').addClass('current').parent().siblings().children().removeClass('current').siblings().removeClass('DownAttr2').removeClass('upAttr2 sx_icon2');
+                $('.jiage').siblings('span').eq(0).addClass('upAttr2').parent().siblings().children().siblings().removeClass('upAttr2');
+                $('.jiage').siblings('span').eq(1).removeClass('DownAttr2');
+                sort_order = 'ASC';
+            }
+        } else if (tname == "item_start_time") {
+            m++;
+            $('.quane').addClass('current').parent().siblings().children().removeClass('current').siblings().removeClass('DownAttr2').removeClass('upAttr2 sx_icon2');
+            sort_order = 'DESC';
+            // if (m % 2 == 0) {
+            //     $('.quane').addClass('current').parent().siblings().children().removeClass('current').siblings().removeClass('DownAttr2').removeClass('upAttr2 sx_icon2');
+            //     sort_order = 'ASC';
+            //
+            // } else {
+            //     $('.quane').addClass('current').parent().siblings().children().removeClass('current').siblings().removeClass('DownAttr2').removeClass('upAttr2 sx_icon2');
+            //     sort_order = 'DESC';
+            // }
+        }
+        $api.setStorage('sort_order', sort_order);
+
+        if (tname == 0) {
+            var pageNum = 1;
+            loadMyFa(true);
+            // 监听事件apiReady滚动到底部，加载更多功能
+            api.addEventListener({
+                name: 'scrolltobottom',
+                extra: {
+                    threshold: 120 //设置距离底部多少距离时触发，默认值为0，数字类型
+                }
+            }, function(ret, err) {
+
+                loadMyFa(false);
+            });
+        } else {
+            afterDianji(true, tname);
+            api.addEventListener({
+                name: 'scrolltobottom',
+                extra: {
+                    threshold: 120 //设置距离底部多少距离时触发，默认值为0，数字类型
+                }
+            }, function(ret, err) {
+                afterDianji(false, tname);
+            });
+        }
+        // 监听事件apiReady滚动到底部，加载更多功能
+        // $("body,html").animate({
+        //     scrollTop: allH
+        // }, 10);
+    }
+
+    function afterDianji(isPull, tname) {
+        //如果不是下拉刷新同时数据取完了
+        if (!isPull && isOver) {
+            return;
+        }
+        //判断如果是下拉刷刷，
+        if (isPull) {
+            pageNum = 1;
+            isOver = false;
+        }
+        var obj = {
+            'class_id': api.pageParam.cid,
+            'page': pageNum,
+            'find_type': tname,
+            'sort_order': sort_order,
+            'size': 10,
+        }
+        var objArr = sort_ASCII(obj);
+        var timestamp = fntimestamp();
+        var version = '2.0';
+        var arr = apiSecret + timestamp + version + '';
+        for (i in objArr) {
+            arr += objArr[i];
+        }
+        // console.log(arr);
+        var sign = hex_md5(arr);
+        api.ajax({
+            url: commonUrl + 'soukeAppTttService/service/class/item_ac',
+            method: 'post',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            data: {
+                body: {
+                    'apiKey': apiKey,
+                    'timestamp': timestamp,
+                    'sign': sign,
+                    'class_id': api.pageParam.cid,
+                    'page': pageNum,
+                    'find_type': tname,
+                    'sort_order': sort_order,
+                    'size': 10,
+                }
+            }
+        }, function(ret, err) {
+            // alert(JSON.stringify(ret));
+            if (ret) {
+                // alert(JSON.stringify(ret));
+                //  alert(decodeURIComponent(JSON.stringify( ret ).UrlEncode()));
+                var data = ret.result_data.items;
+                var size = ret.result_data.size;
+                if (data != "") {
+                    $api.css(statu, 'display:block;');
+                    pageNum++;
+                    if (data.length < size) {
+                        statu.innerHTML = "已经到底啦 ~ 别扯了";
+                        isOver = true;
+                    }
+
+                }
+                getTwoData(data, isPull);
+                getOneData(data, isPull);
+            } else {
+
+                api.toast({
+                    msg: '唉！网络不见了，请检查网络连接',
+                    duration: 2000,
+                    location: 'middle'
+                });
+
+            }
+        });
+
+    }
+    //切换样式按钮事件
+    $("#listS").click(function() {
+        if ($(this).hasClass("style_1")) {
+            $(this).removeClass("style_1");
+            $(this).addClass("style_2");
+            $("#box").hide();
+            $("#box_1").show();
+        } else {
+            $(this).removeClass("style_2");
+            $(this).addClass("style_1");
+            $("#box").show();
+            $("#box_1").hide();
+        }
+    });
+</script>
+
+</html>

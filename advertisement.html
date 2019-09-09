@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0" />
+    <title>闪屏广告</title>
+    <link rel="stylesheet" type="text/css" href="./css/api.css" />
+    <style>
+        body {}
+    </style>
+</head>
+
+<body>
+
+</body>
+<script type="text/javascript" src="./script/jquery.js"></script>
+<script type="text/javascript" src="./script/api.js"></script>
+<script type="text/javascript" src="./script/api_common.js"></script>
+<script type="text/javascript" src="./script/md5.js"></script>
+<script type="text/javascript">
+    var Ad_time;
+    apiready = function() {
+        fnfindFlash();
+    };
+    //查询闪屏图
+    function fnfindFlash() {
+        var obj = {};
+        var objArr = sort_ASCII(obj);
+        var timestamp = fntimestamp();
+        var version = '2.0';
+        var arr = apiSecret + timestamp + version + '';
+        for (i in objArr) {
+            arr += objArr[i];
+        }
+        var sign = hex_md5(arr);
+        api.ajax({
+            url: commonUrl + 'soukeAppTttService/service/newapp/findFlash',
+            method: 'post',
+            headers: {
+                'Content-Type': 'application/json;charset=utf-8'
+            },
+            data: {
+                body: {
+                    'apiKey': apiKey,
+                    'timestamp': timestamp,
+                    'sign': sign
+                }
+            }
+        }, function(ret, err) {
+            if (ret) {
+                console.log("//查询闪屏图：" + JSON.stringify(ret));
+                if (ret.result_code == 200) {
+                    var data = ret.result_data;
+                    var status = ret.result_data.status;
+                    var Ad_time = ret.result_data.time;
+                    var platetype = ret.result_data.dataType;
+                    var plateid = ret.result_data.dataValue;
+                    var platename = ret.result_data.dataName;
+                    // console.log(api.deviceModel);
+                    var flag = 0;
+                    if (api.deviceModel == 'iPhone11,8') {
+                        flag = 1;
+                    } else if (api.deviceModel == 'iPhone10,3') {
+                        flag = 1;
+                    } else if (api.deviceModel == 'iPhone10,6') {
+                        flag = 1;
+                    } else if (api.deviceModel == 'iPhone11,2') {
+                        flag = 1;
+                    } else if (api.deviceModel == 'iPhone11,6') {
+                        flag = 1;
+                    }
+                    var chart_Flash = [];
+                    if (flag == 0) {
+                        chart_Flash.push(data.pic_url_flash);
+                    } else {
+                        chart_Flash.push(data.pic_url_flash_iphonex);
+                    }
+                    UIScrollPicture = api.require('UIScrollPicture');
+                    UIScrollPicture.open({
+                        rect: {
+                            x: 0,
+                            y: 0,
+                            w: 'auto',
+                            h: 'auto' //此处用'auto'是为了适应某些机型页面底部虚拟键的显示／隐藏 切换
+                        },
+                        data: {
+                            paths: chart_Flash,
+                        },
+                        // styles: {
+                        //     indicator: {
+                        //         align: 'center',
+                        //         color: 'rgba(255,255,255,0.4)',
+                        //         activeColor: '#FFFFFF'
+                        //     }
+                        // },
+                        contentMode: 'scaleToFill',
+                        auto: false, //禁止自动滚动
+                        loop: false, //禁止循环播放
+                    }, function(ret, err) {
+                        if (ret) {
+                            api.openFrame({
+                                name: 'Count_down',
+                                url: 'Count_down.html',
+                                vScrollBarEnabled: false,
+                                hScrollBarEnabled: false,
+                                slidBackEnabled: false,
+                                reload: false,
+                                bounces: false,
+                                bgColor: 'rgba(0,0,0,0)',
+                                rect: {
+                                    x: api.winWidth - 80,
+                                    y: 0,
+                                    w: 80,
+                                    h: 100
+                                },
+                                pageParam: {
+                                    name: Ad_time
+                                }
+                            });
+                            if ('click' == ret.eventType) {
+                                fnJump(platetype, plateid, platename);
+                                closeFrame();
+                                api.sendEvent({
+                                    name: 'StartPage',
+                                    extra: {
+                                        key1: '1'
+                                    }
+                                });
+                            }
+
+                        }
+                    });
+                }
+            } else {
+                // alert( JSON.stringify( err ) );
+            }
+        });
+    }
+
+    function closeFrame() {
+        var UIScrollPicture = api.require('UIScrollPicture');
+        UIScrollPicture.close();
+    }
+    // 跳转
+    function fnJump(platetype, plateid, platename) {
+        if (platetype == 1) { //商品板块
+            openSectionFrame(plateid, platename, true);
+        }
+        if (platetype == 2) { //APP板块
+            fnOpenFunction(plateid, platetype, platename);
+        }
+        if (platetype == 3) { //商品详情页
+            openGoodDel(plateid, -1)
+        }
+        if (platetype == 4) { //外链
+            //  window.location.href = plateid;
+            api.openWin({
+                name: 'jump_href_win',
+                url: 'widget://html/win/jump_href_win.html',
+                pageParam: {
+                    url: plateid,
+                    name: platename,
+                },
+
+            });
+        }
+        if (platetype == 5) { //官方板块
+            open_Gf_bankuai(plateid, platename, true);
+        } else if (platetype == 6) { //淘宝分类
+            openFenlei_type(plateid, platename)
+        } else if (platetype == 7) { //拼多多
+            openPddSectionFrame(plateid, platename, true)
+        } else if (platetype == 8) { //拼多多分类
+            openPddFenlei_type(plateid, platename, true)
+        }
+        if (platetype == 9) { //拼多多商品
+            openPddGoodDel(plateid, platename, true)
+        }
+    }
+</script>
+
+</html>

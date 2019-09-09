@@ -1,0 +1,337 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0" />
+    <title>意见反馈</title>
+    <link rel="stylesheet" type="text/css" href="../../css/api.css" />
+</head>
+<style media="screen">
+    body {
+        height: 100%;
+        width: 100%;
+        background: #f4f4f4;
+    }
+
+    .user_fk {
+        height: 100%;
+        width: calc(100% - 24px);
+        margin: 0 auto;
+    }
+
+    p {
+        text-align: left;
+        height: 40px;
+        width: 100%;
+        color: #666;
+        line-height: 40px;
+    }
+
+    .fk_area {
+        width: 100%;
+        height: 190px;
+        background: #fff;
+        position: relative;
+    }
+
+    textarea {
+        width: calc(100% - 24px);
+        height: calc(100% - 50px);
+        padding: 12px;
+        resize: none;
+        outline: none;
+    }
+
+    .fk_count {
+        width: 80%;
+        height: 20px;
+        line-height: 20px;
+        position: absolute;
+        right: 12px;
+        bottom: 10px;
+        text-align: right;
+        color: #666;
+        font-size: 12px;
+    }
+
+    .fk_img {
+        width: 100%;
+        height: 105px;
+        background: #fff;
+    }
+
+    .fk_img ul {
+        list-style: none;
+        width: calc(100% - 5px);
+        margin: 0 2.5px;
+        background: red;
+    }
+
+    .fk_img ul li {
+        width: calc(25% - 5px);
+        margin: 15px 2.5px;
+        height: 81px;
+        float: left;
+    }
+
+    .fk_img ul li .add_img {
+        width: 100%;
+        height: 100%;
+        background-size: 100% 100%;
+    }
+
+    .fk_img ul li.img_list {
+        width: calc(25% - 5px);
+        margin: 15px 2.5px;
+        height: 81px;
+        /*background: url("../../image/home/view_share_item_frame.png") no-repeat center center;
+    background-size: 100% 100%;*/
+        position: relative;
+    }
+
+    .fk_img ul li .delete_img {
+        width: 24px;
+        height: 24px;
+        background-size: 100% 100%;
+        position: absolute;
+        top: 0px;
+        right: 0px;
+        z-index: 9999;
+    }
+
+    .fk_img ul li .imgItem {
+        height: 100%;
+        width: 100%;
+        background-size: 100% 100%;
+        position: absolute;
+        left: 0;
+        top: 0;
+    }
+</style>
+
+<body>
+    <div class="user_fk">
+        <p>我的反馈</p>
+        <div class="fk_area">
+            <textarea name="name" id="textarea" rows="2" cols="10" maxlength="200" placeholder="对我们的产品提出您宝贵的意见..."></textarea>
+            <div class="fk_count">您还能输入<span id="fk_count">200</span>个字符</div>
+        </div>
+        <p>上传图片</p>
+        <div class="fk_img">
+            <ul id="fk_imgList">
+                <!-- <li class="img_list">
+          <img src="../../image/home/store_delet.png" alt="" class="delete_img">
+          <img src="http://img.alicdn.com/imgextra/i4/666412682/TB2WeWtdFmWBuNjSspdXXbugXXa_!!666412682.jpg_400x400" alt="" class="imgItem">
+        </li> -->
+                <li onclick="fnUploadImg();" id="addImg"><img src="../../image/home/mine_notice_plus.png" alt="" class="add_img"></li>
+            </ul>
+        </div>
+    </div>
+    <div class="submitBtn submitColor" onclick="fnsubmit();">提交</div>
+</body>
+<script type="text/javascript" src="../../script/api.js"></script>
+<script type="text/javascript" src="../../script/jquery.js"></script>
+<script type="text/javascript" src="../../script/api_common.js"></script>
+<script type="text/javascript" src="../../script/md5.js"></script>
+<script type="text/javascript">
+    var user_id;
+    apiready = function() {
+        if (!empty($api.getStorage("userInfo"))) {
+            user_id = $api.getStorage("userInfo").user_id;
+        } else {
+            user_id = '';
+        }
+    };
+    var imgArr = [];
+
+    function fnUploadImg() {
+        var resultList = api.hasPermission({
+            list: ['photos']
+        });
+        if (!resultList[0].granted) {
+            //存储未授权
+            api.requestPermission({
+                list: ['photos'],
+                code: 1000
+            }, function(ret, err) {
+                // api.alert({
+                //     msg: JSON.stringify(ret)
+                // });
+                if (!ret.never) {
+                    //禁止权限
+                    return;
+                } else {
+                    fnUploadImgTo();
+                }
+            });
+        } else {
+            fnUploadImgTo();
+        }
+        // api.alert({
+        //     msg: JSON.stringify(resultList)
+        // });
+    }
+
+    function fnUploadImgTo() {
+        api.actionSheet({
+            title: '',
+            cancelTitle: '取消',
+            buttons: ['拍照', '从相册中选择']
+        }, function(ret, err) {
+            var index = ret.buttonIndex;
+            var sourceType = "album";
+            if (index == 1) {
+                sourceType = "camera";
+            }
+            if (index == 3) {
+                return;
+            }
+            api.getPicture({
+                sourceType: sourceType,
+                encodingType: 'png',
+                mediaValue: 'pic',
+                destinationType: 'url',
+                allowEdit: true,
+                saveToPhotoAlbum: true,
+                quality: 50
+            }, function(ret, err) {
+                if (ret) {
+                    //						alert("图片"+JSON.stringify(ret));
+                    var cont = '';
+                    if (ret.data == "") {
+                        imgArr.remove(ret.data);
+                    } else {
+                        imgArr.push(ret.data);
+                        cont += '<li class="img_list">';
+                        cont += '<img src="../../image/home/store_delet.png" alt="" class="delete_img">';
+                        cont += '<img src="' + ret.data + '" alt="" class="imgItem">';
+                        cont += '</li>';
+                        $("#fk_imgList").prepend(cont);
+                        var deleImg = document.getElementsByClassName("delete_img");
+                        for (var j = 0; j < deleImg.length; j++) {
+                            deleImg[j].index = j;
+                            deleImg[j].onclick = function() {
+                                var t = this;
+                                imgArr.splice(t, 1);
+                                $(this).parent(".img_list").remove();
+                                $("#addImg").show();
+                            }
+                        }
+                        if (imgArr.length >= 4) {
+                            $("#addImg").hide();
+                        } else {
+                            $("#addImg").show();
+                        }
+                    }
+                }
+            });
+        });
+    }
+    //封装一个限制字数方法
+    var checkStrLengths = function(str, maxLength) {
+            var maxLength = maxLength;
+            var result = 0;
+            if (str && str.length > maxLength) {
+                result = maxLength;
+            } else {
+                result = str.length;
+            }
+            return result;
+        }
+        //监听输入
+    $("#textarea").on('input propertychange', function() {
+
+        //获取输入内容
+        var userDesc = $(this).val();
+
+        //判断字数
+        var len;
+        if (userDesc) {
+            len = checkStrLengths(userDesc, 200);
+        } else {
+            len = 0
+        }
+        len = 200 - len;
+        //显示字数
+        $("#fk_count").html(len);
+    });
+    var photo_list = [];
+    var count = 0;
+
+    function fnsubmit() {
+        if (imgArr.length == 0) {
+            api.toast({
+                msg: '至少要上传一张反馈图片哦~',
+                duration: 2000,
+                location: 'middle'
+            });
+            return false;
+        }
+        if ($("#textarea").val() == "") {
+            api.toast({
+                msg: '还没有输入反馈的意见',
+                duration: 2000,
+                location: 'middle'
+            });
+            return false;
+        }
+        var obj = {
+            'user_id': user_id,
+            "user_text": encodeURIComponent($("#textarea").val())
+        };
+        var objArr = sort_ASCII(obj);
+        var timestamp = fntimestamp();
+        var version = '2.0';
+        var arr = apiSecret + timestamp + version + '';
+        for (i in objArr) {
+            arr += objArr[i];
+        }
+        var sign = hex_md5(arr);
+        api.ajax({
+            url: commonUrl + 'soukeAppTttService/service/user/feedback_ac',
+            method: 'post',
+            // headers: {
+            //     'Content-Type': 'application/json;charset=utf-8'
+            // },
+            data: {
+                values: {
+                    'apiKey': apiKey,
+                    'timestamp': timestamp,
+                    'sign': sign,
+                    "user_id": user_id,
+                    "user_text": $("#textarea").val()
+                },
+                files: {
+                    file: imgArr
+                }
+            }
+        }, function(ret, err) {
+            if (ret) {
+                if (ret.result_code == 200) {
+                    api.toast({
+                        msg: '提交成功',
+                        duration: 2000,
+                        location: 'middle'
+                    });
+                    setTimeout(function() {
+                        api.execScript({
+                            name: 'yijianfankui_win',
+                            script: 'closeWin();'
+                        });
+                    }, 1500);
+                }
+                // api.alert({ msg: JSON.stringify(ret) });
+            } else {
+                console.log(JSON.stringify(err));
+                api.toast({
+                    msg: '保存失败' + err.msg,
+                    duration: 2000,
+                    location: 'middle'
+                });
+            }
+        });
+    }
+</script>
+
+</html>

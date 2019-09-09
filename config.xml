@@ -1,31 +1,106 @@
- <widget id="A6012040771437"  version="0.0.1">
-    <name>购物舍</name>
-    <description>
-        Example For APICloud.
-    </description>
-    <author email="developer@apicloud.com" href="http://www.apicloud.com">
-        Developer
-    </author>
-    <content src="index.html" />
-    <access origin="*" />
-    <preference name="pageBounce" value="false"/>
-	<preference name="appBackground" value="rgba(0,0,0,0.0)"/>
-	<preference name="windowBackground" value="rgba(0,0,0,0.0)"/>
-	<preference name="frameBackgroundColor" value="rgba(0,0,0,0.0)"/>
-	<preference name="hScrollBarEnabled" value="false"/>
-	<preference name="vScrollBarEnabled" value="false"/>
-	<preference name="autoLaunch" value="true"/>
-	<preference name="fullScreen" value="false"/>
-	<preference name="autoUpdate" value="true" />
-	<preference name="smartUpdate" value="false" />
-	<preference name="debug" value="true"/>
-	<preference name="statusBarAppearance" value="true"/>
-	<permission name="readPhoneState" />
-	<permission name="camera" />
-	<permission name="record" />
-	<permission name="location" />
-	<permission name="fileSystem" />
-	<permission name="internet" />
-	<permission name="bootCompleted" />
-	<permission name="hardware" />
-</widget>
+<widget id="A6012040771437" version="0.0.1">
+
+    <name>购物舍</name>
+
+    <description>
+
+        Example For APICloud.
+
+    </description>
+
+    <author email="developer@apicloud.com" href="http://www.apicloud.com">
+
+        Developer
+
+    </author>
+
+    <content src="index.html"/>
+
+    <access origin="*"/>
+
+    <preference name="pageBounce" value="false"/>
+
+    <preference name="appBackground" value="#ffffff"/>
+
+    <preference name="windowBackground" value="#ffffff"/>
+
+    <preference name="frameBackgroundColor" value="#ffffff"/>
+
+    <preference name="hScrollBarEnabled" value="false"/>
+
+    <preference name="vScrollBarEnabled" value="false"/>
+
+    <preference name="autoLaunch" value="false"/>
+
+    <preference name="fullScreen" value="false"/>
+    <!-- 开启云修复 -->
+    <preference name="autoUpdate" value="true"/>
+    <!-- 开启云修复 -->
+    <preference name="smartUpdate" value="true"/>
+
+    <preference name="softInputMode" value="auto"/>
+
+    <preference name="debug" value="false"/>
+
+    <preference name="statusBarAppearance" value="true"/>
+
+    <preference name="iOS7StatusBarAppearance" value="true"/>
+
+    <preference name="customRefreshHeader" value="UIPullRefreshMotive"/>
+
+    <!-- 描述：仅iOS平台有效。用于配置是否校验应用证书。若配置为true，应用被重签名后将无法再使用。 -->
+    <preference name="appCertificateVerify" value="false"/>
+
+    <permission name="readPhoneState"/>
+
+    <permission name="camera"/>
+
+    <permission name="record"/>
+
+    <permission name="location"/>
+
+    <permission name="fileSystem"/>
+
+    <permission name="internet"/>
+
+    <permission name="bootCompleted"/>
+
+    <permission name="hardware"/>
+    <feature name="wx">
+        <param name="urlScheme" value="wx5cdb35abf2a601fb"/>
+        <param name="apiKey" value="wx5cdb35abf2a601fb"/>
+        <param name="apiSecret" value="ea706818c6236b4c027795b58b63d916"/>
+    </feature>
+    <preference name="querySchemes" value="tbopen,tmall"/>
+    <feature name="mAliBaiChuan">
+        <param name="urlScheme" value="27865066"/>
+    </feature>
+    <feature name="aliPayTradePlus">
+        <param name="urlScheme" value="2019083066747239"/>
+    </feature>
+    <feature name="ajpush">
+        <param name="app_key" value="676d4c4636c2217ae7f75d90"/>
+        <param name="channel" value="123456"/>
+    </feature>
+
+    <feature name="TalkingData">
+        <param name="logEnable" value="false" />
+        <param name="exceptionReportEnabled" value="true" />
+        <param name="channel" value="AppStore" />
+    </feature>
+
+    <permission name="internet"/>
+    <preference name="urlScheme" value="openinstallKEY"/>
+    <!-- openinstall -->
+    <!-- android -->
+    <meta-data name="com.openinstall.APP_KEY" value="openinstallKEY"/>
+    <!-- iOS -->
+    <feature name="openinstall">
+        <param name="com.openinstall.APP_KEY" value="openinstallKEY"/>
+    </feature>
+
+    <feature name="QQPlus">
+        <param name="urlScheme" value="tencent腾讯开放平台移动应用appid"/>
+        <param name="apiKey" value="腾讯开放平台移动应用appid"/>
+    </feature>
+</widget>

@@ -1,0 +1,348 @@
+<!DOCTYPE HTML>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0" />
+    <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+    <title>搜索淘宝标题</title>
+    <link rel="stylesheet" type="text/css" href="../css/api.css" />
+    <link rel="stylesheet" type="text/css" href="../css/style.css" />
+    <style>
+        body {
+            width: 100%;
+            height: 100%;
+            font-size: 16px;
+            overflow: hidden;
+        }
+
+        .wrapAll {
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, .7);
+            overflow: hidden;
+            position: fixed;
+            top: 0;
+            left: 0;
+            z-index: 99;
+        }
+
+        .nl_list {
+            position: fixed;
+            width: calc(85% - 40px);
+            height: auto;
+            left: 50px;
+            top: 45%;
+            margin-top: -163px;
+            border-radius: 10px;
+            z-index: 999;
+            box-sizing: border-box;
+            -webkit-box-sizing: border-box;
+            overflow: hidden;
+        }
+
+        .nl_list .detail {
+            width: 100%;
+            height: auto;
+            background: #fff;
+            padding: 0.5rem 0rem 0.5rem 0rem;
+            border-radius: 0px 0px 10px 10px;
+        }
+
+        .nl_list .title {
+            width: 100%;
+            height: 107px;
+        }
+
+        .nl_list .title img {
+            width: 100%;
+            height: 100%;
+            background-size: 100% 100%;
+        }
+
+        .nl_list .detail .cont {
+            width: calc(100% - 50px);
+            height: 120px;
+            margin: 0 auto 1rem auto;
+            text-align: left;
+            line-height: 25px;
+            overflow-x: hidden;
+            overflow-y: auto;
+            white-space: pre-wrap;
+            color: #333;
+            font-size: 1rem;
+            /*换行*/
+        }
+
+        .nl_list .detail .searchBtn {
+            width: calc(100% - 50px);
+            height: 30px;
+            line-height: 30px;
+            text-align: center;
+            color: #fff;
+            margin: 0 auto;
+            border-radius: 15px;
+            background: linear-gradient(to right, #fd7239, #f94529);
+        }
+
+        .nl_list .closeBtn {
+            width: 32px;
+            height: 32px;
+            margin: 20px auto;
+        }
+
+        .nl_list .closeBtn img {
+            width: 100%;
+            height: 100%;
+            background-size: 100% 100%;
+        }
+
+        .aui-flex-box {
+            -webkit-box-flex: 1;
+            -webkit-flex: 1;
+            flex: 1;
+            min-width: 0;
+            font-size: 14px;
+            color: #333;
+            padding: 0.8rem 0.5rem;
+        }
+
+        .aui-login-line h2 {
+            font-size: 0.85rem;
+            color: #bbb;
+            background: #f9f9f9;
+            width: 90px;
+            margin: 0 auto;
+            z-index: 1002;
+            position: relative;
+        }
+
+        .aui-flex-box h2 {
+            text-align: center;
+            font-size: 0.95rem;
+            color: #fc8042;
+            position: relative;
+            margin: 0 auto;
+            width: 90px;
+            font-weight: initial;
+        }
+
+        .icon-stare {
+            background-image: url(../../image/ic_title_bar_edit_glass_gray.png);
+            position: absolute;
+            left: 0;
+            top: 0;
+        }
+
+        .icon {
+            width: 20px;
+            height: 20px;
+            display: block;
+            border: none;
+            float: left;
+            background-size: 20px;
+            background-repeat: no-repeat;
+        }
+
+        .aui-flex-box h2:before {
+            content: '';
+            position: absolute;
+            z-index: 0;
+            top: 10px;
+            right: -50%;
+            width: 40%;
+            background: #fe7e3d;
+            height: 1px;
+        }
+
+        .aui-flex-box h2:after {
+            content: '';
+            position: absolute;
+            z-index: 0;
+            top: 10px;
+            left: -50%;
+            width: 40%;
+            background: #fe7e3d;
+            height: 1px;
+        }
+
+        .aui-login-armor {
+            width: 50%;
+            position: relative;
+            z-index: 100;
+            display: -webkit-box;
+            display: -webkit-flex;
+            display: -ms-flexbox;
+            display: flex;
+            -webkit-box-align: center;
+            -webkit-align-items: center;
+            -ms-flex-align: center;
+            align-items: center;
+            padding: 5px;
+            margin: 0 auto;
+        }
+
+        .aui-tabBar-item {
+            -webkit-box-flex: 1;
+            -webkit-flex: 1;
+            -ms-flex: 1;
+            flex: 1;
+            display: -webkit-box;
+            display: -webkit-flex;
+            display: -ms-flexbox;
+            display: flex;
+            -webkit-box-orient: vertical;
+            -webkit-box-direction: normal;
+            -webkit-flex-direction: column;
+            -ms-flex-direction: column;
+            flex-direction: column;
+            -webkit-box-pack: center;
+            -webkit-justify-content: center;
+            -ms-flex-pack: center;
+            justify-content: center;
+            -webkit-box-align: center;
+            -webkit-align-items: center;
+            -ms-flex-align: center;
+            align-items: center;
+            color: #979797;
+        }
+
+        .aui-tabBar-item img {
+            width: 40px;
+            height: 40px;
+            display: block;
+            border: none;
+            border-radius: 100%;
+        }
+    </style>
+</head>
+
+<body>
+    <section class='wrapAll' id='wrapAll'>
+    </section>
+    <section class='nl_list' id="pop2">
+        <div class="title"><img src="../../image/taokouling_img.png" alt=""></div>
+        <div class="detail">
+            <div class="cont" id="title1">智能搜索隐藏优惠券</div>
+            <div class="searchBtn submitColor" tapmode onclick="openSearch(0);">淘宝搜索</div>
+            <div class="aui-flex-box">
+                <h2>
+                   <!-- <i class="icon icon-stare"> -->
+
+                   </i>其他搜索</h2>
+            </div>
+            <div class="aui-login-armor">
+                <a id="pdd" class="aui-tabBar-item" tapmode onclick="openSearch(1);">
+                    <img src="../../image/icon_pdd.png" alt="">
+                </a>
+                <a id="jd" class="aui-tabBar-item" tapmode onclick="openJdSearch(2);">
+                    <img src="../../image/icon_jd.png" alt="">
+                </a>
+            </div>
+        </div>
+        <div class="closeBtn" tapmode onclick="closebtn2();"><img src="../../image/home/home_update_btn_close.png" alt=""></div>
+    </section>
+    <!-- 网上购物结束 -->
+
+</body>
+<script type="text/javascript" src="../../script/api.js"></script>
+<script type="text/javascript" src="../../script/jquery.js"></script>
+<script type="text/javascript" src="../../script/api_common.js"></script>
+<script type="text/javascript" src="../../script/md5.js"></script>
+<script type="text/javascript">
+    var keyword, user_id, key
+        // $(".nl_list").css("margin-top", -($(".nl_list").height() / 2) + "px");
+    apiready = function() {
+            if ($api.getStorage('userInfo')) {
+                user_id = $api.getStorage("userInfo").user_id;
+            }
+            $api.byId('title1').innerHTML = api.pageParam.key;
+            keyword = api.pageParam.key;
+            fnxianzhi();
+        }
+        // 查询搜索限制
+    function fnxianzhi() {
+        var obj = {}
+        var objArr = sort_ASCII(obj);
+        var timestamp = fntimestamp();
+        var version = '2.0';
+        var arr = apiSecret + timestamp + version + '';
+        for (i in objArr) {
+            arr += objArr[i];
+        }
+        // console.log(arr);
+        var sign = hex_md5(arr);
+        api.ajax({
+            url: commonUrl + 'soukeAppTttService/service/api/getvolumeandcommission_ac',
+            method: 'post',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            data: {
+                body: {
+                    'apiKey': apiKey,
+                    'timestamp': timestamp,
+                    'sign': sign
+                }
+            }
+        }, function(ret, err) {
+            console.log("搜索限制结果" + JSON.stringify(ret));
+            if (ret) {
+                var jd_status = ret.result_jd_status;
+                var pdd_status = ret.result_pdd_status;
+                if (jd_status == 0 && pdd_status == 0) {
+                    $("#jd").hide();
+                    $("#pdd").hide();
+                    $(".aui-flex-box > h2").css("display", "none");
+                    $(".aui-login-armor").css("display", "none");
+                } else {
+                    if (jd_status == 0) {
+                        $("#jd").hide();
+                        // $(".tab-nav-item").css("width", "50%");
+                    }
+                    if (pdd_status == 0) {
+                        $("#pdd").hide();
+                        // $(".tab-nav-item").css("width", "50%");
+                    }
+                }
+            } else {
+                api.toast({
+                    msg: ret.result_message,
+                    duration: 2000,
+                    location: 'middle'
+                });
+
+            }
+        });
+    }
+
+    function closebtn2() {
+        $api.byId('pop2').style.display = 'none';
+        var clipBoard = api.require('clipBoard');
+        clipBoard.removeListener();
+        var clipBoard = api.require('clipBoard');
+        clipBoard.set({
+            value: undefined
+        }, function(ret, err) {
+            if (ret) {
+                $api.byId('pop2').style.display = "none";
+                api.closeFrame({
+                    name: 'pop_title'
+                });
+            } else {}
+        });
+    }
+
+    function openSearch(t) {
+        closebtn2();
+        api.openWin({
+            name: 'sousuo_win',
+            url: '../home/sousuo_win.html',
+            pageParam: {
+                keyword: keyword,
+                type: t
+            }
+        });
+
+    }
+</script>

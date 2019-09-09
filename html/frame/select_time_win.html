@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0" />
+  <title>title</title>
+  <link rel="stylesheet" type="text/css" href="../../css/api.css" />
+  <link rel="stylesheet" type="text/css" href="../../css/style.css" />
+</head>
+<style media="screen">
+    header{
+      width: 100%;
+      height: 94px;
+      background: #fff;
+      overflow: hidden;
+    }
+    header .header-top{
+      display: -webkit-box;
+      display: -webkit-flex;
+      display: flex;
+      width: 100%;
+      height: 44px;
+      position: relative;
+      border-bottom:solid 1px #f6f6f6;
+    }
+
+    .headerItem{
+      height: 44px;
+      width: calc(100% - 24px);
+      vertical-align: middle;
+      display: inline-block;
+      position: absolute;
+      top:0;
+      left: 12px;
+    }
+    .headerItem div{
+      float:left;
+    }
+    .headerItem .header_back{
+      width:9px;
+      height: 16px;
+      float:left;
+      margin-top: 12px;
+    }
+    .headerItem .header_back img{
+      width:9px;
+      height: 16px;
+      background-size: 100% 100%;
+      vertical-align: middle;
+    }
+    .headerItem .header_title{
+      width:calc(100% - 64px);
+      line-height: 44px;
+      text-align: center;
+      margin-left: 23px;
+    }
+    .headerItem .header_right{
+      width: 32px;
+      height: 32px;
+      float: right;
+      color:#467CD4;
+      line-height: 32px;
+    }
+    .riqi{
+      width: 100%;
+      height: 50px;
+      background: #f4f4f4;
+      overflow: hidden;
+    }
+    .ri_change{
+      width: 100px;
+      height: 28px;
+      border: solid 1px #999;
+      text-align: center;
+      line-height: 28px;
+      border-radius:15px;
+      background: #fff;
+      margin-left: 12px;
+      margin-top: 10px;
+
+    }
+    .ri_change img{
+      width: 14px;
+      height: 14px;
+      background-size: 100% 100%;
+      margin-left: 5px;
+      /*vertical-align: middle;*/
+      display: inline-block;
+
+    }
+    #yue_date,#yue_dis{
+      display: none;
+    }
+</style>
+<body>
+    <header id="header">
+      <div class="header-top">
+          <div class="headerItem">
+            <div class="header_back" onclick="closeWin();">
+              <img src="../../image/nav_back_black.png" alt="">
+            </div>
+            <div class="header_title" id="header_title">选择时间</div>
+            <div class="header_right" onclick="fnsubmit();">完成</div>
+          </div>
+      </div>
+      <div class="riqi">
+        <div class="ri_change" id="day_dis">按日选择<img src="../../image/home/change_data.png" alt=""></div>
+        <div class="ri_change" id="yue_dis">按月选择<img src="../../image/home/change_data.png" alt=""></div>
+      </div>
+    </header>
+
+</body>
+  <script type="text/javascript" src="../../script/api.js"></script>
+  <script type="text/javascript" src="../../script/jquery.js"></script>
+  <script type="text/javascript">
+    var header,headerH;
+    var start_time,end_time;
+    var mon;
+    var time_status=1;
+    apiready = function() {
+        header = $api.byId('header');
+        $api.fixStatusBar(header);
+        headerH = $api.offset(header).h;
+        api.openFrame({
+            name: 'select_time_frame',
+            url: './select_time_frame.html',
+            reload:true,
+            rect: {
+                x: 0,
+                y: headerH,
+                w: 'auto',
+                h: 'auto'
+            },
+            // pageParam: {
+            //     dis_power: dis_power
+            // },
+            bounces: false
+        });
+        api.addEventListener({
+            name: 'select_time_byDay'
+        }, function(ret, err){
+            if( ret ){
+                //  alert( JSON.stringify( ret ) );
+                //  start_time=ret.value.star_time;
+                //  end_time=ret.value.end_time;
+                 $api.setStorage('select_time_byDay', ret);
+
+            }else{
+                //  alert( JSON.stringify( err ) );
+            }
+        });
+        api.addEventListener({
+            name: 'select_time_byMon'
+        }, function(ret, err){
+            if( ret ){
+                //  alert( JSON.stringify( ret ) );
+                 $api.setStorage('select_time_byMon', ret);
+            }else{
+                //  alert( JSON.stringify( err ) );
+            }
+        });
+
+
+
+    };
+    $("#day_dis").click(function(){
+      $("#day_dis").hide();
+      $("#yue_dis").show();
+      time_status=2;
+      api.openFrame({
+          name: 'select_time_yue_frame',
+          url: './select_time_yue_frame.html',
+          reload:true,
+          rect: {
+              x: 0,
+              y: headerH,
+              w: 'auto',
+              h: 'auto'
+          },
+          // pageParam: {
+          //     dis_power: dis_power
+          // },
+          bounces: false
+      });
+    });
+    $("#yue_dis").click(function(){
+      $("#yue_dis").hide();
+      $("#day_dis").show();
+      time_status=1;
+        api.openFrame({
+            name: 'select_time_frame',
+            url: './select_time_frame.html',
+            reload:true,
+            rect: {
+                x: 0,
+                y: headerH,
+                w: 'auto',
+                h: 'auto'
+            },
+            // pageParam: {
+            //     dis_power: dis_power
+            // },
+            bounces: false
+        });
+    })
+    function closeWin(){
+      api.closeWin({
+          name: 'select_time_win'
+      });
+    }
+
+    function fnsubmit(){
+      if(time_status==1){
+        $api.setStorage('select_time_byMon', '');
+        api.execScript({
+            frameName: 'select_time_frame',
+            script: 'getTime();'
+        });
+      }else{
+        $api.setStorage('select_time_byDay', '');
+
+        api.execScript({
+            // name: 'winName',
+            frameName: 'select_time_yue_frame',
+            script: 'getTime();'
+        });
+      }
+      api.openWin({
+          name: 'select_ddbh_win',
+          url: './select_ddbh_win.html',
+          pageParam: {
+              time_status: time_status,
+          }
+      });
+    }
+  </script>
+
+</html>

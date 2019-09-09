@@ -1,0 +1,191 @@
+<!DOCTYPE HTML>
+<html>
+
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0" />
+	<meta name="format-detection" content="telephone=no, email=no, date=no, address=no">
+	<title>跳转店铺frame页</title>
+	<link rel="stylesheet" type="text/css" href="../../css/api.css" />
+	<link rel="stylesheet" type="text/css" href="../../css/style.css" />
+</head>
+
+<body>
+	<header id="header">
+		<div class="header-top">
+			<div class="headerItem">
+				<div class="header_back" onclick="goback();">
+					<img src="../../image/nav_back_black.png" alt="">
+				</div>
+				<div class="header_title" id="header_title"></div>
+			</div>
+		</div>
+	</header>
+</body>
+<script type="text/javascript" src="../../script/api.js"></script>
+<script type="text/javascript" src="../../script/jquery.js"></script>
+<script type="text/javascript">
+	var alibaichuan = null; //百川全局变量
+	apiready = function() {
+			alibaichuan = api.require('mAliBaiChuan');
+			alibaichuan.initTae(function(ret, err) {
+				if (ret) {
+					// alert("ret:" + JSON.stringify(ret));
+				} else {
+					// alert("err:" + JSON.stringify(err));
+				}
+			});
+			const htmlTag = document.getElementsByTagName('html')[0]
+			$api.css($api.dom('#header'), 'padding-top:' + api.safeArea.top + 'px')
+			$("#header_title").html(api.pageParam.name)
+			var param = {
+				shopid: api.pageParam.shopid,
+				// mmpid: "mm_00000000_0_0",
+				// isvcode: "app",
+				opentype: "html5",
+				// adzoneid: '0',
+				// tkkey: '0',
+				winObj: 'mAliBaiChuan',
+				fixedOn: "jump_dianpu_frame",
+				fixed: false,
+				rect: {
+					x: 0,
+					y: api.safeArea.top + 42,
+					w: api.frameWidth,
+					h: api.winHeight - 70 - api.safeArea.bottom
+				}
+			};
+			alibaichuan.shopPageWeb(param, function(ret, err) {
+				if (ret) {
+					// alert("ret - " + JSON.stringify(ret));
+				} else {
+					// alert("err - " + JSON.stringify(err));
+				}
+			});
+			// var param = {
+			// 	url: 'https://h5.m.taobao'
+			// };
+			// alibaichuan.setBlockUrl(param)
+			alibaichuan.addPageDidListener(function(ret) {
+				if (ret.url) {
+					//  alert(JSON.stringify(ret));
+					if (ret.url != null) {
+						var itemId = "";
+						if (getUrlParam2(ret.url, "itemId") != null) {
+							itemId = getUrlParam2(ret.url, "itemId");
+						}
+						if (getUrlParam2(ret.url, "&id") != null) {
+							itemId = getUrlParam2(ret.url, "&id");
+						}
+						if (getUrlParam2(ret.url, "?id") != null) {
+							itemId = getUrlParam2(ret.url, "?id");
+						}
+						if (getUrlParam2(ret.url, "?itemid") != null) {
+							itemId = getUrlParam2(ret.url, "?itemid");
+						}
+						if (getUrlParam2(ret.url, "&itemId") != null) {
+							itemId = getUrlParam2(ret.url, "&itemId");
+						}
+						if (getUrlParam2(ret.url, "&item_Id") != null) {
+							itemId = getUrlParam2(ret.url, "&item_Id");
+						}
+						if (getUrlParam2(ret.url, "?item_id") != null) {
+							itemId = getUrlParam2(ret.url, "?item_id");
+						}
+						if (getUrlParam2(ret.url, "&item_id") != null) {
+							itemId = getUrlParam2(ret.url, "&item_id");
+						}
+						if (getUrlParam2(ret.url, "%3Fid%3D") != null) {
+							itemId = getUrlParam2(ret.url, "%3Fid%3D");
+						}
+						if (getUrlParam2(ret.url, 'item_ids"%3A') != null) {
+							itemId = getUrlParam2(ret.url, 'item_ids"%3A');
+						}
+						if (itemId != "") {
+							// api.openWin({
+							// 	name: 'good_detail',
+							// 	url: '../goods/good_detail.html',
+							// 	pageParam: {
+							// 		goods_id: itemId,
+							// 		section_id: -1,
+							// 		claer: 1,
+							// 		type: "dianpu",
+							// 	}
+							// });
+							api.openFrame({
+								name: 'href_slidLayout_top',
+								url: '../my/href_slidLayout_top.html',
+								rect: {
+									x: 0,
+									y: api.safeArea.top + 42,
+									w: 'auto',
+									h: 50
+								},
+								bounces: true,
+							});
+							api.openFrame({
+								name: 'href_slidLayout_bottom',
+								url: '../my/href_slidLayout_bottom.html',
+								rect: {
+									x: 0,
+									y: api.winHeight - 60 - api.safeArea.bottom,
+									w: 'auto',
+									h: 70
+								},
+								reload: true,
+								bounces: true,
+								pageParam: {
+									itemId: itemId,
+								},
+							});
+						} else {
+							// var arr = {};
+							// arr.url = ret.url;
+							// arr.name = api.pageParam.name;
+							// $api.setStorage("list_url", arr);
+						}
+					}
+				}
+			});
+		}
+		//得到地址传来的参数
+	function getUrlParam(url, val) {
+		var reg = new RegExp("(^|&)" + val + "=([^&]*)(&|$)");
+		var r = decodeURI(url).substr(1).match(reg);
+		if (r != null)
+			return unescape(r[2]);
+		return null;
+	}
+
+	function getUrlParam2(url, val) {
+		var arr = /\d{9,20}/.exec(url.split(val)[1]);
+		if (arr != null) {
+			return arr.toString();
+		}
+	}
+
+	function goback() {
+		api.closeFrame({
+			name: 'href_slidLayout_bottom'
+		});
+		api.closeFrame({
+			name: 'href_slidLayout_top'
+		});
+		var alibaichuan = api.require('mAliBaiChuan');
+		alibaichuan.webGoBack(function(ret, err) {
+			if (ret.message == "第一个页面了") {
+				// api.closeWin({
+				// 	name: 'jump_dianpu_win',
+				// 	animation: {
+				// 		type: 'push',
+				// 		subType: 'from_left',
+				// 		duration: 300
+				// 	}
+				// })
+				api.closeWin();
+			}
+		})
+	}
+</script>
+
+</html>

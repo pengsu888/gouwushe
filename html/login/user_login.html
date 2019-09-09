@@ -1,0 +1,678 @@
+<!DOCTYPE HTML>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0" />
+    <meta name="format-detection" content="telephone=no, email=no, date=no, address=no">
+    <title>登录页</title>
+    <link rel="stylesheet" type="text/css" href="../../css/api.css" />
+    <link rel="stylesheet" href="../../css/swiper.min.css">
+    <style>
+        html,
+        body {
+            background-color: #fff;
+            height: 100%;
+            width: 100%;
+        }
+
+        header {
+            width: 100%;
+            background: #fff;
+            height: 60%;
+            /*padding-top: 0.3rem;*/
+        }
+
+        header .swiper-container {
+            width: 100%;
+            height: auto;
+        }
+
+        header .swiper-container .swiper-wrapper {
+            /*margin-top: 2rem;*/
+        }
+
+        header .swiper-container .swiper-wrapper .swiper-slide img {
+            display: block;
+            width: 100%;
+            height: auto;
+            margin: 0 auto;
+        }
+
+        header .swiper-container .swiper-wrapper .swiper-slide p.one {
+            font-size: 1.2rem;
+            color: #fd5f3e;
+            font-weight: bold;
+            padding-bottom: 3.2rem;
+            text-align: center;
+        }
+
+        header .swiper-container .swiper-wrapper .swiper-slide p.two {
+            font-size: 1.0rem;
+            color: #888;
+            font-weight: bold;
+            text-align: center;
+            padding-bottom: 0.4rem;
+        }
+
+        .swiper-container-horizontal>.swiper-pagination-bullets,
+        .swiper-pagination-custom,
+        .swiper-pagination-fraction {
+            bottom: 0px;
+            left: 0;
+            width: 100%;
+        }
+
+        header .loginAndRes {
+            margin: 0 auto;
+            margin-top: 0.3rem;
+            width: 12rem;
+            height: 3rem;
+            background: #FB5959;
+            background-size: cover;
+            background-position: 0 0;
+        }
+
+        header .loginAndRes p {
+            line-height: 0.94rem;
+            text-align: center;
+            font-size: 0.3rem;
+            color: #fff;
+        }
+
+        .newPeople {
+            width: 100%;
+            height: 33%;
+            padding: 3rem 0.24rem;
+            box-sizing: border-box;
+            /*background: #fff;*/
+            /*margin-top: 0.2rem;*/
+            z-index: 999;
+        }
+
+        .newPeople .login_wx {
+            width: 80%;
+            height: 3rem;
+            background: #FB5959;
+            line-height: 3rem;
+            /*text-align: center;*/
+            color: #fff;
+            margin: 0 auto;
+            border-radius: 5rem;
+            position: relative;
+        }
+
+        .newPeople .login_wx .login_wx_icon {
+            width: 1.5rem;
+            height: 1.5rem;
+            position: absolute;
+            top: 50%;
+            left: 35%;
+            margin-top: -1.1rem;
+        }
+
+        .newPeople .login_wx .login_wx_title {
+            position: absolute;
+            left: 46%;
+        }
+
+        .newPeople .login_wx .login_wx_icon img {
+            height: 100%;
+            width: 100%;
+            background-size: 100% 100%;
+        }
+
+        .swiper-pagination-bullet-active {
+            opacity: 1;
+            background: #fd5f3e;
+        }
+
+        .newPeople .zhuce {
+            width: 7.0rem;
+            height: 3.0rem;
+            background: #FF9292;
+            line-height: 3rem;
+            text-align: center;
+            color: #fff;
+            border-radius: 5rem;
+            float: left;
+            margin-left: 10%;
+            margin-top: 1.5rem;
+        }
+
+        .newPeople .denglu {
+            width: 7.0rem;
+            height: 3.0rem;
+            background: #FF9292;
+            line-height: 3rem;
+            text-align: center;
+            color: #fff;
+            border-radius: 5rem;
+            float: right;
+            margin-right: 10%;
+            margin-top: 1.5rem;
+        }
+    </style>
+</head>
+
+<body>
+    <!-- 头部开始 -->
+    <header>
+        <!-- 轮播图开始 -->
+        <div class="swiper-container" id="gg_login">
+            <div class="swiper-wrapper">
+                <div class="swiper-slide">
+                    <img src="../../image/album_d.png" alt="">
+                    <!-- <p class="one">网上购物能生钱</p> -->
+                    <!-- <p class="two">网上购物用券券推，花钱同时能生钱</p> -->
+                </div>
+                <!-- <div class="swiper-slide">
+              <img src="../../image/login/login_img_two.png" alt="">
+              <p class="one">吃喝玩乐能生钱</p>
+              <p class="two">随手拍下生活小票，每笔消费创价值</p>
+            </div> -->
+                <!-- <div class="swiper-slide">
+              <img src="../../image/login/login_img_three.png" alt="">
+              <p class="one">每天生钱乐翻天</p> -->
+                <!-- <p class="two">每天坐等收益，时时生利不再担心零花钱</p> -->
+                <!-- </div> -->
+            </div>
+            <div class="swiper-pagination"></div>
+        </div>
+    </header>
+    <!-- 头部结束 -->
+    <section class="newPeople">
+        <div class="login_wx" style="display:none" tapmode onclick="loginByWx();">
+            <div class="login_wx_icon"><img src="../../image/login_weixin.png" alt=""></div>
+            <div class="login_wx_title">微信登录</div>
+        </div>
+        <div class="zhuce" tapmode onclick="fnopenRegist(false);">注册</div>
+        <div class="denglu" tapmode onclick="fnopenLogin();">手机登录</div>
+    </section>
+
+
+</body>
+<script type="text/javascript" src="../../script/api.js"></script>
+<script type="text/javascript" src="../../script/jquery.js"></script>
+<script type="text/javascript" src="../../script/swiper.min.js"></script>
+<script type="text/javascript" src="../../script/api_common.js"></script>
+<script type="text/javascript" src="../../script/md5.js"></script>
+<script type="text/javascript">
+    var wx, user_nick, user_head, user_sex, return_value;
+    var invite_status;
+    var user_id;
+    apiready = function() {
+        api.setStatusBarStyle({
+            style: 'dark',
+            color: "transparent" //背景颜色为透明
+        });
+        getLunbo();
+        checkIsCode();
+        getSanFangConf();
+        wx = api.require('wx');
+    };
+    function isInstalled(){
+    wx.isInstalled(function(ret, err) {
+    if (ret.installed) {
+        alert("当前设备已安装微信客户端");
+        $(".login_wx").show();
+    } else {
+        alert('当前设备未安装微信客户端');
+        $(".login_wx").hide();
+    }
+});
+}
+    //登录广告
+    function getLunbo() {
+        var obj = {
+            'type_id': 3,
+            'plate_id': 1
+        };
+        var objArr = sort_ASCII(obj);
+        var timestamp = fntimestamp();
+        var version = '2.0';
+        var arr = apiSecret + timestamp + version + '';
+        for (i in objArr) {
+            arr += objArr[i];
+        }
+        var sign = hex_md5(arr);
+        api.ajax({
+            url: commonUrl + 'soukeAppTttService/service/advert/ad_ac',
+            method: 'post',
+            headers: {
+                'Content-Type': 'application/json;charset=utf-8'
+            },
+            data: {
+                body: {
+                    'apiKey': apiKey,
+                    'timestamp': timestamp,
+                    'sign': sign,
+                    'type_id': 3,
+                    'plate_id': 1
+                }
+            }
+        }, function(ret, err) {
+            if (ret) {
+                if (ret.result_code == 200) {
+                    var htmlLb = '';
+                    console.log("登录广告" + JSON.stringify(ret));
+                    htmlLb += '<div class="swiper-container">';
+                    htmlLb += '<div class="swiper-wrapper">';
+                    var adlist = ret.result_data.adlist;
+                    for (var i = 0; i < adlist.length; i++) {
+                        if (adlist[i].ads_index == "banner") {
+                            htmlLb += '<div class="swiper-slide" adv_name="' + adlist[i].adv_name + '" link_url="' + adlist[i].link_url + '" id="' + adlist[i].link_type_id + '"><img src="' + adlist[i].img_url + '" alt=""></div>';
+                        }
+                    }
+                    htmlLb += '</div>';
+                    htmlLb += '</div>';
+                    $api.byId('gg_login').innerHTML = htmlLb;
+                    var swiper = new Swiper('.swiper-container', {
+                        loop: true, //无休止播放
+                        autoHeight: true, //enable auto height   自动高度。设置为true时，wrapper和container会随着当前slide的高度而发生变化。
+                        spaceBetween: 20, //在slide之间设置距离（单位px）。
+                        pagination: { //使用分页器导航。分页器可使用小圆点样式（默认）、分式样式或进度条样式。
+                            el: '.swiper-pagination',
+                            clickable: true,
+                            renderProgressbar: function(progressbarFillClass) {
+                                return '<span class="' + progressbarFillClass + '"></span>';
+                            }
+                        },
+                        autoplay: { //自动播放
+                            delay: 2500,
+                            disableOnInteraction: false,
+                        },
+                    });
+                    $(".swiper-slide").click(function() {
+                        var platetype = $(this).attr("id");
+                        if (platetype == 1) { //自定义链接
+                            var adv_name = $(this).attr("adv_name");
+                            openWebUrl($(this).attr("link_url"), adv_name);
+                        } else if (platetype == 2) { //淘宝板块
+                            var adv_name = $(this).attr("adv_name");
+                            var section_id = $(this).attr("link_url");
+                            openSectionFrame(section_id, adv_name);
+                        } else if (platetype == 3) { //淘宝商品ID
+                            openGoodDel($(this).attr("link_url"), -1);
+                        } else if (platetype == 4) { //跳转淘宝分类
+                            var adv_name = $(this).attr("adv_name");
+                            openFenlei_type($(this).attr("link_url"), adv_name);
+                        } else if (platetype == 5) { //拼多多板块
+                            var adv_name = $(this).attr("adv_name");
+                            openPddSectionFrame($(this).attr("link_url"), adv_name);
+                        } else if (platetype == 6) { //拼多多淘宝商品ID
+                            openPddGoodDel($(this).attr("link_url"));
+                        } else if (platetype == 7) { //拼多多分类
+                            var adv_name = $(this).attr("adv_name");
+                            openPddFenlei_type($(this).attr("link_url"), adv_name);
+                        } else if (platetype == 8) { //不跳转
+                        }
+                    })
+                } else {
+
+                }
+            } else {
+                // api.alert({ msg: JSON.stringify(err) });
+            }
+        });
+    }
+
+    // 普通注册
+    function fnopenRegist(ret_status) {
+        if (invite_status == 1) {
+            api.openWin({
+                name: 'regist',
+                url: './regist.html',
+                bounces: false,
+                pageParam: {
+                    signLog: 0, //代表是注册
+                    // user_nick: user_nick,
+                    // user_head: user_head,
+                    // user_sex: user_sex,
+                    // return_value: return_value,
+                    ret_status: ret_status
+                },
+                allowEdit: true,
+                reload: true,
+            });
+        } else {
+            api.openWin({
+                name: 'regist_phone',
+                url: './regist_phone.html',
+                bounces: false,
+                pageParam: {
+                    signLog: 0, //代表是注册
+                    // user_nick: user_nick,
+                    // user_head: user_head,
+                    // user_sex: user_sex,
+                    // return_value: return_value,
+                    ret_status: ret_status
+                },
+                allowEdit: true,
+                reload: true,
+            });
+        }
+
+    }
+
+    // 微信注册
+    function fnopenWxRegist(ret_status, is_phone) {
+        // alert(invite_status);
+        // alert(is_phone);
+        if (invite_status == 1) {
+            api.openWin({
+                name: 'regist',
+                url: './regist.html',
+                bounces: false,
+                pageParam: {
+                    signLog: 0, //代表是注册
+                    user_nick: user_nick,
+                    user_head: user_head,
+                    user_sex: user_sex,
+                    return_value: return_value,
+                    ret_status: ret_status,
+                    is_phone: is_phone
+                },
+                allowEdit: true,
+                reload: true,
+            });
+        } else {
+            api.openWin({
+                name: 'regist_phone',
+                url: './regist_phone.html',
+                bounces: false,
+                pageParam: {
+                    signLog: 0, //代表是注册
+                    user_nick: user_nick,
+                    user_head: user_head,
+                    user_sex: user_sex,
+                    return_value: return_value,
+                    ret_status: ret_status,
+                    is_phone: is_phone
+                },
+                allowEdit: true,
+                reload: true,
+            });
+        }
+
+    }
+
+    function fnopenLogin() {
+        api.openWin({
+            name: 'login',
+            url: './login.html',
+            bounces: false
+        });
+
+    }
+
+    function loginByWx() {
+        wx.auth({
+            apiKey: ''
+        }, function(ret, err) {
+            if (ret.status) {
+                // alert(JSON.stringify(ret));
+                wx.getToken({
+                    code: ret.code
+                }, function(ret, err) {
+                    if (ret.status) {
+                        getUserInfo(ret.accessToken, ret.openId)
+                    } else {
+                        // alert(err.code);
+                    }
+                });
+            } else {
+                // alert(err.code);
+            }
+        });
+    }
+
+    function getUserInfo(accessToken, openId) {
+        wx.getUserInfo({
+            accessToken: accessToken,
+            openId: openId
+        }, function(ret, err) {
+            // alert(JSON.stringify(ret));
+            $api.setStorage('wxret', ret);
+            if (ret.status) {
+                if (ret.sex == 2)
+                    ret.sex = 0;
+                var wx_login = {
+                    user_nick: ret.nickname,
+                    user_head: ret.headimgurl,
+                    user_sex: ret.sex,
+                    return_value: ret.unionid
+                }
+                $api.setStorage('wx_login', wx_login);
+                updata_ajax(0, ret.nickname, ret.headimgurl, ret.sex, ret.unionid);
+            } else {
+                // alert(err.code);
+                api.toast({
+                    msg: '登录失败',
+                    duration: 2000,
+                    location: 'middle'
+                });
+
+            }
+        });
+    }
+
+    function updata_ajax(login_type, user_nick, user_head, user_sex, return_value) {
+        var obj = {
+            "login_type": login_type,
+            "user_nick": encodeURIComponent(user_nick),
+            "user_head": user_head,
+            "user_sex": user_sex,
+            "return_value": return_value,
+        };
+        var objArr = sort_ASCII(obj);
+        var timestamp = fntimestamp();
+        var version = '2.0';
+        var arr = apiSecret + timestamp + version + '';
+        for (i in objArr) {
+            arr += objArr[i];
+        }
+        console.log(arr);
+        var sign = hex_md5(arr);
+        api.ajax({
+            url: commonUrl + 'soukeAppTttService/service/user/otherlogin_ac',
+            method: 'post',
+            headers: {
+                'Content-Type': 'application/json;charset=utf-8'
+            },
+            data: {
+                body: {
+                    'apiKey': apiKey,
+                    'timestamp': timestamp,
+                    'sign': sign,
+                    "login_type": login_type,
+                    "user_nick": user_nick,
+                    "user_head": user_head,
+                    "user_sex": user_sex,
+                    "return_value": return_value,
+                }
+            }
+        }, function(ret, err) {
+            if (ret) {
+                console.log("微信登录" + JSON.stringify(ret));
+                if (ret.result_code == 200) {
+                  // 定义开启openinstall上报登录数据  1开启、0关闭
+                  if (openinstaus == 1) {
+                      var openinstall = api.require('openinstall');
+                      openinstall.reportEffectPoint({
+                          effectId: 'login',
+                          effectValue: 1
+                      });
+                  }
+                    api.toast({
+                        msg: '登录成功',
+                        duration: 2000,
+                        location: 'middle'
+                    });
+                    // 获取极光推送ID
+                    var ajpush = api.require('ajpush');
+                    ajpush.getRegistrationId(function(ret) {
+                        if (ret.id != '' || ret.id != 'undefined') {
+                            var registrationId = ret.id;
+                            SaveRegistration(registrationId);
+                            // alert(registrationId);
+                        }
+                    });
+                    user_id = ret.result_user_id;
+                    var userInfo = {
+                        'user_id': ret.result_user_id,
+                        'user_token': ret.result_token
+                    };
+                    $api.setStorage('userInfo', userInfo);
+                    api.sendEvent({
+                        name: 'login',
+                        extra: {
+                            login: true,
+                        }
+                    });
+                    api.closeToWin({
+                        name: 'root'
+                    });
+                } else if (ret.result_code == 500) {
+                    //要绑定手机号
+                    fnopenWxRegist(true, 1);
+                } else if (ret.result_code == 501) {
+                    //不需要手机号
+                    fnopenWxRegist(true, 0);
+                }
+            } else {}
+        });
+    }
+
+    function checkIsCode() {
+        var obj = {
+
+        };
+        var objArr = sort_ASCII(obj);
+        var timestamp = fntimestamp();
+        var version = '2.0';
+        var arr = apiSecret + timestamp + version + '';
+        for (i in objArr) {
+            arr += objArr[i];
+        }
+        console.log(arr);
+        var sign = hex_md5(arr);
+        api.ajax({
+            url: commonUrl + 'soukeAppTttService/service/api/findRegistration_ac',
+            method: 'post',
+            headers: {
+                'Content-Type': 'application/json;charset=utf-8'
+            },
+            data: {
+                body: {
+                    'apiKey': apiKey,
+                    'timestamp': timestamp,
+                    'sign': sign,
+                }
+            }
+        }, function(ret, err) {
+            if (ret) {
+                console.log("检验注册是否邀请码" + JSON.stringify(ret));
+                if (ret.result_code == 200) {
+                    invite_status = ret.result_data;
+                    // fnopenRegist(true);
+                    // } else {
+                    //     api.openWin({
+                    //         name: 'loginbywx_bindphone_win',
+                    //         url: '../win/loginbywx_bindphone_win.html',
+                    //         pageParam: {
+                    //             name: 'test'
+                    //         }
+                    //     });
+                } else if (ret.result_code == 500) {
+
+                }
+            } else {}
+        });
+    }
+    // 保存或修改推送ID
+    function SaveRegistration(registrationId) {
+        var obj = {
+            'user_id': user_id,
+            'registration_id': registrationId
+        };
+        var objArr = sort_ASCII(obj);
+        var timestamp = fntimestamp();
+        var version = '2.0';
+        var arr = apiSecret + timestamp + version + '';
+        for (i in objArr) {
+            arr += objArr[i];
+        }
+        console.log(arr);
+        var sign = hex_md5(arr);
+        api.ajax({
+            url: commonUrl + 'soukeAppTttService/service/push/updateOrSaveRegistration',
+            method: 'post',
+            headers: {
+                'Content-Type': 'application/json;charset=utf-8'
+            },
+            data: {
+                body: {
+                    'apiKey': apiKey,
+                    'timestamp': timestamp,
+                    'sign': sign,
+                    'user_id': user_id,
+                    'registration_id': registrationId
+                }
+            }
+        }, function(ret, err) {
+            if (ret) {
+                console.log("保存或修改推送ID:" + JSON.stringify(ret));
+                if (ret.result_code == 200) {} else {
+                    serviceErr();
+                }
+            } else {
+                serviceErr();
+            }
+        });
+    }
+    // app登录方式接口
+    function getSanFangConf() {
+        var obj = {
+        };
+        var objArr = sort_ASCII(obj);
+        var timestamp = fntimestamp();
+        var version = '2.0';
+        var arr = apiSecret + timestamp + version + '';
+        for (i in objArr) {
+            arr += objArr[i];
+        }
+        console.log(arr);
+        var sign = hex_md5(arr);
+        api.ajax({
+            url: commonUrl + 'soukeAppTttService/service/app/getSanFangConf_ac',
+            method: 'post',
+            headers: {
+                'Content-Type': 'application/json;charset=utf-8'
+            },
+            data: {
+                body: {
+                    'apiKey': apiKey,
+                    'timestamp': timestamp,
+                    'sign': sign
+                }
+            }
+        }, function(ret, err) {
+            if (ret) {
+                console.log("app登录方式接口:" + JSON.stringify(ret));
+                if (ret.result_code == 200) {
+                  // openinstall上报登录数据
+                  if(ret.result_data.is_wx == 0){
+                    $(".login_wx").hide();
+                  }else {
+                    $(".login_wx").show();
+                  }
+                } else if (ret.result_code == 500) {
+                    //要绑定手机号
+                }
+            } else {}
+        });
+    }
+</script>
+
+</html>

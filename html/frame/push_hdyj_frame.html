@@ -1,0 +1,368 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0" />
+    <!-- 解决IOS数字出现蓝色数字问题  -->
+    <meta name="format-detection" content="telephone=no" />
+    <title>活动奖励</title>
+    <link rel="stylesheet" type="text/css" href="../../css/api.css" />
+    <style>
+        html {
+            /*比如： 原来0.24rem；换算成rem就等于 0.24rem; 也就是 1rem = 1.0rem;*/
+            font-size: calc(100vw * 100 / 750);
+            background: #f4f4f4;
+        }
+
+        body {
+            background: #f4f4f4;
+            color: #666;
+            font-size: 16px;
+            margin: 0;
+            height: 100%;
+            font-family: "Myriad Set Pro", "Helvetica Neue", Helvetica, Arial, Verdana, sans-serif;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+            font-weight: normal;
+        }
+
+        .aui-flex {
+            display: -webkit-box;
+            display: -webkit-flex;
+            display: flex;
+            -webkit-box-align: center;
+            -webkit-align-items: center;
+            align-items: center;
+            padding: 0.3rem;
+            position: relative;
+            background: #fff;
+            top: 0.2rem;
+        }
+
+        .aui-flex-box {
+            -webkit-box-flex: 1;
+            -webkit-flex: 1;
+            flex: 1;
+            min-width: 0;
+            font-size: 0.28rem;
+            color: #333;
+            display: -webkit-box;
+            -webkit-box-orient: vertical;
+            -webkit-line-clamp: 3;
+            overflow: hidden;
+        }
+        /* 必要布局样式css */
+
+        .aui-scrollView {
+            width: 100%;
+            height: auto;
+            -webkit-box-flex: 1;
+            -webkit-flex: 1;
+            -ms-flex: 1;
+            flex: 1;
+            overflow-y: auto;
+            overflow-x: hidden;
+            -webkit-overflow-scrolling: touch;
+            position: relative;
+            z-index: 999;
+        }
+
+        .aui-flex-lag .aui-flex-box h2 {
+            font-size: 0.24rem;
+            color: #999999;
+            font-weight: normal;
+            margin: 0.05rem 0;
+        }
+
+        .aui-flex-lag .aui-flex-box h2 em {
+            font-style: normal;
+            color: #333;
+        }
+
+        .aui-text-copy {
+            color: #999999;
+            border: 1px solid #e5e5e5;
+            font-size: 0.24rem;
+            padding: 2px 0.3rem;
+            top: 0.4rem;
+            right: 0.3rem;
+            position: absolute;
+            border-radius: 1.0rem;
+        }
+
+        .aui-flex-sox {
+            width: 1.2rem;
+            height: 1.2rem;
+        }
+
+        .aui-flex-sox img {
+            width: 100%;
+            height: 100%;
+            display: block;
+            border: none;
+            border-radius: 0.2rem;
+        }
+
+        .aui-flex-box h3 {
+            color: #333333;
+            font-weight: normal;
+            padding-left: 0.2rem;
+            font-size: 0.25rem;
+        }
+
+        .aui-flex-box h3 em {
+            color: #25bf13;
+            font-style: normal;
+        }
+
+        .aui-flex-back {
+            background: #fff;
+            border-bottom: 1px dashed #e2e2e2;
+        }
+        /*缺省页 start*/
+
+        .aui-take-content-col {
+            /*background-color: #fff;*/
+            width: 100%;
+            /*height: 186px;*/
+            padding-top: 2.0rem;
+            display: none;
+        }
+
+        .aui-img-logo {
+            width: 2.52rem;
+            height: auto;
+            margin: 0 auto;
+        }
+
+        .aui-img-logo img {
+            width: 100%;
+            height: 100%;
+            display: block;
+            border: none;
+            border-radius: 100%;
+        }
+
+        .aui-img-text {
+            text-align: center;
+            padding-top: 0.28rem;
+        }
+
+        .aui-img-text p {
+            font-size: 0.3rem;
+            color: #979797;
+        }
+        /*缺省页 end*/
+    </style>
+</head>
+
+<body>
+    <div class="aui-flexView">
+        <div class="aui-scrollView" id='push_hdyj'>
+            <!-- <div class="aui-flex aui-flex-back">
+                <div class="aui-flex-sox">
+                    <img src="../../image/appicon_108.png" alt="">
+                </div>
+                <div class="aui-flex-box">
+                    <h3>这里是描述这里是描述这</h3>
+                </div>
+            </div>
+            <div class="aui-flex aui-flex-lag">
+                <div class="aui-flex-box">
+                    <h2>
+    					订单编号：<em>201906061456</em>
+    				</h2>
+                    <h2>
+    					订单类型：<em>淘宝</em>
+    				</h2>
+                    <h2>
+    					订单金额：<em>0.00</em>
+    				</h2>
+                    <h2>
+    					获得普通佣金：<em>0.00</em>
+    				</h2>
+                </div>
+                <div class="aui-text-copy">复制
+                </div>
+            </div> -->
+        </div>
+    </div>
+    <div id="statu" style="font-size:0.3rem;color:#fd5f3e;background-color:#f4f4f4;height:1.0rem;line-height:1.0rem;text-align:center;clear:both;"></div>
+    <!-- 缺省页 start -->
+    <div class="aui-take-content-col">
+        <div class="aui-img-logo">
+            <img src="../../image/img_sc_massagenull.png" alt="" />
+        </div>
+        <div class="aui-img-text">
+            <p>还没有任何消息~</p>
+        </div>
+    </div>
+    <!-- 缺省页 end -->
+</body>
+<script type="text/javascript" src="../../script/api.js"></script>
+<script type="text/javascript" src="../../script/jquery.js"></script>
+<script type="text/javascript" src="../../script/api_common.js"></script>
+<script type="text/javascript" src="../../script/md5.js"></script>
+<script type="text/javascript" src="../../script/swiper.min.js"></script>
+<script type="text/javascript">
+    var pageNum = 1;
+    var isOver = false; //默认没有取完数据
+    var statu; //滑到底部状态
+    var user_id;
+    var pushType;
+    apiready = function() {
+        api.parseTapmode();
+        pushType = api.pageParam.pushType;
+        if (!empty($api.getStorage("userInfo"))) {
+            user_id = $api.getStorage("userInfo").user_id;
+            LoadingOne();
+            statu = $api.byId('statu');
+            loadFresh();
+            setTimeout(function() { //延时1000毫秒
+                loadMyFa(true);
+            }, 1000)
+        } else {
+            user_id = '';
+            checkUserLogin();
+        }
+        getEvent();
+        closePopframe();
+        // 监听事件apiReady滚动到底部，加载更多功能
+        api.addEventListener({
+            name: 'scrolltobottom',
+            extra: {
+                threshold: 120 //设置距离底部多少距离时触发，默认值为0，数字类型
+            }
+        }, function(ret, err) {
+
+            loadMyFa(false);
+        });
+
+        function loadFresh() {
+            RefreshLoad();
+        }
+    };
+    //获取查询佣金通知
+    function loadMyFa(isEdit) {
+        if (!isEdit && isOver) {
+            return;
+        }
+        //判断如果是下拉刷新，
+        if (isEdit) {
+            pageNum = 1;
+            isOver = false;
+        }
+        var obj = {
+            'user_id': user_id,
+            'type': 4,
+            'pageNo': pageNum,
+            'size': 10
+        };
+        var objArr = sort_ASCII(obj);
+        var timestamp = fntimestamp();
+        var version = '2.0';
+        var arr = apiSecret + timestamp + version + '';
+        for (i in objArr) {
+            arr += objArr[i];
+        }
+        var sign = hex_md5(arr);
+        // alert(sign);
+        api.ajax({
+            url: commonUrl + 'soukeAppTttService/service/push/findCommMsgByUser',
+            method: 'post',
+            headers: {
+                'Content-Type': 'application/json;charset=utf-8'
+            },
+            data: {
+                body: {
+                    'apiKey': apiKey,
+                    'timestamp': timestamp,
+                    'sign': sign,
+                    'user_id': user_id,
+                    'type': 4,
+                    'pageNo': pageNum,
+                    'size': 10
+                }
+            }
+        }, function(ret, err) {
+            api.hideProgress();
+            if (ret) {
+                if (ret.result_code == 200) {
+                    $(".noWlan").hide();
+                    console.log("查询佣金通知：" + JSON.stringify(ret));
+                    var data = ret.result_data.items;
+                    if (data != "") {
+                        pageNum++;
+                    } else {
+                        $(".aui-take-content-col").show();
+                        // statu.innerHTML = "暂无数据";
+                    }
+                    if (data.length < 10 && data != "") {
+                        statu.innerHTML = "已经到底啦 ~ 别扯了";
+                        isOver = true;
+                    }
+                    fnShowData(data, isEdit);
+                } else {
+                    api.toast({
+                        msg: ret.result_message,
+                        duration: 2000,
+                        location: 'middle'
+                    });
+
+                }
+            } else {
+                $(".noWlan").show();
+                // api.alert({ msg: JSON.stringify(err) });
+            }
+        });
+    }
+
+    function fnShowData(data, isEdit) {
+        var html = '';
+        for (var i = 0; i < data.length; i++) {
+            var message = data[i];
+            html += '<div class="aui-scrollView"><div class="aui-flex aui-flex-back">';
+            html += '<div class="aui-flex-sox"><img src="' + message.pic_url + '" alt=""></div>';
+            html += '<div class="aui-flex-box"><h3>' + message.push_msg + '</h3></div></div>';
+            html += '<div class="aui-flex aui-flex-lag"><div class="aui-flex-box">';
+            html += '<h2>订单编号：<em>' + message.order_id + '</em></h2>';
+            if (message.order_mall == 0) {
+                order_mall = message.order_mall;
+                html += '<h2>订单类型：<em>淘宝</em></h2>';
+            }
+            html += '<h2>订单类型：<em>天猫</em></h2>';
+            html += '<h2>订单金额：<em>' + message.order_price + '</em></h2>';
+            html += '<h2>获得普通佣金：<em>' + Math.floor(message.comm_price * 100) / 100 + '</em></h2></div>';
+            html += '<div class="aui-text-copy" id="">复制</div>';
+            html += '</div>';
+            html += '</div>';
+        }
+        if (isEdit) {
+            $api.byId('push_hdyj').innerHTML = html;
+        } else {
+            $api.byId('push_hdyj').innerHTML += html;
+        }
+        $(".aui-text-copy").attr("id", message.order_id);
+        $(".aui-text-copy").click(function() {
+            var clipBoard = api.require('clipBoard');
+            clipBoard.set({
+                value: $(this).attr("id")
+            }, function(ret, err) {
+                if (ret) {
+                    // alert(JSON.stringify(ret));
+                    api.toast({
+                        msg: '复制成功',
+                        duration: 2000,
+                        location: 'middle'
+                    });
+
+                } else {
+                    // alert(JSON.stringify(err));
+                }
+            });
+        })
+    }
+</script>
+
+</html>

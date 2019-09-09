@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0" />
+    <meta name="format-detection" content="telephone=no">
+    <title>发圈frmae</title>
+    <link rel="stylesheet" type="text/css" href="../../css/api.css" />
+    <link rel="stylesheet" type="text/css" href="../../css/faquan.css" />
+    <style>
+        /* 返回顶部样式开始 */
+
+        .actGotop {
+            position: fixed;
+            _position: absolute;
+            bottom: 3rem;
+            right: 0.5rem;
+            width: 3.5rem;
+            height: 3.5rem;
+            display: none;
+            z-index: 999
+        }
+
+        .actGotop a,
+        .actGotop a:link {
+            width: 3.5rem;
+            height: 3.5rem;
+            display: inline-block;
+            background: url(../../image/ic_back_top.png) no-repeat;
+            background-size: 3.5rem 3.5rem;
+            outline: none;
+        }
+
+        .actGotop a:hover {
+            background: url(../../image/ic_back_top.png) no-repeat;
+            outline: none;
+            background-size: 3.5rem 3.5rem;
+        }
+        /* 返回顶部样式开始 */
+
+        html,
+        body {
+            height: 100%;
+            width: 100%;
+            background-color: #f4f4f4;
+        }
+    </style>
+</head>
+
+<body id="faquan_mrbf"  v-cloak>
+  <!-- 返回顶部按钮 -->
+  <div class="actGotop">
+      <a href="javascript:;" title="返回顶部"></a>
+  </div>
+    <div id="list">
+        <div class="has_share" v-for="item in new_list">
+            <div class="share_del">
+                <ul class="share_user">
+                    <li><img src="../../image/appicon_108.png" alt=""></li>
+                    <li>
+                        <div class="share_username">券券推</div>
+                        <div class="share_time">{{item.create_times}}</div>
+                    </li>
+                    <li @click="actionMenu(item.id)">
+                    <!-- <li class="share_{{item.id}}"> -->
+                      <div style="display:none" v-for="(key,val) in item.apic"  class="share_{{item.id}}">
+                          <span>{{val.i_imgurl}}</span>
+                          <p>{{val.num_iid}}</p>
+                      </div>
+                        <div class="share_count">
+                            <img src="../../image/btn_peanut_share.png" alt="">{{item.share_mun}}
+                        </div>
+                    </li>
+                </ul>
+                <div style="display:none" class="share_goods comments_{{item.id}}" >{{{item.context}}}</div>
+                <div class="share_goods comment_{{item.id}}" @click="getComment(item.id);">{{{item.contexts}}}</div>
+                <div class="goods_img">
+                    <div class="img_list" v-for="(key,val) in item.apic">
+                      <div class="bigimg" @click="openGoodDel(val.num_iid,val.i_imgurl)" v-if="item.apic.length==1">
+                        <img v-bind:src="val.i_imgurl" >
+                        <div class="goods_discount" v-if="item.cat==1">￥<span>{{val.real_price}}</span></div>
+                      </div>
+
+                      <div class="img_90" @click="openGoodDel(val.num_iid,val.i_imgurl)" v-if="item.apic.length>1">
+                          <img v-bind:src="val.i_imgurl">
+                          <div class="goods_discount" v-if="item.cat==1">￥<span>{{val.real_price}}</span></div>
+                      </div>
+                    </div>
+                    <div class="clear"></div>
+                </div>
+                <div class="goods_money">
+                    <div class="goods_commoney" v-if="item.tkfee!='' ">预估佣金：￥ <span>{{item.tkfee}}</span></div>
+                    <!-- <div class="to_top" v-if="item.top_flag==1"><img src="../../image/ic_top.png" alt="">置顶</div> -->
+                </div>
+                <div class="goods_bytype" v-if="item.comment!='' ">
+                    <div class="buzhou commentPL_{{item.id}}">{{item.comment}}</div>
+                    <div class="copy_comment tapmode" @click="getCommentPL(item.id)"><img src="../../image/btn_peanut_copy.png" alt="">复制评论</div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div id="statu" style="font-size:0.8rem;color:#fd5f3e;background-color:#f5f5f5;height:30px;line-height:30px;text-align:center;clear:both;">
+        <img src="../../image/loading.d997b79c.svg" alt="" style="width:1rem;height:1rem;vertical-align:middle;">加载中...
+    </div>
+</body>
+<script type="text/javascript" src="../../script/api.js"></script>
+<script type="text/javascript" src="../../script/jquery.js"></script>
+<script type="text/javascript" src="../../script/api_common.js"></script>
+<script type="text/javascript" src="../../script/md5.js"></script>
+<script type="text/javascript" src="../../script/faquan_mrbf.js"></script>
+<script type="text/javascript" src="../../script/vue.js"></script>
+<script type="text/javascript" src="../../script/emotion.json"></script>

@@ -1,0 +1,74 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0" />
+    <meta name="format-detection" content="telephone=no, email=no, date=no, address=no">
+    <title>用户协议</title>
+    <link rel="stylesheet" type="text/css" href="../../css/api.css" />
+    <style>
+    html,body{
+      background-color: #f4f4f4;
+      height: 100%;
+      width: 100%;
+    }
+    .about_us{
+      height: auto;
+      width: calc(100% - 24px);
+      margin:0 auto;
+      color:#888;
+    }
+    p{
+      line-height: 30px;
+      width: 100%;
+    }
+    .p_title{
+      width: 100%;
+      height: 100px;
+      line-height: 100px;
+      text-align: center;
+      font-size: 24px;
+      color:#333;
+    }
+    .p_item{
+      text-indent: 2em;
+    }
+    </style>
+</head>
+<body>
+    <div class="about_us">
+      <p class="p_title">平台用户协议</p>
+      <p class="p_item"  id="xyContent" </p>
+    </div>
+</body>
+<script type="text/javascript" src="../../script/api.js"></script>
+<script type="text/javascript" src="../../script/jquery.js"></script>
+<script type="text/javascript" src="../../script/api_common.js"></script>
+<script type="text/javascript">
+apiready = function(){
+  api.ajax({
+      url: commonUrl + 'soukeAppTttService/service/h5/user/findRegisterInfo',
+      method: 'post',
+      headers: {
+          'Content-Type': 'application/json;charset=utf-8'
+      },
+      dataTpye: 'json',
+  },function(ret, err){
+        var data=ret.result_data.register_info;
+        $api.byId('xyContent').innerHTML=data;
+  });
+
+};
+  function changeZfb(){
+    api.openWin({
+        name: 'bind_zfb_win',
+        url: './bind_zfb_win.html',
+        pageParam: {
+            zfb_sign:2, //代表更换支付宝的标识；
+        }
+    });
+
+  }
+</script>
+
+</html>

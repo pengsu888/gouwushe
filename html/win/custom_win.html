@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0" />
+    <title>自定义页win</title>
+    <link rel="stylesheet" type="text/css" href="../../css/api.css" />
+    <style>
+        header {
+            width: 100%;
+            height: 2.88rem;
+            overflow: hidden;
+        }
+
+        header .header-top {
+            display: -webkit-box;
+            display: -webkit-flex;
+            display: flex;
+            width: 100%;
+            height: 2.88rem;
+            position: relative;
+        }
+
+        .headerItem {
+            height: 2.0rem;
+            width: 100%;
+            border-bottom: solid 1px #f6f6f6;
+            vertical-align: middle;
+            display: inline-block;
+            position: absolute;
+            top: 1.0rem;
+            left: 0;
+        }
+
+        .headerItem div {
+            float: left;
+        }
+
+        .headerItem .header_back {
+            width: 2.0rem;
+            height: 2.0rem;
+            float: left;
+            margin-left: 1rem;
+        }
+
+        .headerItem .header_back img {
+            width: 1.5rem;
+            height: 1.5rem;
+            background-size: 100% 100%;
+            vertical-align: middle;
+        }
+
+        .headerItem .header_title {
+            width: calc(100% - 6rem);
+            line-height: 1.5rem;
+            text-align: center;
+        }
+
+        .headerItem .header_search {
+            width: 1.5rem;
+            height: 100%;
+            float: right;
+            margin-right: 1.0rem;
+            vertical-align: middle;
+            display: inline-block;
+        }
+
+        .headerItem .header_search img {
+            width: 1.5rem;
+            height: 1.5rem;
+            background-size: 100% 100%;
+            vertical-align: middle;
+            display: inline-block;
+        }
+    </style>
+</head>
+
+<body>
+    <header id="header">
+        <div class="header-top">
+            <div class="headerItem">
+                <div class="header_back" onclick="closeWin();">
+                    <img src="../../image/ic_detail_title_bar_back_gray.png" alt="">
+                </div>
+                <div class="header_title" id="header_title">自定义页</div>
+            </div>
+        </div>
+    </header>
+</body>
+<script type="text/javascript" src="../../script/api.js"></script>
+<script type="text/javascript" src="../../script/jquery.js"></script>
+<script type="text/javascript">
+    apiready = function() {
+        var headerTitle = api.pageParam.tagname;
+        var tagid = api.pageParam.tagid;
+        $api.byId('header_title').innerHTML = headerTitle;
+        var header = $api.byId('header');
+        $api.fixStatusBar(header);
+        var headerH = $api.offset(header).h;
+        api.openFrame({
+            name: 'custom_frame',
+            url: './custom_frame.html',
+            rect: {
+                x: 0,
+                y: headerH,
+                w: 'auto',
+                h: 'auto'
+            },
+            pageParam: {
+                tagid: api.pageParam.tagid,
+                tagname: api.pageParam.tagname
+            },
+            bounces: false
+        });
+    };
+
+    function closeWin() {
+        api.closeWin({
+            name: 'custom_win'
+        });
+    }
+</script>
+
+</html>

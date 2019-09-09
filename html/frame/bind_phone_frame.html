@@ -1,0 +1,341 @@
+<!DOCTYPE HTML>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0" />
+    <meta name="format-detection" content="telephone=no, email=no, date=no, address=no">
+    <title>Hello APP</title>
+    <link rel="stylesheet" type="text/css" href="../../css/api.css" />
+    <style>
+        html,
+        body {
+            background-color: #f4f4f4;
+            height: 100%;
+            width: 100%;
+            position: relative;
+        }
+
+        .registItem {
+            position: absolute;
+            width: 100%;
+            height: calc(100% - 10px);
+            background: #fff;
+            top: 10px;
+            left: 0;
+        }
+
+        .regist_input {
+            width: calc(100% - 12px);
+            margin-left: 12px;
+            height: 55px;
+            border-bottom: solid 1px #ddd;
+        }
+
+        .regist_input label.label_input {
+            width: 60px;
+            height: 55px;
+            line-height: 55px;
+        }
+
+        .regist_input button.label_btn {
+            width: 120px;
+            height: 55px;
+            line-height: 55px;
+            text-align: center;
+            color: #fd5f3e;
+            outline: none;
+        }
+
+        .regist_input input.input_phone {
+            width: calc(100% - 99px);
+            height: 55px;
+            line-height: 55px;
+            outline: none;
+        }
+
+        .regist_input input.input_yzm {
+            width: calc(100% - 190px);
+            height: 35px;
+            line-height: 35px;
+            outline: none;
+            border-right: solid 1px #ddd;
+        }
+
+        .regist_input .clear_phone {
+            width: 17px;
+            height: 17px;
+            background-size: 100% 100%;
+            margin-top: 5px;
+            display: none;
+        }
+
+        .editBtn {
+            margin-top: 60px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="registItem">
+        <div class="regist_input">
+            <label class="label_input">手机号</label>
+            <input type="tel" placeholder="请输入手机号" maxlength="11" class="input_phone phone_input" />
+            <img src="../../image/ic_title_bar_edit_clear.png" alt="" class="clear_phone">
+        </div>
+        <div class="regist_input">
+            <label class="label_input">验证码</label>
+            <input type="tel" placeholder="请输入验证码" maxlength="6" class="input_yzm" />
+            <button class="label_btn getCode">获取验证码</button>
+        </div>
+        <div class="editBtn submitBtn submitColor" onclick="submitBtn();">提交</div>
+    </div>
+</body>
+<script type="text/javascript" src="../../script/api.js"></script>
+<script type="text/javascript" src="../../script/jquery.js"></script>
+<script type="text/javascript" src="../../script/api_common.js"></script>
+<script type="text/javascript" src="../../script/md5.js"></script>
+<script type="text/javascript">
+    var user_id, user_token;
+    apiready = function() {
+        user_id = $api.getStorage("userInfo").user_id;
+        user_token = $api.getStorage("userInfo").user_token;
+        getUserInfo();
+
+    }
+    $(function() {
+        $(".input_phone").bind('input porpertychange', function() {
+            if ($(".input_phone").val().length > 0) {
+                if ($(".input_phone").val().length == 11) {
+                    if (fncheckPhone($(".input_phone").val())) {} else {
+                        api.toast({
+                            msg: '请输入正确的手机号',
+                            duration: 2000,
+                            location: 'middle'
+                        });
+                    }
+                }
+                $(".clear_phone").show();
+            } else {
+                $(".clear_phone").hide();
+            }
+        });
+        $(".clear_phone").click(function() {
+            $(".clear_phone").hide();
+            $(".input_phone").val('');
+        });
+    });
+    //获取用户信息
+    function getUserInfo() {
+        var obj = {
+            'user_id': user_id
+        };
+        var objArr = sort_ASCII(obj);
+        var timestamp = fntimestamp();
+        var version = '2.0';
+        var arr = apiSecret + timestamp + version + '';
+        for (i in objArr) {
+            arr += objArr[i];
+        }
+        var sign = hex_md5(arr);
+        api.ajax({
+            url: commonUrl + 'soukeAppTttService/service/user/message_ac',
+            method: 'post',
+            headers: {
+                'Content-Type': 'application/json;charset=utf-8'
+            },
+            data: {
+                body: {
+                    'apiKey': apiKey,
+                    'timestamp': timestamp,
+                    'sign': sign,
+                    'user_id': user_id,
+                }
+            }
+        }, function(ret, err) {
+            if (ret) {
+                if (ret.result_code == 200) {
+                    // console.log("用户信息"+JSON.stringify(ret));
+                    if (empty(ret.result_user.phone)) {
+
+                    } else {
+                        // var tel=ret.result_user.phone;
+                        // var mtel = tel.substr(0, 3) + '****' + tel.substr(7);
+                        // $api.byId('login_phone').value=ret.result_user.phone;
+                        $(".input_phone").val(ret.result_user.phone);
+                    }
+
+                } else {
+                    api.toast({
+                        msg: ret.result_message,
+                        duration: 2000,
+                        location: 'middle'
+                    });
+
+                }
+            } else {
+                // api.alert({ msg: JSON.stringify(err) });
+            }
+        });
+    }
+    /*
+     * 获取验证码
+     *
+     */
+    var wait = 60;
+
+    function time(o) {
+        if (wait == 0) {
+            o.removeAttribute("disabled");
+            o.innerHTML = "获取验证码";
+            wait = 60;
+        } else {
+            o.setAttribute("disabled", true);
+            o.innerHTML = "还剩" + wait + "秒";
+            o.style.color = '#ccc';
+            wait--;
+            setTimeout(function() {
+                time(o)
+            }, 1000)
+        }
+    };
+
+    $(".getCode").click(function() {
+        var t = this;
+        var obj = {
+            'user_phone': $(".input_phone").val(),
+            'type': 1
+        };
+        var objArr = sort_ASCII(obj);
+        var timestamp = fntimestamp();
+        var version = '2.0';
+        var arr = apiSecret + timestamp + version + '';
+        for (i in objArr) {
+            arr += objArr[i];
+        }
+        var sign = hex_md5(arr);
+        api.ajax({
+            url: commonUrl + 'soukeAppTttService/service/user/checkcellphoneupdate_ac',
+            method: 'post',
+            headers: {
+                'Content-Type': 'application/json;charset=utf-8'
+            },
+            data: {
+                body: {
+                    'apiKey': apiKey,
+                    'timestamp': timestamp,
+                    'sign': sign,
+                    'user_phone': $(".input_phone").val(),
+                    'type': 1
+                }
+            }
+        }, function(ret, err) {
+            if (ret) {
+                if (ret.result_code == 200) {
+                    console.log(JSON.stringify(ret));
+                    time(t);
+                    api.toast({
+                        msg: '发送成功',
+                        duration: 2000,
+                        location: 'middle'
+                    });
+
+                } else {
+                    console.log("发送失败：" + JSON.stringify(ret));
+                    var msg = "";
+                    if (api.pageParam.edit_iphone == 1) {
+                        if (ret.result_message == "该手机号已注册！") {
+                            msg = "修改手机,请输入新的手机号"
+                        } else {
+                            msg = '发送失败' + ret.result_message
+                        }
+                    } else {
+                        msg = '发送失败' + ret.result_message
+                    }
+                    api.toast({
+                        msg: msg,
+                        duration: 2000,
+                        location: 'middle'
+                    });
+
+                }
+            } else {
+                // api.alert({ msg: JSON.stringify(err) });
+            }
+        });
+    });
+    function submitBtn() {
+      alert(user_id)
+      alert($(".input_phone").val());
+      alert($(".input_yzm").val())
+        var obj = {
+            'user_phone': $(".input_phone").val(),
+            'user_code': $(".input_yzm").val(),
+            'user_id' : user_id
+        };
+        var objArr = sort_ASCII(obj);
+        var timestamp = fntimestamp();
+        var version = '2.0';
+        var arr = apiSecret + timestamp + version + '';
+        for (i in objArr) {
+            arr += objArr[i];
+        }
+        var sign = hex_md5(arr);
+        api.ajax({
+            url: commonUrl + 'soukeAppTttService/service/user/updatenewphone_ac',
+            method: 'post',
+            headers: {
+                'Content-Type': 'application/json;charset=utf-8'
+            },
+            data: {
+                body: {
+                    'apiKey': apiKey,
+                    'timestamp': timestamp,
+                    'sign': sign,
+                    'user_phone': $(".input_phone").val(),
+                    'user_code': $(".input_yzm").val(),
+                    'user_id' : user_id
+                }
+            }
+        }, function(ret, err) {
+            if (ret) {
+                if (ret.result_code == 200) {
+                    console.log(JSON.stringify(ret));
+                    api.toast({
+                        msg: ret.result_message,
+                        duration: 2000,
+                        location: 'middle'
+                    });
+                    api.execScript({
+                        name: 'mine_info_win',
+                        frameName: 'min_info_frame',
+                        script: 'getUserInfo();'
+                    });
+                    api.sendEvent({
+                        name: 'login',
+                        extra: {
+                            login: true,
+                        }
+                    });
+                    api.execScript({
+                        name: 'bind_phone_win',
+                        script: 'closeWin();'
+                    });
+
+                } else {
+                    // console.log("发送失败："+JSON.stringify(ret));
+                    api.toast({
+                        msg: ret.result_message,
+                        duration: 2000,
+                        location: 'middle'
+                    });
+
+                }
+            } else {
+                console.log(JSON.stringify(err));
+            }
+        });
+    }
+</script>
+
+</html>

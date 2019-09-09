@@ -1,0 +1,287 @@
+<!DOCTYPE HTML>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0" />
+    <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+    <title>搜索淘宝淘口令</title>
+    <link rel="stylesheet" type="text/css" href="../css/api.css" />
+    <link rel="stylesheet" type="text/css" href="../css/style.css" />
+    <style>
+        body {
+            width: 100%;
+            height: 100%;
+            font-size: 16px;
+            overflow: hidden;
+        }
+
+        .wrapAll {
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, .7);
+            overflow: hidden;
+            position: fixed;
+            top: 0;
+            left: 0;
+            z-index: 99;
+            display: none;
+        }
+
+        .nl_list {
+            position: fixed;
+            width: calc(80% - 40px);
+            height: 520px;
+            left: 60px;
+            top: 45%;
+            border-radius: 10px;
+            margin-top: -223px;
+            z-index: 999;
+            box-sizing: border-box;
+            -webkit-box-sizing: border-box;
+            overflow: hidden;
+        }
+
+        .nl_list .detail {
+            width: 100%;
+            height: auto;
+            background: #fff;
+            padding-bottom: 20px;
+            padding-top: 20px;
+            border-radius: 0px 0px 10px 10px;
+        }
+
+        .nl_list .title {
+            width: 100%;
+            height: auto;
+            /*background: red;*/
+        }
+
+        .nl_list .title img {
+            width: 100%;
+            height: 100%;
+            background-size: 100% 100%;
+        }
+
+        .nl_list .detail .cont {
+            width: calc(100% - 80px);
+            height: auto;
+            margin: 0 auto 30px auto;
+            text-align: center;
+            line-height: 25px;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            display: -webkit-box;
+            -webkit-line-clamp: 1;
+            -webkit-box-orient: vertical;
+            word-break: break-all;
+        }
+
+        .nl_list .detail .searchBtn {
+            width: calc(100% - 80px);
+            height: 30px;
+            line-height: 30px;
+            text-align: center;
+            margin: 20px auto 0 auto;
+            border-radius: 15px;
+        }
+
+        .nl_list .closeBtn {
+            width: 32px;
+            height: 32px;
+            margin: 10px auto;
+        }
+
+        .nl_list .closeBtn img {
+            width: 100%;
+            height: 100%;
+            background-size: 100% 100%;
+        }
+
+        .quanhoujia {
+            color: #fe5b45;
+            border: solid 1px #fe5b45;
+        }
+
+        .submitColor {
+            color: #fff;
+            background: linear-gradient(to right, #fd7239, #f94529);
+        }
+
+        .ts {
+            text-align: center;
+            background: #fff;
+            border-radius: 5px;
+                height: auto;
+                top:69%;
+        }
+
+        p {
+            margin: 0;
+            padding: 0;
+        }
+
+        .ts p:nth-child(1) {
+            width: 100%;
+            padding: 10% 0 0 0;
+        }
+
+        .ts p:nth-child(1) img {
+            width: 20%;
+        }
+
+        .ts p:nth-child(2) {
+            font-size: 0.8rem;
+            padding: 5% 0 10% 0;
+        }
+
+        .ts p:nth-child(3) {
+            padding: 10px 0;
+            background: #ED5748;
+            border-radius: 0 0 5px 5px;
+            color: #fff
+        }
+    </style>
+</head>
+
+<body>
+    <section class='wrapAll' id='wrapAll'>
+    </section>
+    <section class='nl_list' id="pop2" style="display: none;">
+        <div class="title">
+            <img src="../../image/share/123.jpg" id="itempic" alt="">
+        </div>
+        <div class="detail">
+            <div class="cont" id="title1"></div>
+            <div class="searchBtn quanhoujia">券后价：<span id="price"></span></div>
+            <div class="searchBtn submitColor" tapmode onclick="openGoodDel();">立即查看</div>
+        </div>
+        <div class="closeBtn" tapmode onclick="closebtn2();"><img src="../../image/home/home_update_btn_close.png" alt=""></div>
+    </section>
+
+    <section class='nl_list ts' style="display: none;">
+        <div class="ts">
+            <p><img src="../../image/no_find.png" /></p>
+            <p>该商品未参与推广或已下架</p>
+            <p onclick="closeTs();">点击返回</p>
+        </div>
+    </section>
+    <!-- 网上购物结束 -->
+
+</body>
+<script type="text/javascript" src="../../script/api.js"></script>
+<script type="text/javascript" src="../../script/jquery.js"></script>
+<script type="text/javascript" src="../../script/api_common.js"></script>
+<script type="text/javascript" src="../../script/md5.js"></script>
+<script type="text/javascript">
+    var goods_id, user_id, key
+        // $(".nl_list").css("margin-top", -($(".nl_list").height() / 2) + "px");
+    apiready = function() {
+        if ($api.getStorage('userInfo')) {
+            user_id = $api.getStorage("userInfo").user_id;
+        }
+        key = api.pageParam.key;
+        getDataBytkl(key);
+
+        api.closeWin({
+            name: 'good_detail',
+            type: "fade",
+        });
+    }
+
+    function getDataBytkl(key) {
+        var obj = {
+            'tkl': key,
+        };
+        var objArr = sort_ASCII(obj);
+        var timestamp = fntimestamp();
+        var version = '2.0';
+        var arr = apiSecret + timestamp + version + '';
+        for (i in objArr) {
+            arr += objArr[i];
+        }
+        var sign = hex_md5(arr);
+        api.ajax({
+            url: commonUrl + 'soukeAppTttService/service/ali/finditemBytkl_ac',
+            method: 'post',
+            headers: {
+                'Content-Type': 'application/json;charset=utf-8'
+            },
+            data: {
+                body: {
+                    'tkl': key,
+                    'apiKey': apiKey,
+                    'timestamp': timestamp,
+                    'sign': sign,
+                }
+            }
+        }, function(ret, err) {
+            if (ret) {
+                // console.log("淘口令解析"+JSON.stringify( ret ) );
+                if (ret.result_code == 200) {
+
+                    $("#wrapAll").show();
+                    $("#pop2").show();
+                    goods_id = ret.result_data.num_iid;
+                    $api.byId('title1').innerHTML = ret.result_data.title;
+                    $api.byId('price').innerHTML = ret.result_data.itemendprice;
+                    $("#itempic").attr("src", ret.result_data.itempic);
+                } else {
+                    // api.toast({
+                    //     // msg: "ret.result_message",
+                    //     msg: "此商品没有参加淘宝推广哦~",
+                    //     duration: 2000,
+                    //     location: 'middle'
+                    // });
+                    $("#wrapAll").show();
+                    $(".ts").show();
+
+
+
+
+                }
+            } else {
+                // alert( JSON.stringify( err ) );
+            }
+        });
+    }
+
+    function closebtn2() {
+        $api.byId('pop2').style.display = 'none';
+        var clipBoard = api.require('clipBoard');
+        clipBoard.removeListener();
+        var clipBoard = api.require('clipBoard');
+        clipBoard.set({
+            value: undefined
+        }, function(ret, err) {
+            if (ret) {
+                $api.byId('pop2').style.display = "none";
+                api.closeFrame({
+                    name: 'pop'
+                });
+            } else {}
+        });
+    }
+
+    function openGoodDel() {
+        closebtn2();
+
+        api.openWin({
+            name: 'good_detail',
+            url: '../goods/good_detail.html',
+            pageParam: {
+                goods_id: goods_id,
+                section_id: -1
+            }
+        });
+    }
+
+    function closeTs() {
+        closebtn2();
+        $("#wrapAll").hide();
+        $(".ts").hide();
+        api.closeFrame({
+            name: 'pop'
+        });
+    }
+</script>

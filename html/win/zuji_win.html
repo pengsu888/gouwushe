@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0" />
+  <title>足迹win</title>
+  <link rel="stylesheet" type="text/css" href="../../css/api.css" />
+  <link rel="stylesheet" type="text/css" href="../../css/style.css" />
+</head>
+<style media="screen">
+  .headerItem .header_title{
+    width:calc(100% - 64px);
+    line-height: 44px;
+    text-align: center;
+    margin-left: 13px;
+  }
+  .headerItem .header_right{
+    width: 42px;
+    height: 44px;
+    float: right;
+    margin-top: 0px;
+    line-height: 44px;
+    text-align: center;
+  }
+  .cancel{
+    display: none;
+  }
+
+  .header-bottom{
+    height: 37px;
+    width: 100%;
+  }
+  .header-bottom ul{list-style: none;padding: 0;margin: 0;}
+  .header-bottom ul li{
+    float: left;
+    width: 33.333%;
+    line-height: 37px;
+    text-align: center;
+  }
+  .header-bottom ul li.li_active{
+    border-bottom: 3px solid #fd5f3e;
+    color:#fd5f3e;
+  }
+</style>
+<body>
+    <header id="header">
+      <div class="header-top">
+          <div class="headerItem">
+            <div class="header_back" tapmode onclick="closeWin();">
+              <img src="../../image/nav_back_black.png" alt="">
+            </div>
+            <div class="header_title" id="header_title">足迹</div>
+            <div class="header_right guanli" tapmode onclick="fnEditList();">管理</div>
+            <div class="header_right cancel" tapmode onclick="fnCancelEditList();">取消</div>
+          </div>
+      </div>
+    </header>
+    <div class="header-bottom">
+      <ul id="class_list">
+        <li id="tb" class="li_active">淘宝</li>
+        <li id="pdd">拼多多</li>
+        <li id="jd">京东</li>
+      </ul>
+    </div>
+</body>
+  <script type="text/javascript" src="../../script/api.js"></script>
+  <script type="text/javascript" src="../../script/jquery.js"></script>
+  <script type="text/javascript" src="../../script/api_common.js"></script>
+  <script type="text/javascript" src="../../script/md5.js"></script>
+  <script type="text/javascript">
+    apiready = function() {
+        api.setStatusBarStyle({
+            style: 'dark' //黑色
+                // style: 'light' //白色
+        });
+        var header = $api.byId('header');
+        $api.fixStatusBar(header);
+        var headerH = $api.offset(header).h;
+        fnstate();
+        // 判断拼多多、京东是否开启
+        function fnstate() {
+            var obj = {}
+            var objArr = sort_ASCII(obj);
+            var timestamp = fntimestamp();
+            var version = '2.0';
+            var arr = apiSecret + timestamp + version + '';
+            for (i in objArr) {
+                arr += objArr[i];
+            }
+            // console.log(arr);
+            var sign = hex_md5(arr);
+            api.ajax({
+                url: commonUrl + 'soukeAppTttService/service/api/getvolumeandcommission_ac',
+                method: 'post',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                data: {
+                    body: {
+                        'apiKey': apiKey,
+                        'timestamp': timestamp,
+                        'sign': sign
+                    }
+                }
+            }, function(ret, err) {
+                console.log("判断拼多多、京东是否开启" + JSON.stringify(ret));
+                if (ret) {
+                    var jd_status = ret.result_jd_status;
+                    var pdd_status = ret.result_pdd_status;
+                    if (jd_status == 0 && pdd_status == 0) {
+                        $("#jd").hide();
+                        $("#pdd").hide();
+                        $(".header-bottom > ul > li").css("width", "100%");
+                    } else {
+                        if (jd_status == 0) {
+                            // $("#jd").hide();
+                            $(".header-bottom > ul > li").css("width", "33.3%");
+                        }
+                        if (pdd_status == 0) {
+                            $("#pdd").hide();
+                            $(".header-bottom > ul > li").css("width", "33.3%");
+                        }
+                    }
+                } else {
+                    api.toast({
+                        msg: ret.result_message,
+                        duration: 2000,
+                        location: 'middle'
+                    });
+
+                }
+            });
+        }
+        //打开分类页
+        $("ul#class_list").on("click","li",function(){      //只需要找到你点击的是哪个ul里面的就行
+          $(".cancel").hide();
+          $(".guanli").show();
+          api.sendEvent({
+              name: 'zj_editBtn',
+              extra: {
+                  editBtn: 'cancel',
+                  click_status:0
+              }
+          });
+         });
+    		api.openFrameGroup({
+    			name : 'classify2',
+    			scrollEnabled : true,
+    			rect : {
+    				x : 0,
+    				y : headerH+40,
+    				w : 'auto',
+    				h : 'auto'
+    			},
+    			index : 0,
+    			preload : 0,
+    			frames : [{
+            name: 'zuji_frame',
+            url: '../frame/zuji_frame.html',
+    				bounces : false,
+    				vScrollBarEnabled : false,
+    				hScrollBarEnabled : false,
+    				pageParam: {
+    					dis_power: 'dis_power',
+    				}
+    			}, {
+            name: 'pdd_zuji_frame',
+            url: '../frame/pdd_zuji_frame.html',
+    				bounces : false,
+    				vScrollBarEnabled : false,
+    				hScrollBarEnabled : false,
+    				pageParam: {
+    					dis_power: 'dis_power',
+    				}
+    			}, {
+            name: 'jd_zuji_frame',
+            url: '../frame/jd_zuji_frame.html',
+    				bounces : false,
+    				vScrollBarEnabled : false,
+    				hScrollBarEnabled : false,
+    				pageParam: {
+    					dis_power: 'dis_power',
+    				}
+    			}],
+    		}, function(ret, err) {
+    			var _index = ret.index;
+    			$("#class_list > li").eq(_index).addClass("li_active");
+    			$("#class_list > li").eq(_index).siblings().removeClass("li_active");
+    		});
+    		//点击菜单
+    		$("#class_list > li").click(function() {
+    			var li_index = $(this).index();
+    			$(this).addClass("active").siblings().removeClass("li_active");
+    			api.setFrameGroupIndex({
+    				name : 'classify2',
+    				index : li_index,
+    				scroll : true,
+    			});
+    		});
+    };
+    function closeWin(){
+      api.closeWin({
+          name: 'zuji_win'
+      });
+    }
+    function fnEditList(){
+      $(".guanli").hide();
+      $(".cancel").show();
+      api.sendEvent({
+          name: 'zj_editBtn',
+          extra: {
+              editBtn: 'edit',
+              click_status:1
+          }
+      });
+      // api.sendEvent({
+      //     name: 'tab',
+      //     extra: {
+      //         editBtn: 'edit',
+      //         click_status:1
+      //     }
+      // });
+    }
+    // function changeTab(){
+    //   api.addEventListener({
+    //       name: 'tab'
+    //   }, function(ret, err){
+    //       if( ret ){
+    //
+    //       }else{
+    //            alert( JSON.stringify( err ) );
+    //       }
+    //   });
+    //
+    // }
+
+    function fnCancelEditList(){
+      $(".cancel").hide();
+      $(".guanli").show();
+      api.sendEvent({
+          name: 'zj_editBtn',
+          extra: {
+              editBtn: 'cancel',
+              click_status:0
+          }
+      });
+    }
+  </script>
+
+</html>

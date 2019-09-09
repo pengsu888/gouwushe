@@ -1,0 +1,310 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0" />
+  <title>title</title>
+  <link rel="stylesheet" type="text/css" href="../../css/api.css" />
+
+  <style>
+  html,body{
+    background-color: #f4f4f4;
+    padding-bottom: 20px;
+  }
+    .my_lucre{
+      width: 100%;
+      height: 189px;
+      color:#fff;
+      overflow: hidden;
+    }
+    .submitColor{
+      background: url("../../image/my/ic_earning_top_bg.png") no-repeat;
+      background-size: 100% auto;
+      /*background: -webkit-linear-gradient(left, #fd7239 , #f94529); /* Safari 5.1 - 6.0 */*/
+      /*background: -o-linear-gradient(right, #fd7239, #f94529); /* Opera 11.1 - 12.0 */*/
+      /*background: -moz-linear-gradient(right, #fd7239, #f94529); /* Firefox 3.6 - 15 */*/
+      /*background: linear-gradient(to right, #fd7239, #f94529); /* 标准的语法 */*/
+    }
+    .zhye{
+      width: 100%;
+      line-height: 30px;
+      text-align: center;
+      margin:40px auto 0 auto;
+    }
+    .my_ye{
+      width: 100%;
+      height: 60px;
+      text-align: center;
+      line-height: 60px;
+      font-size: 36px;
+    }
+    .ljsy{
+      width: 100%;
+      text-align: center;
+      line-height: 30px;
+      font-size: 16px;
+      color:#ffccbf;
+    }
+    .yg_item{
+      width: 100%;
+      height: auto;
+      background: #fff;
+      overflow: hidden;
+      margin:10px auto 0 auto;
+    }
+    .yg_list{
+      width: calc(100% - 24px);
+      height: auto;
+      margin:0 auto;
+    }
+    .yg_list ul{
+      list-style: none;
+      padding: 0;margin: 0;
+      height: 80px;
+      width: 100%;
+    }
+    .yg_list ul li{
+      float: left;
+      width: 49.5%;
+      height: 40px;
+      text-align: center;
+      margin-top: 15px;
+      font-size: 14px;
+
+    }
+    .yg_list ul li .yg_top{
+      width: 100%;
+      height: 32px;
+      overflow: hidden;
+      font-size: 14px;
+    }
+    .yg_list ul li .yg_top .yg_00{
+      font-size: 12px;
+    }
+    .yg_list ul li img{
+      height: 32px;
+      width: 32px;
+      background-size: 100% 100%;
+      vertical-align: middle;
+      display: inline-block;
+      margin-top: -5px;
+    }
+    .yg_list ul li:nth-child(1){
+      border-right: solid 1px #ddd;
+    }
+    .yg_bottom{
+      border-bottom: solid 1px #ddd;
+    }
+    .yg_item .yg_today{
+      height: 50px;
+      width: calc(100% - 24px);
+      color:#333;
+      font-weight: 700;
+      line-height: 50px;
+      margin:0 auto;
+    }
+    .yg_item .yg_today .today_img{
+      width: 22px;
+      height: 22px;
+      background-size: 100% 100%;
+      vertical-align: middle;
+      display: inline-block;
+      margin-top: -5px;
+      margin-right: 8px;
+    }
+    .set_area{
+      width: 100%;
+      height: auto;
+      background: #fff;
+      overflow: hidden;
+    }
+    .set_item{
+      width: calc(100% - 24px);
+      height: 55px;
+      background: #fff;
+      margin-left: 12px;
+      position: relative;
+    }
+    .set_right{
+      width: 25px;
+      height: 25px;
+      float: right;
+    }
+    img{
+      width: 100%;
+      height: 100%;
+      background-size: 100% 100%;
+    }
+    /*.set_border{
+      border-bottom: solid 1px #dddddd;
+    }*/
+    .set_middle{
+      width: auto;
+      height: 55px;
+      float: left;
+      line-height: 55px;
+    }
+    .forward_top{
+      margin-top: 16px;
+    }
+    .set_top{
+      margin-top:10px;
+    }
+
+  </style>
+</head>
+<body>
+  <div class="my_lucre submitColor">
+    <div class="zhye">账户余额(元)</div>
+    <div class="my_ye" id="my_ye">￥0.00</div>
+    <div class="ljsy" id="my_lucre">累计收益(元)：￥0.00</div>
+  </div>
+  <div class="yg_item">
+    <div class="yg_list">
+      <ul class="yg_bottom">
+        <li>
+          <div tapmode class="yg_top">本月结算预估<img src="../../image/home/mine_help_blue.png" alt=""  onclick="openDialog('本月结算预估','本月内已确认收货的订单佣金收益')"></div>
+          <div tapmode class="yg_top" id="by_js">￥0. <span class="yg_00">00</span></div>
+        </li>
+        <li>
+          <div tapmode class="yg_top">上月结算预估<img src="../../image/home/mine_help_blue.png" alt=""  onclick="openDialog('上月结算预估','上月内已确认收货的订单佣金收益')"></div>
+          <div class="yg_top" id="sy_js">￥0. <span class="yg_00">00</span></div>
+        </li>
+      </ul>
+      <ul>
+        <li>
+          <div tapmode class="yg_top">本月付款预估<img src="../../image/home/mine_help_blue.png" alt=""  onclick="openDialog('本月付款预估','本月内创建的所有付款订单佣金预估收益')"></div>
+          <div class="yg_top" id="by_fk">￥0. <span class="yg_00">00</span></div>
+        </li>
+        <li>
+          <div tapmode class="yg_top">上月付款预估<img src="../../image/home/mine_help_blue.png" alt=""  onclick="openDialog('上月付款预估','上月内创建的所有付款订单佣金预估收益')"></div>
+          <div class="yg_top" id="sy_fk">￥0. <span class="yg_00">00</span></div>
+        </li>
+      </ul>
+    </div>
+  </div>
+  <div class="yg_item">
+    <div class="yg_today yg_bottom">
+      <img src="../../image/home/mine_today.png" class="today_img" alt="">今日
+    </div>
+    <div class="yg_list">
+      <ul>
+        <li>
+          <div tapmode class="yg_top">今日付钱笔数<img src="../../image/home/mine_help_blue.png" alt=""  onclick="openDialog('今日付款笔数','今日所有付款的订单数量，只包含有效订单')"></div>
+          <div class="yg_top" id="jr_fq">￥0. <span class="yg_00">00</span></div>
+        </li>
+        <li>
+          <div tapmode class="yg_top">今日预估佣金(元)<img src="../../image/home/mine_help_blue.png" alt=""  onclick="openDialog('今日预估佣金','今日内创建的有效订单的预估佣金')"></div>
+          <div class="yg_top" id="jr_yj">￥0. <span class="yg_00">00</span></div>
+        </li>
+      </ul>
+    </div>
+  </div>
+  <div class="yg_item">
+    <div class="yg_today yg_bottom">
+      <img src="../../image/home/mine_yesterday.png" class="today_img" alt="">昨日
+    </div>
+    <div class="yg_list">
+      <ul>
+        <li>
+          <div tapmode class="yg_top">昨日付钱笔数<img src="../../image/home/mine_help_blue.png" alt=""  onclick="openDialog('昨日付款笔数','昨日所有付款的订单数量，只包含有效订单')"></div>
+          <div class="yg_top" id="zr_fq">￥0. <span class="yg_00">00</span></div>
+        </li>
+        <li>
+          <div tapmode class="yg_top">昨日预估佣金(元)<img src="../../image/home/mine_help_blue.png" alt=""  onclick="openDialog('昨日预估佣金','昨日内创建的有效订单的预估佣金')"></div>
+          <div class="yg_top" id="zr_yj">￥0. <span class="yg_00">00</span></div>
+        </li>
+      </ul>
+    </div>
+  </div>
+  <div class="set_area set_top">
+    <div class="set_item set_border" tapmode onclick="settlement_log();">
+      <div class="set_middle">账单明细</div>
+      <div class="set_right forward_top">
+        <img src="../../image/home/mine_forward.png" alt="">
+      </div>
+    </div>
+    <!-- <div class="set_item" tapmode onclick="cash_withdrawal_log();">
+      <div class="set_middle">提现记录</div>
+      <div class="set_right forward_top">
+        <img src="../../image/home/mine_forward.png" alt="">
+      </div>
+    </div> -->
+  </div>
+</body>
+  <script type="text/javascript" src="../../script/api.js"></script>
+  <script type="text/javascript" src="../../script/jquery.js"></script>
+  <script type="text/javascript" src="../../script/fans_del.js"></script>
+  <script type="text/javascript" src="../../script/api_common.js"></script>
+  <script type="text/javascript" src="../../script/md5.js"></script>
+  <script type="text/javascript">
+    var user_id;
+    apiready = function() {
+
+      if(!empty($api.getStorage("userInfo"))){
+        user_id=$api.getStorage("userInfo").user_id;
+      }else{
+        user_id='';
+      }
+      getEvent();
+      closePopframe();
+      getData();
+    };
+    function getData(){
+      var obj={
+        'user_id':user_id,
+      };
+      var objArr=sort_ASCII(obj);
+      var timestamp=fntimestamp();
+      var version='2.0';
+      var arr=apiSecret+timestamp+version+'';
+      for(i in objArr){
+        arr+=objArr[i];
+      }
+      var sign=hex_md5(arr);
+      api.ajax({
+          url: commonUrl+'soukeAppTttService/service/disRelated/MyIncome_ac',
+          method: 'post',
+          headers: {
+              'Content-Type': 'application/json;charset=utf-8'
+          },
+          data: {
+              body: {
+                  'apiKey':apiKey,
+                  'timestamp':timestamp,
+                  'sign':sign,
+                  'user_id':user_id
+              }
+          }
+      },function(ret, err){
+          if (ret) {
+              console.log("我的收益"+JSON.stringify( ret ) );
+              $("#my_ye").html(ret.result_data.balance);
+              $("#my_lucre").html('累计收益：'+ret.result_data.accumulate);
+              $("#by_js").html('￥'+ret.result_data.moneyTotal.split(".")[0]+'.<span class="yg_00">'+ret.result_data.moneyTotal.split(".")[1]+'</span>');
+              $("#sy_js").html('￥'+ret.result_data.historyTotal.split(".")[0]+'.<span class="yg_00">'+ret.result_data.historyTotal.split(".")[1]+'</span>');
+              $("#by_fk").html('￥'+ret.result_data.currTotal.split(".")[0]+'.<span class="yg_00">'+ret.result_data.currTotal.split(".")[1]+'</span>');
+              $("#sy_fk").html('￥'+ret.result_data.lastTotal.split(".")[0]+'.<span class="yg_00">'+ret.result_data.lastTotal.split(".")[1]+'</span>');
+              $("#jr_fq").html(ret.result_data.count);
+              $("#jr_yj").html('￥'+ret.result_data.todayTotal.split(".")[0]+'.<span class="yg_00">'+ret.result_data.todayTotal.split(".")[1]+'</span>');
+              $("#zr_fq").html(ret.result_data.qCount);
+              $("#zr_yj").html('￥'+ret.result_data.qTotal.split(".")[0]+'.<span class="yg_00">'+ret.result_data.qTotal.split(".")[1]+'</span>');
+          } else {
+              // alert( JSON.stringify( err ) );
+          }
+      });
+    }
+    //跳转结算佣金明细页
+    function settlement_log(){
+      api.openWin({
+          name: 'my_settlement_win',
+          url: 'widget://html/win/my_settlement_win.html',
+          /*pageParam:{
+            goods_id:goods_id,
+          }*/
+      });
+    }
+  </script>
+
+</html>
