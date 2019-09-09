@@ -1,7 +1,7 @@
 (function(window) {
-    commonUrl = 'http://服务器接口地址/';
-    apiKey = 'apiKey';
-    apiSecret = 'apiSecret';
+    commonUrl = 'http://gouwubao.youledi.cn/';
+    apiKey = '000000';
+    apiSecret = '000000';
 
 })(window);
 // 定义开启openinstall上报登录数据  1开启、0关闭
