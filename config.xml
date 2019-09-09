@@ -100,7 +100,7 @@
     </feature>
 
     <feature name="QQPlus">
-        <param name="urlScheme" value="tencent腾讯开放平台移动应用appid"/>
-        <param name="apiKey" value="腾讯开放平台移动应用appid"/>
+        <param name="urlScheme" value="1109861630"/>
+        <param name="apiKey" value="J2rTWBAPqXwc2xWY"/>
     </feature>
 </widget>
